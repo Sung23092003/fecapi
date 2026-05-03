@@ -1,0 +1,37 @@
+#togglePassword {
+  border-color: #ced4da;
+  border-left: 0;
+  border-radius: 0 0.375rem 0.375rem 0;
+  padding: 0.375rem 0.75rem;
+}
+
+#yourPassword:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  border-color: #86b7fe;
+  z-index: 3;
+}
+
+#yourPassword:focus + #togglePassword {
+  border-color: #86b7fe;
+  box-shadow: none;
+}
+
+#yourUsername:valid,
+#yourPassword:valid {
+  background-image: none !important;
+}
+
+#yourUsername:invalid,
+#yourPassword:invalid {
+  background-image: none !important;
+}
+
+#login-form.was-validated #yourUsername:invalid,
+#login-form.was-validated #yourPassword:invalid {
+  border-color: #dc3545;
+}
+
+#login-form.was-validated #yourUsername:invalid ~ .invalid-feedback,
+#login-form.was-validated #yourPassword:invalid ~ .invalid-feedback {
+  display: block;
+}

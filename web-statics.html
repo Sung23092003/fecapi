@@ -400,19 +400,28 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Quản lý Bài viết</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Quản lý Bài viết</li>
-        </ol>
-      </nav>
+      <div class="d-flex flex-wrap md:flex-no-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="mb-0">Quản lý Bài viết</h1>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Quản lý Bài viết</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="input-group" style="max-width:320px;">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="filter-title" type="text" class="form-control" placeholder="Tìm theo tiêu đề" />
+        </div>
+      </div>
     </div><!-- End Page Title -->
 
     <section class="section">
       <div class="card">
-        <div class="card-body">
-          <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center justify-content-between mb-3">
+        <div class="card-body pt-20">
+          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-3 flex-no-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <button id="btn-create" type="button" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> Thêm bài viết
@@ -433,10 +442,6 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
-              <div class="input-group" style="min-width: 320px;">
-                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                <input id="filter-title" type="text" class="form-control" placeholder="Tìm theo tiêu đề" />
-              </div>
 
               <select id="filter-status" class="form-select" style="width: 170px;">
                 <option value="-1" selected>Tất cả trạng thái</option>

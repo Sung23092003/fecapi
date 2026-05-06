@@ -1,4 +1,6 @@
 /* Page-specific CSS for web-statics.html */
+
+/* GRID VIEW */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -11,6 +13,8 @@
 
 @media (max-width: 991.98px) {
   .news-card { grid-column: span 6; }
+  .view-mode-toggle { display: none !important; }
+  .view-mode-toggle.ms-0.ms-md-2 { display: none !important; }
 }
 
 @media (max-width: 575.98px) {
@@ -24,22 +28,59 @@
   border-radius: 8px;
 }
 
+/* STATUS PILL */
 .status-pill {
   font-size: 12px;
 }
 
-.view-mode-toggle .btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
+/* TEXT MUTED */
 .text-muted-2 {
   color: rgba(0, 0, 0, 0.55);
 }
 
+/* EMPTY STATE */
 .empty-state {
   padding: 28px;
   border: 1px dashed rgba(0, 0, 0, 0.2);
   border-radius: 12px;
+}
+
+/* TOOLTIP FOR LONG CONTENT */
+.content-tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.content-tooltip:hover::after {
+  content: attr(data-full-content);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 1050;
+  background: #333;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  max-width: 400px;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  pointer-events: none;
+}
+
+/* TABLE RESPONSIVE */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* VIEW MODE TOGGLE - Hide on tablet/mobile */
+.view-mode-toggle.ms-0.ms-md-2 {
+  display: inline-flex;
+}
+
+@media (max-width: 991.98px) {
+  .view-mode-toggle.ms-0.ms-md-2 {
+    display: none !important;
+  }
 }

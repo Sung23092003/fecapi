@@ -452,21 +452,23 @@
 
           <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
 
-          <!-- LIST VIEW -->
-          <div id="view-list" class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th style="width: 70px;">#</th>
-                  <th>Tiêu đề</th>
-                  <th style="width: 150px;">Trạng thái</th>
-                  <th style="width: 120px;">Thứ tự</th>
-                  <th style="width: 180px;">Ngày tạo</th>
-                  <th style="width: 200px;">Hành động</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-statics"></tbody>
-            </table>
+           <!-- LIST VIEW -->
+           <div id="view-list" class="table-responsive">
+             <table class="table table-hover align-middle">
+               <thead>
+                 <tr>
+                   <th style="width: 70px;">#</th>
+                   <th>Tiêu đề</th>
+                   <th style="width: 200px;">Giới thiệu</th>
+                   <th style="width: 250px;">Nội dung</th>
+                   <th style="width: 120px;">Trạng thái</th>
+                   <th style="width: 100px;">Thứ tự</th>
+                   <th style="width: 180px;">Ngày tạo</th>
+                   <th style="width: 120px;">Hành động</th>
+                 </tr>
+               </thead>
+               <tbody id="tbody-statics"></tbody>
+             </table>
 
             <div class="d-flex justify-content-between align-items-center">
               <div class="text-muted" id="summary-area"></div>
@@ -611,23 +613,19 @@
              <td>
                <div class="d-flex gap-2 align-items-center">
                  ${imageHtml}
-                 <div>
-                   <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
-                   <div class="small text-muted">${escapeHtml(it.statics_intro || '')}</div>
-                   <div class="small text-muted mt-1" style="max-width: 400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                     ${escapeHtml(it.statics_content || '')}
-                   </div>
-                 </div>
+                 <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
                </div>
              </td>
+             <td><div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div></td>
+             <td><div class="small text-muted" style="max-width:250px;max-height:60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div></td>
              <td>${statusHtml}</td>
              <td>${escapeHtml(it.statics_order_no)}</td>
              <td>${escapeHtml(formatDateTime(it.statics_created))}</td>
              <td>
                <div class="d-flex gap-2">
-                 <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i> View</button>
-                 <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i> Sửa</button>
-                 <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i> Xóa</button>
+                 <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                 <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                 <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                </div>
              </td>
            `;
@@ -672,10 +670,10 @@
                    <div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>
                    <div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>
                  </div>
-                 <div class="d-flex gap-2 mt-3">
-                   <button type="button" class="btn btn-sm btn-outline-secondary w-100" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-primary w-100" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-danger w-100" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i></button>
+                 <div class="d-flex justify-content-center gap-2 mt-3">
+                   <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                  </div>
                </div>
              </div>

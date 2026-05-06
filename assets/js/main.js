@@ -297,6 +297,27 @@
     })
 
   /**
+   * Handle logout for all elements with data-logout attribute
+   */
+  document.addEventListener('click', function(e) {
+    const logoutEl = e.target.closest('[data-logout="true"]');
+    if (logoutEl) {
+      e.preventDefault();
+      if (window.Auth && typeof window.Auth.logout === 'function') {
+        window.Auth.logout();
+      } else {
+        // Fallback: manually clear token and redirect
+        try {
+          localStorage.removeItem('cms_auth');
+        } catch (err) {
+          console.error('Error clearing auth data:', err);
+        }
+        window.location.href = 'pages-login.html';
+      }
+    }
+  });
+
+  /**
    * Initiate Datatables
    */
   const datatables = select('.datatable', true)

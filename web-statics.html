@@ -589,74 +589,100 @@
           .replaceAll("'", '&#039;');
       }
 
-      function renderList(items) {
-        tbody.innerHTML = '';
-        const frag = document.createDocumentFragment();
+       function renderList(items) {
+         tbody.innerHTML = '';
+         const frag = document.createDocumentFragment();
 
-        items.forEach((it, idx) => {
-          const tr = document.createElement('tr');
+         items.forEach((it, idx) => {
+           const tr = document.createElement('tr');
 
-          const st = formatStatus(it.statics_status);
-          const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+           const st = formatStatus(it.statics_status);
+           const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
 
-          tr.innerHTML = `
-            <th scope="row">${(currentPage - 1) * 20 + idx + 1}</th>
-            <td>
-              <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
-              <div class="small text-muted">${escapeHtml(it.statics_intro || '')}</div>
-            </td>
-            <td>${statusHtml}</td>
-            <td>${escapeHtml(it.statics_order_no)}</td>
-            <td>${escapeHtml(formatDateTime(it.statics_created))}</td>
-            <td>
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i> View</button>
-                <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i> Sửa</button>
-                <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i> Xóa</button>
-              </div>
-            </td>
-          `;
+           const imageHtml = it.statics_image
+             ? `<img src="${escapeHtml(it.statics_image)}" alt="" class="card-news-thumb" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
+             : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40" style="border-radius:4px;border:1px solid #dee2e6;">
+                 <rect width="60" height="40" fill="#f8f9fa"/>
+                 <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
+               </svg>`;
 
-          frag.appendChild(tr);
-        });
+           tr.innerHTML = `
+             <th scope="row">${(currentPage - 1) * 20 + idx + 1}</th>
+             <td>
+               <div class="d-flex gap-2 align-items-center">
+                 ${imageHtml}
+                 <div>
+                   <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
+                   <div class="small text-muted">${escapeHtml(it.statics_intro || '')}</div>
+                   <div class="small text-muted mt-1" style="max-width: 400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                     ${escapeHtml(it.statics_content || '')}
+                   </div>
+                 </div>
+               </div>
+             </td>
+             <td>${statusHtml}</td>
+             <td>${escapeHtml(it.statics_order_no)}</td>
+             <td>${escapeHtml(formatDateTime(it.statics_created))}</td>
+             <td>
+               <div class="d-flex gap-2">
+                 <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i> View</button>
+                 <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i> Sửa</button>
+                 <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i> Xóa</button>
+               </div>
+             </td>
+           `;
 
-        tbody.appendChild(frag);
-      }
+           frag.appendChild(tr);
+         });
 
-      function renderGrid(items) {
-        viewGrid.innerHTML = '';
-        if (!items.length) return;
+         tbody.appendChild(frag);
+       }
 
-        items.forEach(it => {
-          const st = formatStatus(it.statics_status);
-          const card = document.createElement('div');
-          card.className = 'news-card';
-          card.innerHTML = `
-            <div class="card h-100">
-              <img class="card-news-thumb" src="assets/img/news-1.jpg" alt="">
-              <div class="card-body">
-                <div class="d-flex align-items-start justify-content-between gap-2">
-                  <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
-                  <span class="badge ${st.cls} status-pill">${st.text}</span>
-                </div>
-                <div class="small text-muted mt-2" style="min-height: 40px;">
-                  ${escapeHtml(it.statics_intro || '')}
-                </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                  <div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>
-                  <div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>
-                </div>
-                <div class="d-flex gap-2 mt-3">
-                  <button type="button" class="btn btn-sm btn-outline-secondary w-100" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i></button>
-                  <button type="button" class="btn btn-sm btn-outline-primary w-100" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i></button>
-                  <button type="button" class="btn btn-sm btn-outline-danger w-100" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i></button>
-                </div>
-              </div>
-            </div>
-          `;
-          viewGrid.appendChild(card);
-        });
-      }
+       function renderGrid(items) {
+         viewGrid.innerHTML = '';
+         if (!items.length) return;
+
+         items.forEach(it => {
+           const st = formatStatus(it.statics_status);
+           const card = document.createElement('div');
+           card.className = 'news-card';
+
+           const imageHtml = it.statics_image
+             ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
+             : `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120" viewBox="0 0 400 120">
+                 <rect width="400" height="120" fill="#f8f9fa"/>
+                 <text x="200" y="65" text-anchor="middle" font-size="16" fill="#6c757d">No Photo</text>
+               </svg>`;
+
+           card.innerHTML = `
+             <div class="card h-100">
+               ${imageHtml}
+               <div class="card-body">
+                 <div class="d-flex align-items-start justify-content-between gap-2">
+                   <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
+                   <span class="badge ${st.cls} status-pill">${st.text}</span>
+                 </div>
+                 <div class="small text-muted mt-2" style="min-height: 40px;">
+                   ${escapeHtml(it.statics_intro || '')}
+                 </div>
+                 <div class="small text-muted mt-2" style="max-height: 60px;overflow:hidden;">
+                   ${escapeHtml(it.statics_content || '')}
+                 </div>
+                 <div class="d-flex justify-content-between align-items-center mt-3">
+                   <div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>
+                   <div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>
+                 </div>
+                 <div class="d-flex gap-2 mt-3">
+                   <button type="button" class="btn btn-sm btn-outline-secondary w-100" data-action="view" data-id="${it.statics_id}"><i class="bi bi-eye"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-primary w-100" data-action="edit" data-id="${it.statics_id}"><i class="bi bi-pencil"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-danger w-100" data-action="delete" data-id="${it.statics_id}"><i class="bi bi-trash"></i></button>
+                 </div>
+               </div>
+             </div>
+           `;
+           viewGrid.appendChild(card);
+         });
+       }
 
       function renderPagination(page, totalPage) {
         paginationEl.innerHTML = '';

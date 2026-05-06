@@ -458,6 +458,7 @@
                <thead>
                  <tr>
                    <th style="width: 70px;">#</th>
+                   <th style="width: 70px;">Ảnh</th>
                    <th>Tiêu đề</th>
                    <th style="width: 200px;">Giới thiệu</th>
                    <th style="width: 250px;">Nội dung</th>
@@ -602,7 +603,7 @@
            const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
 
            const imageHtml = it.statics_image
-             ? `<img src="${escapeHtml(it.statics_image)}" alt="" class="card-news-thumb" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
+             ? `<img src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
              : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40" style="border-radius:4px;border:1px solid #dee2e6;">
                  <rect width="60" height="40" fill="#f8f9fa"/>
                  <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
@@ -610,12 +611,8 @@
 
            tr.innerHTML = `
              <th scope="row">${(currentPage - 1) * 20 + idx + 1}</th>
-             <td>
-               <div class="d-flex gap-2 align-items-center">
-                 ${imageHtml}
-                 <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
-               </div>
-             </td>
+             <td class="text-center">${imageHtml}</td>
+             <td><div class="fw-bold">${escapeHtml(it.statics_title)}</div></td>
              <td><div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div></td>
              <td><div class="small text-muted" style="max-width:250px;max-height:60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div></td>
              <td>${statusHtml}</td>
@@ -670,10 +667,10 @@
                    <div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>
                    <div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>
                  </div>
-                 <div class="d-flex justify-content-center gap-2 mt-3">
-                   <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                 <div class="d-flex gap-2 mt-3">
+                   <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-primary flex-fill" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                   <button type="button" class="btn btn-sm btn-outline-danger flex-fill" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                  </div>
                </div>
              </div>

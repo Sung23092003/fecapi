@@ -15,7 +15,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +31,65 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/web-statics.css" rel="stylesheet">
+  <style>
+    .column-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .column-modal.show {
+      display: flex;
+    }
+
+    .column-modal-content {
+      background: #fff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .column-modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .column-modal-body {
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .column-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .column-modal-footer {
+      padding: 1rem;
+      border-top: 1px solid #dee2e6;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .column-modal-footer .btn {
+      flex: 1;
+    }
+  </style>
 </head>
 
 <body>
@@ -309,22 +370,22 @@
         </ul>
       </li><!-- End Forms Nav -->
 
-       <li class="nav-item">
-         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-           <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
-         </a>
-         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-           <li><a href="tables-general.html"><i class="bi bi-circle"></i><span>General Tables</span></a></li>
-           <li><a href="tables-data.html"><i class="bi bi-circle"></i><span>Data Tables</span></a></li>
-         </ul>
-       </li><!-- End Tables Nav -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="tables-general.html"><i class="bi bi-circle"></i><span>General Tables</span></a></li>
+          <li><a href="tables-data.html"><i class="bi bi-circle"></i><span>Data Tables</span></a></li>
+        </ul>
+      </li><!-- End Tables Nav -->
 
-       <li class="nav-item">
-         <a class="nav-link active" href="web-statics.html">
-           <i class="bi bi-globe"></i>
-           <span>Quản lý Bài viết</span>
-         </a>
-       </li><!-- End Web Nav -->
+      <li class="nav-item">
+        <a class="nav-link active" href="web-statics.html">
+          <i class="bi bi-globe"></i>
+          <span>Quản lý Bài viết</span>
+        </a>
+      </li><!-- End Web Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
@@ -424,7 +485,7 @@
           <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-3 flex-no-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <button id="btn-create" type="button" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm bài viết</span> 
+                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm bài viết</span>
               </button>
 
               <div class="view-mode-toggle ms-0 ms-md-2">
@@ -457,24 +518,30 @@
 
           <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
 
-           <!-- LIST VIEW -->
-           <div id="view-list" class="table-responsive">
-             <table class="table table-hover align-middle">
-               <thead>
-                 <tr>
-                   <th style="min-width: 70px;">#</th>
-                   <th style="min-width: 70px;">Ảnh</th>
-                   <th style="min-width: 200px;">Tiêu đề</th>
-                   <th style="min-width: 200px;">Giới thiệu</th>
-                   <th style="min-width: 250px;">Nội dung</th>
-                   <th style="min-width: 120px;">Trạng thái</th>
-                   <th style="min-width: 100px;">Thứ tự</th>
-                   <th style="min-width: 180px;">Ngày tạo</th>
-                   <th style="min-width: 120px;">Hành động</th>
-                 </tr>
-               </thead>
-               <tbody id="tbody-statics"></tbody>
-             </table>
+          <!-- LIST VIEW -->
+          <div id="view-list" class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th style="min-width: 70px;">#</th>
+                  <th style="min-width: 70px;">Ảnh</th>
+                  <th style="min-width: 200px;">Tiêu đề</th>
+                  <th style="min-width: 200px;">Giới thiệu</th>
+                  <th style="min-width: 250px;">Nội dung</th>
+                  <th style="min-width: 120px;">Trạng thái</th>
+                  <th style="min-width: 100px;">Thứ tự</th>
+                  <th style="min-width: 180px;">Ngày tạo</th>
+                  <th style="min-width: 120px;">Hành động</th>
+                  <th style="min-width: 40px;">
+                    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
+                      title="Hiển thị cột">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="tbody-statics"></tbody>
+            </table>
 
             <div class="d-flex justify-content-between align-items-center">
               <div class="text-muted" id="summary-area"></div>
@@ -497,6 +564,23 @@
             </div>
           </div>
 
+          <!-- Column Visibility Modal -->
+          <div id="column-modal" class="column-modal">
+            <div class="column-modal-content">
+              <div class="column-modal-header">
+                <span>Hiển thị/Ẩn cột</span>
+                <button type="button" id="column-modal-close">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="column-modal-body" id="column-list"></div>
+              <div class="column-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Reset</button>
+                <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -512,7 +596,8 @@
     </div>
   </footer>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -552,27 +637,107 @@
       const filterTitle = document.getElementById('filter-title');
       const filterStatus = document.getElementById('filter-status');
 
-       const btnModeList = document.getElementById('btn-mode-list');
-       const btnModeGrid = document.getElementById('btn-mode-grid');
-       const viewModeToggle = document.querySelector('.view-mode-toggle');
+      const btnModeList = document.getElementById('btn-mode-list');
+      const btnModeGrid = document.getElementById('btn-mode-grid');
+      const viewModeToggle = document.querySelector('.view-mode-toggle');
 
-       let currentPage = 1;
-       let lastTotalPage = 1;
+      // Column Visibility
+      const btnColumnVisibility = document.getElementById('btn-column-visibility');
+      const columnModal = document.getElementById('column-modal');
+      const columnModalClose = document.getElementById('column-modal-close');
+      const columnList = document.getElementById('column-list');
+      const btnResetColumns = document.getElementById('btn-reset-columns');
+      const btnDoneColumns = document.getElementById('btn-done-columns');
 
-       // Responsive: on tablet/mobile (<=991.98px) force grid, hide toggle; on PC default list
-       function checkResponsive() {
-         if (window.innerWidth <= 991.98) {
-           setView('grid');
-           if (viewModeToggle) viewModeToggle.style.display = 'none';
-         } else {
-           setView('list');
-           if (viewModeToggle) viewModeToggle.style.display = '';
-         }
-       }
+      const columns = [
+        { key: 'index', label: '#', default: true },
+        { key: 'image', label: 'Ảnh', default: true },
+        { key: 'title', label: 'Tiêu đề', default: true },
+        { key: 'intro', label: 'Giới thiệu', default: true },
+        { key: 'content', label: 'Nội dung', default: true },
+        { key: 'status', label: 'Trạng thái', default: true },
+        { key: 'order', label: 'Thứ tự', default: true },
+        { key: 'created', label: 'Ngày tạo', default: true },
+        { key: 'actions', label: 'Hành động', default: true }
+      ];
 
-       // Initial check
-       checkResponsive();
-       window.addEventListener('resize', checkResponsive);
+      let visibleColumns = {};
+      let currentPage = 1;
+      let lastTotalPage = 1;
+
+      // Initialize visible columns
+      function initColumns() {
+        const saved = localStorage.getItem('statics-visible-columns');
+        if (saved) {
+          try {
+            visibleColumns = JSON.parse(saved);
+            columns.forEach(col => {
+              if (visibleColumns[col.key] === undefined) {
+                visibleColumns[col.key] = col.default;
+              }
+            });
+          } catch {
+            columns.forEach(col => visibleColumns[col.key] = col.default);
+          }
+        } else {
+          columns.forEach(col => visibleColumns[col.key] = col.default);
+        }
+      }
+
+      function saveColumns() {
+        localStorage.setItem('statics-visible-columns', JSON.stringify(visibleColumns));
+      }
+
+      function toggleColumn(key) {
+        visibleColumns[key] = !visibleColumns[key];
+        saveColumns();
+      }
+
+      function resetColumns() {
+        columns.forEach(col => visibleColumns[col.key] = col.default);
+        saveColumns();
+        renderColumnList();
+      }
+
+      function renderColumnList() {
+        columnList.innerHTML = '';
+        columns.forEach(col => {
+          const label = document.createElement('label');
+          label.className = 'column-item';
+          label.innerHTML = `
+              <input type="checkbox" ${visibleColumns[col.key] ? 'checked' : ''} onchange="window.__toggleColumn('${col.key}')" />
+              ${col.label}
+            `;
+          columnList.appendChild(label);
+        });
+      }
+
+      // Expose toggle function globally
+      window.__toggleColumn = toggleColumn;
+
+      function openColumnModal() {
+        renderColumnList();
+        columnModal.classList.add('show');
+      }
+
+      function closeColumnModal() {
+        columnModal.classList.remove('show');
+      }
+
+      // Responsive: on tablet/mobile (<=991.98px) force grid, hide toggle; on PC default list
+      function checkResponsive() {
+        if (window.innerWidth <= 991.98) {
+          setView('grid');
+          if (viewModeToggle) viewModeToggle.style.display = 'none';
+        } else {
+          setView('list');
+          if (viewModeToggle) viewModeToggle.style.display = '';
+        }
+      }
+
+      // Initial check
+      checkResponsive();
+      window.addEventListener('resize', checkResponsive);
 
       function formatStatus(st) {
         if (st === 1) return { text: 'Hiện', cls: 'bg-success' };
@@ -613,92 +778,167 @@
           .replaceAll("'", '&#039;');
       }
 
-       function renderList(items) {
-         tbody.innerHTML = '';
-         const frag = document.createDocumentFragment();
+      function renderTableHeader() {
+        const thead = viewList.querySelector('thead tr');
+        thead.innerHTML = '';
 
-         items.forEach((it, idx) => {
-           const tr = document.createElement('tr');
+        columns.forEach(col => {
+          if (!visibleColumns[col.key]) return;
+          const th = document.createElement('th');
+          th.textContent = col.label;
+          thead.appendChild(th);
+        });
 
-           const st = formatStatus(it.statics_status);
-           const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+        const thDot = document.createElement('th');
+        thDot.innerHTML = `
+    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+  `;
+        thead.appendChild(thDot);
 
-           const imageHtml = it.statics_image
-             ? `<img src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
-             : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40" style="border-radius:4px;border:1px solid #dee2e6;">
-                 <rect width="60" height="40" fill="#f8f9fa"/>
-                 <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
-               </svg>`;
+        const btn = document.getElementById('btn-column-visibility');
+        if (btn) {
+          btn.addEventListener('click', openColumnModal);
+        }
+      }
+      function renderList(items) {
+        tbody.innerHTML = '';
+        const frag = document.createDocumentFragment();
 
-           tr.innerHTML = `
-             <th scope="row">${(currentPage - 1) * 20 + idx + 1}</th>
-             <td class="text-center">${imageHtml}</td>
-             <td><div class="fw-bold">${escapeHtml(it.statics_title)}</div></td>
-             <td><div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div></td>
-             <td><div class="small text-muted" style="max-width:250px;max-height:60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div></td>
-             <td>${statusHtml}</td>
-             <td>${escapeHtml(it.statics_order_no)}</td>
-             <td>${escapeHtml(formatDateTime(it.statics_created))}</td>
-             <td>
-               <div class="d-flex gap-2">
-                 <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
-                 <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                 <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
-               </div>
-             </td>
-           `;
+        items.forEach((it, idx) => {
+          const tr = document.createElement('tr');
+          const st = formatStatus(it.statics_status);
+          const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+          const imageHtml = it.statics_image
+            ? `<img src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40" style="border-radius:4px;border:1px solid #dee2e6;">
+                  <rect width="60" height="40" fill="#f8f9fa"/>
+                  <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
+                </svg>`;
 
-           frag.appendChild(tr);
-         });
+          columns.forEach(col => {
+            if (!visibleColumns[col.key]) return;
+            if (col.key === 'index') {
+              const th = document.createElement('th');
+              th.scope = 'row';
+              th.textContent = (currentPage - 1) * 20 + idx + 1;
+              tr.appendChild(th);
+            } else if (col.key === 'image') {
+              const td = document.createElement('td');
+              td.className = 'text-center';
+              td.innerHTML = imageHtml;
+              tr.appendChild(td);
+            } else if (col.key === 'title') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'intro') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'content') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="small text-muted" style="max-width:250px;max-height:60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'status') {
+              const td = document.createElement('td');
+              td.innerHTML = statusHtml;
+              tr.appendChild(td);
+            } else if (col.key === 'order') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(it.statics_order_no);
+              tr.appendChild(td);
+            } else if (col.key === 'created') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(formatDateTime(it.statics_created));
+              tr.appendChild(td);
+            } else if (col.key === 'actions') {
+              const td = document.createElement('td');
+              td.innerHTML = `
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                  </div>
+                `;
+              tr.appendChild(td);
+            }
+          });
 
-         tbody.appendChild(frag);
-       }
+          frag.appendChild(tr);
+        });
 
-       function renderGrid(items) {
-         viewGrid.innerHTML = '';
-         if (!items.length) return;
+        tbody.appendChild(frag);
+      }
 
-         items.forEach(it => {
-           const st = formatStatus(it.statics_status);
-           const card = document.createElement('div');
-           card.className = 'news-card';
+      function renderGrid(items) {
+        viewGrid.innerHTML = '';
+        if (!items.length) return;
 
-           const imageHtml = it.statics_image
-             ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
-             : `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120" viewBox="0 0 400 120">
-                 <rect width="400" height="120" fill="#f8f9fa"/>
-                 <text x="200" y="65" text-anchor="middle" font-size="16" fill="#6c757d">No Photo</text>
-               </svg>`;
+        items.forEach(it => {
+          const st = formatStatus(it.statics_status);
+          const card = document.createElement('div');
+          card.className = 'news-card';
 
-           card.innerHTML = `
-             <div class="card h-100">
-               ${imageHtml}
-               <div class="card-body">
-                 <div class="d-flex align-items-start justify-content-between gap-2">
-                   <div class="fw-bold">${escapeHtml(it.statics_title)}</div>
-                   <span class="badge ${st.cls} status-pill">${st.text}</span>
-                 </div>
-                 <div class="small text-muted mt-2" style="min-height: 40px;">
-                   ${escapeHtml(it.statics_intro || '')}
-                 </div>
-                 <div class="small text-muted mt-2" style="max-height: 60px;overflow:hidden;">
-                   ${escapeHtml(it.statics_content || '')}
-                 </div>
-                 <div class="d-flex justify-content-between align-items-center mt-3">
-                   <div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>
-                   <div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>
-                 </div>
-                 <div class="d-flex gap-2 mt-3">
-                   <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-primary flex-fill" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                   <button type="button" class="btn btn-sm btn-outline-danger flex-fill" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
-                 </div>
-               </div>
-             </div>
-           `;
-           viewGrid.appendChild(card);
-         });
-       }
+          let cardHtml = '<div class="card h-100">';
+
+          if (visibleColumns['image']) {
+            cardHtml += it.statics_image
+              ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
+              : `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120" viewBox="0 0 400 120">
+                    <rect width="400" height="120" fill="#f8f9fa"/>
+                    <text x="200" y="65" text-anchor="middle" font-size="16" fill="#6c757d">No Photo</text>
+                  </svg>`;
+          }
+
+          cardHtml += '<div class="card-body">';
+
+          if (visibleColumns['title'] || visibleColumns['status']) {
+            cardHtml += '<div class="d-flex align-items-start justify-content-between gap-2">';
+            if (visibleColumns['title']) {
+              cardHtml += `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
+            }
+            if (visibleColumns['status']) {
+              cardHtml += `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          if (visibleColumns['intro']) {
+            cardHtml += `<div class="small text-muted mt-2" style="min-height: 40px;">${escapeHtml(it.statics_intro || '')}</div>`;
+          }
+
+          if (visibleColumns['content']) {
+            cardHtml += `<div class="small text-muted mt-2" style="max-height: 60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div>`;
+          }
+
+          if (visibleColumns['order'] || visibleColumns['created']) {
+            cardHtml += '<div class="d-flex justify-content-between align-items-center mt-3">';
+            if (visibleColumns['order']) {
+              cardHtml += `<div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>`;
+            }
+            if (visibleColumns['created']) {
+              cardHtml += `<div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          if (visibleColumns['actions']) {
+            cardHtml += `
+                <div class="d-flex gap-2 mt-3">
+                  <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-primary flex-fill" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-sm btn-outline-danger flex-fill" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                </div>
+              `;
+          }
+
+          cardHtml += '</div></div>';
+          card.innerHTML = cardHtml;
+          viewGrid.appendChild(card);
+        });
+      }
 
       function renderPagination(page, totalPage) {
         paginationEl.innerHTML = '';
@@ -836,7 +1076,19 @@
       btnModeList.addEventListener('click', () => setView('list'));
       btnModeGrid.addEventListener('click', () => setView('grid'));
 
-      // Init view
+      // Column visibility event listeners
+      btnColumnVisibility.addEventListener('click', openColumnModal);
+      columnModalClose.addEventListener('click', closeColumnModal);
+      btnDoneColumns.addEventListener('click', () => location.reload());
+      btnResetColumns.addEventListener('click', resetColumns);
+
+      columnModal.addEventListener('click', (e) => {
+        if (e.target === columnModal) closeColumnModal();
+      });
+
+      // Init
+      initColumns();
+      renderTableHeader();
       setView('list');
       loadData();
     })();
@@ -844,5 +1096,3 @@
 </body>
 
 </html>
-
-

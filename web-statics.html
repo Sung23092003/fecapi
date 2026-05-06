@@ -547,11 +547,27 @@
       const filterTitle = document.getElementById('filter-title');
       const filterStatus = document.getElementById('filter-status');
 
-      const btnModeList = document.getElementById('btn-mode-list');
-      const btnModeGrid = document.getElementById('btn-mode-grid');
+       const btnModeList = document.getElementById('btn-mode-list');
+       const btnModeGrid = document.getElementById('btn-mode-grid');
+       const viewModeToggle = document.querySelector('.view-mode-toggle');
 
-      let currentPage = 1;
-      let lastTotalPage = 1;
+       let currentPage = 1;
+       let lastTotalPage = 1;
+
+       // Responsive: on tablet/mobile (<=991.98px) force grid, hide toggle; on PC default list
+       function checkResponsive() {
+         if (window.innerWidth <= 991.98) {
+           setView('grid');
+           if (viewModeToggle) viewModeToggle.style.display = 'none';
+         } else {
+           setView('list');
+           if (viewModeToggle) viewModeToggle.style.display = '';
+         }
+       }
+
+       // Initial check
+       checkResponsive();
+       window.addEventListener('resize', checkResponsive);
 
       function formatStatus(st) {
         if (st === 1) return { text: 'Hiện', cls: 'bg-success' };

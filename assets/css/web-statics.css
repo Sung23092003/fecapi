@@ -1,0 +1,45 @@
+/* Page-specific CSS for web-statics.html */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 12px;
+}
+
+.news-card {
+  grid-column: span 4;
+}
+
+@media (max-width: 991.98px) {
+  .news-card { grid-column: span 6; }
+}
+
+@media (max-width: 575.98px) {
+  .news-card { grid-column: span 12; }
+}
+
+.card-news-thumb {
+  height: 120px;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.status-pill {
+  font-size: 12px;
+}
+
+.view-mode-toggle .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text-muted-2 {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.empty-state {
+  padding: 28px;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+}

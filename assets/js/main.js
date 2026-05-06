@@ -307,16 +307,11 @@
       const auth = JSON.parse(userData);
       if (!auth || !auth.user) return;
       
-      const fullName = auth.user.user_full_name || 'User';
-      const shortName = fullName.split(' ').map(n => n[0]).join('') || 'U';
+      const fullName = auth.user.user_full_name || '';
       
       // Update all elements showing user name
       document.querySelectorAll('[data-user-name]').forEach(el => {
         el.textContent = fullName;
-      });
-      
-      document.querySelectorAll('[data-user-short]').forEach(el => {
-        el.textContent = shortName;
       });
     } catch (e) {
       console.error('Error updating user display name:', e);

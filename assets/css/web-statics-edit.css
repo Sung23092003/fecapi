@@ -1,0 +1,15 @@
+/* Page-specific CSS for web-statics-edit.html */
+.card-box { border-radius: 10px; }
+.tox .tox-toolbar__primary { flex-wrap: wrap; }
+textarea { resize: vertical; }
+.label-req { color: #dc3545; margin-left: 2px; }
+.preview-thumb {
+  width: 100%;
+  max-width: 430px;
+  height: 160px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid rgba(0,0,0,.1);
+}
+.card-box .card-head header { font-size: 1.05rem; font-weight: 700; }
+.card-box .card-inner { padding: 0 12px 8px; }

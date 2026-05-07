@@ -640,17 +640,18 @@
       const btnResetColumns = document.getElementById('btn-reset-columns');
       const btnDoneColumns = document.getElementById('btn-done-columns');
 
-      const columns = [
-        { key: 'index', label: '#', default: true },
-        { key: 'image', label: 'Ảnh', default: true },
-        { key: 'title', label: 'Tiêu đề', default: true },
-        { key: 'intro', label: 'Giới thiệu', default: true },
-        { key: 'content', label: 'Nội dung', default: true },
-        { key: 'status', label: 'Trạng thái', default: true },
-        { key: 'order', label: 'Thứ tự', default: true },
-        { key: 'created', label: 'Ngày tạo', default: true },
-        { key: 'actions', label: 'Hành động', default: true }
-      ];
+       const columns = [
+         { key: 'index', label: '#', default: true },
+         { key: 'image', label: 'Ảnh', default: true },
+         { key: 'title', label: 'Tiêu đề', default: true },
+         { key: 'intro', label: 'Giới thiệu', default: true },
+         { key: 'content', label: 'Nội dung', default: false },
+         { key: 'status', label: 'Trạng thái', default: true },
+         { key: 'order', label: 'Thứ tự', default: true },
+         { key: 'created', label: 'Ngày tạo', default: true },
+         { key: 'view_num', label: 'Lượt xem', default: true },
+         { key: 'actions', label: 'Hành động', default: true }
+       ];
 
       let visibleColumns = {};
       let currentPage = 1;
@@ -858,6 +859,10 @@
               const td = document.createElement('td');
               td.textContent = escapeHtml(formatDateTime(it.statics_created));
               tr.appendChild(td);
+            } else if (col.key === 'view_num') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(it.statics_view_num || 0);
+              tr.appendChild(td);
             } else if (col.key === 'actions') {
               const td = document.createElement('td');
               td.innerHTML = `
@@ -924,14 +929,17 @@
               cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_content || '')}</div>`;
             }
 
-            // Footer: order + date
-            if (visibleColumns['order'] || visibleColumns['created']) {
+            // Footer: order + date + view_num
+            if (visibleColumns['order'] || visibleColumns['created'] || visibleColumns['view_num']) {
               cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
               if (visibleColumns['order']) {
                 cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></span>`;
               }
               if (visibleColumns['created']) {
                 cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.statics_created))}</span>`;
+              }
+              if (visibleColumns['view_num']) {
+                cardHtml += `<span class="text-muted">Lượt xem: ${escapeHtml(it.statics_view_num || 0)}</span>`;
               }
               cardHtml += '</div>';
             }

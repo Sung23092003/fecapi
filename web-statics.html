@@ -421,7 +421,7 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="card">
+      <div class="card mb-20">
         <div class="card-body pt-20">
           <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -572,6 +572,26 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
             <button type="button" class="btn btn-danger" id="btn-confirm-delete">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clear Filter Confirmation Modal -->
+    <div class="modal fade" id="clearFilterConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Xóa bộ lọc</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center py-3">
+            <i class="bi bi-funnel" style="font-size: 24px; color: #dc3545;"></i>
+            <p class="mb-0 mt-2">Bạn có muốn xóa lọc không?</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-confirm-clear-filter">Xác nhận</button>
           </div>
         </div>
       </div>
@@ -1200,15 +1220,21 @@
       });
 
       const btnFilterIconClear = document.getElementById('btn-filter-icon-clear');
+      const clearFilterConfirmModal = new bootstrap.Modal(document.getElementById('clearFilterConfirmModal'));
+      const btnConfirmClearFilter = document.getElementById('btn-confirm-clear-filter');
+
       btnFilterIconClear.addEventListener('click', () => {
-        if (confirm('Bạn có muốn xóa lọc không?')) {
-          filterTitle.value = '';
-          filterTitleModal.value = '';
-          filterStatus.value = '-1';
-          filterStatusModal.value = '-1';
-          currentPage = 1;
-          loadData();
-        }
+        clearFilterConfirmModal.show();
+      });
+
+      btnConfirmClearFilter.addEventListener('click', () => {
+        filterTitle.value = '';
+        filterTitleModal.value = '';
+        filterStatus.value = '-1';
+        filterStatusModal.value = '-1';
+        currentPage = 1;
+        loadData();
+        clearFilterConfirmModal.hide();
       });
 
       // Init

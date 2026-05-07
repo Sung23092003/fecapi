@@ -556,6 +556,30 @@
       const meta_keywords = document.getElementById('meta_keywords');
       const meta_description = document.getElementById('meta_description');
 
+      let metaTitleManuallyEdited = false;
+      let metaDescManuallyEdited = false;
+
+      meta_title.addEventListener('input', () => {
+        metaTitleManuallyEdited = true;
+      });
+
+      meta_description.addEventListener('input', () => {
+        metaDescManuallyEdited = true;
+      });
+
+      statics_title.addEventListener('input', () => {
+        if (!metaTitleManuallyEdited) {
+          meta_title.value = statics_title.value;
+        }
+      });
+
+      statics_intro.addEventListener('input', () => {
+        if (!metaDescManuallyEdited) {
+          const introText = statics_intro.value || '';
+          meta_description.value = introText.length > 160 ? introText.substring(0, 160) : introText;
+        }
+      });
+
       const content_editor = document.getElementById('content_editor');
 
       const bannerUpload = document.getElementById('bannerUpload');
@@ -656,6 +680,13 @@
         meta_title.value = d.meta_title ?? '';
         meta_keywords.value = d.meta_keywords ?? '';
         meta_description.value = d.meta_description ?? '';
+
+        if (meta_title.value) {
+          metaTitleManuallyEdited = true;
+        }
+        if (meta_description.value) {
+          metaDescManuallyEdited = true;
+        }
 
         content_editor.value = d.statics_content ?? '';
 

@@ -40,5 +40,24 @@
       redirectToLogin();
     }
   });
+
+  // Intercept toàn cầu cho hàm fetch để bắt lỗi 401
+  const originalFetch = window.fetch;
+  window.fetch = async function (...args) {
+    try {
+      const response = await originalFetch.apply(this, args);
+      if (response.status === 401 && !isAuthPage()) {
+        if (window.Auth && typeof window.Auth.clearAuth === 'function') {
+          window.Auth.clearAuth();
+        } else {
+          localStorage.removeItem("cms_auth");
+        }
+        redirectToLogin();
+      }
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 })();
 

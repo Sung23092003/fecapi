@@ -101,18 +101,26 @@
 
 .news-card .fw-bold {
   font-size: 14px !important;
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   margin-bottom: 8px !important;
+  line-height: 1.4 !important;
+  max-height: 2.8em !important;
 }
 
 .news-card .small {
   font-size: 12px !important;
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
   margin-top: 4px !important;
+  line-height: 1.4 !important;
+  max-height: 4.2em !important;
 }
 
 .news-card .card-actions {

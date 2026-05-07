@@ -227,30 +227,46 @@
       }
     ],
     importcss_append: true,
-    file_picker_callback: (callback, value, meta) => {
-      /* Provide file and text for the link dialog */
-      if (meta.filetype === 'file') {
-        callback('https://www.google.com/logos/google.jpg', {
-          text: 'My text'
-        });
-      }
+     file_picker_callback: (callback, value, meta) => {
+       const input = document.createElement('input');
+       input.setAttribute('type', 'file');
 
-      /* Provide image and alt text for the image dialog */
-      if (meta.filetype === 'image') {
-        callback('https://www.google.com/logos/google.jpg', {
-          alt: 'My alt text'
-        });
-      }
+       if (meta.filetype === 'image') {
+         input.setAttribute('accept', 'image/*');
+       } else if (meta.filetype === 'media') {
+         input.setAttribute('accept', 'video/*,audio/*');
+       } else {
+         input.setAttribute('accept', '*/*');
+       }
 
-      /* Provide alternative source and posted for the media dialog */
-      if (meta.filetype === 'media') {
-        callback('movie.mp4', {
-          source2: 'alt.ogg',
-          poster: 'https://www.google.com/logos/google.jpg'
-        });
-      }
-    },
-    templates: [{
+       input.onchange = function () {
+         const file = this.files[0];
+         const reader = new FileReader();
+
+         reader.onload = function () {
+           const dataUrl = reader.result;
+           if (meta.filetype === 'image') {
+             callback(dataUrl, {
+               alt: file.name
+             });
+           } else if (meta.filetype === 'media') {
+             callback(dataUrl, {
+               source2: '',
+               poster: ''
+             });
+           } else {
+             callback(dataUrl, {
+               text: file.name
+             });
+           }
+         };
+
+         reader.readAsDataURL(file);
+       };
+
+       input.click();
+      },
+     templates: [{
         title: 'New Table',
         description: 'creates a new table',
         content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'

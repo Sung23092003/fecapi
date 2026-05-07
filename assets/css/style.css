@@ -1251,3 +1251,15 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/* table-resposive  */
+.table-responsive {
+  overflow-x: auto;
+  max-height: 68dvh;
+}
+
+.table-responsive thead{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

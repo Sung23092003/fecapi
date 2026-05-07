@@ -414,6 +414,7 @@
       <div class="card card-box">
 
         <div class="card-inner">
+          <div id="alertPlaceholder"></div>
           <form id="formStatics" class="row g-3">
             <input type="hidden" name="id_hiden" id="id_hiden" value="0" />
 
@@ -555,6 +556,18 @@
       const bannerUpload = document.getElementById('bannerUpload');
       const imgPreview = document.getElementById('imgPreview');
 
+      function showAlert(message, type = 'danger') {
+        const placeholder = document.getElementById('alertPlaceholder');
+        if (!placeholder) return;
+        const alertHtml = `
+          <div class="alert alert-${type} bg-${type} text-light border-0 alert-dismissible fade show shadow-sm" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 250px;">
+            ${message}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+        placeholder.innerHTML = alertHtml;
+      }
+
       function getQueryInt(name, defValue = 0) {
         const params = new URLSearchParams(window.location.search);
         const v = params.get(name);
@@ -680,16 +693,18 @@
         const json = await res.json().catch(() => null);
 
         if (!res.ok || !json || !json.success) {
-          alert(json?.message || `Lỗi: ${res.status}`);
+          showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
           return;
         }
 
-        alert(json.message || 'Saved successfully.');
-        window.location.href = 'web-statics.html';
+        showAlert('Lưu thành công.', 'success');
+        setTimeout(() => {
+          window.location.href = 'web-statics.html';
+        }, 1500);
       });
 
       await loadDetail().catch(err => {
-        alert(err?.message || 'Có lỗi xảy ra');
+        showAlert(err?.message || 'Có lỗi xảy ra', 'danger');
       });
     })();
   </script>

@@ -747,10 +747,24 @@
         alertArea.classList.remove('d-none');
       }
 
-      function clearError() {
-        alertArea.textContent = '';
-        alertArea.classList.add('d-none');
-      }
+       function clearError() {
+         alertArea.textContent = '';
+         alertArea.classList.add('d-none');
+       }
+
+       // Debounce function for search
+       function debounce(func, delay) {
+         let timeoutId;
+         return function(...args) {
+           clearTimeout(timeoutId);
+           timeoutId = setTimeout(() => func.apply(this, args), delay);
+         };
+       }
+
+       const debouncedSearch = debounce(() => {
+         currentPage = 1;
+         loadData();
+       }, 500);
 
       function setView(mode) {
         const isList = mode === 'list';
@@ -1062,17 +1076,12 @@
         window.location.href = 'web-statics-edit.html?id=0';
       });
 
-      btnSearch.addEventListener('click', () => {
-        currentPage = 1;
-        loadData();
-      });
+       btnSearch.addEventListener('click', () => {
+         currentPage = 1;
+         loadData();
+       });
 
-      filterTitle.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          currentPage = 1;
-          loadData();
-        }
-      });
+       filterTitle.addEventListener('input', debouncedSearch);
 
       btnModeList.addEventListener('click', () => setView('list'));
       btnModeGrid.addEventListener('click', () => setView('grid'));

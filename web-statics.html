@@ -1057,15 +1057,15 @@
       }
 
       function handleAction(action, id) {
-        // Placeholder actions (View/Edit/Delete)
-        // TODO: nối với trang chi tiết/sửa/xóa của bạn.
+        // Handle View/Edit/Delete actions
         if (!id) return;
         if (action === 'view') {
-          alert(`View statics_id=${id}`);
+          window.open(`web-statics-view.html?id=${id}`, '_blank');
         } else if (action === 'edit') {
-          alert(`Edit statics_id=${id}`);
+          window.location.href = `web-statics-edit.html?id=${id}`;
         } else if (action === 'delete') {
           if (confirm(`Xóa bài viết #${id}?`)) {
+            // TODO: call DELETE API statics_id=${id}
             alert(`TODO: call DELETE API statics_id=${id}`);
           }
         }

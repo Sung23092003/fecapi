@@ -492,8 +492,8 @@
               <div class="form-group mt-3">
                 <label class="form-label">Nội dung</label>
                 <div class="controls">
-                  <textarea name="content_editor" id="content_editor" class="form-control tinymce-editor" style="height: 300px;"
-                    aria-hidden="true"></textarea>
+                  <textarea name="content_editor" id="content_editor" class="form-control tinymce-editor"
+                    style="height: 300px;" aria-hidden="true"></textarea>
                 </div>
               </div>
             </div>
@@ -533,14 +533,12 @@
   <script src="assets/js/config.js"></script>
 
   <script>
-    (function () {
+    (async function () {
       "use strict";
 
       const id_hidenEl = document.getElementById('id_hiden');
       const pageTitle = document.getElementById('pageTitle');
       const pageCrumb = document.getElementById('pageCrumb');
-      const formHeader = document.getElementById('formHeader');
-
       const form = document.getElementById('formStatics');
 
       const statics_title = document.getElementById('statics_title');
@@ -569,13 +567,11 @@
       id_hidenEl.value = String(id);
 
       if (id && id !== 0) {
-        pageTitle.textContent = 'Sửa bài viết';
-        formHeader.textContent = 'Sửa bài viết';
-        pageCrumb.textContent = 'Sửa';
+        if (pageTitle) pageTitle.textContent = 'Sửa bài viết';
+        if (pageCrumb) pageCrumb.textContent = 'Sửa';
       } else {
-        pageTitle.textContent = 'Thêm bài viết';
-        formHeader.textContent = 'Thêm bài viết';
-        pageCrumb.textContent = 'Thêm';
+        if (pageTitle) pageTitle.textContent = 'Thêm bài viết';
+        if (pageCrumb) pageCrumb.textContent = 'Thêm';
         statics_status.value = '1';
       }
 
@@ -616,9 +612,12 @@
         if (!res.ok) throw new Error(`API error: ${res.status}`);
 
         const json = await res.json();
-        if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
 
-        const d = json.data || {};
+        if (!json.success) {
+          throw new Error(json.message || 'Không lấy được dữ liệu');
+        }
+
+        const d = json.data?.data || {};
 
         statics_title.value = d.statics_title ?? '';
         statics_intro.value = d.statics_intro ?? '';
@@ -689,7 +688,7 @@
         window.location.href = 'web-statics.html';
       });
 
-      loadDetail().catch(err => {
+      await loadDetail().catch(err => {
         alert(err?.message || 'Có lỗi xảy ra');
       });
     })();

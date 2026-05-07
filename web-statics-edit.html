@@ -424,8 +424,13 @@
                 <div class="controls">
                   <input type="file" class="form-control" name="image" id="bannerUpload" />
                 </div>
-                <div class="mt-2" id="div-cong-viec-image-preview">
-                  <img id="imgPreview" class="preview-thumb d-none" alt="preview" />
+                <div class="mt-2 position-relative" id="div-cong-viec-image-preview">
+                  <img id="imgPreview" class="preview-thumb d-none" alt="preview"
+                    style="width:430px;height:300px;object-fit:cover;border-radius:8px;max-width:100%;" />
+                  <button type="button" id="btnRemoveImage"
+                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 d-none" title="Xóa ảnh">
+                    <i class="bi bi-x-lg"></i>
+                  </button>
                 </div>
               </div>
 
@@ -556,18 +561,6 @@
       const bannerUpload = document.getElementById('bannerUpload');
       const imgPreview = document.getElementById('imgPreview');
 
-      function showAlert(message, type = 'danger') {
-        const placeholder = document.getElementById('alertPlaceholder');
-        if (!placeholder) return;
-        const alertHtml = `
-          <div class="alert alert-${type} bg-${type} text-light border-0 alert-dismissible fade show shadow-sm" role="alert" style="position: fixed; top: 80px; right: 20px; z-index: 9999; min-width: 250px;">
-            ${message}
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        `;
-        placeholder.innerHTML = alertHtml;
-      }
-
       function getQueryInt(name, defValue = 0) {
         const params = new URLSearchParams(window.location.search);
         const v = params.get(name);
@@ -588,22 +581,50 @@
         statics_status.value = '1';
       }
 
+      const btnRemoveImage = document.getElementById('btnRemoveImage');
+
+      // Create alert div
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'formAlert';
+      alertDiv.className = 'd-none alert mb-3';
+      form.prepend(alertDiv);
+
+      function showAlert(message, type = 'success') {
+        alertDiv.innerHTML = message;
+        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.minWidth = '250px';
+        alertDiv.style.maxWidth = '350px';
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => {
+          alertDiv.classList.add('d-none');
+        }, 5000);
+      }
+
       bannerUpload.addEventListener('change', () => {
         const file = bannerUpload.files && bannerUpload.files[0];
         if (!file) {
           imgPreview.classList.add('d-none');
           imgPreview.src = '';
+          btnRemoveImage.classList.add('d-none');
           return;
         }
         const url = URL.createObjectURL(file);
         imgPreview.src = url;
         imgPreview.classList.remove('d-none');
+        btnRemoveImage.classList.remove('d-none');
       });
 
+      if (btnRemoveImage) {
+        btnRemoveImage.addEventListener('click', () => {
+          bannerUpload.value = '';
+          imgPreview.src = '';
+          imgPreview.classList.add('d-none');
+          btnRemoveImage.classList.add('d-none');
+        });
+      }
+
       function getEditorContent() {
-        // TinyMCE instance is initialized in assets/js/main.js by selector 'textarea.tinymce-editor'
-        // In this page we use id content_editor.
-        // If TinyMCE was initialized on this element, we try to fetch it.
         try {
           if (window.tinymce) {
             const inst = tinymce.get('content_editor');
@@ -614,9 +635,7 @@
       }
 
       async function loadDetail() {
-        if (!id) {
-          return;
-        }
+        if (!id) return;
 
         const url = `${ENV.BASE_URL}/admin/statics/edit/${id}`;
         const headers = Auth.getAuthHeader();
@@ -625,10 +644,7 @@
         if (!res.ok) throw new Error(`API error: ${res.status}`);
 
         const json = await res.json();
-
-        if (!json.success) {
-          throw new Error(json.message || 'Không lấy được dữ liệu');
-        }
+        if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
 
         const d = json.data?.data || {};
 
@@ -643,14 +659,12 @@
 
         content_editor.value = d.statics_content ?? '';
 
-        // If TinyMCE is ready, set content
         try {
           if (window.tinymce) {
             const inst = tinymce.get('content_editor');
             if (inst) {
               inst.setContent(d.statics_content ?? '');
             } else {
-              // Wait for TinyMCE to initialize
               tinymce.on('AddEditor', (e) => {
                 if (e.editor.id === 'content_editor') {
                   e.editor.on('init', () => {
@@ -666,41 +680,46 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const payload = {
-          id_hiden: id ? id : 0,
-          statics_title: statics_title.value.trim(),
-          statics_intro: statics_intro.value ?? '',
-          statics_content: getEditorContent(),
-          statics_status: parseInt(statics_status.value, 10),
-          statics_order_no: parseInt(statics_order_no.value, 10),
-          meta_title: meta_title.value ?? '',
-          meta_keywords: meta_keywords.value ?? '',
-          meta_description: meta_description.value ?? ''
-        };
+        try {
+          const payload = {
+            id_hiden: id ? id : 0,
+            statics_title: statics_title.value.trim(),
+            statics_intro: statics_intro.value ?? '',
+            statics_content: getEditorContent(),
+            statics_status: parseInt(statics_status.value, 10),
+            statics_order_no: parseInt(statics_order_no.value, 10),
+            meta_title: meta_title.value ?? '',
+            meta_keywords: meta_keywords.value ?? '',
+            meta_description: meta_description.value ?? ''
+          };
 
-        const url = `${ENV.BASE_URL}/admin/statics/edit/${id ? id : 0}`;
-        const headers = {
-          ...Auth.getAuthHeader(),
-          'Content-Type': 'application/json'
-        };
+          const url = `${ENV.BASE_URL}/admin/statics/edit/${id ? id : 0}`;
+          const headers = {
+            ...Auth.getAuthHeader(),
+            'Content-Type': 'application/json'
+          };
 
-        const res = await fetch(url, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify(payload)
-        });
+          const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+          });
 
-        const json = await res.json().catch(() => null);
+          const json = await res.json().catch(() => null);
 
-        if (!res.ok || !json || !json.success) {
-          showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
-          return;
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+            return;
+          }
+
+          showAlert('Lưu bài viết thành công!', 'success');
+          setTimeout(() => {
+            window.location.href = 'web-statics.html';
+          }, 1500);
+        } catch (error) {
+          console.error(error);
+          showAlert('Có lỗi xảy ra khi lưu bài viết!', 'danger');
         }
-
-        showAlert('Lưu thành công.', 'success');
-        setTimeout(() => {
-          window.location.href = 'web-statics.html';
-        }, 1500);
       });
 
       await loadDetail().catch(err => {

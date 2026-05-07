@@ -1,6 +1,6 @@
 /* Page-specific CSS for web-statics.html */
 
-/* GRID VIEW */
+/* GRID VIEW - Desktop */
 .news-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -11,14 +11,125 @@
   grid-column: span 4;
 }
 
-@media (max-width: 991.98px) {
+/* Desktop: Vertical card layout */
+.news-card .card {
+  display: block !important;
+  height: 100%;
+  padding: 0 !important;
+}
+
+.news-card .card-news-thumb {
+  width: 100% !important;
+  height: 120px !important;
+  border-radius: 8px 8px 0 0 !important;
+  object-fit: cover;
+}
+
+.news-card .card-info {
+  padding: 12px !important;
+  display: block !important;
+}
+
+.news-card .fw-bold {
+  font-size: 14px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  margin-bottom: 8px !important;
+}
+
+.news-card .small {
+  font-size: 12px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  margin-top: 4px !important;
+}
+
+.news-card .card-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  padding: 0 12px 12px 12px !important;
+  flex-shrink: unset !important;
+}
+
+.news-card .card-actions .btn {
+  flex: 1 !important;
+  justify-content: center !important;
+}
+
+@media (max-width: 991.98px) and (min-width: 768px) {
   .news-card { grid-column: span 6; }
   .view-mode-toggle { display: none !important; }
   .view-mode-toggle.ms-0.ms-md-2 { display: none !important; }
 }
 
-@media (max-width: 575.98px) {
-  .news-card { grid-column: span 12; }
+@media (max-width: 767px) {
+  .news-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+    overflow-x: hidden !important;
+  }
+  .news-card {
+    min-width: unset !important;
+    max-width: unset !important;
+    width: 100% !important;
+  }
+  .news-card .card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s;
+    height: 100%;
+  }
+  .news-card .card:hover {
+    border-color: #0acfff;
+    box-shadow: 0 2px 8px rgba(10, 207, 255, 0.1);
+  }
+  .news-card .card-news-thumb {
+    width: 60px !important;
+    height: 60px !important;
+    flex-shrink: 0 !important;
+    border-radius: 8px !important;
+  }
+  .news-card .card-info {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .news-card .fw-bold {
+    font-size: 14px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-bottom: 4px !important;
+  }
+  .news-card .small {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-top: 2px !important;
+    min-height: unset !important;
+    max-height: unset !important;
+  }
+  .news-card .card-actions {
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+  .news-card .card-actions .btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
 }
 
 .card-news-thumb {

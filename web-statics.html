@@ -864,73 +864,82 @@
         tbody.appendChild(frag);
       }
 
-      function renderGrid(items) {
-        viewGrid.innerHTML = '';
-        if (!items.length) return;
+        function renderGrid(items) {
+          viewGrid.innerHTML = '';
+          if (!items.length) return;
 
-        items.forEach(it => {
-          const st = formatStatus(it.statics_status);
-          const card = document.createElement('div');
-          card.className = 'news-card';
+          items.forEach(it => {
+            const st = formatStatus(it.statics_status);
+            const card = document.createElement('div');
+            card.className = 'news-card';
 
-          let cardHtml = '<div class="card h-100">';
+            let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100">';
 
-          if (visibleColumns['image']) {
-            cardHtml += it.statics_image
-              ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
-              : `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120" viewBox="0 0 400 120">
-                    <rect width="400" height="120" fill="#f8f9fa"/>
-                    <text x="200" y="65" text-anchor="middle" font-size="16" fill="#6c757d">No Photo</text>
+            // Image on left
+            if (visibleColumns['image']) {
+              cardHtml += it.statics_image
+                ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0;">`
+                : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" style="border-radius:8px;border:1px solid #dee2e6;flex-shrink:0;">
+                    <rect width="60" height="60" fill="#f8f9fa"/>
+                    <text x="30" y="35" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
                   </svg>`;
-          }
-
-          cardHtml += '<div class="card-body">';
-
-          if (visibleColumns['title'] || visibleColumns['status']) {
-            cardHtml += '<div class="d-flex align-items-start justify-content-between gap-2">';
-            if (visibleColumns['title']) {
-              cardHtml += `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
             }
-            if (visibleColumns['status']) {
-              cardHtml += `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+
+            // Info section (middle)
+            cardHtml += '<div class="card-info flex-1 min-width-0">';
+
+            // Header: title + status
+            if (visibleColumns['title'] || visibleColumns['status']) {
+              cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
+              if (visibleColumns['title']) {
+                cardHtml += `<div class="fw-bold text-truncate" style="font-size:14px;">${escapeHtml(it.statics_title)}</div>`;
+              }
+              if (visibleColumns['status']) {
+                cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
+              }
+              cardHtml += '</div>';
             }
+
+            // Intro
+            if (visibleColumns['intro']) {
+              cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_intro || '')}</div>`;
+            }
+
+            // Content
+            if (visibleColumns['content']) {
+              cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_content || '')}</div>`;
+            }
+
+            // Footer: order + date
+            if (visibleColumns['order'] || visibleColumns['created']) {
+              cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
+              if (visibleColumns['order']) {
+                cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></span>`;
+              }
+              if (visibleColumns['created']) {
+                cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.statics_created))}</span>`;
+              }
+              cardHtml += '</div>';
+            }
+
             cardHtml += '</div>';
-          }
 
-          if (visibleColumns['intro']) {
-            cardHtml += `<div class="small text-muted mt-2" style="min-height: 40px;">${escapeHtml(it.statics_intro || '')}</div>`;
-          }
-
-          if (visibleColumns['content']) {
-            cardHtml += `<div class="small text-muted mt-2" style="max-height: 60px;overflow:hidden;">${escapeHtml(it.statics_content || '')}</div>`;
-          }
-
-          if (visibleColumns['order'] || visibleColumns['created']) {
-            cardHtml += '<div class="d-flex justify-content-between align-items-center mt-3">';
-            if (visibleColumns['order']) {
-              cardHtml += `<div class="small text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></div>`;
-            }
-            if (visibleColumns['created']) {
-              cardHtml += `<div class="small text-muted">${escapeHtml(formatDateTime(it.statics_created))}</div>`;
-            }
-            cardHtml += '</div>';
-          }
-
-          if (visibleColumns['actions']) {
-            cardHtml += `
-                <div class="d-flex gap-2 mt-3">
-                  <button type="button" class="btn btn-sm btn-outline-secondary flex-fill" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
-                  <button type="button" class="btn btn-sm btn-outline-primary flex-fill" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                  <button type="button" class="btn btn-sm btn-outline-danger flex-fill" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+            // Actions (right)
+            if (visibleColumns['actions']) {
+              cardHtml += `
+                <div class="card-actions flex-shrink-0 d-flex flex-column gap-1">
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                 </div>
               `;
-          }
+            }
 
-          cardHtml += '</div></div>';
-          card.innerHTML = cardHtml;
-          viewGrid.appendChild(card);
-        });
-      }
+            cardHtml += '</div>';
+            card.innerHTML = cardHtml;
+            viewGrid.appendChild(card);
+          });
+        }
 
       function renderPagination(page, totalPage) {
         paginationEl.innerHTML = '';

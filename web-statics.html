@@ -526,6 +526,24 @@
       </div>
     </section>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận xóa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc chắn muốn xóa bài viết này không? Hành động này không thể hoàn tác.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger" id="btn-confirm-delete">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
@@ -581,22 +599,40 @@
       const btnResetColumns = document.getElementById('btn-reset-columns');
       const btnDoneColumns = document.getElementById('btn-done-columns');
 
-       const columns = [
-         { key: 'index', label: '#', default: true },
-         { key: 'image', label: 'Ảnh', default: true },
-         { key: 'title', label: 'Tiêu đề', default: true },
-         { key: 'intro', label: 'Giới thiệu', default: true },
-         { key: 'content', label: 'Nội dung', default: false },
-         { key: 'status', label: 'Trạng thái', default: true },
-         { key: 'order', label: 'Thứ tự', default: true },
-         { key: 'created', label: 'Ngày tạo', default: true },
-         { key: 'view_num', label: 'Lượt xem', default: true },
-         { key: 'actions', label: 'Hành động', default: true }
-       ];
+      const columns = [
+        { key: 'index', label: '#', default: true },
+        { key: 'image', label: 'Ảnh', default: true },
+        { key: 'title', label: 'Tiêu đề', default: true },
+        { key: 'intro', label: 'Giới thiệu', default: true },
+        { key: 'content', label: 'Nội dung', default: false },
+        { key: 'status', label: 'Trạng thái', default: true },
+        { key: 'order', label: 'Thứ tự', default: true },
+        { key: 'created', label: 'Ngày tạo', default: true },
+        { key: 'view_num', label: 'Lượt xem', default: true },
+        { key: 'actions', label: 'Hành động', default: true }
+      ];
 
       let visibleColumns = {};
       let currentPage = 1;
       let lastTotalPage = 1;
+
+      // Setup Toast Alert
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'pageAlert';
+      alertDiv.style.zIndex = '9999';
+      alertDiv.style.minWidth = '250px';
+      alertDiv.style.maxWidth = '350px';
+      alertDiv.className = 'd-none';
+      document.body.appendChild(alertDiv);
+
+      function showAlert(message, type = 'success') {
+        alertDiv.innerHTML = message;
+        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => {
+          alertDiv.classList.add('d-none');
+        }, 5000);
+      }
 
       // Initialize visible columns
       function initColumns() {
@@ -689,24 +725,24 @@
         alertArea.classList.remove('d-none');
       }
 
-       function clearError() {
-         alertArea.textContent = '';
-         alertArea.classList.add('d-none');
-       }
+      function clearError() {
+        alertArea.textContent = '';
+        alertArea.classList.add('d-none');
+      }
 
-       // Debounce function for search
-       function debounce(func, delay) {
-         let timeoutId;
-         return function(...args) {
-           clearTimeout(timeoutId);
-           timeoutId = setTimeout(() => func.apply(this, args), delay);
-         };
-       }
+      // Debounce function for search
+      function debounce(func, delay) {
+        let timeoutId;
+        return function (...args) {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => func.apply(this, args), delay);
+        };
+      }
 
-       const debouncedSearch = debounce(() => {
-         currentPage = 1;
-         loadData();
-       }, 500);
+      const debouncedSearch = debounce(() => {
+        currentPage = 1;
+        loadData();
+      }, 500);
 
       function setView(mode) {
         const isList = mode === 'list';
@@ -824,85 +860,85 @@
         tbody.appendChild(frag);
       }
 
-        function renderGrid(items) {
-          viewGrid.innerHTML = '';
-          if (!items.length) return;
+      function renderGrid(items) {
+        viewGrid.innerHTML = '';
+        if (!items.length) return;
 
-          items.forEach(it => {
-            const st = formatStatus(it.statics_status);
-            const card = document.createElement('div');
-            card.className = 'news-card';
+        items.forEach(it => {
+          const st = formatStatus(it.statics_status);
+          const card = document.createElement('div');
+          card.className = 'news-card';
 
-            let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100">';
+          let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100 mb-0">';
 
-            // Image on left
-            if (visibleColumns['image']) {
-              cardHtml += it.statics_image
-                ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
-                : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" class="card-news-thumb no-photo-svg">
+          // Image on left
+          if (visibleColumns['image']) {
+            cardHtml += it.statics_image
+              ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
+              : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" class="card-news-thumb no-photo-svg">
                     <rect width="60" height="60" fill="#f8f9fa"/>
                     <text x="30" y="35" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
                   </svg>`;
+          }
+
+          // Info section (middle)
+          cardHtml += '<div class="card-info flex-1 min-width-0">';
+
+          // Header: title + status
+          if (visibleColumns['title'] || visibleColumns['status']) {
+            cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
+            if (visibleColumns['title']) {
+              cardHtml += `<div class="fw-bold text-truncate" style="font-size:14px;">${escapeHtml(it.statics_title)}</div>`;
             }
-
-            // Info section (middle)
-            cardHtml += '<div class="card-info flex-1 min-width-0">';
-
-            // Header: title + status
-            if (visibleColumns['title'] || visibleColumns['status']) {
-              cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
-              if (visibleColumns['title']) {
-                cardHtml += `<div class="fw-bold text-truncate" style="font-size:14px;">${escapeHtml(it.statics_title)}</div>`;
-              }
-              if (visibleColumns['status']) {
-                cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
-              }
-              cardHtml += '</div>';
+            if (visibleColumns['status']) {
+              cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
             }
-
-            // Intro
-            if (visibleColumns['intro']) {
-              cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_intro || '')}</div>`;
-            }
-
-            // Content
-            if (visibleColumns['content']) {
-              cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_content || '')}</div>`;
-            }
-
-            // Footer: order + date + view_num
-            if (visibleColumns['order'] || visibleColumns['created'] || visibleColumns['view_num']) {
-              cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
-              if (visibleColumns['order']) {
-                cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></span>`;
-              }
-              if (visibleColumns['created']) {
-                cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.statics_created))}</span>`;
-              }
-              if (visibleColumns['view_num']) {
-                cardHtml += `<span class="text-muted">Lượt xem: ${escapeHtml(it.statics_view_num || 0)}</span>`;
-              }
-              cardHtml += '</div>';
-            }
-
             cardHtml += '</div>';
+          }
 
-            // Actions (right)
-            if (visibleColumns['actions']) {
-              cardHtml += `
+          // Intro
+          if (visibleColumns['intro']) {
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_intro || '')}</div>`;
+          }
+
+          // Content
+          if (visibleColumns['content']) {
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_content || '')}</div>`;
+          }
+
+          // Footer: order + date + view_num
+          if (visibleColumns['order'] || visibleColumns['created'] || visibleColumns['view_num']) {
+            cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
+            if (visibleColumns['order']) {
+              cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></span>`;
+            }
+            if (visibleColumns['created']) {
+              cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.statics_created))}</span>`;
+            }
+            if (visibleColumns['view_num']) {
+              cardHtml += `<span class="text-muted">Lượt xem: ${escapeHtml(it.statics_view_num || 0)}</span>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          cardHtml += '</div>';
+
+          // Actions (right)
+          if (visibleColumns['actions']) {
+            cardHtml += `
                 <div class="card-actions flex-shrink-0 d-flex flex-column gap-1">
                   <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
                   <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
                   <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                 </div>
               `;
-            }
+          }
 
-            cardHtml += '</div>';
-            card.innerHTML = cardHtml;
-            viewGrid.appendChild(card);
-          });
-        }
+          cardHtml += '</div>';
+          card.innerHTML = cardHtml;
+          viewGrid.appendChild(card);
+        });
+      }
 
       function renderPagination(page, totalPage) {
         paginationEl.innerHTML = '';
@@ -1005,6 +1041,53 @@
         }
       }
 
+      async function deleteItem(id) {
+        try {
+          const url = `${ENV.BASE_URL}/admin/statics/delete`;
+          const headers = {
+            ...Auth.getAuthHeader(),
+            'Content-Type': 'application/json'
+          };
+          const payload = { checkItem: [parseInt(id, 10)] };
+
+          const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json().catch(() => null);
+
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+            return;
+          }
+
+          showAlert('Xóa bài viết thành công.', 'success');
+          loadData();
+        } catch (err) {
+          console.error(err);
+          showAlert('Có lỗi xảy ra khi xóa', 'danger');
+        }
+      }
+
+      let deleteTargetId = null;
+      let deleteModal = null;
+
+      function getDeleteModal() {
+        if (!deleteModal) {
+          deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        }
+        return deleteModal;
+      }
+
+      document.getElementById('btn-confirm-delete').addEventListener('click', () => {
+        if (deleteTargetId) {
+          getDeleteModal().hide();
+          deleteItem(deleteTargetId);
+          deleteTargetId = null;
+        }
+      });
+
       function handleAction(action, id) {
         if (!id) return;
         if (action === 'view') {
@@ -1012,9 +1095,8 @@
         } else if (action === 'edit') {
           window.location.href = `web-statics-edit.html?id=${id}`;
         } else if (action === 'delete') {
-          if (confirm(`Xóa bài viết #${id}?`)) {
-            alert(`TODO: call DELETE API statics_id=${id}`);
-          }
+          deleteTargetId = id;
+          getDeleteModal().show();
         }
       }
 
@@ -1023,12 +1105,12 @@
         window.location.href = 'web-statics-edit.html?id=0';
       });
 
-       btnSearch.addEventListener('click', () => {
-         currentPage = 1;
-         loadData();
-       });
+      btnSearch.addEventListener('click', () => {
+        currentPage = 1;
+        loadData();
+      });
 
-       filterTitle.addEventListener('input', debouncedSearch);
+      filterTitle.addEventListener('input', debouncedSearch);
 
       btnModeList.addEventListener('click', () => setView('list'));
       btnModeGrid.addEventListener('click', () => setView('grid'));
@@ -1043,11 +1125,11 @@
         if (e.target === columnModal) closeColumnModal();
       });
 
-       // Init
-       initColumns();
-       renderTableHeader();
-       checkResponsive();
-       loadData();
+      // Init
+      initColumns();
+      renderTableHeader();
+      checkResponsive();
+      loadData();
     })();
   </script>
 </body>

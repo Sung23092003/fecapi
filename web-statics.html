@@ -441,13 +441,8 @@
                   </button>
                 </div>
               </div>
-              <select id="filter-status" class="form-select" style="width: 170px;">
-                <option value="-1" selected>Tất cả trạng thái</option>
-                <option value="1">Hiện</option>
-                <option value="0">Ẩn</option>
-              </select>
 
-              <button id="btn-search" class="btn btn-outline-primary" type="button">
+              <button id="btn-filter" class="btn btn-outline-primary" type="button">
                 <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
               </button>
             </div>
@@ -518,6 +513,36 @@
             </div>
           </div>
 
+          <!-- Filter Modal -->
+          <div id="filter-modal" class="column-modal">
+            <div class="column-modal-content">
+              <div class="column-modal-header">
+                <span>Bộ lọc</span>
+                <button type="button" id="filter-modal-close">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="column-modal-body">
+                <div class="mb-3">
+                  <label class="form-label">Tìm theo tiêu đề</label>
+                  <input id="filter-title-modal" type="text" class="form-control" placeholder="Nhập tiêu đề..." />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Trạng thái</label>
+                  <select id="filter-status-modal" class="form-select">
+                    <option value="-1" selected>Tất cả trạng thái</option>
+                    <option value="1">Hiện</option>
+                    <option value="0">Ẩn</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+                <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -578,10 +603,20 @@
       const alertArea = document.getElementById('alert-area');
 
       const btnCreate = document.getElementById('btn-create');
-      const btnSearch = document.getElementById('btn-search');
+      const btnFilter = document.getElementById('btn-filter');
 
       const filterTitle = document.getElementById('filter-title');
-      const filterStatus = document.getElementById('filter-status');
+      let filterStatus = document.getElementById('filter-status');
+      if (!filterStatus) {
+        filterStatus = document.createElement('select');
+        filterStatus.id = 'filter-status';
+        filterStatus.className = 'form-select';
+        filterStatus.innerHTML = `
+          <option value="-1" selected>Tất cả trạng thái</option>
+          <option value="1">Hiện</option>
+          <option value="0">Ẩn</option>
+        `;
+      }
 
       const btnModeList = document.getElementById('btn-mode-list');
       const btnModeGrid = document.getElementById('btn-mode-grid');
@@ -1101,11 +1136,6 @@
         window.location.href = 'web-statics-edit.html?id=0';
       });
 
-      btnSearch.addEventListener('click', () => {
-        currentPage = 1;
-        loadData();
-      });
-
       filterTitle.addEventListener('input', debouncedSearch);
 
       btnModeList.addEventListener('click', () => setView('list'));
@@ -1119,6 +1149,43 @@
 
       columnModal.addEventListener('click', (e) => {
         if (e.target === columnModal) closeColumnModal();
+      });
+
+      // Filter Modal
+      const filterModal = document.getElementById('filter-modal');
+      const filterModalClose = document.getElementById('filter-modal-close');
+      const btnApplyFilter = document.getElementById('btn-apply-filter');
+      const btnResetFilter = document.getElementById('btn-reset-filter');
+      const filterTitleModal = document.getElementById('filter-title-modal');
+      const filterStatusModal = document.getElementById('filter-status-modal');
+
+      function openFilterModal() {
+        filterTitleModal.value = filterTitle.value;
+        filterStatusModal.value = filterStatus.value;
+        filterModal.style.display = 'flex';
+      }
+
+      function closeFilterModal() {
+        filterModal.style.display = 'none';
+      }
+
+      btnFilter.addEventListener('click', openFilterModal);
+      filterModalClose.addEventListener('click', closeFilterModal);
+      filterModal.addEventListener('click', (e) => {
+        if (e.target === filterModal) closeFilterModal();
+      });
+
+      btnApplyFilter.addEventListener('click', () => {
+        filterTitle.value = filterTitleModal.value;
+        filterStatus.value = filterStatusModal.value;
+        closeFilterModal();
+        currentPage = 1;
+        loadData();
+      });
+
+      btnResetFilter.addEventListener('click', () => {
+        filterTitleModal.value = '';
+        filterStatusModal.value = '-1';
       });
 
       // Init

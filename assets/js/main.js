@@ -187,13 +187,12 @@
     const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
 
     tinymce.init({
-    selector: 'textarea.tinymce-editor',
+    selector: 'textarea.tinymce-editor, textarea#content_editor',
     plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
     editimage_cors_hosts: ['picsum.photos'],
     menubar: 'file edit view insert format tools table help',
     toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    toolbar_sticky: true,
-    toolbar_sticky_offset: isSmallScreen ? 102 : 108,
+    toolbar_sticky: false,
     autosave_ask_before_unload: true,
     autosave_interval: '30s',
     autosave_prefix: '{path}{query}-{id}-',
@@ -275,10 +274,10 @@
     noneditable_class: 'mceNonEditable',
     toolbar_mode: 'sliding',
     contextmenu: 'link image table',
-    skin: useDarkMode ? 'oxide-dark' : 'oxide',
-    content_css: useDarkMode ? 'dark' : 'default',
+    skin: 'oxide',
+    content_css: 'default',
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-    });
+  });
   }
 
   /**

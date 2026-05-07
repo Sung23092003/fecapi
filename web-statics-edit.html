@@ -412,11 +412,6 @@
 
     <section class="section">
       <div class="card card-box">
-        <div class="card-head card-head-box">
-          <div class="card-head">
-            <header id="formHeader">Thêm bài viết</header>
-          </div>
-        </div>
 
         <div class="card-inner">
           <form id="formStatics" class="row g-3">
@@ -497,7 +492,7 @@
               <div class="form-group mt-3">
                 <label class="form-label">Nội dung</label>
                 <div class="controls">
-                  <textarea name="content_editor" id="content_editor" class="form-control" style="height: 300px;"
+                  <textarea name="content_editor" id="content_editor" class="form-control tinymce-editor" style="height: 300px;"
                     aria-hidden="true"></textarea>
                 </div>
               </div>
@@ -640,7 +635,18 @@
         try {
           if (window.tinymce) {
             const inst = tinymce.get('content_editor');
-            if (inst) inst.setContent(d.statics_content ?? '');
+            if (inst) {
+              inst.setContent(d.statics_content ?? '');
+            } else {
+              // Wait for TinyMCE to initialize
+              tinymce.on('AddEditor', (e) => {
+                if (e.editor.id === 'content_editor') {
+                  e.editor.on('init', () => {
+                    e.editor.setContent(d.statics_content ?? '');
+                  });
+                }
+              });
+            }
           }
         } catch (e) { }
       }

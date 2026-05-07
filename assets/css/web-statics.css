@@ -15,7 +15,20 @@
 .news-card .card {
   display: block !important;
   height: 100%;
-  padding: 0 !important;
+  padding:0 !important;
+}
+
+.news-card .card-news-thumb {
+  width: 100% !important;
+  height: 120px !important;
+  border-radius: 8px 8px 0 0 !important;
+  object-fit: cover;
+}
+
+.news-card .no-photo-svg {
+  width: 100% !important;
+  height: 120px !important;
+  border-radius: 8px 8px 0 0 !important;
 }
 
 .news-card .card-news-thumb {

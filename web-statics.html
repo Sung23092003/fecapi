@@ -878,8 +878,8 @@
             // Image on left
             if (visibleColumns['image']) {
               cardHtml += it.statics_image
-                ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:60px;object-fit:cover;border-radius:8px;flex-shrink:0;">`
-                : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" style="border-radius:8px;border:1px solid #dee2e6;flex-shrink:0;">
+                ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
+                : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" class="card-news-thumb no-photo-svg">
                     <rect width="60" height="60" fill="#f8f9fa"/>
                     <text x="30" y="35" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
                   </svg>`;

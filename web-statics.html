@@ -423,7 +423,7 @@
     <section class="section">
       <div class="card">
         <div class="card-body pt-20">
-          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-3 flex-no-wrap">
+          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <button id="btn-create" type="button" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm bài viết</span>
@@ -442,9 +442,20 @@
                 </div>
               </div>
 
+              <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
+                <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button" title="Xóa lọc">
+                  <i class="bi bi-funnel"></i>
+                </button>
+                <div class="position-absolute" style="top: -6px; right: -6px; z-index: 10;">
+                  <i class="bi bi-x-circle-fill" style="color: red; font-size: 16px; background: white; border-radius: 50%;"></i>
+                </div>
+              </div>
+
               <button id="btn-filter" class="btn btn-outline-primary" type="button">
                 <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
               </button>
+            </div>
+              </div>
             </div>
           </div>
 
@@ -1186,6 +1197,18 @@
       btnResetFilter.addEventListener('click', () => {
         filterTitleModal.value = '';
         filterStatusModal.value = '-1';
+      });
+
+      const btnFilterIconClear = document.getElementById('btn-filter-icon-clear');
+      btnFilterIconClear.addEventListener('click', () => {
+        if (confirm('Bạn có muốn xóa lọc không?')) {
+          filterTitle.value = '';
+          filterTitleModal.value = '';
+          filterStatus.value = '-1';
+          filterStatusModal.value = '-1';
+          currentPage = 1;
+          loadData();
+        }
       });
 
       // Init

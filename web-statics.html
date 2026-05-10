@@ -468,7 +468,7 @@
 
           <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
 
-          <!-- LIST VIEW -->
+            <!-- LIST VIEW -->
           <div id="view-list" class="table-responsive">
             <table class="table table-hover align-middle">
               <thead>
@@ -492,13 +492,6 @@
               </thead>
               <tbody id="tbody-statics"></tbody>
             </table>
-
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="text-muted" id="summary-area"></div>
-              <nav>
-                <ul id="pagination" class="pagination mb-0"></ul>
-              </nav>
-            </div>
           </div>
 
           <!-- GRID VIEW -->
@@ -512,6 +505,13 @@
               <h5 class="mb-1">Không có dữ liệu</h5>
               <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm bài viết mới.</div>
             </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted" id="summary-area"></div>
+            <nav>
+              <ul id="pagination" class="pagination mb-0"></ul>
+            </nav>
           </div>
 
           <!-- Column Visibility Modal -->
@@ -1086,9 +1086,9 @@
             ? json.data.data
             : (Array.isArray(json.data) ? json.data : []);
 
-          lastTotalPage = json.total_page || json.data?.total_page || 1;
+          lastTotalPage = json.data?.pagination?.total_page || json.total_page || json.data?.total_page || 1;
 
-          summaryArea.textContent = `Tổng: ${json.total ?? items.length} • Trang ${json.page ?? currentPage}/${lastTotalPage}`;
+          summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? json.total ?? items.length} • Trang ${json.data?.pagination?.page ?? json.page ?? currentPage}/${lastTotalPage}`;
 
           if (!Array.isArray(items)) {
             console.warn('json.data not array', json.data);
@@ -1103,7 +1103,7 @@
             renderGrid(items);
           }
 
-          renderPagination(json.page ?? currentPage, lastTotalPage);
+          renderPagination(json.data?.pagination?.page ?? json.page ?? currentPage, lastTotalPage);
 
           // attach actions
           tbody.querySelectorAll('button[data-action]').forEach(btn => {

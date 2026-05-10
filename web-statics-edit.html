@@ -449,6 +449,13 @@
               </div>
 
               <div class="form-group mt-3">
+                <label class="form-label">Alias (URL thân thiện)<span class="label-req">*</span></label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="statics_alias" name="statics_alias" required />
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
                 <label class="form-label">Mô tả ngắn</label>
                 <div class="controls">
                   <textarea class="form-control" id="statics_intro" name="statics_intro" cols="30" rows="4"></textarea>
@@ -555,6 +562,7 @@
       const form = document.getElementById('formStatics');
 
       const statics_title = document.getElementById('statics_title');
+      const statics_alias = document.getElementById('statics_alias');
       const statics_intro = document.getElementById('statics_intro');
       const statics_status = document.getElementById('statics_status');
       const statics_order_no = document.getElementById('statics_order_no');
@@ -565,6 +573,7 @@
 
       let metaTitleManuallyEdited = false;
       let metaDescManuallyEdited = false;
+      let aliasManuallyEdited = false;
 
       meta_title.addEventListener('input', () => {
         metaTitleManuallyEdited = true;
@@ -574,9 +583,26 @@
         metaDescManuallyEdited = true;
       });
 
+      statics_alias.addEventListener('input', () => {
+        aliasManuallyEdited = true;
+      });
+
+      function toAlias(str) {
+        return str
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-|-$/g, '');
+      }
+
       statics_title.addEventListener('input', () => {
         if (!metaTitleManuallyEdited) {
           meta_title.value = statics_title.value;
+        }
+        if (!aliasManuallyEdited) {
+          statics_alias.value = toAlias(statics_title.value);
         }
       });
 
@@ -680,6 +706,7 @@
         const d = json.data?.data || {};
 
         statics_title.value = d.statics_title ?? '';
+        statics_alias.value = d.statics_alias ?? '';
         statics_intro.value = d.statics_intro ?? '';
         statics_status.value = String(d.statics_status ?? 1);
         statics_order_no.value = d.statics_order_no ?? 0;
@@ -693,6 +720,9 @@
         }
         if (meta_description.value) {
           metaDescManuallyEdited = true;
+        }
+        if (statics_alias.value) {
+          aliasManuallyEdited = true;
         }
 
         content_editor.value = d.statics_content ?? '';
@@ -722,6 +752,7 @@
           const payload = {
             id_hiden: id ? id : 0,
             statics_title: statics_title.value.trim(),
+            statics_alias: statics_alias.value.trim(),
             statics_intro: statics_intro.value ?? '',
             statics_content: getEditorContent(),
             statics_status: parseInt(statics_status.value, 10),

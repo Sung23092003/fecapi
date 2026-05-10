@@ -672,6 +672,7 @@
         { key: 'index', label: '#', default: true },
         { key: 'image', label: 'Ảnh', default: true },
         { key: 'title', label: 'Tiêu đề', default: true },
+        { key: 'alias', label: 'Alias', default: true },
         { key: 'intro', label: 'Giới thiệu', default: true },
         { key: 'content', label: 'Nội dung', default: true },
         { key: 'status', label: 'Trạng thái', default: true },
@@ -885,6 +886,10 @@
               const td = document.createElement('td');
               td.innerHTML = `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
               tr.appendChild(td);
+            } else if (col.key === 'alias') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="small text-muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_alias || '')}</div>`;
+              tr.appendChild(td);
             } else if (col.key === 'intro') {
               const td = document.createElement('td');
               td.innerHTML = `<div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div>`;
@@ -963,6 +968,11 @@
               cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
             }
             cardHtml += '</div>';
+          }
+
+          // Alias
+          if (visibleColumns['alias']) {
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">Alias: ${escapeHtml(it.statics_alias || '')}</div>`;
           }
 
           // Intro

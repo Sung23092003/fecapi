@@ -1065,7 +1065,7 @@
         const title = filterTitle.value.trim();
         const st = parseInt(filterStatus.value, 10);
         if (title) params.set('statics_title', title);
-        if (!Number.isNaN(st)) params.set('statics_status', String(st));
+        if (!Number.isNaN(st) && st !== -1) params.set('statics_status', String(st));
 
         const url = `${ENV.BASE_URL}/admin/statics?${params.toString()}`;
 

@@ -1012,7 +1012,7 @@
         const title = filterTitle.value.trim();
         const st = parseInt(filterStatus.value, 10);
         if (title) params.set('category_title', title);
-        if (!Number.isNaN(st)) params.set('category_status', String(st));
+        if (!Number.isNaN(st) && st !== -1) params.set('category_status', String(st));
 
         const url = `${ENV.BASE_URL}/admin/category?${params.toString()}`;
 

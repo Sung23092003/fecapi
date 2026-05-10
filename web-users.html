@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Web - Quản lý danh mục - NiceAdmin</title>
+  <title>Web - Quản lý người dùng - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -417,18 +417,17 @@
     <div class="pagetitle">
       <div class="d-flex flex-wrap md:flex-no-wrap align-items-center justify-content-between gap-3">
         <div>
-          <h1 class="mb-0">Quản lý Danh mục</h1>
-          <nav>
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý Danh mục</li>
-            </ol>
-          </nav>
-        </div>
-
-        <div class="input-group search-bar">
-          <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input id="filter-title" type="text" class="form-control" placeholder="Tìm theo tiêu đề" />
+        <h1 class="mb-0">Quản lý Người dùng</h1>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Quản lý Người dùng</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="input-group search-bar">
+        <span class="input-group-text"><i class="bi bi-search"></i></span>
+        <input id="filter-name" type="text" class="form-control" placeholder="Tìm theo tên đăng nhập" />
         </div>
       </div>
     </div><!-- End Page Title -->
@@ -438,9 +437,9 @@
         <div class="card-body pt-20">
           <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
-              <button id="btn-create" type="button" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm danh mục</span>
-              </button>
+          <button id="btn-create" type="button" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm người dùng</span>
+          </button>
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -477,24 +476,23 @@
           <!-- LIST VIEW -->
           <div id="view-list" class="table-responsive">
             <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th style="min-width: 70px;">#</th>
-                  <th style="min-width: 200px;">Tiêu đề</th>
-                  <th style="min-width: 150px;">URL Alias</th>
-                  <th style="min-width: 150px;">Danh mục cha</th>
-                  <th style="min-width: 120px;">Trạng thái</th>
-                  <th style="min-width: 100px;">Thứ tự</th>
-                  <th style="min-width: 120px;">Hành động</th>
-                  <th style="min-width: 40px;">
-                    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
-                      title="Hiển thị cột">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="tbody-category"></tbody>
+          <thead>
+            <tr>
+              <th style="min-width: 70px;">#</th>
+              <th style="min-width: 200px;">Họ tên</th>
+              <th style="min-width: 200px;">Email</th>
+              <th style="min-width: 120px;">Trạng thái</th>
+              <th style="min-width: 180px;">Ngày tạo</th>
+              <th style="min-width: 120px;">Hành động</th>
+              <th style="min-width: 40px;">
+                <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
+                  title="Hiển thị cột">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody-user"></tbody>
             </table>
 
           </div>
@@ -508,7 +506,7 @@
                 <i class="bi bi-inbox" style="font-size: 40px;"></i>
               </div>
               <h5 class="mb-1">Không có dữ liệu</h5>
-              <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm danh mục mới.</div>
+              <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm người dùng mới.</div>
             </div>
           </div>
 
@@ -546,18 +544,18 @@
                 </button>
               </div>
               <div class="column-modal-body">
-                <div class="mb-3">
-                  <label class="form-label">Tìm theo tiêu đề</label>
-                  <input id="filter-title-modal" type="text" class="form-control" placeholder="Nhập tiêu đề..." />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Trạng thái</label>
-                  <select id="filter-status-modal" class="form-select">
-                    <option value="-1" selected>Tất cả trạng thái</option>
-                    <option value="1">Hiện</option>
-                    <option value="0">Ẩn</option>
-                  </select>
-                </div>
+      <div class="mb-3">
+        <label class="form-label">Tìm theo tên đăng nhập</label>
+        <input id="filter-name-modal" type="text" class="form-control" placeholder="Nhập tên đăng nhập..." />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Trạng thái</label>
+        <select id="filter-status-modal" class="form-select">
+          <option value="-1" selected>Tất cả trạng thái</option>
+          <option value="1">Hiện</option>
+          <option value="0">Ẩn</option>
+        </select>
+      </div>
               </div>
               <div class="column-modal-footer">
                 <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
@@ -579,7 +577,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            Bạn có chắc chắn muốn xóa danh mục này không?
+            Bạn có chắc chắn muốn xóa người dùng này không?
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -640,7 +638,7 @@
       const viewList = document.getElementById('view-list');
       const viewGrid = document.getElementById('view-grid');
       const emptyState = document.getElementById('empty-state');
-      const tbody = document.getElementById('tbody-category');
+      const tbody = document.getElementById('tbody-user');
       const paginationEl = document.getElementById('pagination');
       const summaryArea = document.getElementById('summary-area');
       const alertArea = document.getElementById('alert-area');
@@ -652,7 +650,7 @@
       const btnModeGrid = document.getElementById('btn-mode-grid');
       const viewModeToggle = document.querySelector('.view-mode-toggle');
 
-      const filterTitle = document.getElementById('filter-title');
+      const filterName = document.getElementById('filter-name');
       let filterStatus = document.getElementById('filter-status');
       if (!filterStatus) {
         filterStatus = document.createElement('select');
@@ -675,11 +673,10 @@
 
       const columns = [
         { key: 'index', label: '#', default: true },
-        { key: 'title', label: 'Tiêu đề', default: true },
-        { key: 'alias', label: 'URL Alias', default: true },
-        { key: 'parent', label: 'Danh mục cha', default: true },
+        { key: 'full_name', label: 'Họ tên', default: true },
+        { key: 'email', label: 'Email', default: true },
         { key: 'status', label: 'Trạng thái', default: true },
-        { key: 'order', label: 'Thứ tự', default: true },
+        { key: 'created', label: 'Ngày tạo', default: true },
         { key: 'actions', label: 'Hành động', default: true }
       ];
 
@@ -707,7 +704,7 @@
 
       // Initialize visible columns
       function initColumns() {
-        const saved = localStorage.getItem('category-visible-columns');
+        const saved = localStorage.getItem('user-visible-columns');
         if (saved) {
           try {
             visibleColumns = JSON.parse(saved);
@@ -725,21 +722,21 @@
       }
 
       function saveColumns() {
-        localStorage.setItem('category-visible-columns', JSON.stringify(visibleColumns));
-      }
+  localStorage.setItem('user-visible-columns', JSON.stringify(visibleColumns));
+}
 
-      function toggleColumn(key) {
-        visibleColumns[key] = !visibleColumns[key];
-        saveColumns();
-      }
+function toggleColumn(key) {
+  visibleColumns[key] = !visibleColumns[key];
+  saveColumns();
+}
 
-      function resetColumns() {
-        columns.forEach(col => visibleColumns[col.key] = col.default);
-        saveColumns();
-        renderColumnList();
-      }
+function resetColumns() {
+  columns.forEach(col => visibleColumns[col.key] = col.default);
+  saveColumns();
+  renderColumnList();
+}
 
-      function renderColumnList() {
+function renderColumnList() {
         columnList.innerHTML = '';
         columns.forEach(col => {
           const label = document.createElement('label');
@@ -764,7 +761,7 @@
         columnModal.classList.remove('show');
       }
 
-      function formatCategoryStatus(st) {
+      function formatUserStatus(st) {
         if (st === 1) return { text: 'Hiện', cls: 'bg-success' };
         if (st === 0) return { text: 'Ẩn', cls: 'bg-secondary' };
         return { text: 'Tất cả', cls: 'bg-primary' };
@@ -832,24 +829,24 @@
         if (!items.length) return;
 
         items.forEach(it => {
-          const st = formatCategoryStatus(it.category_status);
+          const st = formatUserStatus(it.user_status);
           const card = document.createElement('div');
           card.className = 'news-card';
 
           let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100 mb-0">';
 
-          // Title
-          if (visibleColumns['title']) {
-            cardHtml += `<div class="fw-bold text-truncate card-info" style="font-size:14px;min-width:0;">${escapeHtml(it.category_title)}</div>`;
+          // Full name
+          if (visibleColumns['full_name']) {
+            cardHtml += `<div class="fw-bold text-truncate card-info" style="font-size:14px;min-width:0;">${escapeHtml(it.user_full_name)}</div>`;
           }
 
           cardHtml += '<div class="card-info flex-1 min-width-0">';
 
-          // Header: alias + status
-          if (visibleColumns['alias'] || visibleColumns['status']) {
+          // Email + status
+          if (visibleColumns['email'] || visibleColumns['status']) {
             cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
-            if (visibleColumns['alias']) {
-              cardHtml += `<div class="small text-muted text-truncate">${escapeHtml(it.category_alias || '')}</div>`;
+            if (visibleColumns['email']) {
+              cardHtml += `<div class="small text-muted text-truncate">${escapeHtml(it.user_name || '')}</div>`;
             }
             if (visibleColumns['status']) {
               cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
@@ -857,18 +854,10 @@
             cardHtml += '</div>';
           }
 
-          // Parent
-          if (visibleColumns['parent']) {
-            const parentName = it.category_parent_id == 0
-              ? 'Danh mục gốc'
-              : escapeHtml(it.category_parent_title || 'Danh mục #' + it.category_parent_id);
-            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${parentName}</div>`;
-          }
-
-          // Footer: order
-          if (visibleColumns['order']) {
+          // Created date
+          if (visibleColumns['created']) {
             cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
-            cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.category_order_no)}</span></span>`;
+            cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.user_created))}</span>`;
             cardHtml += '</div>';
           }
 
@@ -878,8 +867,8 @@
           if (visibleColumns['actions']) {
             cardHtml += `
                 <div class="card-actions flex-shrink-0 d-flex flex-column gap-1">
-                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.category_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                  <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.category_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.user_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.user_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                 </div>
               `;
           }
@@ -921,7 +910,7 @@
 
         items.forEach((it, idx) => {
           const tr = document.createElement('tr');
-          const st = formatCategoryStatus(it.category_status);
+          const st = formatUserStatus(it.user_status);
           const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
 
           columns.forEach(col => {
@@ -931,36 +920,28 @@
               th.scope = 'row';
               th.textContent = (currentPage - 1) * 20 + idx + 1;
               tr.appendChild(th);
-            } else if (col.key === 'title') {
+            } else if (col.key === 'full_name') {
               const td = document.createElement('td');
-              td.innerHTML = `<div class="fw-bold">${escapeHtml(it.category_title)}</div>`;
+              td.innerHTML = `<div class="fw-bold">${escapeHtml(it.user_full_name)}</div>`;
               tr.appendChild(td);
-            } else if (col.key === 'alias') {
+            } else if (col.key === 'email') {
               const td = document.createElement('td');
-              td.textContent = escapeHtml(it.category_alias || '');
-              tr.appendChild(td);
-            } else if (col.key === 'parent') {
-              const td = document.createElement('td');
-              if (it.category_parent_id == 0) {
-                td.textContent = 'Danh mục gốc';
-              } else {
-                td.textContent = escapeHtml(it.category_parent_title || 'Danh mục #' + it.category_parent_id);
-              }
+              td.textContent = escapeHtml(it.user_name || '');
               tr.appendChild(td);
             } else if (col.key === 'status') {
               const td = document.createElement('td');
               td.innerHTML = statusHtml;
               tr.appendChild(td);
-            } else if (col.key === 'order') {
+            } else if (col.key === 'created') {
               const td = document.createElement('td');
-              td.textContent = escapeHtml(it.category_order_no);
+              td.textContent = escapeHtml(formatDateTime(it.user_created));
               tr.appendChild(td);
             } else if (col.key === 'actions') {
               const td = document.createElement('td');
               td.innerHTML = `
                   <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.category_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.category_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.user_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.user_id}" title="Xóa"><i class="bi bi-trash"></i></button>
                   </div>
                 `;
               tr.appendChild(td);
@@ -1017,12 +998,12 @@
 
         const params = new URLSearchParams();
         params.set('page', String(currentPage));
-        const title = filterTitle.value.trim();
+        const name = filterName.value.trim();
         const st = parseInt(filterStatus.value, 10);
-        if (title) params.set('category_title', title);
-        if (!Number.isNaN(st) && st !== -1) params.set('category_status', String(st));
+        if (name) params.set('user_name', name);
+        if (!Number.isNaN(st) && st !== -1) params.set('user_status', String(st));
 
-        const url = `${ENV.BASE_URL}/admin/category?${params.toString()}`;
+        const url = `${ENV.BASE_URL}/admin/users?${params.toString()}`;
 
         try {
           const headers = Auth.getAuthHeader();
@@ -1036,30 +1017,17 @@
           }
 
           let items;
-          if (Array.isArray(json.data?.data)) {
-            items = json.data.data;
-          } else if (json.data?.data && typeof json.data.data === 'object') {
-            // object with numeric keys: { "1": { parent: {...}, sub: [...] } }
-            const raw = Object.values(json.data.data);
-            items = [];
-            raw.forEach(entry => {
-              const parent = entry.parent || entry;
-              if (parent && parent.category_id != null) items.push(parent);
-              if (Array.isArray(entry.sub)) {
-                entry.sub.forEach(sub => {
-                  if (sub && sub.category_id != null) items.push(sub);
-                });
-              }
-            });
-          } else if (Array.isArray(json.data)) {
+          if (Array.isArray(json.data)) {
             items = json.data;
+          } else if (json.data?.data && Array.isArray(json.data.data)) {
+            items = json.data.data;
           } else {
             items = [];
           }
 
-          lastTotalPage = json.data?.pagination?.total_page || json.total_page || json.data?.total_page || 1;
+          lastTotalPage = json.pagination?.total_page || json.total_page || 1;
 
-          summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? items.length} • Trang ${json.data?.pagination?.page ?? currentPage}/${lastTotalPage}`;
+          summaryArea.textContent = `Tổng: ${json.pagination?.total ?? items.length} • Trang ${json.pagination?.page ?? currentPage}/${lastTotalPage}`;
           if (!Array.isArray(items) || items.length === 0) {
             tbody.innerHTML = '';
             viewGrid.innerHTML = '';
@@ -1070,7 +1038,7 @@
             renderGrid(items);
           }
 
-          renderPagination(json.data?.pagination?.page ?? currentPage, lastTotalPage);
+          renderPagination(json.pagination?.page ?? currentPage, lastTotalPage);
 
           // attach actions
           tbody.querySelectorAll('button[data-action]').forEach(btn => {
@@ -1088,7 +1056,7 @@
 
       async function deleteItem(id) {
         try {
-          const url = `${ENV.BASE_URL}/admin/category/delete`;
+          const url = `${ENV.BASE_URL}/admin/users/delete`;
           const headers = {
             ...Auth.getAuthHeader(),
             'Content-Type': 'application/json'
@@ -1107,7 +1075,7 @@
             return;
           }
 
-          showAlert('Xóa danh mục thành công.', 'success');
+          showAlert('Xóa người dùng thành công.', 'success');
           loadData();
         } catch (err) {
           console.error(err);
@@ -1136,7 +1104,7 @@
       function handleAction(action, id) {
         if (!id) return;
         if (action === 'edit') {
-          window.location.href = `web-category-edit.html?id=${id}`;
+          window.location.href = `web-users-edit.html?id=${id}`;
         } else if (action === 'delete') {
           deleteTargetId = id;
           getDeleteModal().show();
@@ -1144,10 +1112,10 @@
       }
 
       btnCreate.addEventListener('click', () => {
-        window.location.href = 'web-category-edit.html?id=0';
+        window.location.href = 'web-users-edit.html?id=0';
       });
 
-      filterTitle.addEventListener('input', debouncedSearch);
+      filterName.addEventListener('input', debouncedSearch);
 
       btnModeList.addEventListener('click', () => setView('list'));
       btnModeGrid.addEventListener('click', () => setView('grid'));
@@ -1167,59 +1135,59 @@
       });
 
       // Filter Modal
-      const filterModal = document.getElementById('filter-modal');
-      const filterModalClose = document.getElementById('filter-modal-close');
-      const btnApplyFilter = document.getElementById('btn-apply-filter');
-      const btnResetFilter = document.getElementById('btn-reset-filter');
-      const filterTitleModal = document.getElementById('filter-title-modal');
-      const filterStatusModal = document.getElementById('filter-status-modal');
+        const filterModal = document.getElementById('filter-modal');
+        const filterModalClose = document.getElementById('filter-modal-close');
+        const btnApplyFilter = document.getElementById('btn-apply-filter');
+        const btnResetFilter = document.getElementById('btn-reset-filter');
+        const filterNameModal = document.getElementById('filter-name-modal');
+        const filterStatusModal = document.getElementById('filter-status-modal');
 
-      function openFilterModal() {
-        filterTitleModal.value = filterTitle.value;
-        filterStatusModal.value = filterStatus.value;
-        filterModal.style.display = 'flex';
-      }
+        function openFilterModal() {
+          filterNameModal.value = filterName.value;
+          filterStatusModal.value = filterStatus.value;
+          filterModal.style.display = 'flex';
+        }
 
-      function closeFilterModal() {
-        filterModal.style.display = 'none';
-      }
+        function closeFilterModal() {
+          filterModal.style.display = 'none';
+        }
 
-      btnFilter.addEventListener('click', openFilterModal);
-      filterModalClose.addEventListener('click', closeFilterModal);
-      filterModal.addEventListener('click', (e) => {
-        if (e.target === filterModal) closeFilterModal();
-      });
+        btnFilter.addEventListener('click', openFilterModal);
+        filterModalClose.addEventListener('click', closeFilterModal);
+        filterModal.addEventListener('click', (e) => {
+          if (e.target === filterModal) closeFilterModal();
+        });
 
-      btnApplyFilter.addEventListener('click', () => {
-        filterTitle.value = filterTitleModal.value;
-        filterStatus.value = filterStatusModal.value;
-        closeFilterModal();
-        currentPage = 1;
-        loadData();
-      });
+        btnApplyFilter.addEventListener('click', () => {
+          filterName.value = filterNameModal.value;
+          filterStatus.value = filterStatusModal.value;
+          closeFilterModal();
+          currentPage = 1;
+          loadData();
+        });
 
-      btnResetFilter.addEventListener('click', () => {
-        filterTitleModal.value = '';
-        filterStatusModal.value = '-1';
-      });
+        btnResetFilter.addEventListener('click', () => {
+          filterNameModal.value = '';
+          filterStatusModal.value = '-1';
+        });
 
-      const btnFilterIconClear = document.getElementById('btn-filter-icon-clear');
-      const clearFilterConfirmModal = new bootstrap.Modal(document.getElementById('clearFilterConfirmModal'));
-      const btnConfirmClearFilter = document.getElementById('btn-confirm-clear-filter');
+        const btnFilterIconClear = document.getElementById('btn-filter-icon-clear');
+        const clearFilterConfirmModal = new bootstrap.Modal(document.getElementById('clearFilterConfirmModal'));
+        const btnConfirmClearFilter = document.getElementById('btn-confirm-clear-filter');
 
-      btnFilterIconClear.addEventListener('click', () => {
-        clearFilterConfirmModal.show();
-      });
+        btnFilterIconClear.addEventListener('click', () => {
+          clearFilterConfirmModal.show();
+        });
 
-      btnConfirmClearFilter.addEventListener('click', () => {
-        filterTitle.value = '';
-        filterTitleModal.value = '';
-        filterStatus.value = '-1';
-        filterStatusModal.value = '-1';
-        currentPage = 1;
-        loadData();
-        clearFilterConfirmModal.hide();
-      });
+        btnConfirmClearFilter.addEventListener('click', () => {
+          filterName.value = '';
+          filterNameModal.value = '';
+          filterStatus.value = '-1';
+          filterStatusModal.value = '-1';
+          currentPage = 1;
+          loadData();
+          clearFilterConfirmModal.hide();
+        });
 
       // Init
       initColumns();

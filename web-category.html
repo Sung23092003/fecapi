@@ -931,8 +931,12 @@
           if (Array.isArray(json.data?.data)) {
             items = json.data.data;
           } else if (json.data?.data && typeof json.data.data === 'object') {
-            // object with numeric keys: { "1": { parent: {...} } }
-            items = Object.values(json.data.data).map(item => item.parent || item);
+            // object with numeric keys: { "1": { parent: {...}, sub: [...] } }
+            items = Object.values(json.data.data).flatMap(item => {
+              const parent = item.parent || item;
+              const subs = item.sub || [];
+              return [parent, ...subs];
+            });
           } else if (Array.isArray(json.data)) {
             items = json.data;
           } else {

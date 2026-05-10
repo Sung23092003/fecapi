@@ -560,7 +560,9 @@
       }
 
       function buildCategoryTreeOptions(json) {
-        const tree = json.data?.category_tree || json.category_tree || [];
+        const rawTree = json.data?.category_tree || json.category_tree || [];
+        // unwrap { parent: { ... } } format
+        const tree = rawTree.map(item => item.parent || item);
         const select = category_parent_id;
         select.innerHTML = '<option value="0">--- Chọn danh mục cha ---</option>';
 
@@ -569,9 +571,9 @@
           for (let i = 0; i < items.length; i++) {
             const item = items[i];
             const opt = document.createElement('option');
-            opt.value = item.id;
+            opt.value = item.category_id;
             const prefix = '— '.repeat(level);
-            const label = item.title || item.name || item.category_title || `Danh mục #${item.id}`;
+            const label = item.category_title || item.title || item.name || `Danh mục #${item.category_id}`;
             opt.textContent = prefix + label;
             select.appendChild(opt);
             if (item.children && item.children.length > 0) {

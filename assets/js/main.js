@@ -228,44 +228,67 @@
     ],
     importcss_append: true,
      file_picker_callback: (callback, value, meta) => {
-       const input = document.createElement('input');
-       input.setAttribute('type', 'file');
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
 
-       if (meta.filetype === 'image') {
-         input.setAttribute('accept', 'image/*');
-       } else if (meta.filetype === 'media') {
-         input.setAttribute('accept', 'video/*,audio/*');
-       } else {
-         input.setAttribute('accept', '*/*');
-       }
+        if (meta.filetype === 'image') {
+          input.setAttribute('accept', 'image/*');
+        } else if (meta.filetype === 'media') {
+          input.setAttribute('accept', 'video/*,audio/*');
+        } else {
+          input.setAttribute('accept', '*/*');
+        }
 
-       input.onchange = function () {
-         const file = this.files[0];
-         const reader = new FileReader();
+        input.onchange = async function () {
+          const file = this.files[0];
+          if (!file) return;
+          try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const headers = Auth.getAuthHeader();
+            delete headers['Content-Type'];
+            const res = await fetch(`${ENV.BASE_URL}/admin/media/upload`, {
+              method: 'POST',
+              headers,
+              body: formData
+            });
+            const json = await res.json();
+            if (!json.success) throw new Error(json.message || 'Upload thất bại');
+            const raw = json.data.url || '';
+            const m = raw.match(/https?:\/\/[^\s"']+/);
+            const url = m ? m[0] : raw;
+            if (meta.filetype === 'image') {
+              callback(url, { alt: file.name });
+            } else if (meta.filetype === 'media') {
+              callback(url, { source2: '', poster: '' });
+            } else {
+              callback(url, { text: file.name });
+            }
+          } catch (err) {
+            console.error('Upload error:', err);
+          }
+        };
 
-         reader.onload = function () {
-           const dataUrl = reader.result;
-           if (meta.filetype === 'image') {
-             callback(dataUrl, {
-               alt: file.name
-             });
-           } else if (meta.filetype === 'media') {
-             callback(dataUrl, {
-               source2: '',
-               poster: ''
-             });
-           } else {
-             callback(dataUrl, {
-               text: file.name
-             });
-           }
-         };
-
-         reader.readAsDataURL(file);
-       };
-
-       input.click();
+        input.click();
       },
+     images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+        const headers = Auth.getAuthHeader();
+        delete headers['Content-Type'];
+        fetch(`${ENV.BASE_URL}/admin/media/upload`, {
+          method: 'POST',
+          headers,
+          body: formData
+        }).then(res => res.json()).then(json => {
+          if (!json.success) reject(json.message || 'Upload thất bại');
+          else {
+            const raw = json.data.url || '';
+            const m = raw.match(/https?:\/\/[^\s"']+/);
+            resolve(m ? m[0] : raw);
+          }
+        }).catch(err => reject(err.message || 'Upload lỗi'));
+      }),
      templates: [{
         title: 'New Table',
         description: 'creates a new table',

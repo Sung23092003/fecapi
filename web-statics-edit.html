@@ -687,8 +687,11 @@
           });
           const json = await res.json();
           if (!json.success) throw new Error(json.message || 'Upload thất bại');
-          staticsImage.value = json.data.url;
-          imgPreview.src = json.data.url;
+          const raw = json.data.url || '';
+          const m = raw.match(/https?:\/\/[^\s"']+/);
+          const uploadedUrl = m ? m[0] : raw;
+          staticsImage.value = uploadedUrl;
+          imgPreview.src = uploadedUrl;
           imgPreview.classList.remove('d-none');
           btnRemoveImage.classList.remove('d-none');
         } catch (err) {

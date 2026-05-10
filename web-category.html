@@ -437,6 +437,17 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="view-mode-toggle ms-0 ms-md-2">
+                <div class="btn-group" role="group" aria-label="Chọn dạng hiển thị">
+                  <button id="btn-mode-list" type="button" class="btn btn-outline-secondary active">
+                    <i class="bi bi-list"></i>
+                  </button>
+                  <button id="btn-mode-grid" type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-grid"></i>
+                  </button>
+                </div>
+              </div>
+
               <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
                 <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button" title="Xóa lọc">
                   <i class="bi bi-funnel"></i>
@@ -486,6 +497,9 @@
               </nav>
             </div>
           </div>
+
+          <!-- GRID VIEW -->
+          <div id="view-grid" class="news-grid d-none"></div>
 
           <div id="empty-state" class="empty-state d-none">
             <div class="text-center">
@@ -616,6 +630,7 @@
       "use strict";
 
       const viewList = document.getElementById('view-list');
+      const viewGrid = document.getElementById('view-grid');
       const emptyState = document.getElementById('empty-state');
       const tbody = document.getElementById('tbody-category');
       const paginationEl = document.getElementById('pagination');
@@ -624,6 +639,10 @@
 
       const btnCreate = document.getElementById('btn-create');
       const btnFilter = document.getElementById('btn-filter');
+
+      const btnModeList = document.getElementById('btn-mode-list');
+      const btnModeGrid = document.getElementById('btn-mode-grid');
+      const viewModeToggle = document.querySelector('.view-mode-toggle');
 
       const filterTitle = document.getElementById('filter-title');
       let filterStatus = document.getElementById('filter-status');
@@ -773,6 +792,24 @@
         loadData();
       }, 500);
 
+      function setView(mode) {
+        const isList = mode === 'list';
+        viewList.classList.toggle('d-none', !isList);
+        viewGrid.classList.toggle('d-none', isList);
+        btnModeList.classList.toggle('active', isList);
+        btnModeGrid.classList.toggle('active', !isList);
+      }
+
+      function checkResponsive() {
+        if (window.innerWidth <= 991.98) {
+          setView('grid');
+          if (viewModeToggle) viewModeToggle.style.display = 'none';
+        } else {
+          setView('list');
+          if (viewModeToggle) viewModeToggle.style.display = '';
+        }
+      }
+
       function escapeHtml(str) {
         return String(str ?? '')
           .replaceAll('&', '&amp;')
@@ -780,6 +817,69 @@
           .replaceAll('>', '>')
           .replaceAll('"', '"')
           .replaceAll("'", '&#039;');
+      }
+
+      function renderGrid(items) {
+        viewGrid.innerHTML = '';
+        if (!items.length) return;
+
+        items.forEach(it => {
+          const st = formatCategoryStatus(it.category_status);
+          const card = document.createElement('div');
+          card.className = 'news-card';
+
+          let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100 mb-0">';
+
+          // Title
+          if (visibleColumns['title']) {
+            cardHtml += `<div class="fw-bold text-truncate card-info" style="font-size:14px;min-width:0;">${escapeHtml(it.category_title)}</div>`;
+          }
+
+          cardHtml += '<div class="card-info flex-1 min-width-0">';
+
+          // Header: alias + status
+          if (visibleColumns['alias'] || visibleColumns['status']) {
+            cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
+            if (visibleColumns['alias']) {
+              cardHtml += `<div class="small text-muted text-truncate">${escapeHtml(it.category_alias || '')}</div>`;
+            }
+            if (visibleColumns['status']) {
+              cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          // Parent
+          if (visibleColumns['parent']) {
+            const parentName = it.category_parent_id == 0
+              ? 'Danh mục gốc'
+              : escapeHtml(it.category_parent_title || 'Danh mục #' + it.category_parent_id);
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${parentName}</div>`;
+          }
+
+          // Footer: order
+          if (visibleColumns['order']) {
+            cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
+            cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.category_order_no)}</span></span>`;
+            cardHtml += '</div>';
+          }
+
+          cardHtml += '</div>';
+
+          // Actions
+          if (visibleColumns['actions']) {
+            cardHtml += `
+                <div class="card-actions flex-shrink-0 d-flex flex-column gap-1">
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.category_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.category_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                </div>
+              `;
+          }
+
+          cardHtml += '</div>';
+          card.innerHTML = cardHtml;
+          viewGrid.appendChild(card);
+        });
       }
 
       function renderTableHeader() {
@@ -948,16 +1048,21 @@
           summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? items.length} • Trang ${json.data?.pagination?.page ?? currentPage}/${lastTotalPage}`;
           if (!Array.isArray(items) || items.length === 0) {
             tbody.innerHTML = '';
+            viewGrid.innerHTML = '';
             emptyState.classList.remove('d-none');
           } else {
             emptyState.classList.add('d-none');
             renderList(items);
+            renderGrid(items);
           }
 
           renderPagination(json.data?.pagination?.page ?? currentPage, lastTotalPage);
 
           // attach actions
           tbody.querySelectorAll('button[data-action]').forEach(btn => {
+            btn.addEventListener('click', () => handleAction(btn.dataset.action, btn.dataset.id));
+          });
+          viewGrid.querySelectorAll('button[data-action]').forEach(btn => {
             btn.addEventListener('click', () => handleAction(btn.dataset.action, btn.dataset.id));
           });
         } catch (err) {
@@ -1029,6 +1134,13 @@
       });
 
       filterTitle.addEventListener('input', debouncedSearch);
+
+      btnModeList.addEventListener('click', () => setView('list'));
+      btnModeGrid.addEventListener('click', () => setView('grid'));
+
+      // Responsive check
+      checkResponsive();
+      window.addEventListener('resize', checkResponsive);
 
       // Column visibility event listeners
       btnColumnVisibility.addEventListener('click', openColumnModal);

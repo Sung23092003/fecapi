@@ -330,6 +330,27 @@
       </li><!-- End Web Nav -->
 
       <li class="nav-item">
+        <a class="nav-link collapsed" href="web-users.html">
+          <i class="bi bi-people"></i>
+          <span>Quản lý Người dùng</span>
+        </a>
+      </li><!-- End User Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="web-role.html">
+          <i class="bi bi-shield-lock"></i>
+          <span>Quản lý Quyền</span>
+        </a>
+      </li><!-- End Role Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="web-role-group.html">
+          <i class="bi bi-layers"></i>
+          <span>Quản lý Nhóm quyền</span>
+        </a>
+      </li><!-- End Role Group Nav -->
+
+      <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -425,6 +446,7 @@
           <form id="formStatics" class="row g-3">
             <input type="hidden" name="id_hiden" id="id_hiden" value="0" />
             <input type="hidden" name="statics_image" id="statics_image" value="" />
+            <input type="hidden" name="statics_image_other" id="statics_image_other" value="" />
 
             <div class="col-xs-12 col-md-6">
               <div class="form-group">
@@ -623,6 +645,7 @@
       const bannerUpload = document.getElementById('bannerUpload');
       const imgPreview = document.getElementById('imgPreview');
       const staticsImage = document.getElementById('statics_image');
+      const staticsImageOther = document.getElementById('statics_image_other');
       const uploadSpinner = document.getElementById('uploadSpinner');
 
       function getQueryInt(name, defValue = 0) {
@@ -672,7 +695,8 @@
           imgPreview.src = '';
           btnRemoveImage.classList.add('d-none');
           staticsImage.value = '';
-          return;
+          staticsImageOther.value = '';
+          bannerUpload.value = '';
         }
         uploadSpinner.classList.remove('d-none');
         try {
@@ -691,6 +715,7 @@
           const m = raw.match(/https?:\/\/[^\s"']+/);
           const uploadedUrl = m ? m[0] : raw;
           staticsImage.value = uploadedUrl;
+          staticsImageOther.value = uploadedUrl;
           imgPreview.src = uploadedUrl;
           imgPreview.classList.remove('d-none');
           btnRemoveImage.classList.remove('d-none');
@@ -709,6 +734,7 @@
           imgPreview.classList.add('d-none');
           btnRemoveImage.classList.add('d-none');
           staticsImage.value = '';
+          staticsImageOther.value = '';
         });
       }
 
@@ -760,6 +786,7 @@
 
         if (d.statics_image) {
           staticsImage.value = d.statics_image;
+          staticsImageOther.value = d.statics_image_other ?? d.statics_image;
           imgPreview.src = d.statics_image;
           imgPreview.classList.remove('d-none');
           btnRemoveImage.classList.remove('d-none');
@@ -796,6 +823,7 @@
             statics_status: parseInt(statics_status.value, 10),
             statics_order_no: parseInt(statics_order_no.value, 10),
             statics_image: staticsImage.value,
+            statics_image_other: staticsImageOther.value,
             meta_title: meta_title.value ?? '',
             meta_keywords: meta_keywords.value ?? '',
             meta_description: meta_description.value ?? ''

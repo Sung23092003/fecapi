@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Web - Thêm/Sửa nhóm quyền - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .role-checkbox-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .role-checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      font-size: 14px;
+    }
+    .role-checkbox-item:hover {
+      background: #f0f7ff;
+      border-color: #86b7fe;
+    }
+    .role-checkbox-item.checked {
+      background: #e7f3ff;
+      border-color: #0d6efd;
+    }
+    .role-checkbox-item input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+    .role-group-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center"><img src="assets/img/logo.png" alt=""><span class="d-none d-lg-block">NiceAdmin</span></a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-lg-none"><a class="nav-link nav-icon search-bar-toggle " href="#"><i class="bi bi-search"></i></a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-bell"></i><span class="badge bg-primary badge-number">4</span></a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">You have 4 new notifications <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-exclamation-circle text-warning"></i><div><h4>Lorem Ipsum</h4><p>Quae dolorem earum veritatis oditseno</p><p>30 min. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-x-circle text-danger"></i><div><h4>Atque rerum nesciunt</h4><p>Quae dolorem earum veritatis oditseno</p><p>1 hr. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-check-circle text-success"></i><div><h4>Sit rerum fuga</h4><p>Quae dolorem earum veritatis oditseno</p><p>2 hrs. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-info-circle text-primary"></i><div><h4>Dicta reprehenderit</h4><p>Quae dolorem earum veritatis oditseno</p><p>4 hrs. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-footer"><a href="#">Show all notifications</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-chat-left-text"></i><span class="badge bg-success badge-number">3</span></a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">You have 3 new messages <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-1.jpg" alt="" class="rounded-circle"><div><h4>Maria Hudson</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>4 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-2.jpg" alt="" class="rounded-circle"><div><h4>Anna Nelson</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>6 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-3.jpg" alt="" class="rounded-circle"><div><h4>David Muldon</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>8 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-footer"><a href="#">Show all messages</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header"><h6 data-user-name></h6><span>Web Designer</span></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"><i class="bi bi-person"></i><span>My Profile</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"><i class="bi bi-gear"></i><span>Account Settings</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="pages-faq.html"><i class="bi bi-question-circle"></i><span>Need Help?</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#" data-logout="true"><i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item"><a class="nav-link collapsed" href="index.html"><i class="bi bi-grid"></i><span>Dashboard</span></a></li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i></a>
+        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="components-alerts.html"><i class="bi bi-circle"></i><span>Alerts</span></a></li>
+          <li><a href="components-accordion.html"><i class="bi bi-circle"></i><span>Accordion</span></a></li>
+          <li><a href="components-badges.html"><i class="bi bi-circle"></i><span>Badges</span></a></li>
+          <li><a href="components-breadcrumbs.html"><i class="bi bi-circle"></i><span>Breadcrumbs</span></a></li>
+          <li><a href="components-buttons.html"><i class="bi bi-circle"></i><span>Buttons</span></a></li>
+          <li><a href="components-cards.html"><i class="bi bi-circle"></i><span>Cards</span></a></li>
+          <li><a href="components-carousel.html"><i class="bi bi-circle"></i><span>Carousel</span></a></li>
+          <li><a href="components-list-group.html"><i class="bi bi-circle"></i><span>List group</span></a></li>
+          <li><a href="components-modal.html"><i class="bi bi-circle"></i><span>Modal</span></a></li>
+          <li><a href="components-tabs.html"><i class="bi bi-circle"></i><span>Tabs</span></a></li>
+          <li><a href="components-pagination.html"><i class="bi bi-circle"></i><span>Pagination</span></a></li>
+          <li><a href="components-progress.html"><i class="bi bi-circle"></i><span>Progress</span></a></li>
+          <li><a href="components-spinners.html"><i class="bi bi-circle"></i><span>Spinners</span></a></li>
+          <li><a href="components-tooltips.html"><i class="bi bi-circle"></i><span>Tooltips</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i></a>
+        <ul id="forms-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="forms-elements.html"><i class="bi bi-circle"></i><span>Form Elements</span></a></li>
+          <li><a href="forms-layouts.html"><i class="bi bi-circle"></i><span>Form Layouts</span></a></li>
+          <li><a href="forms-editors.html"><i class="bi bi-circle"></i><span>Form Editors</span></a></li>
+          <li><a href="forms-validation.html"><i class="bi bi-circle"></i><span>Form Validation</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i></a>
+        <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="tables-general.html"><i class="bi bi-circle"></i><span>General Tables</span></a></li>
+          <li><a href="tables-data.html"><i class="bi bi-circle"></i><span>Data Tables</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-category.html"><i class="bi bi-folder"></i><span>Quản lý Danh mục</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-globe"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-people"></i><span>Quản lý Người dùng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-role.html"><i class="bi bi-shield-lock"></i><span>Quản lý Quyền</span></a></li>
+      <li class="nav-item"><a class="nav-link active" href="web-role-group.html"><i class="bi bi-layers"></i><span>Quản lý Nhóm quyền</span></a></li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i></a>
+        <ul id="charts-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="charts-chartjs.html"><i class="bi bi-circle"></i><span>Chart.js</span></a></li>
+          <li><a href="charts-apexcharts.html"><i class="bi bi-circle"></i><span>ApexCharts</span></a></li>
+          <li><a href="charts-echarts.html"><i class="bi bi-circle"></i><span>ECharts</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#"><i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i></a>
+        <ul id="icons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="icons-bootstrap.html"><i class="bi bi-circle"></i><span>Bootstrap Icons</span></a></li>
+          <li><a href="icons-remix.html"><i class="bi bi-circle"></i><span>Remix Icons</span></a></li>
+          <li><a href="icons-boxicons.html"><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-heading">Pages</li>
+      <li class="nav-item"><a class="nav-link collapsed" href="users-profile.html"><i class="bi bi-person"></i><span>Profile</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-faq.html"><i class="bi bi-question-circle"></i><span>F.A.Q</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-contact.html"><i class="bi bi-envelope"></i><span>Contact</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-register.html"><i class="bi bi-card-list"></i><span>Register</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-login.html"><i class="bi bi-box-arrow-in-right"></i><span>Login</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-error-404.html"><i class="bi bi-dash-circle"></i><span>Error 404</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="pages-blank.html"><i class="bi bi-file-earmark"></i><span>Blank</span></a></li>
+    </ul>
+  </aside>
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1 id="pageTitle">Thêm nhóm quyền</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="web-role-group.html">Quản lý nhóm quyền</a></li>
+          <li class="breadcrumb-item active" id="pageCrumb">Thêm</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="card card-box">
+        <div class="card-inner">
+          <div id="alertPlaceholder"></div>
+          <form id="formRoleGroup" class="row g-3">
+            <input type="hidden" name="id_hiden" id="id_hiden" value="0" />
+
+            <div class="col-xs-12 col-md-6">
+              <div class="form-group">
+                <label class="form-label">Tên nhóm quyền<span class="label-req">*</span></label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="group_role_title" name="group_role_title" required />
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Trạng thái</label>
+                <div class="controls">
+                  <select class="form-select" id="group_role_status" name="group_role_status">
+                    <option value="1">Hiện</option>
+                    <option value="0">Ẩn</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group">
+                <label class="form-label">Danh sách quyền (Role) trong nhóm</label>
+                <div class="role-group-actions">
+                  <button type="button" class="btn btn-sm btn-outline-success" id="btn-select-all"><i class="bi bi-check-all"></i> Chọn tất cả</button>
+                  <button type="button" class="btn btn-sm btn-outline-danger" id="btn-deselect-all"><i class="bi bi-x-circle"></i> Bỏ chọn tất cả</button>
+                </div>
+                <div id="loading-roles" class="text-center py-3">
+                  <div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Đang tải...</span></div>
+                  <span class="text-muted ms-2">Đang tải danh sách quyền...</span>
+                </div>
+                <div id="role-checkbox-container" class="role-checkbox-grid"></div>
+                <div id="no-roles-msg" class="text-muted d-none">Không có quyền nào.</div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card-footer text-end">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-floppy"></i> Lưu lại
+                </button>
+                <a href="web-role-group.html" class="btn btn-outline-secondary ms-2">Bỏ qua</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Auth + ENV -->
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+
+  <script>
+    (async function () {
+      "use strict";
+
+      const id_hidenEl = document.getElementById('id_hiden');
+      const pageTitle = document.getElementById('pageTitle');
+      const pageCrumb = document.getElementById('pageCrumb');
+      const form = document.getElementById('formRoleGroup');
+
+      const group_role_title = document.getElementById('group_role_title');
+      const group_role_status = document.getElementById('group_role_status');
+
+      const loadingRoles = document.getElementById('loading-roles');
+      const containerEl = document.getElementById('role-checkbox-container');
+      const noRolesMsg = document.getElementById('no-roles-msg');
+      const btnSelectAll = document.getElementById('btn-select-all');
+      const btnDeselectAll = document.getElementById('btn-deselect-all');
+
+      function getQueryInt(name, defValue = 0) {
+        const params = new URLSearchParams(window.location.search);
+        const v = params.get(name);
+        if (v === null) return defValue;
+        const n = parseInt(v, 10);
+        return Number.isNaN(n) ? defValue : n;
+      }
+
+      const id = getQueryInt('id', 0);
+      id_hidenEl.value = String(id);
+
+      if (id && id !== 0) {
+        if (pageTitle) pageTitle.textContent = 'Sửa nhóm quyền';
+        if (pageCrumb) pageCrumb.textContent = 'Sửa';
+      } else {
+        if (pageTitle) pageTitle.textContent = 'Thêm nhóm quyền';
+        if (pageCrumb) pageCrumb.textContent = 'Thêm';
+        group_role_status.value = '1';
+      }
+
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'formAlert';
+      alertDiv.className = 'd-none alert mb-3';
+      form.prepend(alertDiv);
+
+      function showAlert(message, type = 'success') {
+        alertDiv.innerHTML = message;
+        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.minWidth = '250px';
+        alertDiv.style.maxWidth = '350px';
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => alertDiv.classList.add('d-none'), 5000);
+      }
+
+      function renderRoles(arrRole, checkedIds) {
+        containerEl.innerHTML = '';
+        const checkedSet = new Set((checkedIds || []).map(String));
+
+        if (!arrRole || !arrRole.length) {
+          noRolesMsg.classList.remove('d-none');
+          loadingRoles.classList.add('d-none');
+          return;
+        }
+
+        noRolesMsg.classList.add('d-none');
+
+        arrRole.forEach(role => {
+          const roleId = String(role.role_id);
+          const isChecked = checkedSet.has(roleId);
+
+          const label = document.createElement('label');
+          label.className = 'role-checkbox-item' + (isChecked ? ' checked' : '');
+
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.value = roleId;
+          cb.checked = isChecked;
+          cb.addEventListener('change', function () {
+            label.classList.toggle('checked', this.checked);
+          });
+
+          const text = document.createElement('span');
+          text.textContent = role.role_title || `Quyền #${roleId}`;
+
+          label.appendChild(cb);
+          label.appendChild(text);
+          containerEl.appendChild(label);
+        });
+
+        loadingRoles.classList.add('d-none');
+      }
+
+      btnSelectAll.addEventListener('click', () => {
+        containerEl.querySelectorAll('.role-checkbox-item input[type="checkbox"]').forEach(cb => {
+          cb.checked = true;
+          cb.closest('.role-checkbox-item').classList.add('checked');
+        });
+      });
+
+      btnDeselectAll.addEventListener('click', () => {
+        containerEl.querySelectorAll('.role-checkbox-item input[type="checkbox"]').forEach(cb => {
+          cb.checked = false;
+          cb.closest('.role-checkbox-item').classList.remove('checked');
+        });
+      });
+
+      async function loadDetail() {
+        const url = `${ENV.BASE_URL}/admin/roleGroup/edit/${id ? id : 0}`;
+        const headers = Auth.getAuthHeader();
+
+        const res = await fetch(url, { method: 'GET', headers });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
+
+        const data = json.data || {};
+        const arrRole = data.arrRole || [];
+
+        // Checked IDs come from group_role_list (array of strings)
+        const checkedIds = data.group_role_list || [];
+
+        // Pre-fill form if editing
+        const d = data.data || {};
+        if (id) {
+          group_role_title.value = d.group_role_title ?? '';
+          group_role_status.value = String(d.group_role_status ?? 1);
+        }
+
+        renderRoles(arrRole, checkedIds);
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const checkedBoxes = containerEl.querySelectorAll('.role-checkbox-item input[type="checkbox"]:checked');
+        const group_role_list = Array.from(checkedBoxes).map(cb => parseInt(cb.value, 10));
+
+        try {
+          const payload = {
+            id_hiden: id ? id : 0,
+            group_role_title: group_role_title.value.trim(),
+            group_role_status: parseInt(group_role_status.value, 10),
+            group_role_list: group_role_list
+          };
+
+          const url = `${ENV.BASE_URL}/admin/roleGroup/edit/${id ? id : 0}`;
+          const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
+
+          const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(payload)
+          });
+
+          const json = await res.json().catch(() => null);
+
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+            return;
+          }
+
+          showAlert('Lưu nhóm quyền thành công!', 'success');
+          setTimeout(() => window.location.href = 'web-role-group.html', 1500);
+        } catch (error) {
+          console.error(error);
+          showAlert('Có lỗi xảy ra khi lưu nhóm quyền!', 'danger');
+        }
+      });
+
+      try {
+        await loadDetail();
+      } catch (err) {
+        showAlert(err?.message || 'Có lỗi xảy ra', 'danger');
+      }
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+.role-checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.role-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  font-size: 14px;
+}
+.role-checkbox-item:hover {
+  background: #f0f7ff;
+  border-color: #86b7fe;
+}
+.role-checkbox-item.checked {
+  background: #e7f3ff;
+  border-color: #0d6efd;
+}
+.role-checkbox-item input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+.role-group-actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}

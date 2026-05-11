@@ -1,0 +1,136 @@
+html, body {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+
+#main{
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.view-container {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.view-card {
+  background: white;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 40px;
+  width: 100%;
+  min-height: 100vh;
+}
+.view-header {
+  border-bottom: 1px solid #e9ecef;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+.view-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #212529;
+  margin: 0 0 10px 0;
+}
+.view-meta {
+  display: flex;
+  gap: 20px;
+  margin: 15px 0 0 0;
+  font-size: 13px;
+  color: #6c757d;
+}
+.view-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.view-banner {
+  margin-bottom: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.view-banner img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.view-intro {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #495057;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border-left: 3px solid #0d6efd;
+}
+.view-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+}
+.view-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+.view-content p, .view-content ul, .view-content ol {
+  margin-bottom: 15px;
+}
+.view-footer {
+  border-top: 1px solid #e9ecef;
+  margin-top: 30px;
+  padding-top: 20px;
+  text-align: center;
+}
+.view-footer .btn {
+  padding: 8px 20px;
+  font-size: 14px;
+}
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+.error-box {
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 15px;
+  color: #721c24;
+  margin: 20px 0;
+}
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+.status-badge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}

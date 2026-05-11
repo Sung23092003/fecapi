@@ -748,6 +748,15 @@
         return content_editor.value || '';
       }
 
+      function cleanContent(html) {
+        return html
+          .replace(/\\&quot;/g, '"')
+          .replace(/&quot;/g, '"')
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '')
+          .replace(/src=""+/g, 'src="');
+      }
+
       async function loadDetail() {
         if (!id) return;
 
@@ -782,9 +791,10 @@
           aliasManuallyEdited = true;
         }
 
-        content_editor.value = d.statics_content ?? '';
+        const cleanHtml = cleanContent(d.statics_content ?? '');
+        content_editor.value = cleanHtml;
 
-        if (d.statics_image) {
+         if (d.statics_image) {
           staticsImage.value = d.statics_image;
           staticsImageOther.value = d.statics_image_other ?? d.statics_image;
           imgPreview.src = d.statics_image;
@@ -796,12 +806,12 @@
           if (window.tinymce) {
             const inst = tinymce.get('content_editor');
             if (inst) {
-              inst.setContent(d.statics_content ?? '');
-            } else {
+              inst.setContent(cleanHtml);
+             } else {
               tinymce.on('AddEditor', (e) => {
                 if (e.editor.id === 'content_editor') {
                   e.editor.on('init', () => {
-                    e.editor.setContent(d.statics_content ?? '');
+                    e.editor.setContent(cleanHtml);
                   });
                 }
               });
@@ -819,7 +829,7 @@
             statics_title: statics_title.value.trim(),
             statics_alias: statics_alias.value.trim(),
             statics_intro: statics_intro.value ?? '',
-            statics_content: getEditorContent(),
+            statics_content: cleanContent(getEditorContent()),
             statics_status: parseInt(statics_status.value, 10),
             statics_order_no: parseInt(statics_order_no.value, 10),
             statics_image: staticsImage.value,

@@ -256,7 +256,8 @@
             if (!json.success) throw new Error(json.message || 'Upload thất bại');
             const raw = json.data.url || '';
             const m = raw.match(/https?:\/\/[^\s"']+/);
-            const url = m ? m[0] : raw;
+            let url = m ? m[0] : raw;
+            url = url.replace(/(?:\\?&[a-zA-Z#]+\d*;)+$/g, '');
             if (meta.filetype === 'image') {
               callback(url, { alt: file.name });
             } else if (meta.filetype === 'media') {
@@ -285,7 +286,9 @@
           else {
             const raw = json.data.url || '';
             const m = raw.match(/https?:\/\/[^\s"']+/);
-            resolve(m ? m[0] : raw);
+            let url = m ? m[0] : raw;
+            url = url.replace(/(?:\\?&[a-zA-Z#]+\d*;)+$/g, '');
+            resolve(url);
           }
         }).catch(err => reject(err.message || 'Upload lỗi'));
       }),

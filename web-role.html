@@ -30,6 +30,7 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-role.css" rel="stylesheet">
 </head>
 
 <body>
@@ -428,7 +429,7 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <div class="d-flex flex-wrap md:flex-no-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex flex-wrap flex-md-nowrap align-items-center justify-content-between gap-3">
         <div>
           <h1 class="mb-0">Quản lý Quyền</h1>
           <nav>
@@ -458,12 +459,12 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
-              <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
+              <div class="position-relative d-inline-block filter-icon-btn">
                 <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button" title="Xóa lọc">
                   <i class="bi bi-funnel"></i>
                 </button>
-                <div class="position-absolute" style="top: -6px; right: -6px; z-index: 10;">
-                  <i class="bi bi-x-circle-fill" style="color: red; font-size: 16px; background: white; border-radius: 50%;"></i>
+                <div class="position-absolute filter-icon-badge">
+                  <i class="bi bi-x-circle-fill"></i>
                 </div>
               </div>
 
@@ -479,11 +480,11 @@
             <table class="table table-hover align-middle">
               <thead>
                 <tr>
-                  <th style="min-width: 70px;">#</th>
-                  <th style="min-width: 200px;">Tên quyền</th>
-                  <th style="min-width: 120px;">Trạng thái</th>
-                  <th style="min-width: 150px;">Ngày tạo</th>
-                  <th style="min-width: 200px;">Hành động</th>
+                  <th class="table-header-index">#</th>
+                  <th class="table-header-fixed">Tên quyền</th>
+                  <th class="table-header-status">Trạng thái</th>
+                  <th class="table-header-date">Ngày tạo</th>
+                  <th class="table-header-actions">Hành động</th>
                 </tr>
               </thead>
               <tbody id="tbody-role"></tbody>
@@ -493,7 +494,7 @@
           <div id="empty-state" class="empty-state d-none">
             <div class="text-center">
               <div class="mb-2">
-                <i class="bi bi-inbox" style="font-size: 40px;"></i>
+                <i class="bi bi-inbox empty-icon"></i>
               </div>
               <h5 class="mb-1">Không có dữ liệu</h5>
               <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm quyền mới.</div>
@@ -569,7 +570,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body text-center py-3">
-            <i class="bi bi-funnel" style="font-size: 24px; color: #dc3545;"></i>
+            <i class="bi bi-funnel clear-filter-icon"></i>
             <p class="mb-0 mt-2">Bạn có muốn xóa lọc không?</p>
           </div>
           <div class="modal-footer justify-content-center">

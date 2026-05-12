@@ -305,7 +305,21 @@
               <div class="form-group">
                 <label class="form-label">Tên quyền<span class="label-req">*</span></label>
                 <div class="controls">
-                  <input type="text" class="form-control" id="role_name" name="role_name" required />
+                  <input type="text" class="form-control" id="role_title" name="role_title" required />
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Mô tả</label>
+                <div class="controls">
+                  <textarea class="form-control" id="role_description" name="role_description" rows="3" placeholder="Nhập mô tả quyền..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Thứ tự</label>
+                <div class="controls">
+                  <input type="number" class="form-control" id="role_order_no" name="role_order_no" value="1" min="0" />
                 </div>
               </div>
 
@@ -358,7 +372,9 @@
       const pageCrumb = document.getElementById('pageCrumb');
       const form = document.getElementById('formRole');
 
-      const role_name = document.getElementById('role_name');
+      const role_title = document.getElementById('role_title');
+      const role_description = document.getElementById('role_description');
+      const role_order_no = document.getElementById('role_order_no');
       const role_status = document.getElementById('role_status');
 
       function getQueryInt(name, defValue = 0) {
@@ -412,7 +428,9 @@
 
         const d = json.data?.data || json.data || {};
 
-        role_name.value = d.role_name ?? d.name ?? '';
+        role_title.value = d.role_title ?? d.name ?? '';
+        role_description.value = d.role_description ?? d.description ?? '';
+        role_order_no.value = d.role_order_no ?? 1;
         role_status.value = String(d.role_status ?? d.status ?? 1);
       }
 
@@ -422,7 +440,8 @@
         try {
           const payload = {
             id_hiden: id ? id : 0,
-            role_name: role_name.value.trim(),
+            role_title: role_title.value.trim(),
+            role_order_no: parseInt(role_order_no.value, 10) || 1,
             role_status: parseInt(role_status.value, 10)
           };
 

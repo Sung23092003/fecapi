@@ -791,7 +791,7 @@
         loadData();
       }, 500);
 
-      function escapeHtml(str) {
+function escapeHtml(str) {
         return String(str ?? '')
           .replaceAll('&', '&amp;')
           .replaceAll('<', '&lt;')
@@ -799,6 +799,11 @@
           .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
       }
+
+      function titleOf(it) { return it.role_title ?? it.role_name ?? it.name ?? ''; }
+      function idOf(it) { return it.role_id ?? it.id; }
+      function statusOf(it) { return it.role_status ?? it.status; }
+      function createdOf(it) { return it.role_created ?? it.created; }
 
       function setView(mode) {
         const isList = mode === 'list';
@@ -823,8 +828,8 @@
         const frag = document.createDocumentFragment();
 
         items.forEach((it, idx) => {
-          const st = formatStatus(it.role_status ?? it.status);
-          const roleId = it.role_id ?? it.id;
+          const st = formatStatus(statusOf(it));
+          const roleId = idOf(it);
           const card = document.createElement('div');
           card.className = 'role-card';
 
@@ -834,7 +839,7 @@
           if (visibleColumns['name'] || visibleColumns['status']) {
             html += '<div class="role-card-header">';
             if (visibleColumns['name']) {
-              html += `<div class="role-card-title">${escapeHtml(it.role_name ?? it.name)}</div>`;
+              html += `<div class="role-card-title">${escapeHtml(titleOf(it))}</div>`;
             }
             if (visibleColumns['status']) {
               html += `<span class="badge ${st.cls} status-pill flex-shrink-0 ms-2">${st.text}</span>`;
@@ -844,7 +849,7 @@
 
           // Body: created date
           if (visibleColumns['created']) {
-            html += `<div class="role-card-body"><div class="role-card-meta"><span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(it.role_created ?? it.created)}</span></div></div>`;
+            html += `<div class="role-card-body"><div class="role-card-meta"><span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(createdOf(it))}</span></div></div>`;
           }
 
           // Footer: actions
@@ -873,8 +878,8 @@
 
         items.forEach((it, idx) => {
           const tr = document.createElement('tr');
-          const st = formatStatus(it.role_status ?? it.status);
-          const roleId = it.role_id ?? it.id;
+          const st = formatStatus(statusOf(it));
+          const roleId = idOf(it);
 
           if (visibleColumns['idx']) {
             const idxTd = document.createElement('th');
@@ -885,7 +890,7 @@
 
           if (visibleColumns['name']) {
             const nameTd = document.createElement('td');
-            nameTd.innerHTML = `<div class="fw-bold">${escapeHtml(it.role_name ?? it.name)}</div>`;
+            nameTd.innerHTML = `<div class="fw-bold">${escapeHtml(titleOf(it))}</div>`;
             tr.appendChild(nameTd);
           }
 
@@ -897,7 +902,7 @@
 
           if (visibleColumns['created']) {
             const createdTd = document.createElement('td');
-            createdTd.textContent = formatDateTime(it.role_created ?? it.created);
+            createdTd.textContent = formatDateTime(createdOf(it));
             tr.appendChild(createdTd);
           }
 
@@ -963,7 +968,7 @@
         params.set('page', String(currentPage));
         const title = filterTitle.value.trim();
         const st = parseInt(filterStatus.value, 10);
-        if (title) params.set('role_name', title);
+        if (title) params.set('role_title', title);
         if (!Number.isNaN(st) && st !== -1) params.set('role_status', String(st));
 
         const url = `${ENV.BASE_URL}/admin/role?${params.toString()}`;

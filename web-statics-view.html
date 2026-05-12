@@ -110,6 +110,14 @@
         return String(text).replace(/[&<>"']/g, m => map[m]);
       }
 
+      function decodeHtmlContent(content) {
+        if (!content) return '';
+        return String(content)
+          .replace(/\\\//g, '/')
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '\\');
+      }
+
       function renderDetail(data) {
         const statusClass = data.statics_status === 1 ? 'active' : 'inactive';
         const statusText = data.statics_status === 1 ? 'Đang hiển thị' : 'Ẩn';
@@ -128,7 +136,7 @@
         }
 
         html += '<div class="view-content">';
-        html += data.statics_content || '<p>Không có nội dung</p>';
+        html += decodeHtmlContent(data.statics_content) || '<p>Không có nội dung</p>';
         html += '</div>';
 
         contentArea.innerHTML = html;

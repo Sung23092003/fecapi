@@ -41,6 +41,13 @@
   flex: 1;
 }
 
+.column-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .text-muted-2 {
   color: rgba(0, 0, 0, 0.55);
 }

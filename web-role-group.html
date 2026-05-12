@@ -290,6 +290,11 @@
                   <th class="table-header-status">Trạng thái</th>
                   <th class="table-header-date">Ngày tạo</th>
                   <th class="table-header-actions-sm">Hành động</th>
+                  <th style="width:40px;">
+                    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0" title="Hiển thị cột">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                  </th>
                 </tr>
               </thead>
               <tbody id="tbody-group"></tbody>
@@ -311,6 +316,23 @@
             <nav>
               <ul id="pagination" class="pagination mb-0"></ul>
             </nav>
+          </div>
+
+          <!-- Column Visibility Modal -->
+          <div id="column-modal" class="column-modal">
+            <div class="column-modal-content">
+              <div class="column-modal-header">
+                <span>Hiển thị/Ẩn cột</span>
+                <button type="button" id="column-modal-close">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="column-modal-body" id="column-list"></div>
+              <div class="column-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+                <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+              </div>
+            </div>
           </div>
 
           <!-- Filter Modal -->
@@ -416,6 +438,10 @@
       const btnModeList = document.getElementById('btn-mode-list');
       const btnModeGrid = document.getElementById('btn-mode-grid');
       const viewModeToggle = document.querySelector('.view-mode-toggle');
+      const btnColumnVisibility = document.getElementById('btn-column-visibility');
+      const columnModal = document.getElementById('column-modal');
+      const columnModalClose = document.getElementById('column-modal-close');
+      const columnList = document.getElementById('column-list');
 
       const filterTitle = document.getElementById('filter-title');
       let filterStatus = document.getElementById('filter-status');
@@ -428,6 +454,70 @@
 
       let currentPage = 1;
       let lastTotalPage = 1;
+
+      const columns = [
+        { key: 'idx', label: '#', default: true },
+        { key: 'name', label: 'Tên nhóm quyền', default: true },
+        { key: 'status', label: 'Trạng thái', default: true },
+        { key: 'created', label: 'Ngày tạo', default: true },
+        { key: 'actions', label: 'Hành động', default: true },
+      ];
+
+      let visibleColumns = {};
+
+      function initColumns() {
+        const saved = localStorage.getItem('rolegroup-visible-columns');
+        if (saved) {
+          try {
+            visibleColumns = JSON.parse(saved);
+            columns.forEach(col => {
+              if (visibleColumns[col.key] === undefined) {
+                visibleColumns[col.key] = col.default;
+              }
+            });
+          } catch {
+            columns.forEach(col => visibleColumns[col.key] = col.default);
+          }
+        } else {
+          columns.forEach(col => visibleColumns[col.key] = col.default);
+        }
+      }
+
+      function saveColumns() {
+        localStorage.setItem('rolegroup-visible-columns', JSON.stringify(visibleColumns));
+      }
+
+      function toggleColumn(key) {
+        visibleColumns[key] = !visibleColumns[key];
+        saveColumns();
+      }
+
+      function resetColumns() {
+        columns.forEach(col => visibleColumns[col.key] = col.default);
+        saveColumns();
+        renderColumnList();
+      }
+
+      function renderColumnList() {
+        columnList.innerHTML = '';
+        columns.forEach(col => {
+          const label = document.createElement('label');
+          label.className = 'column-item';
+          label.innerHTML = `<input type="checkbox" ${visibleColumns[col.key] ? 'checked' : ''} onchange="window.__toggleColumn('${col.key}')" /> ${col.label}`;
+          columnList.appendChild(label);
+        });
+      }
+
+      window.__toggleColumn = toggleColumn;
+
+      function openColumnModal() {
+        renderColumnList();
+        columnModal.classList.add('show');
+      }
+
+      function closeColumnModal() {
+        columnModal.classList.remove('show');
+      }
 
       const alertDiv = document.createElement('div');
       alertDiv.id = 'pageAlert';
@@ -495,21 +585,32 @@
           const st = formatStatus(it.group_role_status);
           const card = document.createElement('div');
           card.className = 'role-card';
-          card.innerHTML = `
-            <div class="role-card-header">
-              <div class="role-card-title">${escapeHtml(it.group_role_title)}</div>
-              <span class="badge ${st.cls} status-pill flex-shrink-0 ms-2">${st.text}</span>
-            </div>
-            <div class="role-card-body">
-              <div class="role-card-meta">
-                <span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(it.group_role_created ?? it.created)}</span>
-              </div>
-            </div>
-            <div class="role-card-footer">
-              <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i> Sửa</button>
-              <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.group_role_id}" title="Xóa"><i class="bi bi-trash"></i> Xóa</button>
-            </div>
-          `;
+
+          let html = '';
+
+          if (visibleColumns['name'] || visibleColumns['status']) {
+            html += '<div class="role-card-header">';
+            if (visibleColumns['name']) {
+              html += `<div class="role-card-title">${escapeHtml(it.group_role_title)}</div>`;
+            }
+            if (visibleColumns['status']) {
+              html += `<span class="badge ${st.cls} status-pill flex-shrink-0 ms-2">${st.text}</span>`;
+            }
+            html += '</div>';
+          }
+
+          if (visibleColumns['created']) {
+            html += `<div class="role-card-body"><div class="role-card-meta"><span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(it.group_role_created ?? it.created)}</span></div></div>`;
+          }
+
+          if (visibleColumns['actions']) {
+            html += '<div class="role-card-footer">';
+            html += `<button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i> Sửa</button>`;
+            html += `<button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.group_role_id}" title="Xóa"><i class="bi bi-trash"></i> Xóa</button>`;
+            html += '</div>';
+          }
+
+          card.innerHTML = html;
           frag.appendChild(card);
         });
 
@@ -528,28 +629,38 @@
           const tr = document.createElement('tr');
           const st = formatStatus(it.group_role_status);
 
-          const th = document.createElement('th'); th.scope = 'row'; th.textContent = (currentPage - 1) * 20 + idx + 1; tr.appendChild(th);
+          if (visibleColumns['idx']) {
+            const th = document.createElement('th'); th.scope = 'row'; th.textContent = (currentPage - 1) * 20 + idx + 1; tr.appendChild(th);
+          }
 
-          const nameTd = document.createElement('td');
-          nameTd.innerHTML = `<div class="fw-bold">${escapeHtml(it.group_role_title)}</div>`;
-          tr.appendChild(nameTd);
+          if (visibleColumns['name']) {
+            const nameTd = document.createElement('td');
+            nameTd.innerHTML = `<div class="fw-bold">${escapeHtml(it.group_role_title)}</div>`;
+            tr.appendChild(nameTd);
+          }
 
-          const statusTd = document.createElement('td');
-          statusTd.innerHTML = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
-          tr.appendChild(statusTd);
+          if (visibleColumns['status']) {
+            const statusTd = document.createElement('td');
+            statusTd.innerHTML = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+            tr.appendChild(statusTd);
+          }
 
-          const createdTd = document.createElement('td');
-          createdTd.textContent = formatDateTime(it.group_role_created ?? it.created);
-          tr.appendChild(createdTd);
+          if (visibleColumns['created']) {
+            const createdTd = document.createElement('td');
+            createdTd.textContent = formatDateTime(it.group_role_created ?? it.created);
+            tr.appendChild(createdTd);
+          }
 
-          const actionsTd = document.createElement('td');
-          actionsTd.innerHTML = `
-            <div class="d-flex gap-2">
-              <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-              <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.group_role_id}" title="Xóa"><i class="bi bi-trash"></i></button>
-            </div>
-          `;
-          tr.appendChild(actionsTd);
+          if (visibleColumns['actions']) {
+            const actionsTd = document.createElement('td');
+            actionsTd.innerHTML = `
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.group_role_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+              </div>
+            `;
+            tr.appendChild(actionsTd);
+          }
 
           frag.appendChild(tr);
         });
@@ -719,6 +830,16 @@
       btnModeGrid.addEventListener('click', () => setView('grid'));
       window.addEventListener('resize', checkResponsive);
 
+      // Column Visibility
+      btnColumnVisibility.addEventListener('click', openColumnModal);
+      columnModalClose.addEventListener('click', closeColumnModal);
+      columnModal.addEventListener('click', (e) => {
+        if (e.target === columnModal) closeColumnModal();
+      });
+      document.getElementById('btn-reset-columns').addEventListener('click', resetColumns);
+      document.getElementById('btn-done-columns').addEventListener('click', () => { closeColumnModal(); loadData(); });
+
+      initColumns();
       checkResponsive();
       loadData();
     })();

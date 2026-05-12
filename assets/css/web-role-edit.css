@@ -1,0 +1,5 @@
+.card-box { border-radius: 10px; }
+.card-box .card-inner { padding: 20px; }
+@media (max-width: 575px) {
+  .card-box .card-inner { padding: 10px; }
+}

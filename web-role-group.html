@@ -254,6 +254,17 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="view-mode-toggle ms-0 ms-md-2">
+                <div class="btn-group" role="group" aria-label="Chọn dạng hiển thị">
+                  <button id="btn-mode-list" type="button" class="btn btn-outline-secondary active">
+                    <i class="bi bi-list"></i>
+                  </button>
+                  <button id="btn-mode-grid" type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-grid"></i>
+                  </button>
+                </div>
+              </div>
+
               <div class="position-relative d-inline-block filter-icon-btn">
                 <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button" title="Xóa lọc">
                   <i class="bi bi-funnel"></i>
@@ -284,6 +295,8 @@
               <tbody id="tbody-group"></tbody>
             </table>
           </div>
+
+          <div id="view-grid" class="role-grid d-none"></div>
 
           <div id="empty-state" class="empty-state d-none">
             <div class="text-center">
@@ -391,6 +404,8 @@
       "use strict";
 
       const tbody = document.getElementById('tbody-group');
+      const viewList = document.getElementById('view-list');
+      const viewGrid = document.getElementById('view-grid');
       const paginationEl = document.getElementById('pagination');
       const summaryArea = document.getElementById('summary-area');
       const alertArea = document.getElementById('alert-area');
@@ -398,6 +413,9 @@
 
       const btnCreate = document.getElementById('btn-create');
       const btnFilter = document.getElementById('btn-filter');
+      const btnModeList = document.getElementById('btn-mode-list');
+      const btnModeGrid = document.getElementById('btn-mode-grid');
+      const viewModeToggle = document.querySelector('.view-mode-toggle');
 
       const filterTitle = document.getElementById('filter-title');
       let filterStatus = document.getElementById('filter-status');
@@ -449,6 +467,57 @@
 
       function escapeHtml(str) {
         return String(str ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+      }
+
+      function setView(mode) {
+        const isList = mode === 'list';
+        viewList.classList.toggle('d-none', !isList);
+        viewGrid.classList.toggle('d-none', isList);
+        btnModeList.classList.toggle('active', isList);
+        btnModeGrid.classList.toggle('active', !isList);
+      }
+
+      function checkResponsive() {
+        if (window.innerWidth <= 991.98) {
+          setView('grid');
+          if (viewModeToggle) viewModeToggle.style.display = 'none';
+        } else {
+          setView('list');
+          if (viewModeToggle) viewModeToggle.style.display = '';
+        }
+      }
+
+      function renderGrid(items) {
+        viewGrid.innerHTML = '';
+        const frag = document.createDocumentFragment();
+
+        items.forEach((it, idx) => {
+          const st = formatStatus(it.group_role_status);
+          const card = document.createElement('div');
+          card.className = 'role-card';
+          card.innerHTML = `
+            <div class="role-card-header">
+              <div class="role-card-title">${escapeHtml(it.group_role_title)}</div>
+              <span class="badge ${st.cls} status-pill flex-shrink-0 ms-2">${st.text}</span>
+            </div>
+            <div class="role-card-body">
+              <div class="role-card-meta">
+                <span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(it.group_role_created ?? it.created)}</span>
+              </div>
+            </div>
+            <div class="role-card-footer">
+              <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i> Sửa</button>
+              <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.group_role_id}" title="Xóa"><i class="bi bi-trash"></i> Xóa</button>
+            </div>
+          `;
+          frag.appendChild(card);
+        });
+
+        viewGrid.appendChild(frag);
+
+        viewGrid.querySelectorAll('button[data-action]').forEach(btn => {
+          btn.addEventListener('click', () => handleAction(btn.dataset.action, btn.dataset.id));
+        });
       }
 
       function renderList(items) {
@@ -543,10 +612,12 @@
 
           if (!items.length) {
             tbody.innerHTML = '';
+            viewGrid.innerHTML = '';
             emptyState.classList.remove('d-none');
           } else {
             emptyState.classList.add('d-none');
             renderList(items);
+            renderGrid(items);
           }
 
           renderPagination(page, lastTotalPage);
@@ -557,6 +628,7 @@
         } catch (err) {
           setError(err?.message || 'Có lỗi xảy ra');
           tbody.innerHTML = '';
+          viewGrid.innerHTML = '';
           emptyState.classList.remove('d-none');
         }
       }
@@ -643,6 +715,11 @@
         clearFilterConfirmModal.hide();
       });
 
+      btnModeList.addEventListener('click', () => setView('list'));
+      btnModeGrid.addEventListener('click', () => setView('grid'));
+      window.addEventListener('resize', checkResponsive);
+
+      checkResponsive();
       loadData();
     })();
   </script>

@@ -454,6 +454,9 @@
           <button id="btn-create" type="button" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm người dùng</span>
           </button>
+          <button id="btn-delete-selected" type="button" class="btn btn-danger d-none">
+            <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa đã chọn</span>
+          </button>
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -926,6 +929,12 @@ function renderColumnList() {
         const thead = viewList.querySelector('thead tr');
         thead.innerHTML = '';
 
+        // Select-all checkbox
+        const thCheck = document.createElement('th');
+        thCheck.style.width = '40px';
+        thCheck.innerHTML = '<input type="checkbox" id="select-all" />';
+        thead.appendChild(thCheck);
+
         columns.forEach(col => {
           if (!visibleColumns[col.key]) return;
           const th = document.createElement('th');
@@ -955,6 +964,12 @@ function renderColumnList() {
           const tr = document.createElement('tr');
           const st = formatUserStatus(it.user_status);
           const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+
+          // Checkbox
+          const ckTd = document.createElement('td');
+          ckTd.style.width = '40px';
+          ckTd.innerHTML = `<input type="checkbox" class="row-checkbox" value="${it.user_id}" />`;
+          tr.appendChild(ckTd);
 
           columns.forEach(col => {
             if (!visibleColumns[col.key]) return;
@@ -1129,6 +1144,74 @@ function renderColumnList() {
           showAlert('Có lỗi xảy ra khi xóa', 'danger');
         }
       }
+
+      // Multi-delete
+      const btnDeleteSelected = document.getElementById('btn-delete-selected');
+      let selectedIds = new Set();
+
+      function updateDeleteButton() {
+        btnDeleteSelected.classList.toggle('d-none', selectedIds.size === 0);
+        const count = selectedIds.size;
+        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa (${count})</span>`;
+      }
+
+      function getSelectedIds() {
+        return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => parseInt(cb.value, 10));
+      }
+
+      function handleCheckboxChange() {
+        selectedIds = new Set(getSelectedIds());
+        updateDeleteButton();
+      }
+
+      tbody.addEventListener('change', (e) => {
+        if (e.target.classList.contains('row-checkbox')) handleCheckboxChange();
+      });
+
+      document.addEventListener('change', (e) => {
+        if (e.target.id === 'select-all') {
+          document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = e.target.checked);
+          handleCheckboxChange();
+        }
+      });
+
+      async function deleteSelected() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+
+        const currentUser = Auth.getUser();
+        const currentUserId = currentUser ? currentUser.user_id : null;
+        const filtered = ids.filter(id => id !== currentUserId);
+
+        if (filtered.length !== ids.length) {
+          showAlert('Không thể tự xóa tài khoản đang đăng nhập!', 'warning');
+          if (filtered.length === 0) return;
+        }
+
+        if (!confirm(`Xóa ${filtered.length} người dùng đã chọn?`)) return;
+
+        try {
+          const url = `${ENV.BASE_URL}/admin/users/delete`;
+          const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
+          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ checkItem: filtered }) });
+          const json = await res.json().catch(() => null);
+
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+            return;
+          }
+
+          showAlert(`Xóa thành công ${filtered.length} người dùng.`, 'success');
+          selectedIds = new Set();
+          updateDeleteButton();
+          loadData();
+        } catch (err) {
+          console.error(err);
+          showAlert('Có lỗi xảy ra khi xóa', 'danger');
+        }
+      }
+
+      btnDeleteSelected.addEventListener('click', deleteSelected);
 
       let deleteTargetId = null;
       let deleteModal = null;

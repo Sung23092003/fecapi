@@ -715,7 +715,7 @@
           const m = raw.match(/https?:\/\/[^\s"']+/);
           const uploadedUrl = m ? m[0] : raw;
           staticsImage.value = uploadedUrl;
-          staticsImageOther.value = uploadedUrl;
+          staticsImageOther.value = JSON.stringify([uploadedUrl]);
           imgPreview.src = uploadedUrl;
           imgPreview.classList.remove('d-none');
           btnRemoveImage.classList.remove('d-none');
@@ -734,7 +734,7 @@
           imgPreview.classList.add('d-none');
           btnRemoveImage.classList.add('d-none');
           staticsImage.value = '';
-          staticsImageOther.value = '';
+          staticsImageOther.value = '[]';
         });
       }
 
@@ -796,7 +796,7 @@
 
          if (d.statics_image) {
           staticsImage.value = d.statics_image;
-          staticsImageOther.value = d.statics_image_other ?? d.statics_image;
+          staticsImageOther.value = JSON.stringify(d.statics_image_other ?? [d.statics_image]);
           imgPreview.src = d.statics_image;
           imgPreview.classList.remove('d-none');
           btnRemoveImage.classList.remove('d-none');
@@ -833,7 +833,7 @@
             statics_status: parseInt(statics_status.value, 10),
             statics_order_no: parseInt(statics_order_no.value, 10),
             statics_image: staticsImage.value,
-            statics_image_other: staticsImageOther.value,
+              statics_image_other: (() => { try { return JSON.parse(staticsImageOther.value || '[]'); } catch { return staticsImageOther.value ? [staticsImageOther.value] : []; }})(),
             meta_title: meta_title.value ?? '',
             meta_keywords: meta_keywords.value ?? '',
             meta_description: meta_description.value ?? ''

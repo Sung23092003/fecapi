@@ -692,6 +692,7 @@
       const columns = [
         { key: 'index', label: '#', default: true },
         { key: 'image', label: 'Ảnh', default: true },
+        { key: 'image_other', label: 'Ảnh phụ', default: false },
         { key: 'title', label: 'Tiêu đề', default: true },
         { key: 'alias', label: 'Alias', default: true },
         { key: 'intro', label: 'Giới thiệu', default: true },
@@ -911,6 +912,18 @@
               td.className = 'text-center';
               td.innerHTML = imageHtml;
               tr.appendChild(td);
+            } else if (col.key === 'image_other') {
+              const td = document.createElement('td');
+              let html = '';
+              let others = it.statics_image_other;
+              if (typeof others === 'string') { try { others = JSON.parse(others); } catch { others = [others]; } }
+              if (Array.isArray(others)) {
+                html = others.filter(Boolean).map(url =>
+                  `<img src="${escapeHtml(url)}" alt="" style="width:40px;height:30px;object-fit:cover;border-radius:3px;margin:1px;">`
+                ).join('');
+              }
+              td.innerHTML = html || '<span class="text-muted small">—</span>';
+              tr.appendChild(td);
             } else if (col.key === 'title') {
               const td = document.createElement('td');
               td.innerHTML = `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
@@ -977,12 +990,25 @@
 
           // Image on left
           if (visibleColumns['image']) {
+            cardHtml += '<div class="card-img-wrapper">';
             cardHtml += it.statics_image
               ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
               : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" class="card-news-thumb no-photo-svg">
                     <rect width="60" height="60" fill="#f8f9fa"/>
                     <text x="30" y="35" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
                   </svg>`;
+            if (visibleColumns['image_other']) {
+              let others = it.statics_image_other;
+              if (typeof others === 'string') { try { others = JSON.parse(others); } catch { others = [others]; } }
+              if (Array.isArray(others) && others.length) {
+                cardHtml += '<div class="d-flex flex-wrap gap-1 mt-1">';
+                others.filter(Boolean).forEach(url => {
+                  cardHtml += `<img src="${escapeHtml(url)}" alt="" style="width:40px;height:30px;object-fit:cover;border-radius:3px;">`;
+                });
+                cardHtml += '</div>';
+              }
+            }
+            cardHtml += '</div>';
           }
 
           // Info section (middle)

@@ -462,24 +462,39 @@
               </div>
 
               <div class="form-group mt-3">
-                <label class="form-label">Mật khẩu</label>
+                <label class="form-label">Mật khẩu<span class="label-req">*</span></label>
                 <div class="controls">
-                  <input type="password" class="form-control" id="user_pass" name="user_pass" autocomplete="new-password" />
+                  <div class="input-group">
+                    <input type="password" required class="form-control" id="user_pass" name="user_pass"
+                      autocomplete="new-password" />
+                    <button type="button" class="btn btn-outline-secondary" id="toggle-pass" tabindex="-1"
+                      title="Hiện/Ẩn mật khẩu">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
                   <small class="text-muted">Để trống nếu không muốn đổi mật khẩu (khi cập nhật)</small>
                 </div>
               </div>
 
               <div class="form-group mt-3">
-                <label class="form-label">Nhập lại mật khẩu</label>
+                <label class="form-label">Nhập lại mật khẩu<span class="label-req">*</span></label>
                 <div class="controls">
-                  <input type="password" class="form-control" id="re_user_pass" name="re_user_pass" autocomplete="new-password" />
+                  <div class="input-group">
+                    <input type="password" required class="form-control" id="re_user_pass" name="re_user_pass"
+                      autocomplete="new-password" />
+                    <button type="button" class="btn btn-outline-secondary" id="toggle-re-pass" tabindex="-1"
+                      title="Hiện/Ẩn mật khẩu">
+                      <i class="bi bi-eye"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
 
               <div class="form-group mt-3">
                 <label class="form-label">Số điện thoại</label>
                 <div class="controls">
-                  <input type="text" class="form-control" id="user_phone" name="user_phone" />
+                  <input type="number" class="form-control" id="user_phone" name="user_phone" />
+                  <div id="phone-error" class="invalid-feedback d-none"></div>
                 </div>
               </div>
             </div>
@@ -559,6 +574,98 @@
       const user_mail = document.getElementById('user_mail');
       const user_status = document.getElementById('user_status');
       const user_rid = document.getElementById('user_rid');
+
+      // Password toggle
+      function setupPasswordToggle(btnId, inputId) {
+        const btn = document.getElementById(btnId);
+        const input = document.getElementById(inputId);
+        if (!btn || !input) return;
+        btn.addEventListener('click', () => {
+          const isPassword = input.type === 'password';
+          input.type = isPassword ? 'text' : 'password';
+          btn.innerHTML = isPassword ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+        });
+      }
+      setupPasswordToggle('toggle-pass', 'user_pass');
+      setupPasswordToggle('toggle-re-pass', 're_user_pass');
+
+      // Phone validation
+      const phoneError = document.getElementById('phone-error');
+      function validatePhone() {
+        const val = user_phone.value.trim();
+        if (!val) { phoneError.classList.add('d-none'); user_phone.classList.remove('is-invalid'); return true; }
+        const phoneRegex = /^(0[1-9][0-9]{8,9})$/;
+        if (!phoneRegex.test(val.replace(/[\s.-]/g, ''))) {
+          phoneError.textContent = 'Số điện thoại không hợp lệ (VD: 0912345678)';
+          phoneError.classList.remove('d-none');
+          user_phone.classList.add('is-invalid');
+          return false;
+        }
+        phoneError.classList.add('d-none');
+        user_phone.classList.remove('is-invalid');
+        return true;
+      }
+      user_phone.addEventListener('blur', validatePhone);
+      user_phone.addEventListener('input', () => {
+        phoneError.classList.add('d-none');
+        user_phone.classList.remove('is-invalid');
+      });
+
+      // Password validation
+      const passError = document.createElement('div');
+      passError.id = 'pass-error';
+      passError.className = 'invalid-feedback d-none';
+      user_pass.parentNode.appendChild(passError);
+
+      function validatePass() {
+        const val = user_pass.value;
+        if (!val) { passError.classList.add('d-none'); user_pass.classList.remove('is-invalid'); return true; }
+        if (val.length < 6) {
+          passError.textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
+          passError.classList.remove('d-none');
+          user_pass.classList.add('is-invalid');
+          return false;
+        }
+        if (val.length > 50) {
+          passError.textContent = 'Mật khẩu không được quá 50 ký tự';
+          passError.classList.remove('d-none');
+          user_pass.classList.add('is-invalid');
+          return false;
+        }
+        passError.classList.add('d-none');
+        user_pass.classList.remove('is-invalid');
+        return true;
+      }
+      user_pass.addEventListener('blur', validatePass);
+      user_pass.addEventListener('input', () => {
+        passError.classList.add('d-none');
+        user_pass.classList.remove('is-invalid');
+      });
+
+      // Re-password validation
+      const rePassError = document.createElement('div');
+      rePassError.id = 're-pass-error';
+      rePassError.className = 'invalid-feedback d-none';
+      re_user_pass.parentNode.appendChild(rePassError);
+
+      function validateRePass() {
+        const val = re_user_pass.value;
+        if (!val) { rePassError.classList.add('d-none'); re_user_pass.classList.remove('is-invalid'); return true; }
+        if (val !== user_pass.value) {
+          rePassError.textContent = 'Mật khẩu nhập lại không khớp';
+          rePassError.classList.remove('d-none');
+          re_user_pass.classList.add('is-invalid');
+          return false;
+        }
+        rePassError.classList.add('d-none');
+        re_user_pass.classList.remove('is-invalid');
+        return true;
+      }
+      re_user_pass.addEventListener('blur', validateRePass);
+      re_user_pass.addEventListener('input', () => {
+        rePassError.classList.add('d-none');
+        re_user_pass.classList.remove('is-invalid');
+      });
 
       function getQueryInt(name, defValue = 0) {
         const params = new URLSearchParams(window.location.search);
@@ -650,8 +757,34 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        if (user_pass.value !== re_user_pass.value) {
+        // validate
+        const isPhoneValid = validatePhone();
+        const isPassValid = validatePass();
+        const isRePassValid = validateRePass();
+
+        // required group role
+        if (!user_rid.value) {
+          showAlert('Vui lòng chọn nhóm quyền!', 'danger');
+          user_rid.focus();
+          return;
+        }
+
+        // nếu có lỗi thì chặn submit
+        if (!isPhoneValid) {
+          showAlert('Số điện thoại không hợp lệ!', 'danger');
+          user_phone.focus();
+          return;
+        }
+
+        if (!isPassValid) {
+          showAlert('Mật khẩu không hợp lệ!', 'danger');
+          user_pass.focus();
+          return;
+        }
+
+        if (!isRePassValid) {
           showAlert('Mật khẩu nhập lại không khớp!', 'danger');
+          re_user_pass.focus();
           return;
         }
 

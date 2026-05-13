@@ -757,6 +757,16 @@
           .replace(/src=""+/g, 'src="');
       }
 
+      function extractImageUrls(html) {
+        const urls = [];
+        const regex = /<img[^>]+src=["']([^"']+)["']/gi;
+        let match;
+        while ((match = regex.exec(html)) !== null) {
+          urls.push(match[1]);
+        }
+        return urls;
+      }
+
       async function loadDetail() {
         if (!id) return;
 
@@ -824,16 +834,25 @@
         e.preventDefault();
 
         try {
+          const editorHtml = getEditorContent();
+          const contentImages = extractImageUrls(editorHtml);
+
+          // Merge existing statics_image_other with content images
+          let existing = [];
+          try { existing = JSON.parse(staticsImageOther.value || '[]'); } catch { existing = staticsImageOther.value ? [staticsImageOther.value] : []; }
+          if (!Array.isArray(existing)) existing = [existing];
+          const merged = [...new Set([...existing, ...contentImages])];
+
           const payload = {
             id_hiden: id ? id : 0,
             statics_title: statics_title.value.trim(),
             statics_alias: statics_alias.value.trim(),
             statics_intro: statics_intro.value ?? '',
-            statics_content: cleanContent(getEditorContent()),
+            statics_content: cleanContent(editorHtml),
             statics_status: parseInt(statics_status.value, 10),
             statics_order_no: parseInt(statics_order_no.value, 10),
             statics_image: staticsImage.value,
-              statics_image_other: (() => { try { return JSON.parse(staticsImageOther.value || '[]'); } catch { return staticsImageOther.value ? [staticsImageOther.value] : []; }})(),
+            statics_image_other: merged,
             meta_title: meta_title.value ?? '',
             meta_keywords: meta_keywords.value ?? '',
             meta_description: meta_description.value ?? ''

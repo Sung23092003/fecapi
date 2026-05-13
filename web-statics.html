@@ -471,11 +471,13 @@
               </div>
 
               <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
-                <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button" title="Xóa lọc">
+                <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button"
+                  title="Xóa lọc">
                   <i class="bi bi-funnel"></i>
                 </button>
                 <div class="position-absolute" style="top: -6px; right: -6px; z-index: 10;">
-                  <i class="bi bi-x-circle-fill" style="color: red; font-size: 16px; background: white; border-radius: 50%;"></i>
+                  <i class="bi bi-x-circle-fill"
+                    style="color: red; font-size: 16px; background: white; border-radius: 50%;"></i>
                 </div>
               </div>
 
@@ -483,106 +485,106 @@
                 <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
               </button>
             </div>
-              </div>
-            </div>
           </div>
-
-          <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
-
-            <!-- LIST VIEW -->
-          <div id="view-list" class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr>
-                  <th style="min-width: 70px;">#</th>
-                  <th style="min-width: 70px;">Ảnh</th>
-                  <th style="min-width: 200px;">Tiêu đề</th>
-                  <th style="min-width: 200px;">Giới thiệu</th>
-                  <th style="min-width: 250px;">Nội dung</th>
-                  <th style="min-width: 120px;">Trạng thái</th>
-                  <th style="min-width: 100px;">Thứ tự</th>
-                  <th style="min-width: 180px;">Ngày tạo</th>
-                  <th style="min-width: 120px;">Hành động</th>
-                  <th style="min-width: 40px;">
-                    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
-                      title="Hiển thị cột">
-                      <i class="bi bi-three-dots-vertical"></i>
-                    </button>
-                  </th>
-                </tr>
-              </thead>
-              <tbody id="tbody-statics"></tbody>
-            </table>
-          </div>
-
-          <!-- GRID VIEW -->
-          <div id="view-grid" class="news-grid d-none"></div>
-
-          <div id="empty-state" class="empty-state d-none">
-            <div class="text-center">
-              <div class="mb-2">
-                <i class="bi bi-inbox" style="font-size: 40px;"></i>
-              </div>
-              <h5 class="mb-1">Không có dữ liệu</h5>
-              <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm bài viết mới.</div>
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="text-muted" id="summary-area"></div>
-            <nav>
-              <ul id="pagination" class="pagination mb-0"></ul>
-            </nav>
-          </div>
-
-          <!-- Column Visibility Modal -->
-          <div id="column-modal" class="column-modal">
-            <div class="column-modal-content">
-              <div class="column-modal-header">
-                <span>Hiển thị/Ẩn cột</span>
-                <button type="button" id="column-modal-close">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </div>
-              <div class="column-modal-body" id="column-list"></div>
-              <div class="column-modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
-                <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Filter Modal -->
-          <div id="filter-modal" class="column-modal">
-            <div class="column-modal-content">
-              <div class="column-modal-header">
-                <span>Bộ lọc</span>
-                <button type="button" id="filter-modal-close">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </div>
-              <div class="column-modal-body">
-                <div class="mb-3">
-                  <label class="form-label">Tìm theo tiêu đề</label>
-                  <input id="filter-title-modal" type="text" class="form-control" placeholder="Nhập tiêu đề..." />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Trạng thái</label>
-                  <select id="filter-status-modal" class="form-select">
-                    <option value="-1" selected>Tất cả trạng thái</option>
-                    <option value="1">Hiện</option>
-                    <option value="0">Ẩn</option>
-                  </select>
-                </div>
-              </div>
-              <div class="column-modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
-                <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
-              </div>
-            </div>
-          </div>
-
         </div>
+      </div>
+
+      <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
+
+      <!-- LIST VIEW -->
+      <div id="view-list" class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th style="min-width: 70px;">#</th>
+              <th style="min-width: 70px;">Ảnh</th>
+              <th style="min-width: 200px;">Tiêu đề</th>
+              <th style="min-width: 200px;">Giới thiệu</th>
+              <th style="min-width: 250px;">Nội dung</th>
+              <th style="min-width: 120px;">Trạng thái</th>
+              <th style="min-width: 100px;">Thứ tự</th>
+              <th style="min-width: 180px;">Ngày tạo</th>
+              <th style="min-width: 120px;">Hành động</th>
+              <th style="min-width: 40px;">
+                <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
+                  title="Hiển thị cột">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody-statics"></tbody>
+        </table>
+      </div>
+
+      <!-- GRID VIEW -->
+      <div id="view-grid" class="news-grid d-none"></div>
+
+      <div id="empty-state" class="empty-state d-none">
+        <div class="text-center">
+          <div class="mb-2">
+            <i class="bi bi-inbox" style="font-size: 40px;"></i>
+          </div>
+          <h5 class="mb-1">Không có dữ liệu</h5>
+          <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm bài viết mới.</div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted" id="summary-area"></div>
+        <nav>
+          <ul id="pagination" class="pagination mb-0"></ul>
+        </nav>
+      </div>
+
+      <!-- Column Visibility Modal -->
+      <div id="column-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Hiển thị/Ẩn cột</span>
+            <button type="button" id="column-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="column-modal-body" id="column-list"></div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Modal -->
+      <div id="filter-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Bộ lọc</span>
+            <button type="button" id="filter-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="column-modal-body">
+            <div class="mb-3">
+              <label class="form-label">Tìm theo tiêu đề</label>
+              <input id="filter-title-modal" type="text" class="form-control" placeholder="Nhập tiêu đề..." />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <select id="filter-status-modal" class="form-select">
+                <option value="-1" selected>Tất cả trạng thái</option>
+                <option value="1">Hiện</option>
+                <option value="0">Ẩn</option>
+              </select>
+            </div>
+          </div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
+          </div>
+        </div>
+      </div>
+
+      </div>
       </div>
     </section>
 
@@ -690,18 +692,18 @@
       const btnDoneColumns = document.getElementById('btn-done-columns');
 
       const columns = [
-        { key: 'index', label: '#', default: true },
-        { key: 'image', label: 'Ảnh', default: true },
-        { key: 'image_other', label: 'Ảnh phụ', default: false },
-        { key: 'title', label: 'Tiêu đề', default: true },
-        { key: 'alias', label: 'Alias', default: true },
-        { key: 'intro', label: 'Giới thiệu', default: true },
-        { key: 'content', label: 'Nội dung', default: true },
-        { key: 'status', label: 'Trạng thái', default: true },
-        { key: 'order', label: 'Thứ tự', default: true },
-        { key: 'created', label: 'Ngày tạo', default: true },
-        { key: 'view_num', label: 'Lượt xem', default: true },
-        { key: 'actions', label: 'Hành động', default: true }
+        { key: 'index', label: '#', default: true, minWidth: '70px' },
+        { key: 'image', label: 'Ảnh', default: true, minWidth: '90px' },
+        { key: 'image_other', label: 'Ảnh phụ', default: false, minWidth: '140px' },
+        { key: 'title', label: 'Tiêu đề', default: true, minWidth: '250px' },
+        { key: 'alias', label: 'Alias', default: true, minWidth: '200px' },
+        { key: 'intro', label: 'Giới thiệu', default: true, minWidth: '250px' },
+        { key: 'content', label: 'Nội dung', default: true, minWidth: '300px' },
+        { key: 'status', label: 'Trạng thái', default: true, minWidth: '120px' },
+        { key: 'order', label: 'Thứ tự', default: true, minWidth: '100px' },
+        { key: 'created', label: 'Ngày tạo', default: true, minWidth: '180px' },
+        { key: 'view_num', label: 'Lượt xem', default: true, minWidth: '120px' },
+        { key: 'actions', label: 'Hành động', default: true, minWidth: '140px' }
       ];
 
       let visibleColumns = {};
@@ -867,20 +869,30 @@
 
         columns.forEach(col => {
           if (!visibleColumns[col.key]) return;
+
           const th = document.createElement('th');
           th.textContent = col.label;
+
+          if (col.minWidth) {
+            th.style.minWidth = col.minWidth;
+          }
+
           thead.appendChild(th);
         });
 
         const thDot = document.createElement('th');
+
         thDot.innerHTML = `
-    <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0">
+    <button type="button" id="btn-column-visibility"
+      class="btn btn-sm btn-link text-dark p-0">
       <i class="bi bi-three-dots-vertical"></i>
     </button>
   `;
+
         thead.appendChild(thDot);
 
         const btn = document.getElementById('btn-column-visibility');
+
         if (btn) {
           btn.addEventListener('click', openColumnModal);
         }

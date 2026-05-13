@@ -288,7 +288,6 @@
                   <th class="table-header-index">#</th>
                   <th class="table-header-fixed">Tên nhóm quyền</th>
                   <th class="table-header-status">Trạng thái</th>
-                  <th class="table-header-date">Ngày tạo</th>
                   <th class="table-header-actions-sm">Hành động</th>
                   <th style="width:40px;">
                     <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0" title="Hiển thị cột">
@@ -459,7 +458,6 @@
         { key: 'idx', label: '#', default: true },
         { key: 'name', label: 'Tên nhóm quyền', default: true },
         { key: 'status', label: 'Trạng thái', default: true },
-        { key: 'created', label: 'Ngày tạo', default: true },
         { key: 'actions', label: 'Hành động', default: true },
       ];
 
@@ -599,10 +597,6 @@
             html += '</div>';
           }
 
-          if (visibleColumns['created']) {
-            html += `<div class="role-card-body"><div class="role-card-meta"><span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(it.group_role_created ?? it.created)}</span></div></div>`;
-          }
-
           if (visibleColumns['actions']) {
             html += '<div class="role-card-footer">';
             html += `<button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.group_role_id}" title="Sửa"><i class="bi bi-pencil"></i> Sửa</button>`;
@@ -643,12 +637,6 @@
             const statusTd = document.createElement('td');
             statusTd.innerHTML = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
             tr.appendChild(statusTd);
-          }
-
-          if (visibleColumns['created']) {
-            const createdTd = document.createElement('td');
-            createdTd.textContent = formatDateTime(it.group_role_created ?? it.created);
-            tr.appendChild(createdTd);
           }
 
           if (visibleColumns['actions']) {

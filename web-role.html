@@ -494,7 +494,6 @@
                   <th class="table-header-index">#</th>
                   <th class="table-header-fixed">Tên quyền</th>
                   <th class="table-header-status">Trạng thái</th>
-                  <th class="table-header-date">Ngày tạo</th>
                   <th class="table-header-actions">Hành động</th>
                   <th style="width:40px;">
                     <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0" title="Hiển thị cột">
@@ -678,7 +677,6 @@
         { key: 'idx', label: '#', default: true },
         { key: 'name', label: 'Tên quyền', default: true },
         { key: 'status', label: 'Trạng thái', default: true },
-        { key: 'created', label: 'Ngày tạo', default: true },
         { key: 'actions', label: 'Hành động', default: true },
       ];
 
@@ -847,11 +845,6 @@ function escapeHtml(str) {
             html += '</div>';
           }
 
-          // Body: created date
-          if (visibleColumns['created']) {
-            html += `<div class="role-card-body"><div class="role-card-meta"><span><i class="bi bi-calendar-event me-1"></i>${formatDateTime(createdOf(it))}</span></div></div>`;
-          }
-
           // Footer: actions
           if (visibleColumns['actions']) {
             html += '<div class="role-card-footer">';
@@ -898,12 +891,6 @@ function escapeHtml(str) {
             const statusTd = document.createElement('td');
             statusTd.innerHTML = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
             tr.appendChild(statusTd);
-          }
-
-          if (visibleColumns['created']) {
-            const createdTd = document.createElement('td');
-            createdTd.textContent = formatDateTime(createdOf(it));
-            tr.appendChild(createdTd);
           }
 
           if (visibleColumns['actions']) {

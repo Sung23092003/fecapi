@@ -496,9 +496,7 @@
                 <label class="form-label">Nhóm quyền<span class="label-req">*</span></label>
                 <div class="controls">
                   <select class="form-select" id="user_rid" name="user_rid">
-                    <option value="1">Super Admin</option>
-                    <option value="2">Admin</option>
-                    <option value="3">Editor</option>
+                    <option value="">Đang tải...</option>
                   </select>
                 </div>
               </div>
@@ -600,6 +598,33 @@
         }, 5000);
       }
 
+      async function loadRoleGroups() {
+        try {
+          const url = `${ENV.BASE_URL}/admin/roleGroup?limit=999`;
+          const headers = Auth.getAuthHeader();
+          const res = await fetch(url, { method: 'GET', headers });
+          if (!res.ok) throw new Error(`API error: ${res.status}`);
+          const json = await res.json();
+          if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
+
+          let items;
+          if (Array.isArray(json.data?.data)) items = json.data.data;
+          else if (Array.isArray(json.data)) items = json.data;
+          else items = [];
+
+          user_rid.innerHTML = '<option value="">-- Chọn nhóm quyền --</option>';
+          items.forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g.group_role_id;
+            opt.textContent = g.group_role_title;
+            user_rid.appendChild(opt);
+          });
+        } catch (err) {
+          console.error('loadRoleGroups error:', err);
+          user_rid.innerHTML = '<option value="">Lỗi tải danh sách</option>';
+        }
+      }
+
       async function loadDetail() {
         if (!id) return;
 
@@ -671,6 +696,8 @@
           showAlert('Có lỗi xảy ra khi lưu người dùng!', 'danger');
         }
       });
+
+      await loadRoleGroups();
 
       await loadDetail().catch(err => {
         showAlert(err?.message || 'Có lỗi xảy ra', 'danger');

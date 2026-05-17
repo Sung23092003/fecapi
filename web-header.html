@@ -350,59 +350,67 @@
         <!-- Right: Layout Selector -->
         <div class="col-lg-3 order-lg-last mb-20">
           <div class="card card-box">
-            <div class="card-inner">
-              <h5 class="section-label mb-3">Chọn kiểu đầu trang</h5>
+            <div class="card-body py-2 d-lg-none">
+              <button class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-between" type="button" data-toggle="layout-options">
+                <span><i class="bi bi-layout-three-columns me-2"></i>Chọn kiểu đầu trang</span>
+                <i class="bi bi-chevron-down layout-toggle-icon"></i>
+              </button>
+            </div>
+            <div id="layout-options-collapse">
+              <div class="card-inner">
+                <h5 class="section-label mb-3 d-none d-lg-block">Chọn kiểu đầu trang</h5>
 
-              <label class="layout-option active" data-value="1">
-                <input type="radio" name="header_layout" value="1" checked>
-                <div class="d-flex align-items-center gap-3">
-                  <div class="layout-visual">
-                    <div class="lv-bar top" style="width:60px;"></div>
-                    <div class="lv-bar main" style="width:60px;"></div>
-                    <div class="lv-row">
-                      <div class="lv-banner third"></div>
-                      <div class="lv-banner third"></div>
-                      <div class="lv-banner third"></div>
+                <label class="layout-option active" data-value="1">
+                  <input type="radio" name="header_layout" value="1" checked>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="layout-visual">
+                      <div class="lv-bar top" style="width:60px;"></div>
+                      <div class="lv-bar main" style="width:60px;"></div>
+                      <div class="lv-row">
+                        <div class="lv-banner third"></div>
+                        <div class="lv-banner third"></div>
+                        <div class="lv-banner third"></div>
+                      </div>
                     </div>
+                    <div class="flex-fill">
+                      <div class="layout-label">Kiểu 1</div>
+                      <div class="small text-muted-2">Top - Main - 3 banner</div>
+                    </div>
+                    <div class="radio-dot"></div>
                   </div>
-                  <div class="flex-fill">
-                    <div class="layout-label">Kiểu 1</div>
-                    <div class="small text-muted-2">Top - Main - 3 banner</div>
-                  </div>
-                  <div class="radio-dot"></div>
-                </div>
-              </label>
+                </label>
 
-              <label class="layout-option" data-value="2">
-                <input type="radio" name="header_layout" value="2">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="layout-visual">
-                    <div class="lv-bar top" style="width:60px;"></div>
-                    <div class="lv-bar main" style="width:60px;"></div>
-                    <div class="lv-banner wide" style="height:8px;"></div>
+                <label class="layout-option" data-value="2">
+                  <input type="radio" name="header_layout" value="2">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="layout-visual">
+                      <div class="lv-bar top" style="width:60px;"></div>
+                      <div class="lv-bar main" style="width:60px;"></div>
+                      <div class="lv-banner wide" style="height:8px;"></div>
+                    </div>
+                    <div class="flex-fill">
+                      <div class="layout-label">Kiểu 2</div>
+                      <div class="small text-muted-2">Top - Main - 1 banner</div>
+                    </div>
+                    <div class="radio-dot"></div>
                   </div>
-                  <div class="flex-fill">
-                    <div class="layout-label">Kiểu 2</div>
-                    <div class="small text-muted-2">Top - Main - 1 banner</div>
-                  </div>
-                  <div class="radio-dot"></div>
-                </div>
-              </label>
+                </label>
 
-              <label class="layout-option" data-value="3">
-                <input type="radio" name="header_layout" value="3">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="layout-visual">
-                    <div class="lv-bar menu" style="width:60px;"></div>
-                    <div class="lv-banner wide" style="height:8px;"></div>
+                <label class="layout-option" data-value="3">
+                  <input type="radio" name="header_layout" value="3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="layout-visual">
+                      <div class="lv-bar menu" style="width:60px;"></div>
+                      <div class="lv-banner wide" style="height:8px;"></div>
+                    </div>
+                    <div class="flex-fill">
+                      <div class="layout-label">Kiểu 3</div>
+                      <div class="small text-muted-2">Menu - 1 banner</div>
+                    </div>
+                    <div class="radio-dot"></div>
                   </div>
-                  <div class="flex-fill">
-                    <div class="layout-label">Kiểu 3</div>
-                    <div class="small text-muted-2">Menu - 1 banner</div>
-                  </div>
-                  <div class="radio-dot"></div>
-                </div>
-              </label>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -634,6 +642,17 @@
       const on = (type, el, listener, all = false) => {
         (all ? select(el, true) : [select(el)]).forEach(e => e && e.addEventListener(type, listener));
       };
+
+      /* ===================== Mobile Layout Toggle ===================== */
+      const layoutToggleBtn = document.querySelector('[data-toggle="layout-options"]');
+      const layoutCollapse = document.getElementById('layout-options-collapse');
+      const layoutToggleIcon = document.querySelector('.layout-toggle-icon');
+      if (layoutToggleBtn && layoutCollapse) {
+        layoutToggleBtn.addEventListener('click', function () {
+          layoutCollapse.classList.toggle('show');
+          if (layoutToggleIcon) layoutToggleIcon.classList.toggle('open');
+        });
+      }
 
       /* ===================== Layout Selector ===================== */
       const layoutRadios = document.querySelectorAll('input[name="header_layout"]');

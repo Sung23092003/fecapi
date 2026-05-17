@@ -222,6 +222,26 @@
   padding-top: 20px;
 }
 
+/* Mobile layout toggle */
+#layout-options-collapse {
+  display: block;
+}
+.layout-toggle-icon {
+  transition: transform 0.25s ease;
+}
+.layout-toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 991.98px) {
+  #layout-options-collapse {
+    display: none;
+  }
+  #layout-options-collapse.show {
+    display: block;
+  }
+}
+
 @media (max-width: 575.98px) {
   .upload-box {
     min-height: 120px;

@@ -364,12 +364,26 @@
           <div class="card card-box">
             <div class="card-inner">
               <h5 class="section-label mb-3">Hướng dẫn</h5>
-              <ul class="small text-muted ps-3 mb-0" style="line-height:1.8;">
+              <ul class="small text-muted ps-3 mb-3" style="line-height:1.8;">
                 <li>Sử dụng toggle để ẩn/hiện từng mục menu</li>
                 <li>Thay đổi được lưu tự động trên trình duyệt này</li>
                 <li>Khi ẩn mục cha, các mục con cũng sẽ ẩn theo</li>
                 <li>Nhấn "Đặt lại tất cả" để hiện toàn bộ menu</li>
               </ul>
+            </div>
+          </div>
+          <div class="card card-box mt-3">
+            <div class="card-inner">
+              <h5 class="section-label mb-3">Chế độ Menu Bottom (Mobile)</h5>
+              <p class="small text-muted mb-2">
+                Chuyển sidebar thành thanh menu dưới cùng trên điện thoại.
+              </p>
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="small fw-medium">Bottom Menu</span>
+                <div class="form-check form-switch mb-0">
+                  <input class="form-check-input" type="checkbox" role="switch" id="bottomMenuToggle">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -585,6 +599,41 @@
       });
 
       render();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const BOTTOM_MENU_KEY = 'niceadmin_menu_bottom';
+      const toggle = document.getElementById('bottomMenuToggle');
+      if (!toggle) return;
+
+      // Load initial state
+      try {
+        toggle.checked = localStorage.getItem(BOTTOM_MENU_KEY) === 'true';
+      } catch { toggle.checked = false; }
+
+      // Save on change
+      toggle.addEventListener('change', function () {
+        localStorage.setItem(BOTTOM_MENU_KEY, this.checked ? 'true' : 'false');
+        // Dispatch storage event so main.js picks it up
+        window.dispatchEvent(new CustomEvent('bottomMenuChange', { detail: { enabled: this.checked } }));
+        // Show feedback
+        const msg = this.checked ? 'Đã bật chế độ Menu Bottom' : 'Đã tắt chế độ Menu Bottom';
+        const alertDiv = document.getElementById('formAlert') || document.getElementById('alertPlaceholder');
+        if (alertDiv) {
+          const div = document.createElement('div');
+          div.className = 'alert alert-success mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+          div.style.zIndex = '9999';
+          div.style.minWidth = '250px';
+          div.style.maxWidth = '350px';
+          div.textContent = msg;
+          document.body.appendChild(div);
+          setTimeout(function () { div.remove(); }, 3000);
+        }
+      });
     })();
   </script>
 </body>

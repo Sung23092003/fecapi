@@ -654,4 +654,198 @@
     }
   }
 
+  /**
+   * Bottom Menu (Mobile)
+   */
+  const BOTTOM_MENU_KEY = 'niceadmin_menu_bottom';
+
+  function isBottomMenuEnabled() {
+    try { return localStorage.getItem(BOTTOM_MENU_KEY) === 'true'; }
+    catch { return false; }
+  }
+
+  function getCurrentPage() {
+    return window.location.pathname.split('/').pop() || 'index.html';
+  }
+
+  let _bottomMenuEscapeHandler = null;
+
+  function renderBottomMenu() {
+    const enabled = isBottomMenuEnabled();
+    const body = document.body;
+
+    // Clean up existing elements and listeners
+    const oldMenu = document.getElementById('bottomMenu');
+    if (oldMenu) oldMenu.remove();
+    const oldOverlay = document.querySelector('.bottom-menu-overlay');
+    if (oldOverlay) oldOverlay.remove();
+    const oldMore = document.querySelector('.bottom-menu-more-dropdown');
+    if (oldMore) oldMore.remove();
+    if (_bottomMenuEscapeHandler) {
+      document.removeEventListener('keydown', _bottomMenuEscapeHandler);
+      _bottomMenuEscapeHandler = null;
+    }
+
+    body.classList.remove('bottom-menu-active');
+
+    if (!enabled) return;
+
+    body.classList.add('bottom-menu-active');
+
+    const currentPage = getCurrentPage();
+
+    const items = [
+      { url: 'index.html', label: 'Trang chủ', icon: 'bi-house' },
+      { url: 'web-category.html', label: 'Danh mục', icon: 'bi-folder' },
+      { url: 'web-statics.html', label: 'Bài viết', icon: 'bi-file-earmark-text' },
+      { url: null, label: 'Thêm', icon: 'bi-three-dots', isMore: true },
+    ];
+
+    // Bottom nav bar
+    const menu = document.createElement('nav');
+    menu.id = 'bottomMenu';
+    menu.className = 'bottom-menu';
+
+    items.forEach(function (item) {
+      const el = document.createElement(item.url ? 'a' : 'button');
+      el.className = 'bottom-menu-item';
+      if (item.url) {
+        el.href = item.url;
+        if (currentPage === item.url) el.classList.add('active');
+      }
+      el.innerHTML = '<i class="bi ' + item.icon + '"></i><span>' + item.label + '</span>';
+      menu.appendChild(el);
+    });
+
+    body.appendChild(menu);
+
+    // Overlay for more bottom sheet
+    const overlay = document.createElement('div');
+    overlay.className = 'bottom-menu-overlay';
+    body.appendChild(overlay);
+
+    // More bottom sheet (full sidebar)
+    const moreDropdown = document.createElement('div');
+    moreDropdown.className = 'bottom-menu-more-dropdown';
+
+    // Header with close button
+    const header = document.createElement('div');
+    header.className = 'bottom-more-header';
+    header.innerHTML = '<span class="bottom-more-title">Danh mục</span><button class="bottom-more-close" type="button"><i class="bi bi-x-lg"></i></button>';
+    moreDropdown.appendChild(header);
+
+    // Clone sidebar nav content
+    const sidebarNav = document.querySelector('#sidebar-nav');
+    if (sidebarNav) {
+      const clone = sidebarNav.cloneNode(true);
+      clone.id = 'bottom-sidebar-nav';
+
+      // Apply visibility settings: match by index from original sidebar
+      const origItems = sidebarNav.querySelectorAll('.nav-item, .nav-content li');
+      const cloneItems = clone.querySelectorAll('.nav-item, .nav-content li');
+      origItems.forEach(function (orig, idx) {
+        if (idx < cloneItems.length && orig.style.display === 'none') {
+          cloneItems[idx].style.display = 'none';
+        }
+      });
+
+      // Convert all collapse toggles to simple expand/collapse
+      clone.querySelectorAll('a[data-bs-toggle="collapse"]').forEach(function (link) {
+        const targetId = link.getAttribute('data-bs-target');
+        if (!targetId) return;
+        const id = targetId.replace('#', '');
+        const target = clone.querySelector('#' + id.replace(/[^\w-]/g, ''));
+        if (!target) return;
+
+        link.removeAttribute('data-bs-toggle');
+        link.removeAttribute('data-bs-target');
+        link.removeAttribute('data-bs-parent');
+        target.classList.remove('collapse');
+
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          target.classList.toggle('bottom-nav-open');
+          link.classList.toggle('collapsed');
+        });
+      });
+
+      // Clean remaining data-bs attributes
+      clone.querySelectorAll('[data-bs-parent]').forEach(function (el) {
+        el.removeAttribute('data-bs-parent');
+      });
+
+      // Mark active page
+      clone.querySelectorAll('a').forEach(function (a) {
+        const href = a.getAttribute('href');
+        if (href && getCurrentPage() === href.split('/').pop()) {
+          a.classList.add('active');
+        }
+      });
+
+      moreDropdown.appendChild(clone);
+    }
+
+    body.appendChild(moreDropdown);
+
+    // Toggle more bottom sheet
+    const moreBtn = menu.querySelector('.bottom-menu-item:last-child');
+    function openMore() {
+      moreDropdown.classList.add('show');
+      overlay.classList.add('show');
+      body.classList.add('bottom-more-open');
+    }
+    function closeMore() {
+      moreDropdown.classList.remove('show');
+      overlay.classList.remove('show');
+      body.classList.remove('bottom-more-open');
+    }
+
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (moreDropdown.classList.contains('show')) {
+          closeMore();
+        } else {
+          openMore();
+        }
+      });
+    }
+
+    // Close button in header
+    moreDropdown.querySelector('.bottom-more-close')?.addEventListener('click', closeMore);
+
+    // Close on overlay click
+    overlay.addEventListener('click', closeMore);
+
+    // Close on Escape
+    _bottomMenuEscapeHandler = function (e) {
+      if (e.key === 'Escape') closeMore();
+    };
+    document.addEventListener('keydown', _bottomMenuEscapeHandler);
+  }
+
+  // Re-render when setting changes (listen for storage events from other tabs)
+  window.addEventListener('storage', function (e) {
+    if (e.key === BOTTOM_MENU_KEY) {
+      renderBottomMenu();
+    }
+  });
+
+  // Listen for custom event from the settings page
+  window.addEventListener('bottomMenuChange', function () {
+    renderBottomMenu();
+  });
+
+  // Render on DOMContentLoaded
+  function bottomMenuInit() {
+    setTimeout(renderBottomMenu, 150);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bottomMenuInit);
+  } else {
+    bottomMenuInit();
+  }
+
 })();

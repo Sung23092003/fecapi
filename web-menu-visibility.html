@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Cài đặt Ẩn/Hiện Menu - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+
+  <style>
+    .menu-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-radius: 8px;
+      transition: background 0.15s;
+    }
+    .menu-item-row:hover {
+      background: #f8f9fa;
+    }
+    .menu-item-row .menu-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .menu-item-row .menu-info i {
+      width: 20px;
+      text-align: center;
+      color: #4154f1;
+    }
+    .menu-item-row .menu-info i.bi-circle {
+      color: #98a2b3;
+      font-size: 8px;
+    }
+    .menu-item-row .menu-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #344767;
+    }
+    .menu-item-row.sub-menu .menu-name {
+      font-size: 13px;
+      color: #555;
+    }
+    .menu-item-row.sub-menu.sub-sub .menu-name {
+      font-size: 12px;
+      color: #777;
+      padding-left: 20px;
+    }
+    .section-divider {
+      font-size: 12px;
+      font-weight: 700;
+      color: #98a2b3;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 16px 16px 8px;
+      margin: 0;
+    }
+    .form-check-input:checked {
+      background-color: #4154f1;
+      border-color: #4154f1;
+    }
+    .form-check-input {
+      width: 44px;
+      height: 22px;
+      cursor: pointer;
+      margin: 0;
+    }
+    .form-check-input:focus {
+      border-color: #4154f1;
+      box-shadow: 0 0 0 0.2rem rgba(65,84,241,0.15);
+    }
+    .visibility-stats {
+      display: flex;
+      gap: 16px;
+      padding: 12px 16px;
+      background: #f0f2ff;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .visibility-stats .stat-item {
+      font-size: 13px;
+      color: #344767;
+    }
+    .visibility-stats .stat-item strong {
+      font-size: 18px;
+      color: #4154f1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">You have 4 new notifications<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-exclamation-circle text-warning"></i><div><h4>Lorem Ipsum</h4><p>Quae dolorem earum veritatis oditseno</p><p>30 min. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-x-circle text-danger"></i><div><h4>Atque rerum nesciunt</h4><p>Quae dolorem earum veritatis oditseno</p><p>1 hr. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-check-circle text-success"></i><div><h4>Sit rerum fuga</h4><p>Quae dolorem earum veritatis oditseno</p><p>2 hrs. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="notification-item"><i class="bi bi-info-circle text-primary"></i><div><h4>Dicta reprehenderit</h4><p>Quae dolorem earum veritatis oditseno</p><p>4 hrs. ago</p></div></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-footer"><a href="#">Show all notifications</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">You have 3 new messages<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-1.jpg" alt="" class="rounded-circle"><div><h4>Maria Hudson</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>4 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-2.jpg" alt="" class="rounded-circle"><div><h4>Anna Nelson</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>6 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="message-item"><a href="#"><img src="assets/img/messages-3.jpg" alt="" class="rounded-circle"><div><h4>David Muldon</h4><p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p><p>8 hrs. ago</p></div></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li class="dropdown-footer"><a href="#">Show all messages</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#layout-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Giao diện</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="layout-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý Đầu Trang</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Thân Trang</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Chân Trang</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="web-category.html">
+          <i class="bi bi-folder"></i>
+          <span>Quản lý danh mục</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#articles-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-file-earmark-text"></i><span>Quản lý bài viết</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="articles-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="web-statics.html"><i class="bi bi-circle"></i><span>Quản lý tin tức</span></a></li>
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#services-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-circle"></i><span>Quản lý dịch vụ</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="services-nav" class="nav-content collapse" data-bs-parent="#articles-nav">
+              <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý tin tức</span></a></li>
+              <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Landing Page</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-circle"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="products-nav" class="nav-content collapse" data-bs-parent="#articles-nav">
+              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý Bài Sản phẩm</span></a></li>
+              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý Sản phẩm bán chạy</span></a></li>
+              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý thông tin thanh toán</span></a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-cart"></i>
+          <span>Quản lý Đơn hàng</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-chat-dots"></i>
+          <span>Quản lý Yêu cầu tư vấn</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#customer-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>Quản lý user người dùng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="customer-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý user khách hàng</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Comment</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-link-45deg"></i>
+          <span>Quản Lý Mã và Link Chat</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="web-users.html">
+          <i class="bi bi-person-badge"></i>
+          <span>Quản lý User</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Quy định &amp; Hướng dẫn</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="regulations-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Quy định chung</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Hướng dẫn</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#">
+          <i class="bi bi-search"></i>
+          <span>Quản lý SEO</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Danh sách icons</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="icons-bootstrap.html"><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html"><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html"><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#permissions-nav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-circle"></i><span>Phân quyền</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="permissions-nav" class="nav-content collapse" data-bs-parent="#settings-nav">
+              <li><a href="web-role.html"><i class="bi bi-circle"></i><span>Quản lý quyền</span></a></li>
+              <li><a href="web-role-group.html"><i class="bi bi-circle"></i><span>Quản lý nhóm quyền</span></a></li>
+            </ul>
+          </li>
+          <li><a href="web-menu-visibility.html" class="active"><i class="bi bi-circle"></i><span>Cài đặt ẩn/hiện menu</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
+        </ul>
+      </li>
+
+    </ul>
+  </aside>
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Cài đặt Ẩn/Hiện Menu</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Cài đặt Chung</a></li>
+          <li class="breadcrumb-item active">Ẩn/Hiện Menu</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card card-box">
+            <div class="card-inner">
+              <div id="alertPlaceholder"></div>
+
+              <p class="text-muted mb-3">
+                Bật/tắt các mục menu để ẩn hoặc hiện trên thanh sidebar. 
+                Thay đổi được tự động lưu vào trình duyệt.
+              </p>
+
+              <div class="visibility-stats" id="visibilityStats">
+                <div class="stat-item">Hiện: <strong id="countVisible">0</strong></div>
+                <div class="stat-item">Ẩn: <strong id="countHidden">0</strong></div>
+                <div class="stat-item">Tổng: <strong id="countTotal">0</strong></div>
+              </div>
+
+              <div id="menuList"></div>
+
+              <div class="mt-3">
+                <button type="button" class="btn btn-outline-secondary" id="btnResetAll">
+                  <i class="bi bi-arrow-counterclockwise me-1"></i>Đặt lại tất cả
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="card card-box">
+            <div class="card-inner">
+              <h5 class="section-label mb-3">Hướng dẫn</h5>
+              <ul class="small text-muted ps-3 mb-0" style="line-height:1.8;">
+                <li>Sử dụng toggle để ẩn/hiện từng mục menu</li>
+                <li>Thay đổi được lưu tự động trên trình duyệt này</li>
+                <li>Khi ẩn mục cha, các mục con cũng sẽ ẩn theo</li>
+                <li>Nhấn "Đặt lại tất cả" để hiện toàn bộ menu</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <a href="index.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>ĐÓNG</span>
+    </a>
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const STORAGE_KEY = 'niceadmin_menu_visibility';
+
+      const menuData = [
+        {
+          section: 'Chính',
+          items: [
+            { id: 'dashboard', name: 'Dashboard', icon: 'bi-grid' }
+          ]
+        },
+        {
+          section: 'Quản lý Giao diện',
+          items: [
+            { id: 'layout', name: 'Quản lý Giao diện', icon: 'bi-columns-gap' },
+            { id: 'layout-header', name: 'Quản lý Đầu Trang', icon: 'bi-circle', parent: 'layout' },
+            { id: 'layout-body', name: 'Quản lý Thân Trang', icon: 'bi-circle', parent: 'layout' },
+            { id: 'layout-footer', name: 'Quản lý Chân Trang', icon: 'bi-circle', parent: 'layout' }
+          ]
+        },
+        {
+          section: 'Quản lý danh mục',
+          items: [
+            { id: 'category', name: 'Quản lý danh mục', icon: 'bi-folder' }
+          ]
+        },
+        {
+          section: 'Quản lý bài viết',
+          items: [
+            { id: 'articles', name: 'Quản lý bài viết', icon: 'bi-file-earmark-text' },
+            { id: 'articles-news', name: 'Quản lý tin tức', icon: 'bi-circle', parent: 'articles' },
+            { id: 'articles-services', name: 'Quản lý dịch vụ', icon: 'bi-circle', parent: 'articles' },
+            { id: 'articles-services-news', name: 'Quản lý tin tức (DV)', icon: 'bi-circle', parent: 'articles-services' },
+            { id: 'articles-services-landing', name: 'Quản lý Landing Page', icon: 'bi-circle', parent: 'articles-services' },
+            { id: 'articles-products', name: 'Quản lý Sản phẩm', icon: 'bi-circle', parent: 'articles' },
+            { id: 'articles-products-post', name: 'Quản Lý Bài Sản phẩm', icon: 'bi-circle', parent: 'articles-products' },
+            { id: 'articles-products-hot', name: 'Quản Lý Sản phẩm bán chạy', icon: 'bi-circle', parent: 'articles-products' },
+            { id: 'articles-products-payment', name: 'Quản Lý thông tin thanh toán', icon: 'bi-circle', parent: 'articles-products' }
+          ]
+        },
+        {
+          section: 'Đơn hàng & Tư vấn',
+          items: [
+            { id: 'orders', name: 'Quản lý Đơn hàng', icon: 'bi-cart' },
+            { id: 'consult', name: 'Quản lý Yêu cầu tư vấn', icon: 'bi-chat-dots' }
+          ]
+        },
+        {
+          section: 'Người dùng',
+          items: [
+            { id: 'users', name: 'Quản lý user người dùng', icon: 'bi-people' },
+            { id: 'users-customer', name: 'Quản lý user khách hàng', icon: 'bi-circle', parent: 'users' },
+            { id: 'users-vip', name: 'Quản lý cấp độ VIP', icon: 'bi-circle', parent: 'users' },
+            { id: 'users-comment', name: 'Quản lý Comment', icon: 'bi-circle', parent: 'users' },
+            { id: 'chat-link', name: 'Quản Lý Mã và Link Chat', icon: 'bi-link-45deg' },
+            { id: 'system-users', name: 'Quản lý User', icon: 'bi-person-badge' }
+          ]
+        },
+        {
+          section: 'Quy định & Hướng dẫn',
+          items: [
+            { id: 'regulations', name: 'Quy định & Hướng dẫn', icon: 'bi-book' },
+            { id: 'regulations-general', name: 'QL Quy định chung', icon: 'bi-circle', parent: 'regulations' },
+            { id: 'regulations-guide', name: 'QL Hướng dẫn', icon: 'bi-circle', parent: 'regulations' }
+          ]
+        },
+        {
+          section: 'SEO & Icons',
+          items: [
+            { id: 'seo', name: 'Quản lý SEO', icon: 'bi-search' },
+            { id: 'icons', name: 'Danh sách icons', icon: 'bi-gem' },
+            { id: 'icons-bootstrap', name: 'Bootstrap', icon: 'bi-circle', parent: 'icons' },
+            { id: 'icons-remix', name: 'Remix', icon: 'bi-circle', parent: 'icons' },
+            { id: 'icons-boxicons', name: 'Boxicons', icon: 'bi-circle', parent: 'icons' },
+            { id: 'icons-fontawesome', name: 'Fontawesome', icon: 'bi-circle', parent: 'icons' }
+          ]
+        },
+        {
+          section: 'Cài đặt Chung',
+          items: [
+            { id: 'settings', name: 'Cài đặt Chung', icon: 'bi-gear' },
+            { id: 'settings-permissions', name: 'Phân quyền', icon: 'bi-circle', parent: 'settings' },
+            { id: 'settings-permissions-role', name: 'Quản lý quyền', icon: 'bi-circle', parent: 'settings-permissions' },
+            { id: 'settings-permissions-group', name: 'Quản lý nhóm quyền', icon: 'bi-circle', parent: 'settings-permissions' },
+            { id: 'settings-menu', name: 'Cài đặt ẩn/hiện menu', icon: 'bi-circle', parent: 'settings' },
+            { id: 'settings-dvhc', name: 'Quản lý ĐVHC', icon: 'bi-circle', parent: 'settings' },
+            { id: 'settings-bfe', name: 'Hướng dẫn BFE', icon: 'bi-circle', parent: 'settings' }
+          ]
+        }
+      ];
+
+      function getSettings() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : {};
+        } catch { return {}; }
+      }
+
+      function saveSettings(settings) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+      }
+
+      function isVisible(id, settings) {
+        if (settings[id] === false) return false;
+        return true;
+      }
+
+      function render() {
+        const settings = getSettings();
+        const container = document.getElementById('menuList');
+        let html = '';
+        let total = 0, visible = 0, hidden = 0;
+
+        menuData.forEach(function (group) {
+          html += '<div class="section-divider">' + group.section + '</div>';
+
+          group.items.forEach(function (item) {
+            const isSub = !!item.parent;
+            const vis = isVisible(item.id, settings);
+            if (vis) visible++; else hidden++;
+            total++;
+
+            const iconHtml = isSub
+              ? '<i class="bi bi-circle"></i>'
+              : '<i class="' + item.icon + '"></i>';
+
+            html +=
+              '<div class="menu-item-row' + (isSub ? ' sub-menu' : '') + '">' +
+                '<div class="menu-info">' +
+                  iconHtml +
+                  '<span class="menu-name">' + item.name + '</span>' +
+                '</div>' +
+                '<div class="form-check form-switch mb-0">' +
+                  '<input class="form-check-input menu-toggle" type="checkbox" role="switch" data-id="' + item.id + '"' + (vis ? ' checked' : '') + '>' +
+                '</div>' +
+              '</div>';
+          });
+        });
+
+        container.innerHTML = html;
+        document.getElementById('countTotal').textContent = total;
+        document.getElementById('countVisible').textContent = visible;
+        document.getElementById('countHidden').textContent = hidden;
+
+        // Add event listeners to toggles
+        container.querySelectorAll('.menu-toggle').forEach(function (toggle) {
+          toggle.addEventListener('change', function () {
+            const id = this.dataset.id;
+            const settings = getSettings();
+            if (this.checked) {
+              delete settings[id];
+            } else {
+              settings[id] = false;
+            }
+            saveSettings(settings);
+            render();
+            showAlert(this.checked ? 'Đã hiện mục menu' : 'Đã ẩn mục menu', 'success');
+          });
+        });
+      }
+
+      // Alert
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'formAlert';
+      alertDiv.className = 'd-none alert mb-3';
+      document.getElementById('alertPlaceholder').appendChild(alertDiv);
+
+      function showAlert(message, type) {
+        alertDiv.innerHTML = message;
+        alertDiv.className = 'alert alert-' + (type || 'success') + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.minWidth = '250px';
+        alertDiv.style.maxWidth = '350px';
+        alertDiv.classList.remove('d-none');
+        setTimeout(function () { alertDiv.classList.add('d-none'); }, 3000);
+      }
+
+      // Reset all
+      document.getElementById('btnResetAll').addEventListener('click', function () {
+        localStorage.removeItem(STORAGE_KEY);
+        render();
+        showAlert('Đã đặt lại tất cả menu về trạng thái hiện', 'success');
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

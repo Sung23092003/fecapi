@@ -491,7 +491,7 @@
       // 13. Cài đặt Chung
       { url: 'web-role.html', label: '    Quản lý quyền', keys: ['Quyền', 'Role', 'Phân quyền'] },
       { url: 'web-role-group.html', label: '    Quản lý nhóm quyền', keys: ['Nhóm quyền', 'Role group'] },
-      { url: '#', label: '  Cài đặt ẩn/hiện menu', keys: ['Ẩn menu', 'Hiện menu', 'Menu'] },
+      { url: 'web-menu-visibility.html', label: '  Cài đặt ẩn/hiện menu', keys: ['Ẩn menu', 'Hiện menu', 'Menu'] },
       { url: '#', label: '  Quản lý ĐVHC', keys: ['ĐVHC', 'Đơn vị hành chính'] },
       { url: '#', label: '  Hướng dẫn BFE', keys: ['BFE', 'Hướng dẫn'] }
     ];

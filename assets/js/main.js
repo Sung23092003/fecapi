@@ -423,4 +423,235 @@
     }, 200);
   }
 
+  /**
+   * Global Search - Dropdown style (vi)
+   */
+  const header = document.getElementById('header');
+  const searchBarEl = header ? header.querySelector('.search-bar') : null;
+  if (searchBarEl && searchBarEl.querySelector('input[type="text"]')) {
+    const searchBar = searchBarEl;
+    const searchForm = searchBar.querySelector('form');
+
+    // Define menu items for search (only sidebar items)
+    const searchMenuItems = [
+      // 1. Dashboard
+      { url: 'index.html', label: 'Dashboard', keys: ['Dashboard', 'Trang chủ'] },
+
+      // 2. Quản lý Giao diện
+      { url: '#', label: 'Quản lý Giao diện', keys: ['Giao diện', 'Layout', 'Đầu trang', 'Thân trang', 'Chân trang'] },
+      { url: '#', label: '  Quản lý Đầu Trang', keys: ['Đầu Trang', 'Header'] },
+      { url: '#', label: '  Quản lý Thân Trang', keys: ['Thân Trang', 'Body'] },
+      { url: '#', label: '  Quản lý Chân Trang', keys: ['Chân Trang', 'Footer'] },
+
+      // 3. Quản lý danh mục
+      { url: 'web-category.html', label: 'Quản lý danh mục', keys: ['Danh mục', 'Quản lý danh mục', 'Category'] },
+
+      // 4. Quản lý bài viết
+      { url: 'web-statics.html', label: '  Quản lý tin tức', keys: ['Tin tức', 'Bài viết', 'Quản lý bài viết', 'Statics', 'News'] },
+      { url: '#', label: '    Quản lý dịch vụ', keys: ['Dịch vụ', 'Service'] },
+      { url: '#', label: '      Quản lý tin tức', keys: ['Dịch vụ tin tức', 'Service news'] },
+      { url: '#', label: '      Quản lý Landing Page', keys: ['Landing Page', 'Landing'] },
+      { url: '#', label: '    Quản lý Sản phẩm', keys: ['Sản phẩm', 'Product'] },
+      { url: '#', label: '      Quản Lý Bài Sản phẩm', keys: ['Bài Sản phẩm', 'Product post'] },
+      { url: '#', label: '      Quản Lý Sản phẩm bán chạy', keys: ['Bán chạy', 'Best seller'] },
+      { url: '#', label: '      Quản Lý thông tin thanh toán', keys: ['Thanh toán', 'Payment'] },
+
+      // 5. Đơn hàng
+      { url: '#', label: 'Quản lý Đơn hàng', keys: ['Đơn hàng', 'Order'] },
+
+      // 6. Yêu cầu tư vấn
+      { url: '#', label: 'Quản lý Yêu cầu tư vấn', keys: ['Yêu cầu tư vấn', 'Tư vấn', 'Consult'] },
+
+      // 7. User người dùng
+      { url: '#', label: 'Quản lý user người dùng', keys: ['User', 'Người dùng', 'Khách hàng'] },
+      { url: '#', label: '  Quản lý user khách hàng', keys: ['Khách hàng', 'Customer'] },
+      { url: '#', label: '  Quản lý cấp độ VIP', keys: ['VIP', 'Cấp độ', 'Vip'] },
+      { url: '#', label: '  Quản lý Comment', keys: ['Comment', 'Bình luận'] },
+
+      // 8. Mã và Link Chat
+      { url: '#', label: 'Quản Lý Mã và Link Chat', keys: ['Mã', 'Link Chat', 'Chat', 'Code'] },
+
+      // 9. User
+      { url: 'web-users.html', label: 'Quản lý User', keys: ['Quản lý User', 'Users', 'Người dùng'] },
+
+      // 10. Quy định & Hướng dẫn
+      { url: '#', label: 'Quy định & Hướng dẫn', keys: ['Quy định', 'Hướng dẫn', 'Regulation'] },
+      { url: '#', label: '  QL Quy định chung', keys: ['Quy định chung'] },
+      { url: '#', label: '  QL Hướng dẫn', keys: ['Hướng dẫn'] },
+
+      // 11. SEO
+      { url: '#', label: 'Quản lý SEO', keys: ['SEO', 'Seo'] },
+
+      // 12. Icons
+      { url: 'icons-bootstrap.html', label: '  Bootstrap', keys: ['Bootstrap', 'Icon Bootstrap'] },
+      { url: 'icons-remix.html', label: '  Remix', keys: ['Remix', 'Icon Remix'] },
+      { url: 'icons-boxicons.html', label: '  Boxicons', keys: ['Boxicons', 'Icon Boxicons'] },
+      { url: 'https://fontawesome.com/search?ic=free-collection', label: '  Fontawesome', keys: ['Fontawesome', 'Icon Fontawesome'], blank: true },
+
+      // 13. Cài đặt Chung
+      { url: 'web-role.html', label: '    Quản lý quyền', keys: ['Quyền', 'Role', 'Phân quyền'] },
+      { url: 'web-role-group.html', label: '    Quản lý nhóm quyền', keys: ['Nhóm quyền', 'Role group'] },
+      { url: '#', label: '  Cài đặt ẩn/hiện menu', keys: ['Ẩn menu', 'Hiện menu', 'Menu'] },
+      { url: '#', label: '  Quản lý ĐVHC', keys: ['ĐVHC', 'Đơn vị hành chính'] },
+      { url: '#', label: '  Hướng dẫn BFE', keys: ['BFE', 'Hướng dẫn'] }
+    ];
+
+    // Remove Vietnamese accents for accent-insensitive search
+    function removeVietnameseTones(str) {
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+      str = str.replace(/đ/g, 'd');
+      str = str.replace(/[^a-z0-9\s]/g, '');
+      return str;
+    }
+
+    // Create dropdown container
+    const searchDropdown = document.createElement('div');
+    searchDropdown.className = 'global-search-dropdown';
+    searchDropdown.style.cssText = 'display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid #ddd;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);max-height:360px;overflow-y:auto;z-index:9999;margin-top:4px;';
+    searchBar.style.position = 'relative';
+    searchBar.appendChild(searchDropdown);
+
+    const searchInput = searchBar.querySelector('input');
+    if (searchInput) {
+      searchInput.setAttribute('autocomplete', 'off');
+      searchInput.placeholder = 'Tìm kiếm trang...';
+    }
+
+    let selectedIndex = -1;
+    let currentResults = [];
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function highlightMatch(text, query) {
+      if (!query) return escapeHtml(text);
+      const normalizedText = removeVietnameseTones(text);
+      const idx = normalizedText.indexOf(query);
+      if (idx === -1) return escapeHtml(text);
+      const before = escapeHtml(text.substring(0, idx));
+      const match = escapeHtml(text.substring(idx, idx + query.length));
+      const after = escapeHtml(text.substring(idx + query.length));
+      return `${before}<span style="background:#bfdbfe;font-weight:600;border-radius:2px;padding:0 1px;">${match}</span>${after}`;
+    }
+
+    function renderSearchResults(results, query) {
+      searchDropdown.innerHTML = '';
+      if (results.length === 0) {
+        searchDropdown.innerHTML = '<div style="padding:12px 16px;color:#999;font-size:14px;text-align:center;">Không tìm thấy kết quả</div>';
+        searchDropdown.style.display = 'block';
+        currentResults = [];
+        selectedIndex = -1;
+        return;
+      }
+
+      currentResults = results;
+      selectedIndex = -1;
+      results.forEach((item, i) => {
+        const el = document.createElement('a');
+        el.href = item.url;
+        if (item.blank) el.target = '_blank';
+        el.className = 'global-search-item';
+        el.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 16px;color:#333;text-decoration:none;font-size:14px;border-bottom:1px solid #f0f0f0;transition:background .15s;cursor:pointer;';
+        if (i === results.length - 1) el.style.borderBottom = 'none';
+        el.innerHTML = `<i class="bi bi-file-earmark" style="color:#6c757d;font-size:12px;"></i><span>${highlightMatch(item.label, query)}</span>`;
+        el.addEventListener('mouseenter', () => {
+          document.querySelectorAll('.global-search-item').forEach(e => e.style.background = '');
+          el.style.background = '#bfdbfe';
+          selectedIndex = i;
+        });
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (item.blank) {
+            window.open(item.url, '_blank');
+          } else {
+            window.location.href = item.url;
+          }
+        });
+        searchDropdown.appendChild(el);
+      });
+      searchDropdown.style.display = 'block';
+    }
+
+    function performSearch() {
+      const query = removeVietnameseTones(searchInput.value.trim());
+      if (!query) {
+        searchDropdown.style.display = 'none';
+        currentResults = [];
+        selectedIndex = -1;
+        return;
+      }
+
+      const results = searchMenuItems.filter(item =>
+        item.keys.some(key => removeVietnameseTones(key).includes(query))
+      );
+      renderSearchResults(results, query);
+    }
+
+    // Debounce
+    let searchTimer;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(performSearch, 100);
+    });
+
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', (e) => {
+      const items = searchDropdown.querySelectorAll('.global-search-item');
+      if (items.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+        updateHighlight(items);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = Math.max(selectedIndex - 1, -1);
+        updateHighlight(items);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selectedIndex >= 0 && selectedIndex < items.length) {
+          const item = items[selectedIndex];
+          if (item.href) window.location.href = item.href;
+        }
+      } else if (e.key === 'Escape') {
+        searchDropdown.style.display = 'none';
+        searchInput.blur();
+      }
+    });
+
+    function updateHighlight(items) {
+      items.forEach((el, i) => {
+        el.style.background = i === selectedIndex ? '#bfdbfe' : '';
+      });
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        items[selectedIndex].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!searchBar.contains(e.target)) {
+        searchDropdown.style.display = 'none';
+      }
+    });
+
+    // Prevent form submit
+    if (searchForm) {
+      searchForm.addEventListener('submit', (e) => e.preventDefault());
+      searchForm.action = 'javascript:void(0)';
+    }
+  }
+
 })();

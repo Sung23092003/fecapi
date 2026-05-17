@@ -37,3 +37,86 @@ textarea { resize: vertical; }
  .card-box .card-inner { padding: 10px; }
 
 }
+
+/* Floating action buttons */
+.floating-actions {
+  position: fixed;
+  bottom: 80px;
+  right: 8px;
+  z-index: 1040;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-save-floating,
+.btn-cancel-floating {
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  padding: 0 !important;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: transform 0.2s;
+  border: none;
+}
+.btn-save-floating:hover,
+.btn-cancel-floating:hover {
+  transform: scale(1.1);
+}
+
+.btn-save-floating {
+  width: 60px;
+  height: 60px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.btn-save-floating i {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.btn-cancel-floating {
+  width: 46px;
+  height: 46px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #6c757d;
+  border: 1px solid #ced4da;
+  background: #fff;
+}
+.btn-cancel-floating:hover {
+  background: #f8f9fa;
+  color: #6c757d;
+}
+.btn-cancel-floating i {
+  font-size: 14px;
+  margin-bottom: 1px;
+}
+
+@media (max-width: 576px) {
+  .floating-actions {
+    bottom: 70px;
+    gap: 8px;
+  }
+  .btn-save-floating {
+    width: 50px;
+    height: 50px;
+    font-size: 8px;
+  }
+  .btn-save-floating i {
+    font-size: 16px;
+  }
+  .btn-cancel-floating {
+    width: 40px;
+    height: 40px;
+    font-size: 8px;
+  }
+  .btn-cancel-floating i {
+    font-size: 12px;
+  }
+}

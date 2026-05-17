@@ -439,7 +439,7 @@
 
       // 2. Quản lý Giao diện
       { url: '#', label: 'Quản lý Giao diện', keys: ['Giao diện', 'Layout', 'Đầu trang', 'Thân trang', 'Chân trang'] },
-      { url: '#', label: '  Quản lý Đầu Trang', keys: ['Đầu Trang', 'Header'] },
+      { url: 'web-header.html', label: '  Quản lý Đầu Trang', keys: ['Đầu Trang', 'Header'] },
       { url: '#', label: '  Quản lý Thân Trang', keys: ['Thân Trang', 'Body'] },
       { url: '#', label: '  Quản lý Chân Trang', keys: ['Chân Trang', 'Footer'] },
 

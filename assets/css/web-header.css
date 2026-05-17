@@ -1,0 +1,231 @@
+.card-box { border-radius: 10px; }
+.card-box .card-inner { padding: 20px; }
+
+.layout-option {
+  display: block;
+  cursor: pointer;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.25s ease;
+  background: #fff;
+  position: relative;
+}
+.layout-option:hover {
+  border-color: #a0a0a0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.layout-option.active {
+  border-color: #4154f1;
+  background: #f0f2ff;
+  box-shadow: 0 4px 16px rgba(65,84,241,0.15);
+}
+.layout-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.layout-option .radio-dot {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.layout-option.active .radio-dot {
+  border-color: #4154f1;
+  background: #4154f1;
+}
+.layout-option.active .radio-dot::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+/* Layout visual preview blocks */
+.layout-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  min-width: 80px;
+}
+.lv-bar {
+  border-radius: 3px;
+  height: 10px;
+}
+.lv-bar.top { background: #4154f1; }
+.lv-bar.main { background: #2c3e50; }
+.lv-bar.menu { background: #20c997; }
+.lv-row {
+  display: flex;
+  gap: 3px;
+}
+.lv-banner {
+  height: 8px;
+  border-radius: 3px;
+  background: #dee2e6;
+}
+.lv-banner.wide { flex: 1; }
+.lv-banner.third { flex: 1; }
+
+.layout-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Upload boxes */
+.upload-box {
+  border: 2px dashed #d0d5dd;
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.upload-box:hover {
+  border-color: #4154f1;
+  background: #f8f9ff;
+}
+.upload-box.has-image {
+  border-style: solid;
+  border-color: #e0e0e0;
+  padding: 8px;
+}
+.upload-box .upload-icon {
+  font-size: 32px;
+  color: #98a2b3;
+  margin-bottom: 8px;
+}
+.upload-box .upload-text {
+  font-size: 13px;
+  color: #667085;
+  font-weight: 500;
+}
+.upload-box .upload-hint {
+  font-size: 11px;
+  color: #98a2b3;
+  margin-top: 4px;
+}
+.upload-box img {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+.upload-box .btn-remove-image {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(220,53,69,0.9);
+  color: #fff;
+  border: none;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.15s;
+}
+.upload-box:hover .btn-remove-image,
+.upload-box.has-image .btn-remove-image {
+  display: flex;
+}
+.upload-box .btn-remove-image:hover {
+  transform: scale(1.15);
+}
+
+/* Link items */
+.link-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s;
+}
+.link-item:hover {
+  border-color: #ced4da;
+  background: #fff;
+}
+.link-item .close-link {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.link-item .close-link:hover {
+  background: #fee2e2;
+  color: #dc3545;
+}
+
+/* Section label */
+.section-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #344767;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+/* Color input wrapper */
+.color-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.color-input-group input[type="color"] {
+  width: 40px;
+  height: 40px;
+  padding: 2px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #d0d5dd;
+}
+.color-input-group .color-hex {
+  font-size: 13px;
+  color: #667085;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.tab-content {
+  padding-top: 20px;
+}
+
+@media (max-width: 575.98px) {
+  .upload-box {
+    min-height: 120px;
+    padding: 12px;
+  }
+  .card-box .card-inner { padding: 12px; }
+}

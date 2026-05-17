@@ -783,6 +783,40 @@ h6 {
   background-color: #4154f1;
 }
 
+/* Highlight parent items when a child is active - works regardless of collapse state */
+.sidebar-nav .nav-link.has-active {
+  color: #4154f1 !important;
+  font-weight: 700 !important;
+  background: #f6f9ff !important;
+}
+.sidebar-nav .nav-link.has-active i {
+  color: #4154f1 !important;
+}
+.sidebar-nav .nav-content a.has-active {
+  color: #4154f1 !important;
+  font-weight: 700 !important;
+}
+
+/* Nested collapse triggers in submenu (menu con có menu con) */
+.sidebar-nav .nav-content a[data-bs-toggle="collapse"] {
+  transition: 0.3s;
+}
+
+.sidebar-nav .nav-content a[data-bs-toggle="collapse"] i.bi-chevron-down {
+  font-size: 14px;
+  margin-right: 0;
+  transition: transform 0.2s ease-in-out;
+}
+
+.sidebar-nav .nav-content a[data-bs-toggle="collapse"]:not(.collapsed) i.bi-chevron-down {
+  transform: rotate(180deg);
+}
+
+.sidebar-nav .nav-content a[data-bs-toggle="collapse"]:hover {
+  background: #f6f9ff;
+  border-radius: 4px;
+}
+
 /*--------------------------------------------------------------
 # Dashboard
 --------------------------------------------------------------*/

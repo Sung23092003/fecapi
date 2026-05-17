@@ -4,22 +4,24 @@
 textarea { resize: vertical; }
 .label-req { color: #dc3545; margin-left: 2px; }
 .preview-thumb {
-  width: 430px;
-  height: 300px;
+  max-width: 200px;
+  max-height: 140px;
   border-radius: 8px;
   object-fit: cover;
   border: 1px solid rgba(0,0,0,0.1);
 }
 
+.preview-thumb:hover{
+  cursor: pointer;
+  opacity: 0.8;
+}
+
 @media (max-width: 767px) {
   .preview-thumb {
-    width: 100% !important;
-    height: auto !important;
     max-width: 100% !important;
-  }
-  
-  #div-image-preview {
-    width: 100%;
+    max-height: none !important;
+    width: auto !important;
+    height: auto !important;
   }
 }
 

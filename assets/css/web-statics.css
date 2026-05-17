@@ -257,6 +257,13 @@
   pointer-events: none;
 }
 
+/* TABLE - center all cells */
+#view-list .table th,
+#view-list .table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
 /* TABLE RESPONSIVE */
 .table-responsive {
   overflow-x: auto;

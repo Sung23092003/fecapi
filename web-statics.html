@@ -1018,7 +1018,7 @@
               let others = it.statics_image_other;
               if (typeof others === 'string') { try { others = JSON.parse(others); } catch { others = [others]; } }
               if (Array.isArray(others) && others.length) {
-                cardHtml += '<div class="d-flex flex-wrap gap-1 mt-1">';
+                cardHtml += '<div class="d-flex flex-wrap gap-1 mt-1 d-none d-md-block">';
                 others.filter(Boolean).forEach(url => {
                   cardHtml += `<img src="${escapeHtml(url)}" alt="" style="width:40px;height:30px;object-fit:cover;border-radius:3px;">`;
                 });

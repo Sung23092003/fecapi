@@ -1255,7 +1255,7 @@ h6 {
 /* table-resposive  */
 .table-responsive {
   overflow-x: auto;
-  max-height: 68dvh;
+  max-height: 63dvh;
 }
 
 .table-responsive thead{

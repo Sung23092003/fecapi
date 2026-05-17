@@ -596,6 +596,33 @@
                         </div>
                       </div>
                     </div>
+
+                    <hr class="my-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                      <h6 class="fw-bold mb-0">Danh sách mục</h6>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-main-item"><i class="bi bi-plus-lg"></i> Thêm dòng</button>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover align-middle mb-2" id="main-items-table">
+                        <thead class="table-light">
+                          <tr>
+                            <th style="min-width:90px;">Ảnh</th>
+                            <th style="min-width:120px;">Tên</th>
+                            <th style="min-width:150px;">Nội dung</th>
+                            <th style="min-width:100px;">Icon</th>
+                            <th style="width:70px;">Số cột</th>
+                            <th style="width:60px;">Vị trí</th>
+                            <th style="width:80px;">Hiển thị</th>
+                            <th style="width:90px;">Mobile</th>
+                            <th style="width:40px;"></th>
+                          </tr>
+                        </thead>
+                        <tbody id="main-items-tbody">
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="text-muted-2 small" id="main-items-empty">Chưa có mục nào. Nhấn "Thêm dòng" để thêm.</div>
+                    <input type="hidden" id="header_main_items" name="header_main_items" value="[]">
                   </div>
                 </div>
               </form>
@@ -817,6 +844,120 @@
         addLink('links-right-container', 'links-right-empty');
       });
 
+      /* ===================== Main Items Table ===================== */
+      function createMainItemRow(data) {
+        data = data || {};
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td>' +
+            '<img class="main-item-thumb d-none" alt="">' +
+            '<div class="main-item-thumb-placeholder"><i class="bi bi-image"></i></div>' +
+            '<input type="file" class="main-item-img-input" accept="image/*">' +
+            '<input type="hidden" class="main-item-img-value" value="' + (data.image || '') + '">' +
+          '</td>' +
+          '<td><input type="text" class="form-control form-control-sm main-item-name" placeholder="Tên" value="' + (data.name || '') + '"></td>' +
+          '<td><input type="text" class="form-control form-control-sm main-item-content" placeholder="Nội dung" value="' + (data.content || '') + '"></td>' +
+          '<td><input type="text" class="form-control form-control-sm main-item-icon" placeholder="Icon" value="' + (data.icon || '') + '"></td>' +
+          '<td><input type="number" class="form-control form-control-sm main-item-cols" value="' + (data.cols != null ? data.cols : '1') + '" min="1" max="12" step="1"></td>' +
+          '<td><input type="number" class="form-control form-control-sm main-item-order" value="' + (data.order != null ? data.order : '0') + '" min="0" step="1"></td>' +
+          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-visible" ' + (data.visible !== false ? 'checked' : '') + '></td>' +
+          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-mobile" ' + (data.mobile !== false ? 'checked' : '') + '></td>' +
+          '<td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger main-item-del"><i class="bi bi-x-lg"></i></button></td>';
+
+        // Image upload
+        var imgThumb = tr.querySelector('.main-item-thumb');
+        var imgPlaceholder = tr.querySelector('.main-item-thumb-placeholder');
+        var imgInput = tr.querySelector('.main-item-img-input');
+        var imgHidden = tr.querySelector('.main-item-img-value');
+
+        if (data.image) {
+          imgThumb.src = data.image;
+          imgThumb.classList.remove('d-none');
+          imgPlaceholder.classList.add('d-none');
+        }
+
+        function triggerUpload() { imgInput.click(); }
+        imgThumb.addEventListener('click', triggerUpload);
+        imgPlaceholder.addEventListener('click', triggerUpload);
+
+        imgInput.addEventListener('change', function () {
+          var file = this.files && this.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            imgThumb.src = e.target.result;
+            imgThumb.classList.remove('d-none');
+            imgPlaceholder.classList.add('d-none');
+          };
+          reader.readAsDataURL(file);
+
+          // Upload to server
+          var formData = new FormData();
+          formData.append('file', file);
+          var headers = Auth.getAuthHeader();
+          delete headers['Content-Type'];
+          fetch(ENV.BASE_URL + '/admin/media/upload', {
+            method: 'POST', headers: headers, body: formData
+          }).then(function (r) { return r.json(); }).then(function (json) {
+            if (json.success) {
+              var raw = json.data.url || '';
+              var m = raw.match(/https?:\/\/[^\s"']+/);
+              imgHidden.value = m ? m[0] : raw;
+              updateMainItemsHidden();
+            }
+          }).catch(function () {});
+        });
+
+        // Delete
+        tr.querySelector('.main-item-del').addEventListener('click', function () {
+          tr.remove();
+          updateMainItemsHidden();
+          toggleMainItemsEmpty();
+        });
+
+        // Update hidden on any input change
+        tr.querySelectorAll('input:not([type=file])').forEach(function (inp) {
+          inp.addEventListener('input', updateMainItemsHidden);
+        });
+        tr.querySelectorAll('input[type=checkbox]').forEach(function (cb) {
+          cb.addEventListener('change', updateMainItemsHidden);
+        });
+
+        return tr;
+      }
+
+      function updateMainItemsHidden() {
+        var rows = document.querySelectorAll('#main-items-tbody tr');
+        var data = [];
+        rows.forEach(function (tr) {
+          data.push({
+            image: tr.querySelector('.main-item-img-value').value || '',
+            name: tr.querySelector('.main-item-name').value || '',
+            content: tr.querySelector('.main-item-content').value || '',
+            icon: tr.querySelector('.main-item-icon').value || '',
+            cols: parseInt(tr.querySelector('.main-item-cols').value, 10) || 1,
+            order: parseInt(tr.querySelector('.main-item-order').value, 10) || 0,
+            visible: tr.querySelector('.main-item-visible').checked,
+            mobile: tr.querySelector('.main-item-mobile').checked
+          });
+        });
+        document.getElementById('header_main_items').value = JSON.stringify(data);
+      }
+
+      function toggleMainItemsEmpty() {
+        var rows = document.querySelectorAll('#main-items-tbody tr').length;
+        var empty = document.getElementById('main-items-empty');
+        if (empty) empty.style.display = rows === 0 ? '' : 'none';
+      }
+
+      document.getElementById('btn-add-main-item').addEventListener('click', function () {
+        var tbody = document.getElementById('main-items-tbody');
+        var tr = createMainItemRow({});
+        tbody.appendChild(tr);
+        updateMainItemsHidden();
+        toggleMainItemsEmpty();
+      });
+
       /* ===================== Alert ===================== */
       const alertPlaceholder = document.getElementById('alertPlaceholder');
       const alertDiv = document.createElement('div');
@@ -853,7 +994,8 @@
           header_main_bg_color: document.getElementById('header_main_bg_color').value,
           header_main_text_color: document.getElementById('header_main_text_color').value,
           header_main_border_color: document.getElementById('header_main_border_color').value,
-          header_main_border_width: parseInt(document.getElementById('header_main_border_width').value, 10) || 0
+          header_main_border_width: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
+          header_main_items: JSON.parse(document.getElementById('header_main_items').value || '[]')
         };
 
         try {
@@ -923,6 +1065,16 @@
           if (d.header_main_text_color) setColor('header_main_text_color', 'header_main_text_color_hex', d.header_main_text_color);
           if (d.header_main_border_color) setColor('header_main_border_color', 'header_main_border_color_hex', d.header_main_border_color);
           if (d.header_main_border_width != null) document.getElementById('header_main_border_width').value = d.header_main_border_width;
+
+          // Main items table
+          if (d.header_main_items && Array.isArray(d.header_main_items)) {
+            var tbody = document.getElementById('main-items-tbody');
+            d.header_main_items.forEach(function (item) {
+              tbody.appendChild(createMainItemRow(item));
+            });
+            updateMainItemsHidden();
+            toggleMainItemsEmpty();
+          }
 
         } catch (err) {
           // Silent fail — page works with defaults

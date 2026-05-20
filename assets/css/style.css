@@ -1585,3 +1585,21 @@ body.bottom-more-open {
     bottom: 76px;
   }
 }
+
+/* Floating save/cancel buttons */
+.floating-actions {
+  gap: 24px !important;
+}
+
+.btn-cancel-floating {
+  background: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
+}
+
+.btn-cancel-floating:hover,
+.btn-cancel-floating:focus {
+  background: #bb2d3b !important;
+  border-color: #b02a37 !important;
+  color: #fff !important;
+}

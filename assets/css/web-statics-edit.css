@@ -49,7 +49,7 @@ textarea { resize: vertical; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 24px;
 }
 
 .btn-save-floating,
@@ -87,13 +87,14 @@ textarea { resize: vertical; }
   height: 46px;
   font-size: 9px;
   font-weight: 600;
-  color: #6c757d;
-  border: 1px solid #ced4da;
-  background: #fff;
+  color: #fff;
+  border: 1px solid #dc3545;
+  background: #dc3545;
 }
 .btn-cancel-floating:hover {
-  background: #f8f9fa;
-  color: #6c757d;
+  background: #bb2d3b;
+  border-color: #b02a37;
+  color: #fff;
 }
 .btn-cancel-floating i {
   font-size: 14px;
@@ -103,7 +104,7 @@ textarea { resize: vertical; }
 @media (max-width: 576px) {
   .floating-actions {
     bottom: 70px;
-    gap: 8px;
+    gap: 18px;
   }
   .btn-save-floating {
     width: 50px;

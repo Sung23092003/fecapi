@@ -28,6 +28,7 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
   <link href="assets/css/web-role-permission.css" rel="stylesheet">
 </head>
 
@@ -247,14 +248,7 @@
               </div>
             </div>
 
-            <div id="permission-groups"></div>
-
-            <div class="mt-4 d-flex gap-2">
-              <button type="button" class="btn btn-primary px-4" id="btn-save-permissions">
-                <i class="bi bi-floppy"></i> Lưu phân quyền
-              </button>
-              <a href="web-role.html" class="btn btn-outline-secondary">Quay lại</a>
-            </div>
+            <div id="permission-groups"></div>
           </div>
 
           <div id="error-container" class="d-none">
@@ -264,8 +258,16 @@
         </div>
       </div>
     </section>
-
   </main>
+
+  <div class="floating-actions">
+    <button type="button" id="btn-save-permissions" class="btn btn-primary btn-save-floating">
+      <i class="bi bi-floppy"></i><span>L&#431;U</span>
+    </button>
+    <a href="web-role.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>B&#7886;</span>
+    </a>
+  </div>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -500,7 +502,7 @@
           setTimeout(() => errDiv.remove(), 5000);
         } finally {
           btnSave.disabled = false;
-          btnSave.innerHTML = '<i class="bi bi-floppy"></i> Lưu phân quyền';
+          btnSave.innerHTML = '<i class="bi bi-floppy"></i><span>L&#431;U</span>';
         }
       });
 

@@ -635,6 +635,7 @@
 
       let visibleColumns = {};
       let selectedIds = new Set();
+      let expandedCategoryIds = new Set();
       let currentPage = 1;
       let lastTotalPage = 1;
 
@@ -772,10 +773,71 @@
       function escapeHtml(str) {
         return String(str ?? '')
           .replaceAll('&', '&amp;')
-          .replaceAll('<', '<')
-          .replaceAll('>', '>')
-          .replaceAll('"', '"')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
           .replaceAll("'", '&#039;');
+      }
+
+      function getCategoryParentTitle(it) {
+        if (!it || it.category_parent_id == 0) return 'Danh mục gốc';
+        return it.category_parent_title || it._parentTitle || ('Danh mục #' + it.category_parent_id);
+      }
+
+      function normalizeCategoryItems(data) {
+        if (Array.isArray(data)) {
+          const itemById = new Map();
+          const items = data.map(item => ({
+            ...item,
+            _children: [],
+            _parentTitle: ''
+          }));
+
+          items.forEach(item => itemById.set(item.category_id, item));
+          items.forEach(item => {
+            const parent = itemById.get(item.category_parent_id);
+            if (parent) {
+              item._parentTitle = parent.category_title;
+              parent._children.push(item);
+            } else {
+              item._parentTitle = item.category_parent_title || '';
+            }
+          });
+
+          const listItems = items.filter(item => item.category_parent_id == 0 || !itemById.has(item.category_parent_id));
+          return { listItems, gridItems: items };
+        }
+
+        if (data && typeof data === 'object') {
+          const listItems = [];
+          const gridItems = [];
+
+          Object.values(data).forEach(entry => {
+            const parent = entry.parent || entry;
+            if (!parent || parent.category_id == null) return;
+
+            const children = Array.isArray(entry.sub)
+              ? entry.sub.map(sub => ({
+                ...sub,
+                _children: [],
+                _parentTitle: parent.category_title
+              }))
+              : [];
+
+            const parentItem = {
+              ...parent,
+              _children: children,
+              _parentTitle: ''
+            };
+
+            listItems.push(parentItem);
+            gridItems.push(parentItem, ...children);
+          });
+
+          return { listItems, gridItems };
+        }
+
+        return { listItems: [], gridItems: [] };
       }
 
       function renderGrid(items) {
@@ -810,10 +872,7 @@
 
           // Parent
           if (visibleColumns['parent']) {
-            const parentName = it.category_parent_id == 0
-              ? 'Danh mục gốc'
-              : escapeHtml(it.category_parent_title || 'Danh mục #' + it.category_parent_id);
-            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${parentName}</div>`;
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(getCategoryParentTitle(it))}</div>`;
           }
 
           // Footer: order
@@ -877,8 +936,13 @@
         updateDeleteButton();
         const frag = document.createDocumentFragment();
 
-        items.forEach((it, idx) => {
+        function appendCategoryRow(it, idx, childIdx = null) {
+          const isChild = childIdx !== null;
+          const children = Array.isArray(it._children) ? it._children : [];
+          const hasChildren = children.length > 0;
+          const isExpanded = expandedCategoryIds.has(String(it.category_id));
           const tr = document.createElement('tr');
+          if (isChild) tr.classList.add('table-light');
           const st = formatCategoryStatus(it.category_status);
           const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
 
@@ -891,23 +955,25 @@
             if (col.key === 'index') {
               const th = document.createElement('th');
               th.scope = 'row';
-              th.textContent = (currentPage - 1) * 20 + idx + 1;
+              th.textContent = isChild
+                ? `${(currentPage - 1) * 20 + idx + 1}.${childIdx + 1}`
+                : (currentPage - 1) * 20 + idx + 1;
               tr.appendChild(th);
             } else if (col.key === 'title') {
               const td = document.createElement('td');
-              td.innerHTML = `<div class="fw-bold">${escapeHtml(it.category_title)}</div>`;
+              const indent = isChild ? 'ps-4' : '';
+              const toggleHtml = hasChildren
+                ? `<button type="button" class="btn btn-sm btn-link text-dark p-0 me-1" data-category-toggle="${it.category_id}" title="Mở danh mục con"><i class="bi bi-chevron-${isExpanded ? 'down' : 'right'}"></i></button>`
+                : '<span class="d-inline-block me-1" style="width:18px;"></span>';
+              td.innerHTML = `<div class="fw-bold d-flex align-items-center ${indent}">${toggleHtml}<span>${escapeHtml(it.category_title)}</span></div>`;
               tr.appendChild(td);
             } else if (col.key === 'alias') {
               const td = document.createElement('td');
-              td.textContent = escapeHtml(it.category_alias || '');
+              td.textContent = it.category_alias || '';
               tr.appendChild(td);
             } else if (col.key === 'parent') {
               const td = document.createElement('td');
-              if (it.category_parent_id == 0) {
-                td.textContent = 'Danh mục gốc';
-              } else {
-                td.textContent = escapeHtml(it.category_parent_title || 'Danh mục #' + it.category_parent_id);
-              }
+              td.textContent = getCategoryParentTitle(it);
               tr.appendChild(td);
             } else if (col.key === 'status') {
               const td = document.createElement('td');
@@ -915,7 +981,7 @@
               tr.appendChild(td);
             } else if (col.key === 'order') {
               const td = document.createElement('td');
-              td.textContent = escapeHtml(it.category_order_no);
+              td.textContent = it.category_order_no ?? '';
               tr.appendChild(td);
             } else if (col.key === 'actions') {
               const td = document.createElement('td');
@@ -931,6 +997,13 @@
           const tdDot = document.createElement('td');
           tr.appendChild(tdDot);
           frag.appendChild(tr);
+        }
+
+        items.forEach((it, idx) => {
+          appendCategoryRow(it, idx);
+          if (expandedCategoryIds.has(String(it.category_id)) && Array.isArray(it._children)) {
+            it._children.forEach((child, childIdx) => appendCategoryRow(child, idx, childIdx));
+          }
         });
 
         tbody.appendChild(frag);
@@ -997,39 +1070,30 @@
             throw new Error(json.message || 'Không lấy được dữ liệu');
           }
 
-          let items;
+          let normalized;
           if (Array.isArray(json.data?.data)) {
-            items = json.data.data;
+            normalized = normalizeCategoryItems(json.data.data);
           } else if (json.data?.data && typeof json.data.data === 'object') {
-            // object with numeric keys: { "1": { parent: {...}, sub: [...] } }
-            const raw = Object.values(json.data.data);
-            items = [];
-            raw.forEach(entry => {
-              const parent = entry.parent || entry;
-              if (parent && parent.category_id != null) items.push(parent);
-              if (Array.isArray(entry.sub)) {
-                entry.sub.forEach(sub => {
-                  if (sub && sub.category_id != null) items.push(sub);
-                });
-              }
-            });
+            normalized = normalizeCategoryItems(json.data.data);
           } else if (Array.isArray(json.data)) {
-            items = json.data;
+            normalized = normalizeCategoryItems(json.data);
           } else {
-            items = [];
+            normalized = { listItems: [], gridItems: [] };
           }
 
+          const items = normalized.listItems;
+          const gridItems = normalized.gridItems;
           lastTotalPage = json.data?.pagination?.total_page || json.total_page || json.data?.total_page || 1;
 
-          summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? items.length} • Trang ${json.data?.pagination?.page ?? currentPage}/${lastTotalPage}`;
-          if (!Array.isArray(items) || items.length === 0) {
+          summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? gridItems.length} • Trang ${json.data?.pagination?.page ?? currentPage}/${lastTotalPage}`;
+          if (!Array.isArray(gridItems) || gridItems.length === 0) {
             tbody.innerHTML = '';
             viewGrid.innerHTML = '';
             emptyState.classList.remove('d-none');
           } else {
             emptyState.classList.add('d-none');
             renderList(items);
-            renderGrid(items);
+            renderGrid(gridItems);
           }
 
           renderPagination(json.data?.pagination?.page ?? currentPage, lastTotalPage);
@@ -1113,6 +1177,18 @@
 
       tbody.addEventListener('change', (e) => {
         if (e.target.classList.contains('row-checkbox')) handleCheckboxChange();
+      });
+
+      tbody.addEventListener('click', (e) => {
+        const toggle = e.target.closest('[data-category-toggle]');
+        if (!toggle) return;
+        const id = String(toggle.dataset.categoryToggle);
+        if (expandedCategoryIds.has(id)) {
+          expandedCategoryIds.delete(id);
+        } else {
+          expandedCategoryIds.add(id);
+        }
+        loadData();
       });
 
       document.addEventListener('change', (e) => {

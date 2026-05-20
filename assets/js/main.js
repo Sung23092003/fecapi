@@ -5,7 +5,7 @@
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
-(function() {
+(function () {
   "use strict";
 
   /**
@@ -42,7 +42,7 @@
    * Sidebar toggle
    */
   if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
+    on('click', '.toggle-sidebar-btn', function (e) {
       select('body').classList.toggle('toggle-sidebar')
     })
   }
@@ -51,7 +51,7 @@
    * Search bar toggle
    */
   if (select('.search-bar-toggle')) {
-    on('click', '.search-bar-toggle', function(e) {
+    on('click', '.search-bar-toggle', function (e) {
       select('.search-bar').classList.toggle('search-bar-show')
     })
   }
@@ -112,7 +112,7 @@
    * Initiate tooltips
    */
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
   })
 
@@ -142,31 +142,31 @@
           }],
           ["bold", "italic", "underline", "strike"],
           [{
-              color: []
-            },
-            {
-              background: []
-            }
+            color: []
+          },
+          {
+            background: []
+          }
           ],
           [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
+            script: "super"
+          },
+          {
+            script: "sub"
+          }
           ],
           [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
+            list: "ordered"
+          },
+          {
+            list: "bullet"
+          },
+          {
+            indent: "-1"
+          },
+          {
+            indent: "+1"
+          }
           ],
           ["direction", {
             align: []
@@ -187,19 +187,19 @@
     const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
 
     tinymce.init({
-    selector: 'textarea.tinymce-editor, textarea#content_editor',
-    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-    editimage_cors_hosts: ['picsum.photos'],
-    menubar: 'file edit view insert format tools table help',
-    toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    toolbar_sticky: false,
-    autosave_ask_before_unload: true,
-    autosave_interval: '30s',
-    autosave_prefix: '{path}{query}-{id}-',
-    autosave_restore_when_empty: false,
-    autosave_retention: '2m',
-    image_advtab: true,
-    link_list: [{
+      selector: 'textarea.tinymce-editor, textarea#content_editor',
+      plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+      editimage_cors_hosts: ['picsum.photos'],
+      menubar: 'file edit view insert format tools table help',
+      toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+      toolbar_sticky: false,
+      autosave_ask_before_unload: true,
+      autosave_interval: '30s',
+      autosave_prefix: '{path}{query}-{id}-',
+      autosave_restore_when_empty: false,
+      autosave_retention: '2m',
+      image_advtab: true,
+      link_list: [{
         title: 'My page 1',
         value: 'https://www.tiny.cloud'
       },
@@ -207,8 +207,8 @@
         title: 'My page 2',
         value: 'http://www.moxiecode.com'
       }
-    ],
-    image_list: [{
+      ],
+      image_list: [{
         title: 'My page 1',
         value: 'https://www.tiny.cloud'
       },
@@ -216,8 +216,8 @@
         title: 'My page 2',
         value: 'http://www.moxiecode.com'
       }
-    ],
-    image_class_list: [{
+      ],
+      image_class_list: [{
         title: 'None',
         value: ''
       },
@@ -225,9 +225,9 @@
         title: 'Some class',
         value: 'class-name'
       }
-    ],
-    importcss_append: true,
-     file_picker_callback: (callback, value, meta) => {
+      ],
+      importcss_append: true,
+      file_picker_callback: (callback, value, meta) => {
         const input = document.createElement('input');
         input.setAttribute('type', 'file');
 
@@ -272,7 +272,7 @@
 
         input.click();
       },
-     images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
+      images_upload_handler: (blobInfo, progress) => new Promise((resolve, reject) => {
         const formData = new FormData();
         formData.append('file', blobInfo.blob(), blobInfo.filename());
         const headers = Auth.getAuthHeader();
@@ -292,7 +292,7 @@
           }
         }).catch(err => reject(err.message || 'Upload lỗi'));
       }),
-     templates: [{
+      templates: [{
         title: 'New Table',
         description: 'creates a new table',
         content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
@@ -307,19 +307,19 @@
         description: 'New List with dates',
         content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
       }
-    ],
-    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
-    image_caption: true,
-    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-    noneditable_class: 'mceNonEditable',
-    toolbar_mode: 'sliding',
-    contextmenu: 'link image table',
-    skin: 'oxide',
-    content_css: 'default',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-  });
+      ],
+      template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+      template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+      height: 600,
+      image_caption: true,
+      quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+      noneditable_class: 'mceNonEditable',
+      toolbar_mode: 'sliding',
+      contextmenu: 'link image table',
+      skin: 'oxide',
+      content_css: 'default',
+      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+    });
   }
 
   /**
@@ -328,8 +328,8 @@
   var needsValidation = document.querySelectorAll('.needs-validation')
 
   Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
         if (!form.checkValidity()) {
           event.preventDefault()
           event.stopPropagation()
@@ -346,12 +346,12 @@
     try {
       const userData = localStorage.getItem('cms_auth');
       if (!userData) return;
-      
+
       const auth = JSON.parse(userData);
       if (!auth || !auth.user) return;
-      
+
       const fullName = auth.user.user_full_name || '';
-      
+
       // Update all elements showing user name
       document.querySelectorAll('[data-user-name]').forEach(el => {
         el.textContent = fullName;
@@ -367,7 +367,7 @@
   /**
    * Handle logout for all elements with data-logout attribute
    */
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     const logoutEl = e.target.closest('[data-logout="true"]');
     if (logoutEl) {
       e.preventDefault();
@@ -393,18 +393,18 @@
     new simpleDatatables.DataTable(datatable, {
       perPageSelect: [5, 10, 15, ["All", -1]],
       columns: [{
-          select: 2,
-          sortSequence: ["desc", "asc"]
-        },
-        {
-          select: 3,
-          sortSequence: ["desc"]
-        },
-        {
-          select: 4,
-          cellClass: "green",
-          headerClass: "red"
-        }
+        select: 2,
+        sortSequence: ["desc", "asc"]
+      },
+      {
+        select: 3,
+        sortSequence: ["desc"]
+      },
+      {
+        select: 4,
+        cellClass: "green",
+        headerClass: "red"
+      }
       ]
     });
   })
@@ -415,7 +415,7 @@
   const mainContainer = select('#main');
   if (mainContainer) {
     setTimeout(() => {
-      new ResizeObserver(function() {
+      new ResizeObserver(function () {
         select('.echart', true).forEach(getEchart => {
           echarts.getInstanceByDom(getEchart).resize();
         })
@@ -434,80 +434,70 @@
 
     // Define menu items for search (only sidebar items)
     const searchMenuItems = [
-      // 1. Dashboard
-      { url: 'index.html', label: 'Dashboard', keys: ['Dashboard', 'Trang chủ'] },
+      { url: 'index.html', label: 'Dashboard', keys: ['dashboard', 'trang chủ'] },
 
-      // 2. Quản lý Giao diện
-      { url: '#', label: 'Quản lý Giao diện', keys: ['Giao diện', 'Layout', 'Đầu trang', 'Thân trang', 'Chân trang'] },
-      { url: 'web-header.html', label: '  Quản lý Đầu Trang', keys: ['Đầu Trang', 'Header'] },
-      { url: '#', label: '  Quản lý Thân Trang', keys: ['Thân Trang', 'Body'] },
-      { url: '#', label: '  Quản lý Chân Trang', keys: ['Chân Trang', 'Footer'] },
+      { url: '#', label: 'Quản lý Đầu Trang', keys: ['đầu trang', 'header'] },
+      { url: 'web-header.html', label: '  Quản lý TOP - MAIN', keys: ['top main', 'header top', 'header main'] },
+      { url: 'web-category.html', label: '  Quản lý Menu (Danh mục)', keys: ['menu', 'danh mục', 'category', 'quản lý menu'] },
+      { url: 'web-header.html', label: '  Quản lý Banner', keys: ['banner', 'header banner'] },
 
-      // 3. Quản lý danh mục
-      { url: 'web-category.html', label: 'Quản lý danh mục', keys: ['Danh mục', 'Quản lý danh mục', 'Category'] },
+      { url: '#', label: 'Quản lý Thân Trang', keys: ['thân trang', 'body'] },
+      { url: '#', label: 'Quản lý Chân Trang', keys: ['chân trang', 'footer'] },
+      { url: '#', label: 'Quản lý Landing Page', keys: ['landing page', 'landing'] },
+      { url: '#', label: 'Quản lý Đơn hàng', keys: ['đơn hàng', 'order'] },
+      { url: '#', label: 'QL Yêu cầu tư vấn', keys: ['yêu cầu tư vấn', 'tư vấn', 'consult'] },
+      { url: '#', label: 'Quản lý Comment', keys: ['comment', 'bình luận'] },
 
-      // 4. Quản lý bài viết
-      { url: 'web-statics.html', label: '  Quản lý tin tức', keys: ['Tin tức', 'Bài viết', 'Quản lý bài viết', 'Statics', 'News'] },
-      { url: '#', label: '    Quản lý dịch vụ', keys: ['Dịch vụ', 'Service'] },
-      { url: '#', label: '      Quản lý tin tức', keys: ['Dịch vụ tin tức', 'Service news'] },
-      { url: '#', label: '      Quản lý Landing Page', keys: ['Landing Page', 'Landing'] },
-      { url: '#', label: '    Quản lý Sản phẩm', keys: ['Sản phẩm', 'Product'] },
-      { url: '#', label: '      Quản Lý Bài Sản phẩm', keys: ['Bài Sản phẩm', 'Product post'] },
-      { url: '#', label: '      Quản Lý Sản phẩm bán chạy', keys: ['Bán chạy', 'Best seller'] },
-      { url: '#', label: '      Quản Lý thông tin thanh toán', keys: ['Thanh toán', 'Payment'] },
+      { url: '#', label: 'Quản lý Sản phẩm', keys: ['sản phẩm', 'product'] },
+      { url: '#', label: '  QL Bài Sản phẩm', keys: ['bài sản phẩm', 'product post'] },
+      { url: '#', label: '  QL Sản phẩm bán chạy', keys: ['sản phẩm bán chạy', 'best seller'] },
+      { url: '#', label: '  QL Thông tin thanh toán', keys: ['thanh toán', 'payment'] },
 
-      // 5. Đơn hàng
-      { url: '#', label: 'Quản lý Đơn hàng', keys: ['Đơn hàng', 'Order'] },
+      { url: '#', label: 'Quản lý Dịch Vụ', keys: ['dịch vụ', 'service'] },
+      { url: 'web-statics.html', label: 'Quản lý Bài viết', keys: ['bài viết', 'tin tức', 'statics', 'news'] },
+      { url: '#', label: 'Giới thiệu chung', keys: ['giới thiệu', 'about'] },
 
-      // 6. Yêu cầu tư vấn
-      { url: '#', label: 'Quản lý Yêu cầu tư vấn', keys: ['Yêu cầu tư vấn', 'Tư vấn', 'Consult'] },
+      { url: '#', label: 'QL User Khách hàng', keys: ['user khách hàng', 'khách hàng', 'customer'] },
+      { url: '#', label: '  QL User Khách hàng', keys: ['ql user khách hàng', 'khách hàng', 'customer'] },
+      { url: '#', label: '  Quản lý cấp độ VIP', keys: ['vip', 'cấp độ vip'] },
+      { url: '#', label: 'QL Mã và Link Chat', keys: ['mã chat', 'link chat', 'chat'] },
+      { url: 'web-users.html', label: 'QL User Admin', keys: ['user admin', 'admin', 'quản trị viên'] },
 
-      // 7. User người dùng
-      { url: '#', label: 'Quản lý user người dùng', keys: ['User', 'Người dùng', 'Khách hàng'] },
-      { url: '#', label: '  Quản lý user khách hàng', keys: ['Khách hàng', 'Customer'] },
-      { url: '#', label: '  Quản lý cấp độ VIP', keys: ['VIP', 'Cấp độ', 'Vip'] },
-      { url: '#', label: '  Quản lý Comment', keys: ['Comment', 'Bình luận'] },
+      { url: '#', label: 'Quy định & Hướng dẫn', keys: ['quy định', 'hướng dẫn'] },
+      { url: '#', label: '  QL Quy định chung', keys: ['quy định chung'] },
+      { url: '#', label: '  QL Hướng dẫn', keys: ['hướng dẫn'] },
+      { url: '#', label: 'Quản lý SEO', keys: ['seo'] },
 
-      // 8. Mã và Link Chat
-      { url: '#', label: 'Quản Lý Mã và Link Chat', keys: ['Mã', 'Link Chat', 'Chat', 'Code'] },
+      { url: 'https://fontawesome.com/search?ic=free-collection', label: 'Danh sách Icon - Fontawesome', keys: ['fontawesome', 'icon fontawesome'], blank: true },
+      { url: 'icons-bootstrap.html', label: '  Bootstrap', keys: ['bootstrap', 'icon bootstrap'] },
+      { url: 'icons-remix.html', label: '  Remix', keys: ['remix', 'icon remix'] },
+      { url: 'icons-boxicons.html', label: '  Boxicons', keys: ['boxicons', 'icon boxicons'] },
 
-      // 9. User
-      { url: 'web-users.html', label: 'Quản lý User', keys: ['Quản lý User', 'Users', 'Người dùng'] },
-
-      // 10. Quy định & Hướng dẫn
-      { url: '#', label: 'Quy định & Hướng dẫn', keys: ['Quy định', 'Hướng dẫn', 'Regulation'] },
-      { url: '#', label: '  QL Quy định chung', keys: ['Quy định chung'] },
-      { url: '#', label: '  QL Hướng dẫn', keys: ['Hướng dẫn'] },
-
-      // 11. SEO
-      { url: '#', label: 'Quản lý SEO', keys: ['SEO', 'Seo'] },
-
-      // 12. Icons
-      { url: 'icons-bootstrap.html', label: '  Bootstrap', keys: ['Bootstrap', 'Icon Bootstrap'] },
-      { url: 'icons-remix.html', label: '  Remix', keys: ['Remix', 'Icon Remix'] },
-      { url: 'icons-boxicons.html', label: '  Boxicons', keys: ['Boxicons', 'Icon Boxicons'] },
-      { url: 'https://fontawesome.com/search?ic=free-collection', label: '  Fontawesome', keys: ['Fontawesome', 'Icon Fontawesome'], blank: true },
-
-      // 13. Cài đặt Chung
-      { url: 'web-role.html', label: '    Quản lý quyền', keys: ['Quyền', 'Role', 'Phân quyền'] },
-      { url: 'web-role-group.html', label: '    Quản lý nhóm quyền', keys: ['Nhóm quyền', 'Role group'] },
-      { url: 'web-menu-visibility.html', label: '  Cài đặt ẩn/hiện menu', keys: ['Ẩn menu', 'Hiện menu', 'Menu'] },
-      { url: '#', label: '  Quản lý ĐVHC', keys: ['ĐVHC', 'Đơn vị hành chính'] },
-      { url: '#', label: '  Hướng dẫn BFE', keys: ['BFE', 'Hướng dẫn'] }
+      { url: '#', label: 'Cài Đặt Chung', keys: ['cài đặt', 'settings'] },
+      { url: 'web-role.html', label: '  Phân quyền', keys: ['phân quyền', 'quyền', 'role'] },
+      { url: 'web-role-group.html', label: '  Nhóm quyền', keys: ['nhóm quyền', 'role group'] },
+      { url: 'web-menu-visibility.html', label: '  Cài đặt Ẩn/hiện menu', keys: ['ẩn menu', 'hiện menu', 'menu visibility'] },
+      { url: '#', label: '  Quản lý ĐVHC', keys: ['đvhc', 'đơn vị hành chính'] },
+      { url: '#', label: '  Hướng dẫn BFE', keys: ['bfe', 'hướng dẫn bfe'] }
     ];
 
     // Remove Vietnamese accents for accent-insensitive search
     function removeVietnameseTones(str) {
-      str = str.toLowerCase();
-      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
-      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
-      str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
-      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
-      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
-      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
-      str = str.replace(/đ/g, 'd');
-      str = str.replace(/[^a-z0-9\s]/g, '');
-      return str;
+      const normalized = String(str || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replaceAll(String.fromCharCode(273), 'd')
+        .split('')
+        .filter(ch => {
+          const code = ch.charCodeAt(0);
+          return code < 768 || code > 879;
+        })
+        .join('');
+
+      return normalized
+        .replace(/[^a-z0-9 ]/g, '')
+        .replace(/ +/g, ' ')
+        .trim();
     }
 
     // Create dropdown container
@@ -520,7 +510,7 @@
     const searchInput = searchBar.querySelector('input');
     if (searchInput) {
       searchInput.setAttribute('autocomplete', 'off');
-      searchInput.placeholder = 'Tìm kiếm trang...';
+      searchInput.placeholder = 'Tim kiem trang...';
     }
 
     let selectedIndex = -1;

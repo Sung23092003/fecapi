@@ -387,7 +387,7 @@
                 <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm danh mục</span>
               </button>
               <button id="btn-delete-selected" type="button" class="btn btn-danger d-none">
-                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa da chon</span>
+                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa đã chọn</span>
               </button>
             </div>
 
@@ -1085,7 +1085,7 @@
       function updateDeleteButton() {
         const count = selectedIds.size;
         btnDeleteSelected.classList.toggle('d-none', count === 0);
-        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa (` + count + `)</span>`;
+        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa (` + count + `)</span>`;
       }
 
       function getSelectedIds() {
@@ -1106,7 +1106,7 @@
         const ids = getSelectedIds();
         if (ids.length === 0) return;
         const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
-        if (deleteModalBody) deleteModalBody.textContent = `Xoa ${ids.length} danh muc da chon?`;
+        if (deleteModalBody) deleteModalBody.textContent = `Xóa ${ids.length} danh muc da chon?`;
         deleteTargetId = ids;
         getDeleteModal().show();
       }

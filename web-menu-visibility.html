@@ -172,100 +172,56 @@
     </nav>
   </header>
 
-  <aside id="sidebar" class="sidebar">
+    <aside id="sidebar" class="sidebar">
+
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+        <a class="nav-link collapsed" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#layout-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-columns-gap"></i><span>Quản lý Giao diện</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="layout-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý Đầu Trang</span></a></li>
-          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Thân Trang</span></a></li>
-          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Chân Trang</span></a></li>
+        <ul id="header-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý Menu</span></a></li>
+          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
         </ul>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="web-category.html">
-          <i class="bi bi-folder"></i>
-          <span>Quản lý danh mục</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#articles-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-file-earmark-text"></i><span>Quản lý bài viết</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="articles-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li><a href="web-statics.html"><i class="bi bi-circle"></i><span>Quản lý tin tức</span></a></li>
-          <li>
-            <a class="nav-link collapsed" data-bs-target="#services-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-circle"></i><span>Quản lý dịch vụ</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="services-nav" class="nav-content collapse" data-bs-parent="#articles-nav">
-              <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý tin tức</span></a></li>
-              <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Landing Page</span></a></li>
-            </ul>
-          </li>
-          <li>
-            <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-circle"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="products-nav" class="nav-content collapse" data-bs-parent="#articles-nav">
-              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý Bài Sản phẩm</span></a></li>
-              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý Sản phẩm bán chạy</span></a></li>
-              <li><a href="#"><i class="bi bi-circle"></i><span>Quản Lý thông tin thanh toán</span></a></li>
-            </ul>
-          </li>
+        <ul id="products-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
         </ul>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-cart"></i>
-          <span>Quản lý Đơn hàng</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-category.html"><i class="bi bi-folder"></i><span>Quản lý doanh mục</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-chat-dots"></i>
-          <span>Quản lý Yêu cầu tư vấn</span>
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>QL User Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#customer-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people"></i><span>Quản lý user người dùng</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="customer-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý user khách hàng</span></a></li>
+        <ul id="customers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL User Khách hàng</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
-          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý Comment</span></a></li>
         </ul>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-link-45deg"></i>
-          <span>Quản Lý Mã và Link Chat</span>
-        </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="web-users.html">
-          <i class="bi bi-person-badge"></i>
-          <span>Quản lý User</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
@@ -277,47 +233,36 @@
         </ul>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-search"></i>
-          <span>Quản lý SEO</span>
-        </a>
-      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý SEO</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Danh sách icons</span><i class="bi bi-chevron-down ms-auto"></i>
+          <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="icons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li><a href="icons-bootstrap.html"><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
-          <li><a href="icons-remix.html"><i class="bi bi-circle"></i><span>Remix</span></a></li>
-          <li><a href="icons-boxicons.html"><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
         </ul>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gear"></i><span>Cài đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link has-active" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a class="nav-link collapsed" data-bs-target="#permissions-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-circle"></i><span>Phân quyền</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="permissions-nav" class="nav-content collapse" data-bs-parent="#settings-nav">
-              <li><a href="web-role.html"><i class="bi bi-circle"></i><span>Quản lý quyền</span></a></li>
-              <li><a href="web-role-group.html"><i class="bi bi-circle"></i><span>Quản lý nhóm quyền</span></a></li>
-            </ul>
-          </li>
-          <li><a href="web-menu-visibility.html" class="active"><i class="bi bi-circle"></i><span>Cài đặt ẩn/hiện menu</span></a></li>
+        <ul id="settings-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html" class="active"><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
         </ul>
       </li>
 
     </ul>
-  </aside>
+
+  </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
     <div class="pagetitle">

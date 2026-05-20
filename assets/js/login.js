@@ -14,9 +14,12 @@
   const btnLogin = document.getElementById("btn-login");
   const loginSpinner = document.getElementById("login-spinner");
   const btnText = document.getElementById("btn-text");
+  const usernameInput = document.getElementById("yourUsername");
   const passwordInput = document.getElementById("yourPassword");
+  const rememberMeInput = document.getElementById("rememberMe");
   const togglePasswordBtn = document.getElementById("togglePassword");
   const eyeIcon = document.getElementById("eyeIcon");
+  const REMEMBER_LOGIN_KEY = "cms_remember_login";
 
   /**
    * Xử lý ẩn/hiện mật khẩu khi nhấn vào icon con mắt
@@ -80,6 +83,33 @@
     return errorMap[apiMessage] || apiMessage;
   }
 
+  function loadRememberedLogin() {
+    try {
+      const raw = localStorage.getItem(REMEMBER_LOGIN_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data && data.username && data.password) {
+        usernameInput.value = data.username;
+        passwordInput.value = data.password;
+        rememberMeInput.checked = true;
+      }
+    } catch (error) {
+      localStorage.removeItem(REMEMBER_LOGIN_KEY);
+    }
+  }
+
+  function saveRememberedLogin(username, password) {
+    if (!rememberMeInput.checked) {
+      localStorage.removeItem(REMEMBER_LOGIN_KEY);
+      return;
+    }
+
+    localStorage.setItem(REMEMBER_LOGIN_KEY, JSON.stringify({
+      username: username,
+      password: password
+    }));
+  }
+
   /**
    * Xử lý sự kiện submit form đăng nhập
    */
@@ -97,8 +127,8 @@
     }
 
     // Lấy dữ liệu từ form
-    const username = document.getElementById("yourUsername").value.trim();
-    const password = document.getElementById("yourPassword").value;
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
 
     // Bật trạng thái loading
     setLoading(true);
@@ -108,6 +138,7 @@
       const result = await Auth.login(API_BASE_URL, username, password);
 
       if (result.success) {
+        saveRememberedLogin(username, password);
         // Đăng nhập thành công, chuyển hướng về trang chủ
         window.location.href = "index.html";
       } else {
@@ -130,4 +161,6 @@
   if (Auth.isLoggedIn()) {
     window.location.href = "index.html";
   }
+
+  loadRememberedLogin();
 })();

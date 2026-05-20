@@ -61,13 +61,13 @@
                   <!-- Khu vực hiển thị thông báo lỗi -->
                   <div id="login-alert" class="alert alert-danger d-none" role="alert"></div>
 
-                  <form id="login-form" class="row g-3 needs-validation" novalidate>
+                  <form id="login-form" class="row g-3 needs-validation" autocomplete="on" novalidate>
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Tên đăng nhập</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" placeholder="Email đăng nhập" required>
+                        <input type="text" name="username" class="form-control" id="yourUsername" placeholder="Email đăng nhập" autocomplete="username" required>
                         <div class="invalid-feedback">Vui lòng nhập tên đăng nhập.</div>
                       </div>
                     </div>
@@ -75,7 +75,7 @@
                     <div class="col-12">
                       <label for="yourPassword" class="form-label">Mật khẩu</label>
                       <div class="input-group has-validation">
-                        <input type="password" name="password" class="form-control" id="yourPassword" required>
+                        <input type="password" name="password" class="form-control" id="yourPassword" autocomplete="current-password" required>
                         <button class="btn btn-outline-secondary border-start-0" type="button" id="togglePassword">
                           <i class="bi bi-eye" id="eyeIcon"></i>
                         </button>
@@ -86,7 +86,7 @@
                     <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                        <label class="form-check-label" for="rememberMe">Ghi nhớ mật khẩu</label>
                       </div>
                     </div>
                     <div class="col-12">

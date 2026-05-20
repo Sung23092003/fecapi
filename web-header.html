@@ -622,6 +622,35 @@
                     </div>
 
                     <hr class="my-3">
+                    <h6 class="fw-bold mb-3">Thông tin MAIN</h6>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="form-label">Logo</label>
+                          <div class="upload-box" id="header-main-logo-upload-box">
+                            <img id="header-main-logo-preview" class="d-none" alt="main logo preview">
+                            <button type="button" class="btn-remove-image" id="header-main-logo-remove" title="Xóa ảnh"><i
+                                class="bi bi-x-lg"></i></button>
+                            <div class="upload-icon"><i class="bi bi-image"></i></div>
+                            <div class="upload-text">Nhấp để tải lên</div>
+                            <div class="upload-hint">PNG, JPG, SVG</div>
+                            <input type="file" id="header-main-logo-upload" accept="image/*" class="d-none">
+                            <input type="hidden" id="header_main_logo" name="header_main_logo" value="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="form-label">Tìm kiếm</label>
+                          <select class="form-select" id="header_main_search" name="header_main_search">
+                            <option value="1">Hiện</option>
+                            <option value="0">Ẩn</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="my-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                       <h6 class="fw-bold mb-0">Danh sách mục</h6>
                       <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-main-item"><i
@@ -801,6 +830,7 @@
       setupUpload('favicon-upload', 'favicon-preview', 'favicon_image', 'favicon-remove', 'favicon-upload-box');
       setupUpload('logo-upload', 'logo-preview', 'logo_image', 'logo-remove', 'logo-upload-box');
       setupUpload('social-upload', 'social-preview', 'social_image', 'social-remove', 'social-upload-box');
+      setupUpload('header-main-logo-upload', 'header-main-logo-preview', 'header_main_logo', 'header-main-logo-remove', 'header-main-logo-upload-box');
 
       // Click on upload box triggers file input
       document.querySelectorAll('.upload-box').forEach(box => {
@@ -980,7 +1010,7 @@
       document.getElementById('btn-add-main-item').addEventListener('click', function () {
         var tbody = document.getElementById('main-items-tbody');
         var tr = createMainItemRow({});
-        tbody.appendChild(tr);
+        tbody.insertBefore(tr, tbody.firstChild);
         updateMainItemsHidden();
         toggleMainItemsEmpty();
       });
@@ -1022,6 +1052,8 @@
           header_main_text_color: document.getElementById('header_main_text_color').value,
           header_main_border_color: document.getElementById('header_main_border_color').value,
           header_main_border_width: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
+          header_main_logo: document.getElementById('header_main_logo').value,
+          header_main_search: parseInt(document.getElementById('header_main_search').value, 10),
           header_main_items: JSON.parse(document.getElementById('header_main_items').value || '[]')
         };
 
@@ -1092,6 +1124,8 @@
           if (d.header_main_text_color) setColor('header_main_text_color', 'header_main_text_color_hex', d.header_main_text_color);
           if (d.header_main_border_color) setColor('header_main_border_color', 'header_main_border_color_hex', d.header_main_border_color);
           if (d.header_main_border_width != null) document.getElementById('header_main_border_width').value = d.header_main_border_width;
+          if (d.header_main_logo) setUploadedImage('header-main-logo-preview', 'header_main_logo', 'header-main-logo-upload-box', d.header_main_logo);
+          if (d.header_main_search != null) document.getElementById('header_main_search').value = String(d.header_main_search);
 
           // Main items table
           if (d.header_main_items && Array.isArray(d.header_main_items)) {

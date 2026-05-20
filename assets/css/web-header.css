@@ -276,6 +276,23 @@
   padding-top: 20px;
 }
 
+.lv-news {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #f59e0b;
+}
+
+.lv-bar.horizontal {
+  flex: 2;
+  height: 8px;
+}
+
+.lv-bar.vertical {
+  flex: 1;
+  height: 20px;
+}
+
 /* Mobile layout toggle */
 #layout-options-collapse {
   display: block;

@@ -387,6 +387,9 @@
               <button id="btn-create" type="button" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm quyền</span>
               </button>
+              <button id="btn-delete-selected" type="button" class="btn btn-danger d-none">
+                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa da chon</span>
+              </button>
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -422,6 +425,7 @@
             <table class="table table-hover align-middle">
               <thead>
                 <tr>
+                  <th style="width:40px;"><input type="checkbox" id="select-all" /></th>
                   <th class="table-header-index">#</th>
                   <th class="table-header-fixed">Tên quyền</th>
                   <th class="table-header-status">Trạng thái</th>
@@ -580,6 +584,7 @@
       const emptyState = document.getElementById('empty-state');
 
       const btnCreate = document.getElementById('btn-create');
+      const btnDeleteSelected = document.getElementById('btn-delete-selected');
       const btnFilter = document.getElementById('btn-filter');
       const btnModeList = document.getElementById('btn-mode-list');
       const btnModeGrid = document.getElementById('btn-mode-grid');
@@ -613,6 +618,7 @@
       ];
 
       let visibleColumns = {};
+      let selectedIds = new Set();
 
       function initColumns() {
         const saved = localStorage.getItem('role-visible-columns');
@@ -799,12 +805,18 @@ function escapeHtml(str) {
 
       function renderList(items) {
         tbody.innerHTML = '';
+        selectedIds.clear();
+        updateDeleteButton();
         const frag = document.createDocumentFragment();
 
         items.forEach((it, idx) => {
           const tr = document.createElement('tr');
           const st = formatStatus(statusOf(it));
           const roleId = idOf(it);
+
+          const ckTd = document.createElement('td');
+          ckTd.innerHTML = `<input type=\"checkbox\" class=\"row-checkbox\" value=\"${roleId}\" />`;
+          tr.appendChild(ckTd);
 
           if (visibleColumns['idx']) {
             const idxTd = document.createElement('th');
@@ -944,7 +956,9 @@ function escapeHtml(str) {
             ...Auth.getAuthHeader(),
             'Content-Type': 'application/json'
           };
-          const payload = { checkItem: [parseInt(id, 10)] };
+          const ids = Array.isArray(id) ? id : [id];
+          const payload = { checkItem: ids.map(item => parseInt(item, 10)).filter(Number.isFinite) };
+          if (payload.checkItem.length === 0) return;
 
           const res = await fetch(url, {
             method: 'POST',
@@ -959,6 +973,8 @@ function escapeHtml(str) {
           }
 
           showAlert('Xóa quyền thành công.', 'success');
+          selectedIds.clear();
+          updateDeleteButton();
           loadData();
         } catch (err) {
           console.error(err);
@@ -966,8 +982,53 @@ function escapeHtml(str) {
         }
       }
 
+
+      function updateDeleteButton() {
+        const count = selectedIds.size;
+        btnDeleteSelected.classList.toggle('d-none', count === 0);
+        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa (` + count + `)</span>`;
+      }
+
+      function getSelectedIds() {
+        return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => parseInt(cb.value, 10));
+      }
+
+      function handleCheckboxChange() {
+        selectedIds = new Set(getSelectedIds());
+        const selectAll = document.getElementById('select-all');
+        if (selectAll) {
+          const checks = Array.from(document.querySelectorAll('.row-checkbox'));
+          selectAll.checked = checks.length > 0 && checks.every(cb => cb.checked);
+        }
+        updateDeleteButton();
+      }
+
+      async function deleteSelected() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+        const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+        if (deleteModalBody) deleteModalBody.textContent = `Xoa ${ids.length} quyen da chon?`;
+        deleteTargetId = ids;
+        getDeleteModal().show();
+      }
+
+      tbody.addEventListener('change', (e) => {
+        if (e.target.classList.contains('row-checkbox')) handleCheckboxChange();
+      });
+
+      document.addEventListener('change', (e) => {
+        if (e.target.id === 'select-all') {
+          document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = e.target.checked;
+          });
+          handleCheckboxChange();
+        }
+      });
+
+      btnDeleteSelected.addEventListener('click', deleteSelected);
       let deleteTargetId = null;
       let deleteModal = null;
+      const defaultDeleteMessage = document.querySelector('#deleteConfirmModal .modal-body')?.textContent || '';
 
       function getDeleteModal() {
         if (!deleteModal) {
@@ -992,6 +1053,8 @@ function escapeHtml(str) {
           window.location.href = `web-role-permission.html?id=${id}`;
         } else if (action === 'delete') {
           deleteTargetId = id;
+          const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+          if (deleteModalBody) deleteModalBody.textContent = defaultDeleteMessage;
           getDeleteModal().show();
         }
       }

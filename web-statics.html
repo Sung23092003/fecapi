@@ -391,6 +391,9 @@
               <button id="btn-create" type="button" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm bài viết</span>
               </button>
+              <button id="btn-delete-selected" type="button" class="btn btn-danger d-none">
+                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa da chon</span>
+              </button>
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
@@ -600,6 +603,7 @@
       const alertArea = document.getElementById('alert-area');
 
       const btnCreate = document.getElementById('btn-create');
+      const btnDeleteSelected = document.getElementById('btn-delete-selected');
       const btnFilter = document.getElementById('btn-filter');
 
       const filterTitle = document.getElementById('filter-title');
@@ -643,6 +647,7 @@
       ];
 
       let visibleColumns = {};
+      let selectedIds = new Set();
       let currentPage = 1;
       let lastTotalPage = 1;
 
@@ -803,6 +808,11 @@
         const thead = viewList.querySelector('thead tr');
         thead.innerHTML = '';
 
+        const thCheck = document.createElement('th');
+        thCheck.style.width = '40px';
+        thCheck.innerHTML = '<input type=\"checkbox\" id=\"select-all\" />';
+        thead.appendChild(thCheck);
+
         columns.forEach(col => {
           if (!visibleColumns[col.key]) return;
 
@@ -835,6 +845,8 @@
       }
       function renderList(items) {
         tbody.innerHTML = '';
+        selectedIds.clear();
+        updateDeleteButton();
         const frag = document.createDocumentFragment();
 
         items.forEach((it, idx) => {
@@ -847,6 +859,10 @@
                   <rect width="60" height="40" fill="#f8f9fa"/>
                   <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
                 </svg>`;
+
+          const ckTd = document.createElement('td');
+          ckTd.innerHTML = `<input type=\"checkbox\" class=\"row-checkbox\" value=\"${it.statics_id}\" />`;
+          tr.appendChild(ckTd);
 
           columns.forEach(col => {
             if (!visibleColumns[col.key]) return;
@@ -1132,7 +1148,9 @@
             ...Auth.getAuthHeader(),
             'Content-Type': 'application/json'
           };
-          const payload = { checkItem: [parseInt(id, 10)] };
+          const ids = Array.isArray(id) ? id : [id];
+          const payload = { checkItem: ids.map(item => parseInt(item, 10)).filter(Number.isFinite) };
+          if (payload.checkItem.length === 0) return;
 
           const res = await fetch(url, {
             method: 'POST',
@@ -1147,6 +1165,8 @@
           }
 
           showAlert('Xóa bài viết thành công.', 'success');
+          selectedIds.clear();
+          updateDeleteButton();
           loadData();
         } catch (err) {
           console.error(err);
@@ -1154,8 +1174,53 @@
         }
       }
 
+
+      function updateDeleteButton() {
+        const count = selectedIds.size;
+        btnDeleteSelected.classList.toggle('d-none', count === 0);
+        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xoa (` + count + `)</span>`;
+      }
+
+      function getSelectedIds() {
+        return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => parseInt(cb.value, 10));
+      }
+
+      function handleCheckboxChange() {
+        selectedIds = new Set(getSelectedIds());
+        const selectAll = document.getElementById('select-all');
+        if (selectAll) {
+          const checks = Array.from(document.querySelectorAll('.row-checkbox'));
+          selectAll.checked = checks.length > 0 && checks.every(cb => cb.checked);
+        }
+        updateDeleteButton();
+      }
+
+      async function deleteSelected() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+        const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+        if (deleteModalBody) deleteModalBody.textContent = `Xoa ${ids.length} bai viet da chon?`;
+        deleteTargetId = ids;
+        getDeleteModal().show();
+      }
+
+      tbody.addEventListener('change', (e) => {
+        if (e.target.classList.contains('row-checkbox')) handleCheckboxChange();
+      });
+
+      document.addEventListener('change', (e) => {
+        if (e.target.id === 'select-all') {
+          document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = e.target.checked;
+          });
+          handleCheckboxChange();
+        }
+      });
+
+      btnDeleteSelected.addEventListener('click', deleteSelected);
       let deleteTargetId = null;
       let deleteModal = null;
+      const defaultDeleteMessage = document.querySelector('#deleteConfirmModal .modal-body')?.textContent || '';
 
       function getDeleteModal() {
         if (!deleteModal) {
@@ -1180,6 +1245,8 @@
           window.location.href = `web-statics-edit.html?id=${id}`;
         } else if (action === 'delete') {
           deleteTargetId = id;
+          const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+          if (deleteModalBody) deleteModalBody.textContent = defaultDeleteMessage;
           getDeleteModal().show();
         }
       }

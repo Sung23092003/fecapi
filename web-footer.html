@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Quản lý Chân trang - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+  <link href="assets/css/web-header.css" rel="stylesheet">
+  <style>
+    .footer-layout-visual {
+      display: grid;
+      gap: 4px;
+      min-width: 86px;
+      padding: 9px;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+
+    .footer-layout-visual.cols-2 { grid-template-columns: repeat(2, 1fr); }
+    .footer-layout-visual.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    .footer-layout-visual.cols-4 { grid-template-columns: repeat(4, 1fr); }
+    .footer-layout-visual.rows-2 { grid-template-columns: 1fr; }
+
+    .footer-layout-visual span {
+      display: block;
+      min-height: 30px;
+      border-radius: 4px;
+      background: #4154f1;
+      opacity: .9;
+    }
+
+    .footer-layout-visual.rows-2 span { min-height: 14px; }
+    .footer-layout-visual.custom span:nth-child(1) { grid-column: span 2; }
+    .footer-layout-visual.custom span:nth-child(2) { background: #20c997; }
+    .footer-layout-visual.custom span:nth-child(3) { background: #f59e0b; }
+
+    .footer-item-card {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #f8f9fa;
+    }
+
+    .footer-item-card:hover {
+      border-color: #ced4da;
+      background: #fff;
+    }
+
+    .footer-row-close {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 0;
+      color: #98a2b3;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .footer-row-close:hover {
+      color: #dc3545;
+      background: #fee2e2;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle" href="#"><i class="bi bi-search"></i></a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i><span class="badge bg-primary badge-number">4</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">You have 4 new notifications</li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i><span class="badge bg-success badge-number">3</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">You have 3 new messages</li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 data-user-name></h6>
+              <span>Web Designer</span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="users-profile.html"><i class="bi bi-person"></i><span>My Profile</span></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center" href="#" data-logout="true"><i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span></a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#header-nav-side" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="header-nav-side" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu</span></a></li>
+          <li><a href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link active" href="web-footer.html"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html"><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html"><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html"><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Quản lý Chân trang</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="#">Quản lý Giao diện</a></li>
+          <li class="breadcrumb-item active">Quản lý Chân trang</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-3 order-lg-last mb-20">
+          <div class="card card-box">
+            <div class="card-body py-2 d-lg-none">
+              <button class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-between"
+                type="button" data-toggle="layout-options">
+                <span><i class="bi bi-layout-three-columns me-2"></i>Chọn mẫu Chân trang</span>
+                <i class="bi bi-chevron-down layout-toggle-icon"></i>
+              </button>
+            </div>
+            <div id="layout-options-collapse">
+              <div class="card-inner">
+                <h5 class="section-label mb-3 d-none d-lg-block">Chọn mẫu Chân trang</h5>
+
+                <label class="layout-option active" data-value="1">
+                  <input type="radio" name="footer_layout" value="1" checked>
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="footer-layout-visual cols-2"><span></span><span></span></div>
+                    <div class="flex-fill">
+                      <div class="layout-label">CT Mẫu 1</div>
+                      <div class="small text-muted-2">2 cột</div>
+                    </div>
+                    <div class="radio-dot"></div>
+                  </div>
+                </label>
+
+                <label class="layout-option" data-value="2">
+                  <input type="radio" name="footer_layout" value="2">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="footer-layout-visual cols-3"><span></span><span></span><span></span></div>
+                    <div class="flex-fill">
+                      <div class="layout-label">CT Mẫu 2</div>
+                      <div class="small text-muted-2">3 cột</div>
+                    </div>
+                    <div class="radio-dot"></div>
+                  </div>
+                </label>
+
+                <label class="layout-option" data-value="3">
+                  <input type="radio" name="footer_layout" value="3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="footer-layout-visual cols-4"><span></span><span></span><span></span><span></span></div>
+                    <div class="flex-fill">
+                      <div class="layout-label">CT Mẫu 3</div>
+                      <div class="small text-muted-2">4 cột</div>
+                    </div>
+                    <div class="radio-dot"></div>
+                  </div>
+                </label>
+
+                <label class="layout-option" data-value="4">
+                  <input type="radio" name="footer_layout" value="4">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="footer-layout-visual rows-2"><span></span><span></span></div>
+                    <div class="flex-fill">
+                      <div class="layout-label">CT Mẫu 4</div>
+                      <div class="small text-muted-2">2 hàng</div>
+                    </div>
+                    <div class="radio-dot"></div>
+                  </div>
+                </label>
+
+                <label class="layout-option" data-value="5">
+                  <input type="radio" name="footer_layout" value="5">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="footer-layout-visual cols-3 custom"><span></span><span></span><span></span></div>
+                    <div class="flex-fill">
+                      <div class="layout-label">CT Mẫu 5</div>
+                      <div class="small text-muted-2">Tùy biến riêng</div>
+                    </div>
+                    <div class="radio-dot"></div>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-9">
+          <div class="card card-box">
+            <div class="card-inner">
+              <div id="alertPlaceholder"></div>
+              <form id="formFooter">
+                <input type="hidden" id="footer_layout_value" name="footer_layout_value" value="1">
+
+                <ul class="nav nav-tabs nav-tabs-bordered flex-wrap" role="tablist">
+                  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-col-1" type="button">QLTT Cột 1</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-2" type="button">QLTT Cột 2</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-3" type="button">QLTT Cột 3</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-4" type="button">QLTT Cột 4</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-access-time" type="button">Thời gian truy cập</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-copyright" type="button">Bản quyền</button></li>
+                </ul>
+
+                <div class="tab-content">
+                  <div class="tab-pane fade show active" id="tab-col-1" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-md-5">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Ảnh logo</label>
+                          <div class="upload-box" id="footer-logo-upload-box">
+                            <img id="footer-logo-preview" class="d-none" alt="footer logo preview">
+                            <button type="button" class="btn-remove-image" id="footer-logo-remove" title="Xóa ảnh"><i class="bi bi-x-lg"></i></button>
+                            <div class="upload-icon"><i class="bi bi-image"></i></div>
+                            <div class="upload-text">Nhấp để tải lên</div>
+                            <div class="upload-hint">PNG, JPG, SVG</div>
+                            <input type="file" id="footer-logo-upload" accept="image/*" class="d-none">
+                            <input type="hidden" id="footer_logo" name="footer_logo" value="">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-7">
+                        <div class="form-group mb-3">
+                          <label class="form-label fw-semibold">Tên công ty</label>
+                          <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Nhập tên công ty">
+                        </div>
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Mô tả ngắn</label>
+                          <textarea class="form-control" id="company_intro" name="company_intro" rows="5" placeholder="Thông tin giới thiệu hiển thị dưới logo"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <h6 class="fw-bold mb-0">Số điện thoại</h6>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-phone"><i class="bi bi-plus-lg"></i> Thêm</button>
+                    </div>
+                    <div id="phones-container">
+                      <div class="text-muted-2 small" id="phones-empty">Chưa có số điện thoại nào</div>
+                    </div>
+                    <input type="hidden" id="footer_phones" name="footer_phones" value="[]">
+
+                    <hr class="my-4">
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                      <h6 class="fw-bold mb-0">Email</h6>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-email"><i class="bi bi-plus-lg"></i> Thêm</button>
+                    </div>
+                    <div id="emails-container">
+                      <div class="text-muted-2 small" id="emails-empty">Chưa có email nào</div>
+                    </div>
+                    <input type="hidden" id="footer_emails" name="footer_emails" value="[]">
+
+                    <hr class="my-4">
+                    <h6 class="fw-bold mb-3">Thêm Up ảnh chân trang</h6>
+                    <div class="row g-4">
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ảnh chân trang</label>
+                        <div class="upload-box" id="footer-bg-upload-box">
+                          <img id="footer-bg-preview" class="d-none" alt="footer image preview">
+                          <button type="button" class="btn-remove-image" id="footer-bg-remove" title="Xóa ảnh"><i class="bi bi-x-lg"></i></button>
+                          <div class="upload-icon"><i class="bi bi-card-image"></i></div>
+                          <div class="upload-text">Nhấp để tải lên</div>
+                          <div class="upload-hint">Ảnh nền hoặc banner chân trang</div>
+                          <input type="file" id="footer-bg-upload" accept="image/*" class="d-none">
+                          <input type="hidden" id="footer_image" name="footer_image" value="">
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <h6 class="fw-bold mb-3">Đổi màu chân trang</h6>
+                    <div class="row g-4">
+                      <div class="col-md-6 col-xl-3">
+                        <label class="form-label fw-semibold">Chọn màu nền chân trang</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_bg_color" value="#0f2742">
+                          <span class="color-hex" id="footer_bg_color_hex">#0f2742</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xl-3">
+                        <label class="form-label fw-semibold">Chọn màu chữ chân trang</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_text_color" value="#ffffff">
+                          <span class="color-hex" id="footer_text_color_hex">#ffffff</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xl-3">
+                        <label class="form-label fw-semibold">Màu nền icon mạng xã hội</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_social_bg_color" value="#ffffff">
+                          <span class="color-hex" id="footer_social_bg_color_hex">#ffffff</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xl-3">
+                        <label class="form-label fw-semibold">Màu icon mạng xã hội</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_social_icon_color" value="#0d6efd">
+                          <span class="color-hex" id="footer_social_icon_color_hex">#0d6efd</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu đường kẻ dài chân trang kiểu 1</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_line_long_color" value="#0b1b35">
+                          <span class="color-hex" id="footer_line_long_color_hex">#0b1b35</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu đường kẻ ngắn chân trang kiểu 1</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="footer_line_short_color" value="#9ee7e8">
+                          <span class="color-hex" id="footer_line_short_color_hex">#9ee7e8</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr class="my-4">
+                    <h6 class="fw-bold mb-3">2. Kích thước 3 cột hiển thị theo bootstrap</h6>
+                    <div class="row g-3">
+                      <div class="col-md-6 col-xl-4">
+                        <label class="form-label fw-semibold">Cột 1</label>
+                        <input type="text" class="form-control" id="footer_col_1_class" value="col-12 col-xl-4" placeholder="Class bootstrap cột 1">
+                        <div class="form-text">Ví dụ: col-12 col-xl-4</div>
+                      </div>
+                      <div class="col-md-6 col-xl-4">
+                        <label class="form-label fw-semibold">Cột 2</label>
+                        <input type="text" class="form-control" id="footer_col_2_class" value="col-12 col-xl-3" placeholder="Class bootstrap cột 2">
+                        <div class="form-text">Ví dụ: col-12 col-xl-3</div>
+                      </div>
+                      <div class="col-md-6 col-xl-4">
+                        <label class="form-label fw-semibold">Cột 3</label>
+                        <input type="text" class="form-control" id="footer_col_3_class" value="col-12 col-xl-5" placeholder="Class bootstrap cột 3">
+                        <div class="form-text">Ví dụ: col-12 col-xl-5</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="tab-col-2" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Sản phẩm & Dịch vụ</label>
+                        <input type="text" class="form-control" id="col2_title" placeholder="Nhập tiêu đề">
+                      </div>
+                      <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col2-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="col2-links-container">
+                          <div class="text-muted-2 small" id="col2-links-empty">Chưa có liên kết nào</div>
+                        </div>
+                        <input type="hidden" id="col2_links" value="[]">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="tab-col-3" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Chính sách</label>
+                        <input type="text" class="form-control" id="col3_title" placeholder="Nhập tiêu đề">
+                      </div>
+                      <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col3-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="col3-links-container">
+                          <div class="text-muted-2 small" id="col3-links-empty">Chưa có liên kết nào</div>
+                        </div>
+                        <input type="hidden" id="col3_links" value="[]">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="tab-col-4" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Tiêu đề</label>
+                        <input type="text" class="form-control" id="col4_title" placeholder="Nhập tiêu đề">
+                      </div>
+                      <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col4-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="col4-links-container">
+                          <div class="text-muted-2 small" id="col4-links-empty">Chưa có liên kết nào</div>
+                        </div>
+                        <input type="hidden" id="col4_links" value="[]">
+                      </div>
+                      <div class="col-12">
+                        <hr class="my-2">
+                        <div class="form-check form-switch mb-3">
+                          <input class="form-check-input" type="checkbox" id="payment_visible" checked>
+                          <label class="form-check-label fw-semibold" for="payment_visible">Phương thức thanh toán</label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Danh sách thanh toán</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-payment"><i class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="payment-container">
+                          <div class="text-muted-2 small" id="payment-empty">Chưa có phương thức thanh toán nào</div>
+                        </div>
+                        <input type="hidden" id="payment_items" value="[]">
+                      </div>
+                      <div class="col-12">
+                        <hr class="my-2">
+                        <div class="form-check form-switch mb-3">
+                          <input class="form-check-input" type="checkbox" id="map_visible" checked>
+                          <label class="form-check-label fw-semibold" for="map_visible">Bản đồ</label>
+                        </div>
+                        <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#map-content-tab" type="button">Nội dung</button></li>
+                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#map-preview-tab" type="button">Xem trước</button></li>
+                        </ul>
+                        <div class="tab-content pt-3">
+                          <div class="tab-pane fade show active" id="map-content-tab" role="tabpanel">
+                            <input type="text" class="form-control" id="map_iframe" placeholder="Nhập iframe bản đồ">
+                          </div>
+                          <div class="tab-pane fade" id="map-preview-tab" role="tabpanel">
+                            <div class="ratio ratio-16x9 border rounded overflow-hidden" id="map_preview"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <hr class="my-2">
+                        <div class="form-check form-switch mb-2">
+                          <input class="form-check-input" type="checkbox" id="fanpage_visible" checked>
+                          <label class="form-check-label fw-semibold" for="fanpage_visible">Fanpage</label>
+                        </div>
+                        <input type="text" class="form-control" id="fanpage_content" placeholder="Nhập nội dung fanpage">
+                      </div>
+                      <div class="col-md-6">
+                        <hr class="my-2">
+                        <label class="form-label fw-semibold">Đã thông báo với Bộ Công Thương</label>
+                        <input type="text" class="form-control" id="bct_notification" placeholder="Nhập nội dung hoặc link">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="tab-access-time" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="access_time_visible" checked>
+                          <label class="form-check-label fw-semibold" for="access_time_visible">Cài đặt hiển thị thời gian</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="access_count_visible" checked>
+                          <label class="form-check-label fw-semibold" for="access_count_visible">Cài đặt lượt truy cập</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu nền</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="access_bg_color" value="#111827">
+                          <span class="color-hex" id="access_bg_color_hex">#111827</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu chữ</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="access_text_color" value="#ffffff">
+                          <span class="color-hex" id="access_text_color_hex">#ffffff</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="tab-copyright" role="tabpanel">
+                    <div class="row g-4">
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Tên</label>
+                        <input type="text" class="form-control" id="copyright_name" placeholder="Tên">
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu nền</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="copyright_bg_color" value="#111827">
+                          <span class="color-hex" id="copyright_bg_color_hex">#111827</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="form-label fw-semibold">Màu chữ</label>
+                        <div class="color-input-group">
+                          <input type="color" class="form-control form-control-color" id="copyright_text_color" value="#ffffff">
+                          <span class="color-hex" id="copyright_text_color_hex">#ffffff</span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Nội dung bản quyền</label>
+                        <textarea class="form-control" id="copyright_content" name="copyright_content" rows="4">© 2026 Smart digital management. All rights reserved.</textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formFooter">
+      <i class="bi bi-floppy"></i><span>LƯU</span>
+    </button>
+    <a href="index.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>BỎ</span>
+    </a>
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const layoutOptions = document.querySelectorAll('.layout-option');
+      const layoutValueInput = document.getElementById('footer_layout_value');
+      const layoutToggleBtn = document.querySelector('[data-toggle="layout-options"]');
+      const layoutCollapse = document.getElementById('layout-options-collapse');
+      const layoutToggleIcon = document.querySelector('.layout-toggle-icon');
+
+      if (layoutToggleBtn && layoutCollapse) {
+        layoutToggleBtn.addEventListener('click', function () {
+          layoutCollapse.classList.toggle('show');
+          if (layoutToggleIcon) layoutToggleIcon.classList.toggle('open');
+        });
+      }
+
+      layoutOptions.forEach(function (option) {
+        option.addEventListener('click', function () {
+          const radio = option.querySelector('input[type="radio"]');
+          if (!radio) return;
+          radio.checked = true;
+          layoutOptions.forEach(function (item) { item.classList.remove('active'); });
+          option.classList.add('active');
+          layoutValueInput.value = radio.value;
+        });
+      });
+
+      function setupColorPicker(inputId, hexId) {
+        const input = document.getElementById(inputId);
+        const hex = document.getElementById(hexId);
+        if (!input || !hex) return;
+        input.addEventListener('input', function () { hex.textContent = input.value; });
+      }
+
+      setupColorPicker('copyright_bg_color', 'copyright_bg_color_hex');
+      setupColorPicker('copyright_text_color', 'copyright_text_color_hex');
+      setupColorPicker('access_bg_color', 'access_bg_color_hex');
+      setupColorPicker('access_text_color', 'access_text_color_hex');
+      setupColorPicker('footer_bg_color', 'footer_bg_color_hex');
+      setupColorPicker('footer_text_color', 'footer_text_color_hex');
+      setupColorPicker('footer_social_bg_color', 'footer_social_bg_color_hex');
+      setupColorPicker('footer_social_icon_color', 'footer_social_icon_color_hex');
+      setupColorPicker('footer_line_long_color', 'footer_line_long_color_hex');
+      setupColorPicker('footer_line_short_color', 'footer_line_short_color_hex');
+
+      function showAlert(message, type) {
+        let alertDiv = document.getElementById('formAlert');
+        if (!alertDiv) {
+          alertDiv = document.createElement('div');
+          alertDiv.id = 'formAlert';
+          document.getElementById('alertPlaceholder').appendChild(alertDiv);
+        }
+        alertDiv.innerHTML = message;
+        alertDiv.className = 'alert alert-' + (type || 'success') + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.minWidth = '260px';
+        setTimeout(function () { alertDiv.classList.add('d-none'); }, 4500);
+      }
+
+      function setUploadedImage(previewId, hiddenId, boxId, url) {
+        const preview = document.getElementById(previewId);
+        const hidden = document.getElementById(hiddenId);
+        const box = document.getElementById(boxId);
+        if (!preview || !hidden || !box || !url) return;
+        preview.src = url;
+        preview.classList.remove('d-none');
+        hidden.value = url;
+        box.classList.add('has-image');
+      }
+
+      function setupUpload(uploadId, previewId, hiddenId, removeId, boxId) {
+        const upload = document.getElementById(uploadId);
+        const preview = document.getElementById(previewId);
+        const hidden = document.getElementById(hiddenId);
+        const removeBtn = document.getElementById(removeId);
+        const box = document.getElementById(boxId);
+        if (!upload || !preview || !hidden || !removeBtn || !box) return;
+
+        upload.addEventListener('change', async function () {
+          const file = this.files && this.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            setUploadedImage(previewId, hiddenId, boxId, event.target.result);
+          };
+          reader.readAsDataURL(file);
+
+          try {
+            const formData = new FormData();
+            formData.append('file', file);
+            const headers = Auth.getAuthHeader();
+            delete headers['Content-Type'];
+            const res = await fetch(ENV.BASE_URL + '/admin/media/upload', { method: 'POST', headers: headers, body: formData });
+            const json = await res.json();
+            if (!json.success) throw new Error(json.message || 'Upload thất bại');
+            const raw = json.data.url || '';
+            const uploadedUrl = (raw.match(/https?:\/\/[^\s"']+/) || [raw])[0];
+            hidden.value = uploadedUrl;
+          } catch (err) {
+            showAlert(err?.message || 'Không thể tải ảnh lên', 'danger');
+          }
+        });
+
+        removeBtn.addEventListener('click', function () {
+          upload.value = '';
+          preview.src = '';
+          preview.classList.add('d-none');
+          hidden.value = '';
+          box.classList.remove('has-image');
+        });
+      }
+
+      setupUpload('footer-logo-upload', 'footer-logo-preview', 'footer_logo', 'footer-logo-remove', 'footer-logo-upload-box');
+      setupUpload('footer-bg-upload', 'footer-bg-preview', 'footer_image', 'footer-bg-remove', 'footer-bg-upload-box');
+
+      document.querySelectorAll('.upload-box').forEach(function (box) {
+        box.addEventListener('click', function (event) {
+          if (event.target.closest('.btn-remove-image')) return;
+          const input = box.querySelector('input[type="file"]');
+          if (input) input.click();
+        });
+      });
+
+      function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"']/g, function (char) {
+          return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[char];
+        });
+      }
+
+      function createPhoneRow(data) {
+        data = data || {};
+        const div = document.createElement('div');
+        div.className = 'footer-item-card';
+        div.innerHTML =
+          '<div class="d-flex gap-2 align-items-start">' +
+          '<div style="width:120px;"><input type="text" class="form-control form-control-sm phone-icon" placeholder="Icon" value="' + escapeHtml(data.icon) + '"></div>' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm phone-name" placeholder="Tên" value="' + escapeHtml(data.name) + '"></div>' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm phone-number" placeholder="Số điện thoại" value="' + escapeHtml(data.phone) + '"></div>' +
+          '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
+          '</div>';
+        div.querySelector('.footer-row-close').addEventListener('click', function () {
+          div.remove();
+          updatePhonesHidden();
+        });
+        div.querySelectorAll('input').forEach(function (input) { input.addEventListener('input', updatePhonesHidden); });
+        return div;
+      }
+
+      function updatePhonesHidden() {
+        const rows = document.querySelectorAll('#phones-container .footer-item-card');
+        const data = [];
+        rows.forEach(function (row) {
+          data.push({
+            icon: row.querySelector('.phone-icon').value || '',
+            name: row.querySelector('.phone-name').value || '',
+            phone: row.querySelector('.phone-number').value || ''
+          });
+        });
+        document.getElementById('footer_phones').value = JSON.stringify(data);
+        document.getElementById('phones-empty').style.display = data.length ? 'none' : '';
+      }
+
+      function createEmailRow(value) {
+        const div = document.createElement('div');
+        div.className = 'footer-item-card';
+        div.innerHTML =
+          '<div class="d-flex gap-2 align-items-center">' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm email-content" placeholder="Nội dung" value="' + escapeHtml(value) + '"></div>' +
+          '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
+          '</div>';
+        div.querySelector('.footer-row-close').addEventListener('click', function () {
+          div.remove();
+          updateEmailsHidden();
+        });
+        div.querySelector('input').addEventListener('input', updateEmailsHidden);
+        return div;
+      }
+
+      function updateEmailsHidden() {
+        const rows = document.querySelectorAll('#emails-container .footer-item-card');
+        const data = [];
+        rows.forEach(function (row) { data.push({ content: row.querySelector('.email-content').value || '' }); });
+        document.getElementById('footer_emails').value = JSON.stringify(data);
+        document.getElementById('emails-empty').style.display = data.length ? 'none' : '';
+      }
+
+      document.getElementById('btn-add-phone').addEventListener('click', function () {
+        document.getElementById('phones-container').appendChild(createPhoneRow({}));
+        updatePhonesHidden();
+      });
+
+      document.getElementById('btn-add-email').addEventListener('click', function () {
+        document.getElementById('emails-container').appendChild(createEmailRow(''));
+        updateEmailsHidden();
+      });
+
+      function createTextLinkRow(updateFn, data) {
+        data = data || {};
+        const div = document.createElement('div');
+        div.className = 'footer-item-card';
+        div.innerHTML =
+          '<div class="d-flex gap-2 align-items-start">' +
+          '<div style="width:120px;"><input type="text" class="form-control form-control-sm link-icon" placeholder="Icon" value="' + escapeHtml(data.icon) + '"></div>' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-name" placeholder="Tên" value="' + escapeHtml(data.name) + '"></div>' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-url" placeholder="Link" value="' + escapeHtml(data.link) + '"></div>' +
+          '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
+          '</div>';
+        div.querySelector('.footer-row-close').addEventListener('click', function () { div.remove(); updateFn(); });
+        div.querySelectorAll('input').forEach(function (input) { input.addEventListener('input', updateFn); });
+        return div;
+      }
+
+      function createFileLinkRow(updateFn, data) {
+        data = data || {};
+        const div = document.createElement('div');
+        div.className = 'footer-item-card';
+        div.innerHTML =
+          '<div class="d-flex gap-2 align-items-start">' +
+          '<div style="width:180px;"><input type="file" class="form-control form-control-sm link-file" accept="image/*,.svg"></div>' +
+          '<input type="hidden" class="link-file-value" value="' + escapeHtml(data.icon_file) + '">' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-name" placeholder="Tên" value="' + escapeHtml(data.name) + '"></div>' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-url" placeholder="Link" value="' + escapeHtml(data.link) + '"></div>' +
+          '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
+          '</div>';
+        div.querySelector('.footer-row-close').addEventListener('click', function () { div.remove(); updateFn(); });
+        div.querySelectorAll('input:not([type=file])').forEach(function (input) { input.addEventListener('input', updateFn); });
+        div.querySelector('.link-file').addEventListener('change', function () {
+          const file = this.files && this.files[0];
+          if (!file) return;
+          div.querySelector('.link-file-value').value = file.name;
+          updateFn();
+        });
+        return div;
+      }
+
+      function createPaymentRow(data) {
+        data = data || {};
+        const div = document.createElement('div');
+        div.className = 'footer-item-card';
+        div.innerHTML =
+          '<div class="d-flex gap-2 align-items-start">' +
+          '<div style="width:220px;"><input type="file" class="form-control form-control-sm payment-file" accept="image/*,.svg"></div>' +
+          '<input type="hidden" class="payment-file-value" value="' + escapeHtml(data.file) + '">' +
+          '<div class="flex-fill"><input type="text" class="form-control form-control-sm payment-content" placeholder="Nội dung" value="' + escapeHtml(data.content) + '"></div>' +
+          '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
+          '</div>';
+        div.querySelector('.footer-row-close').addEventListener('click', function () { div.remove(); updatePaymentHidden(); });
+        div.querySelector('.payment-content').addEventListener('input', updatePaymentHidden);
+        div.querySelector('.payment-file').addEventListener('change', function () {
+          const file = this.files && this.files[0];
+          if (!file) return;
+          div.querySelector('.payment-file-value').value = file.name;
+          updatePaymentHidden();
+        });
+        return div;
+      }
+
+      function collectTextLinks(containerId) {
+        return Array.from(document.querySelectorAll('#' + containerId + ' .footer-item-card')).map(function (row) {
+          return {
+            icon: row.querySelector('.link-icon')?.value || '',
+            name: row.querySelector('.link-name')?.value || '',
+            link: row.querySelector('.link-url')?.value || ''
+          };
+        });
+      }
+
+      function collectFileLinks(containerId) {
+        return Array.from(document.querySelectorAll('#' + containerId + ' .footer-item-card')).map(function (row) {
+          return {
+            icon_file: row.querySelector('.link-file-value')?.value || '',
+            name: row.querySelector('.link-name')?.value || '',
+            link: row.querySelector('.link-url')?.value || ''
+          };
+        });
+      }
+
+      function updateCol2Links() {
+        const data = collectTextLinks('col2-links-container');
+        document.getElementById('col2_links').value = JSON.stringify(data);
+        document.getElementById('col2-links-empty').style.display = data.length ? 'none' : '';
+      }
+
+      function updateCol3Links() {
+        const data = collectTextLinks('col3-links-container');
+        document.getElementById('col3_links').value = JSON.stringify(data);
+        document.getElementById('col3-links-empty').style.display = data.length ? 'none' : '';
+      }
+
+      function updateCol4Links() {
+        const data = collectFileLinks('col4-links-container');
+        document.getElementById('col4_links').value = JSON.stringify(data);
+        document.getElementById('col4-links-empty').style.display = data.length ? 'none' : '';
+      }
+
+      function updatePaymentHidden() {
+        const data = Array.from(document.querySelectorAll('#payment-container .footer-item-card')).map(function (row) {
+          return {
+            file: row.querySelector('.payment-file-value')?.value || '',
+            content: row.querySelector('.payment-content')?.value || ''
+          };
+        });
+        document.getElementById('payment_items').value = JSON.stringify(data);
+        document.getElementById('payment-empty').style.display = data.length ? 'none' : '';
+      }
+
+      document.getElementById('btn-add-col2-link').addEventListener('click', function () {
+        document.getElementById('col2-links-container').appendChild(createTextLinkRow(updateCol2Links));
+        updateCol2Links();
+      });
+      document.getElementById('btn-add-col3-link').addEventListener('click', function () {
+        document.getElementById('col3-links-container').appendChild(createTextLinkRow(updateCol3Links));
+        updateCol3Links();
+      });
+      document.getElementById('btn-add-col4-link').addEventListener('click', function () {
+        document.getElementById('col4-links-container').appendChild(createFileLinkRow(updateCol4Links));
+        updateCol4Links();
+      });
+      document.getElementById('btn-add-payment').addEventListener('click', function () {
+        document.getElementById('payment-container').appendChild(createPaymentRow());
+        updatePaymentHidden();
+      });
+
+      const mapInput = document.getElementById('map_iframe');
+      const mapPreview = document.getElementById('map_preview');
+      if (mapInput && mapPreview) {
+        mapInput.addEventListener('input', function () {
+          mapPreview.innerHTML = mapInput.value || '';
+        });
+      }
+
+      const companyNameInput = document.getElementById('company_name');
+      const copyrightNameInput = document.getElementById('copyright_name');
+      if (companyNameInput && copyrightNameInput) {
+        companyNameInput.addEventListener('input', function () {
+          if (!copyrightNameInput.dataset.edited) copyrightNameInput.value = companyNameInput.value;
+        });
+        copyrightNameInput.addEventListener('input', function () {
+          copyrightNameInput.dataset.edited = '1';
+        });
+      }
+
+      function collectColumnData() {
+        const columns = [{
+          column: 1,
+          logo: document.getElementById('footer_logo').value,
+          company_name: document.getElementById('company_name').value,
+          company_intro: document.getElementById('company_intro').value,
+          phones: JSON.parse(document.getElementById('footer_phones').value || '[]'),
+          emails: JSON.parse(document.getElementById('footer_emails').value || '[]')
+        }];
+        columns.push({
+          column: 2,
+          title: document.getElementById('col2_title').value,
+          links: JSON.parse(document.getElementById('col2_links').value || '[]')
+        });
+        columns.push({
+          column: 3,
+          title: document.getElementById('col3_title').value,
+          links: JSON.parse(document.getElementById('col3_links').value || '[]')
+        });
+        columns.push({
+          column: 4,
+          title: document.getElementById('col4_title').value,
+          links: JSON.parse(document.getElementById('col4_links').value || '[]'),
+          payment: {
+            visible: document.getElementById('payment_visible').checked,
+            items: JSON.parse(document.getElementById('payment_items').value || '[]')
+          },
+          map: {
+            visible: document.getElementById('map_visible').checked,
+            iframe: document.getElementById('map_iframe').value
+          },
+          fanpage: {
+            visible: document.getElementById('fanpage_visible').checked,
+            content: document.getElementById('fanpage_content').value
+          },
+          bct_notification: document.getElementById('bct_notification').value
+        });
+        return columns;
+      }
+
+      document.getElementById('buttonSubmit').addEventListener('click', async function (event) {
+        event.preventDefault();
+        updatePhonesHidden();
+        updateEmailsHidden();
+        updateCol2Links();
+        updateCol3Links();
+        updateCol4Links();
+        updatePaymentHidden();
+
+        const payload = {
+          footer_layout: parseInt(document.getElementById('footer_layout_value').value, 10),
+          columns: collectColumnData(),
+          access_time: {
+            time_visible: document.getElementById('access_time_visible').checked,
+            count_visible: document.getElementById('access_count_visible').checked,
+            bg_color: document.getElementById('access_bg_color').value,
+            text_color: document.getElementById('access_text_color').value
+          },
+          copyright: {
+            name: document.getElementById('copyright_name').value || document.getElementById('company_name').value,
+            bg_color: document.getElementById('copyright_bg_color').value,
+            text_color: document.getElementById('copyright_text_color').value,
+            content: document.getElementById('copyright_content').value
+          },
+          footer_image: document.getElementById('footer_image').value
+          ,
+          style: {
+            bg_color: document.getElementById('footer_bg_color').value,
+            text_color: document.getElementById('footer_text_color').value,
+            social_bg_color: document.getElementById('footer_social_bg_color').value,
+            social_icon_color: document.getElementById('footer_social_icon_color').value,
+            line_long_color: document.getElementById('footer_line_long_color').value,
+            line_short_color: document.getElementById('footer_line_short_color').value
+          },
+          column_classes: {
+            col_1: document.getElementById('footer_col_1_class').value,
+            col_2: document.getElementById('footer_col_2_class').value,
+            col_3: document.getElementById('footer_col_3_class').value
+          }
+        };
+
+        try {
+          const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
+          const res = await fetch(ENV.BASE_URL + '/admin/footer/save', { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+          const json = await res.json().catch(function () { return null; });
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || 'Lỗi: ' + res.status, 'danger');
+            return;
+          }
+          showAlert('Lưu cấu hình chân trang thành công!', 'success');
+        } catch (err) {
+          showAlert('Có lỗi xảy ra khi lưu cấu hình chân trang!', 'danger');
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>

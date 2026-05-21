@@ -1,0 +1,730 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Web - Quản lý Banner - NiceAdmin</title>
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .banner-thumb {
+      width: 112px;
+      height: 58px;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+
+    .banner-mobile-thumb {
+      width: 58px;
+      height: 58px;
+      object-fit: cover;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+
+    .content-preview {
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .column-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1050;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .column-modal.show {
+      display: flex;
+    }
+
+    .column-modal-content {
+      background: #fff;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .column-modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .column-modal-body {
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .column-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .column-modal-footer {
+      padding: 1rem;
+      border-top: 1px solid #dee2e6;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .column-modal-footer .btn {
+      flex: 1;
+    }
+
+    @media (max-width: 767.98px) {
+      .banner-toolbar .btn,
+      .banner-toolbar .form-select {
+        width: 100%;
+      }
+    }
+
+    .banner-filter-row {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    .banner-filter-row .form-select {
+      width: 180px;
+      min-width: 180px;
+    }
+
+    .banner-filter-row .btn {
+      width: auto !important;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle" href="#"><i class="bi bi-search"></i></a>
+        </li>
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 data-user-name></h6>
+              <span>Web Designer</span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-logout="true">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link has-active" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="header-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-category.html" class=""><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a></li>
+          <li><a href="web-banner.html" class="active"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="products-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>QL User Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="customers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL User Khách hàng</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Quy định &amp; Hướng dẫn</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="regulations-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Quy định chung</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Hướng dẫn</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý SEO</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
+        </ul>
+      </li>
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="mb-0">Quản lý Banner</h1>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Quản lý Banner</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="text-muted small" id="bannerTotal">Tổng: 0 banner</div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="card mb-20">
+        <div class="card-body pt-20">
+          <div class="banner-toolbar d-flex flex-row gap-2 align-items-md-center justify-content-between mb-3 flex-wrap">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button id="btnCreate" type="button" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm banner</span>
+              </button>
+              <button id="btnDeleteSelected" type="button" class="btn btn-danger d-none">
+                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa đã chọn</span>
+              </button>
+            </div>
+
+            <div class="d-flex gap-2 align-items-center banner-filter-row">
+              <select id="filterStatus" class="form-select">
+                <option value="">Tất cả trạng thái</option>
+                <option value="show">Hiện</option>
+                <option value="hide">Ẩn</option>
+              </select>
+              <button id="btnResetFilter" type="button" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-counterclockwise"></i> <span>Xóa lọc</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="alertArea" class="alert d-none" role="alert"></div>
+
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr id="bannerTableHead"></tr>
+              </thead>
+              <tbody id="bannerTableBody"></tbody>
+            </table>
+          </div>
+
+          <div id="emptyState" class="text-center text-muted py-4 d-none">
+            Không có banner phù hợp.
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="text-muted" id="pageInfo"></div>
+            <nav>
+              <ul id="pagination" class="pagination mb-0"></ul>
+            </nav>
+          </div>
+
+          <div id="column-modal" class="column-modal">
+            <div class="column-modal-content">
+              <div class="column-modal-header">
+                <span>Hiển thị/Ẩn cột</span>
+                <button type="button" id="column-modal-close">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="column-modal-body" id="column-list"></div>
+              <div class="column-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+                <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận xóa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="deleteConfirmText">Bạn có chắc chắn muốn xóa banner này không?</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger" id="btnConfirmDelete">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/token-guard.js"></script>
+
+  <script>
+    (function () {
+      const pageSize = 5;
+      const storageKey = 'bannerVisibleColumns';
+      let currentPage = 1;
+      let selectedIds = new Set();
+      let deleteTargetIds = [];
+
+      let banners = [
+        {
+          id: 1,
+          image_desktop: 'assets/img/slides-1.jpg',
+          image_mobile: 'assets/img/news-1.jpg',
+          title: 'Banner khuyến mãi trang chủ',
+          description: 'Ưu đãi sản phẩm nổi bật trong tháng.',
+          url: '/khuyen-mai',
+          type_main_sub: 'main',
+          position: 1,
+          status: 'show',
+          feature_type: 'Trang chủ',
+          created_at: '2026-05-21',
+          deleted: false
+        },
+        {
+          id: 2,
+          image_desktop: 'assets/img/slides-2.jpg',
+          image_mobile: 'assets/img/news-2.jpg',
+          title: 'Slide giới thiệu dịch vụ',
+          description: 'Banner phụ cho nhóm dịch vụ.',
+          url: '/dich-vu',
+          type_main_sub: 'sub',
+          position: 2,
+          status: 'show',
+          feature_type: 'Slide',
+          created_at: '2026-05-20',
+          deleted: false
+        },
+        {
+          id: 3,
+          image_desktop: 'assets/img/slides-3.jpg',
+          image_mobile: 'assets/img/news-3.jpg',
+          title: 'Banner tin tức mới',
+          description: 'Dẫn tới danh sách tin mới.',
+          url: '/tin-tuc',
+          type_main_sub: 'sub',
+          position: 3,
+          status: 'hide',
+          feature_type: 'Tin tức',
+          created_at: '2026-05-19',
+          deleted: false
+        }
+      ];
+
+      const columns = [
+        { key: 'index', label: 'STT', minWidth: '70px' },
+        { key: 'desktop', label: 'Ảnh Desktop', minWidth: '140px' },
+        { key: 'mobile', label: 'Ảnh Mobile', minWidth: '100px' },
+        { key: 'title', label: 'Tên banner', minWidth: '180px' },
+        { key: 'url', label: 'URL', minWidth: '170px' },
+        { key: 'feature', label: 'Chức năng', minWidth: '150px' },
+        { key: 'type', label: 'Chính / Phụ', minWidth: '110px' },
+        { key: 'status', label: 'Trạng thái', minWidth: '100px' },
+        { key: 'created', label: 'Ngày tạo', minWidth: '120px' },
+        { key: 'actions', label: 'Hoạt động', minWidth: '170px' }
+      ];
+
+      let visibleColumns = Object.fromEntries(columns.map(col => [col.key, true]));
+
+      const els = {
+        total: document.getElementById('bannerTotal'),
+        head: document.getElementById('bannerTableHead'),
+        tbody: document.getElementById('bannerTableBody'),
+        empty: document.getElementById('emptyState'),
+        pageInfo: document.getElementById('pageInfo'),
+        pagination: document.getElementById('pagination'),
+        filterStatus: document.getElementById('filterStatus'),
+        btnResetFilter: document.getElementById('btnResetFilter'),
+        btnCreate: document.getElementById('btnCreate'),
+        btnDeleteSelected: document.getElementById('btnDeleteSelected'),
+        columnModal: document.getElementById('column-modal'),
+        columnModalClose: document.getElementById('column-modal-close'),
+        columnList: document.getElementById('column-list'),
+        btnResetColumns: document.getElementById('btn-reset-columns'),
+        btnDoneColumns: document.getElementById('btn-done-columns'),
+        deleteText: document.getElementById('deleteConfirmText')
+      };
+
+      const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+
+      function escapeHtml(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[char]));
+      }
+
+      function formatType(value) {
+        return value === 'main'
+          ? '<span class="badge bg-primary">Banner chính</span>'
+          : '<span class="badge bg-secondary">Banner phụ</span>';
+      }
+
+      function formatStatus(value) {
+        return value === 'show'
+          ? '<span class="badge bg-success">Hiện</span>'
+          : '<span class="badge bg-warning text-dark">Ẩn</span>';
+      }
+
+      function showAlert(message, type) {
+        const alert = document.getElementById('alertArea');
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+        setTimeout(() => alert.classList.add('d-none'), 2500);
+      }
+
+      function loadColumnState() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+          visibleColumns = { ...visibleColumns, ...saved };
+        } catch (err) {
+          visibleColumns = Object.fromEntries(columns.map(col => [col.key, true]));
+        }
+      }
+
+      function saveColumnState() {
+        localStorage.setItem(storageKey, JSON.stringify(visibleColumns));
+      }
+
+      function renderColumnModal() {
+        els.columnList.innerHTML = columns.map(col => `
+          <label class="column-item">
+            <input type="checkbox" data-column-key="${col.key}" ${visibleColumns[col.key] ? 'checked' : ''}>
+            <span>${col.label}</span>
+          </label>
+        `).join('');
+      }
+
+      function renderTableHeader() {
+        els.head.innerHTML = '<th style="width: 40px;"><input id="selectAll" type="checkbox"></th>';
+        columns.forEach(col => {
+          if (!visibleColumns[col.key]) return;
+          els.head.insertAdjacentHTML('beforeend', `<th style="min-width: ${col.minWidth};">${col.label}</th>`);
+        });
+        els.head.insertAdjacentHTML('beforeend', `
+          <th style="min-width: 40px;">
+            <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0" title="Hiển thị cột">
+              <i class="bi bi-three-dots-vertical"></i>
+            </button>
+          </th>
+        `);
+        const btn = document.getElementById('btn-column-visibility');
+        if (btn) btn.addEventListener('click', openColumnModal);
+      }
+
+      function getFilteredBanners() {
+        const status = els.filterStatus.value;
+        return banners
+          .filter(item => !item.deleted)
+          .filter(item => !status || item.status === status)
+          .sort((a, b) => Number(a.position) - Number(b.position));
+      }
+
+      function addCell(row, key, html) {
+        if (!visibleColumns[key]) return;
+        row.insertAdjacentHTML('beforeend', html);
+      }
+
+      function renderPagination(totalPages) {
+        els.pagination.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        const addPage = (label, page, disabled, active) => {
+          const li = document.createElement('li');
+          li.className = 'page-item';
+          if (disabled) li.classList.add('disabled');
+          if (active) li.classList.add('active');
+          li.innerHTML = `<a class="page-link" href="#">${label}</a>`;
+          li.addEventListener('click', e => {
+            e.preventDefault();
+            if (disabled) return;
+            currentPage = page;
+            render();
+          });
+          els.pagination.appendChild(li);
+        };
+
+        addPage('«', Math.max(1, currentPage - 1), currentPage === 1, false);
+        for (let page = 1; page <= totalPages; page++) {
+          addPage(String(page), page, false, page === currentPage);
+        }
+        addPage('»', Math.min(totalPages, currentPage + 1), currentPage === totalPages, false);
+      }
+
+      function render() {
+        renderTableHeader();
+        const filtered = getFilteredBanners();
+        const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * pageSize;
+        const pageItems = filtered.slice(start, start + pageSize);
+
+        els.total.textContent = `Tổng: ${filtered.length} banner`;
+        els.pageInfo.textContent = `Trang ${currentPage}/${totalPages}`;
+        els.empty.classList.toggle('d-none', pageItems.length > 0);
+        els.tbody.innerHTML = '';
+
+        pageItems.forEach((item, index) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td><input class="row-check" type="checkbox" value="${item.id}" ${selectedIds.has(item.id) ? 'checked' : ''}></td>`;
+          addCell(tr, 'index', `<td>${start + index + 1}</td>`);
+          addCell(tr, 'desktop', `<td><img class="banner-thumb" src="${escapeHtml(item.image_desktop)}" alt="${escapeHtml(item.title)} desktop"></td>`);
+          addCell(tr, 'mobile', `<td><img class="banner-mobile-thumb" src="${escapeHtml(item.image_mobile)}" alt="${escapeHtml(item.title)} mobile"></td>`);
+          addCell(tr, 'title', `<td><div class="fw-semibold">${escapeHtml(item.title)}</div><div class="small text-muted content-preview">${escapeHtml(item.description)}</div></td>`);
+          addCell(tr, 'url', `<td><a href="${escapeHtml(item.url)}" class="text-break">${escapeHtml(item.url)}</a></td>`);
+          addCell(tr, 'feature', `<td>${escapeHtml(item.feature_type)}</td>`);
+          addCell(tr, 'type', `<td>${formatType(item.type_main_sub)}</td>`);
+          addCell(tr, 'status', `<td>${formatStatus(item.status)}</td>`);
+          addCell(tr, 'created', `<td>${escapeHtml(item.created_at)}</td>`);
+          addCell(tr, 'actions', `
+            <td>
+              <div class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${item.id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-${item.status === 'show' ? 'warning' : 'success'}" data-action="toggle" data-id="${item.id}" title="${item.status === 'show' ? 'Ẩn' : 'Hiện'}"><i class="bi bi-eye${item.status === 'show' ? '-slash' : ''}"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${item.id}" title="Xóa"><i class="bi bi-trash"></i></button>
+              </div>
+            </td>
+          `);
+          els.tbody.appendChild(tr);
+        });
+
+        const selectAll = document.getElementById('selectAll');
+        if (selectAll) {
+          selectAll.checked = pageItems.length > 0 && pageItems.every(item => selectedIds.has(item.id));
+        }
+        els.btnDeleteSelected.classList.toggle('d-none', selectedIds.size === 0);
+        els.btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa đã chọn (${selectedIds.size})</span>`;
+        renderPagination(totalPages);
+      }
+
+      function softDelete(ids) {
+        banners = banners.map(item => ids.includes(item.id) ? { ...item, deleted: true } : item);
+        selectedIds.clear();
+        showAlert('Đã xóa mềm banner.', 'success');
+        render();
+      }
+
+      els.btnCreate.addEventListener('click', () => {
+        window.location.href = 'web-banner-edit.html?id=0';
+      });
+
+      els.tbody.addEventListener('change', e => {
+        if (!e.target.classList.contains('row-check')) return;
+        const id = Number(e.target.value);
+        if (e.target.checked) selectedIds.add(id);
+        else selectedIds.delete(id);
+        render();
+      });
+
+      document.addEventListener('change', e => {
+        if (e.target.id !== 'selectAll') return;
+        const filtered = getFilteredBanners();
+        const pageItems = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+        pageItems.forEach(item => {
+          if (e.target.checked) selectedIds.add(item.id);
+          else selectedIds.delete(item.id);
+        });
+        render();
+      });
+
+      els.tbody.addEventListener('click', e => {
+        const button = e.target.closest('button[data-action]');
+        if (!button) return;
+        const id = Number(button.dataset.id);
+        const item = banners.find(entry => entry.id === id);
+        if (!item) return;
+
+        if (button.dataset.action === 'edit') {
+          window.location.href = `web-banner-edit.html?id=${id}`;
+        } else if (button.dataset.action === 'toggle') {
+          item.status = item.status === 'show' ? 'hide' : 'show';
+          showAlert(item.status === 'show' ? 'Đã hiện banner.' : 'Đã ẩn banner.', 'success');
+          render();
+        } else if (button.dataset.action === 'delete') {
+          deleteTargetIds = [id];
+          els.deleteText.textContent = `Bạn có chắc chắn muốn xóa mềm banner "${item.title}" không?`;
+          deleteModal.show();
+        }
+      });
+
+      els.btnDeleteSelected.addEventListener('click', () => {
+        deleteTargetIds = Array.from(selectedIds);
+        if (!deleteTargetIds.length) return;
+        els.deleteText.textContent = `Bạn có chắc chắn muốn xóa mềm ${deleteTargetIds.length} banner đã chọn không?`;
+        deleteModal.show();
+      });
+
+      document.getElementById('btnConfirmDelete').addEventListener('click', () => {
+        softDelete(deleteTargetIds);
+        deleteTargetIds = [];
+        deleteModal.hide();
+      });
+
+      els.filterStatus.addEventListener('change', () => {
+        currentPage = 1;
+        selectedIds.clear();
+        render();
+      });
+
+      els.btnResetFilter.addEventListener('click', () => {
+        els.filterStatus.value = '';
+        currentPage = 1;
+        selectedIds.clear();
+        render();
+      });
+
+      function openColumnModal() {
+        renderColumnModal();
+        els.columnModal.classList.add('show');
+      }
+
+      els.columnModalClose.addEventListener('click', () => els.columnModal.classList.remove('show'));
+      els.btnDoneColumns.addEventListener('click', () => els.columnModal.classList.remove('show'));
+      els.columnModal.addEventListener('click', e => {
+        if (e.target === els.columnModal) els.columnModal.classList.remove('show');
+      });
+
+      els.columnList.addEventListener('change', e => {
+        const key = e.target.dataset.columnKey;
+        if (!key) return;
+        visibleColumns[key] = e.target.checked;
+        saveColumnState();
+        render();
+      });
+
+      els.btnResetColumns.addEventListener('click', () => {
+        visibleColumns = Object.fromEntries(columns.map(col => [col.key, true]));
+        saveColumnState();
+        renderColumnModal();
+        render();
+      });
+
+      loadColumnState();
+      render();
+    })();
+  </script>
+</body>
+
+</html>

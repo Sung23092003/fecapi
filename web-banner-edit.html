@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Web - Thêm/Sửa Banner - NiceAdmin</title>
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+  <link href="assets/css/web-category-edit.css" rel="stylesheet">
+
+  <style>
+    .preview-box {
+      min-height: 92px;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      background: #f8fafc;
+    }
+
+    .preview-box img {
+      width: 120px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+    }
+
+    .preview-box .mobile-preview {
+      width: 72px;
+      height: 72px;
+    }
+  </style>
+</head>
+
+<body>
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 data-user-name></h6>
+              <span>Web Designer</span>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-logout="true">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link has-active" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="header-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-category.html" class=""><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a></li>
+          <li><a href="web-banner.html" class="active"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="products-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>QL User Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="customers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL User Khách hàng</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Quy định &amp; Hướng dẫn</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="regulations-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Quy định chung</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Hướng dẫn</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý SEO</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
+        </ul>
+      </li>
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1 id="pageTitle">Thêm banner</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="web-banner.html">Quản lý Banner</a></li>
+          <li class="breadcrumb-item active" id="pageCrumb">Thêm</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="card card-box">
+        <div class="card-inner">
+          <div id="alertPlaceholder"></div>
+          <form id="formBanner" class="row g-3">
+            <input type="hidden" id="bannerId" value="0">
+
+            <div class="col-xs-12 col-md-6">
+              <div class="form-group">
+                <label class="form-label">Tên banner<span class="label-req">*</span></label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="bannerTitle" required>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">URL</label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="bannerUrl" placeholder="/landing-page">
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Mô tả ngắn</label>
+                <div class="controls">
+                  <textarea class="form-control" id="bannerDescription" rows="4"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Nội dung</label>
+                <div class="controls">
+                  <textarea class="form-control" id="bannerContent" rows="4"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Nút hành động</label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="buttonText" placeholder="Xem ngay">
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Chức năng</label>
+                <div class="controls">
+                  <select class="form-select" id="featureType">
+                    <option>Trang chủ</option>
+                    <option>Slide</option>
+                    <option>Danh mục sản phẩm</option>
+                    <option>Landing Page</option>
+                    <option>Tin tức</option>
+                    <option>Giới thiệu</option>
+                    <option>Khác</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xs-12 col-md-6">
+              <div class="form-group">
+                <label class="form-label">Ảnh desktop</label>
+                <div class="controls">
+                  <input type="hidden" id="imageDesktop">
+                  <input type="file" class="form-control" id="imageDesktopFile" accept="image/*">
+                  <div class="preview-box mt-2 d-flex flex-wrap gap-2 align-items-center" id="desktopPreview"></div>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Ảnh mobile</label>
+                <div class="controls">
+                  <input type="hidden" id="imageMobile">
+                  <input type="file" class="form-control" id="imageMobileFile" accept="image/*">
+                  <div class="preview-box mt-2 d-flex flex-wrap gap-2 align-items-center" id="mobilePreview"></div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Thứ tự</label>
+                  <input type="number" class="form-control" id="position" value="1" min="0">
+                </div>
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Trạng thái</label>
+                  <select class="form-select" id="status">
+                    <option value="show">Hiển thị</option>
+                    <option value="hide">Ẩn</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Chính / Phụ</label>
+                  <select class="form-select" id="typeMainSub">
+                    <option value="main">Banner chính</option>
+                    <option value="sub">Banner phụ</option>
+                  </select>
+                </div>
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Danh mục áp dụng</label>
+                  <select class="form-select" id="categoryApply">
+                    <option value="all">Tất cả danh mục</option>
+                    <option value="product">Sản phẩm</option>
+                    <option value="service">Dịch vụ</option>
+                    <option value="news">Tin tức</option>
+                    <option value="about">Giới thiệu</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Ngày bắt đầu</label>
+                  <input type="date" class="form-control" id="startDate">
+                </div>
+                <div class="col-md-6 form-group mt-3">
+                  <label class="form-label">Ngày kết thúc</label>
+                  <input type="date" class="form-control" id="endDate">
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Thiết bị hiển thị</label>
+                <div class="d-flex flex-wrap gap-3 pt-2">
+                  <div class="form-check">
+                    <input class="form-check-input device-check" type="checkbox" value="Desktop" id="deviceDesktop">
+                    <label class="form-check-label" for="deviceDesktop">Desktop</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input device-check" type="checkbox" value="Mobile" id="deviceMobile">
+                    <label class="form-check-label" for="deviceMobile">Mobile</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input device-check" type="checkbox" value="Tablet" id="deviceTablet">
+                    <label class="form-check-label" for="deviceTablet">Tablet</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Upload nhiều ảnh</label>
+                <input type="file" class="form-control" id="galleryFiles" accept="image/*" multiple>
+                <div class="preview-box mt-2 d-flex flex-wrap gap-2 align-items-center" id="galleryPreview"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formBanner">
+      <i class="bi bi-floppy"></i><span>Lưu</span>
+    </button>
+    <a href="web-banner.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>Bỏ</span>
+    </a>
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/token-guard.js"></script>
+
+  <script>
+    (function () {
+      const demoData = {
+        1: {
+          title: 'Banner khuyến mãi trang chủ',
+          url: '/khuyen-mai',
+          description: 'Ưu đãi sản phẩm nổi bật trong tháng.',
+          content: 'Hiển thị tại vị trí chính trên trang chủ.',
+          button_text: 'Mua ngay',
+          feature_type: 'Trang chủ',
+          image_desktop: 'assets/img/slides-1.jpg',
+          image_mobile: 'assets/img/news-1.jpg',
+          position: 1,
+          status: 'show',
+          type_main_sub: 'main',
+          category_apply: 'all',
+          start_date: '2026-05-01',
+          end_date: '2026-06-30',
+          device_type: ['Desktop', 'Mobile']
+        },
+        2: {
+          title: 'Slide giải pháp dịch vụ',
+          url: '/dich-vu',
+          description: 'Banner phụ cho nhóm dịch vụ.',
+          content: 'Dùng trong khu vực slide dịch vụ.',
+          button_text: 'Tìm hiểu',
+          feature_type: 'Slide',
+          image_desktop: 'assets/img/slides-2.jpg',
+          image_mobile: 'assets/img/news-2.jpg',
+          position: 2,
+          status: 'show',
+          type_main_sub: 'sub',
+          category_apply: 'service',
+          start_date: '2026-05-10',
+          end_date: '2026-07-10',
+          device_type: ['Desktop', 'Tablet']
+        }
+      };
+
+      const id = Number(new URLSearchParams(window.location.search).get('id') || 0);
+      const pageTitle = document.getElementById('pageTitle');
+      const pageCrumb = document.getElementById('pageCrumb');
+      const form = document.getElementById('formBanner');
+
+      function showAlert(message, type) {
+        document.getElementById('alertPlaceholder').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      }
+
+      function setPreview(containerId, urls, mobile) {
+        const container = document.getElementById(containerId);
+        const list = Array.isArray(urls) ? urls : (urls ? [urls] : []);
+        container.innerHTML = list.length
+          ? list.map(url => `<img class="${mobile ? 'mobile-preview' : ''}" src="${url}" alt="preview">`).join('')
+          : '<span class="small text-muted">Chưa có ảnh preview</span>';
+      }
+
+      function readFileAsDataUrl(file) {
+        return new Promise(resolve => {
+          const reader = new FileReader();
+          reader.onload = e => resolve(e.target.result);
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function handleSingleImage(inputId, hiddenId, previewId, mobile) {
+        const input = document.getElementById(inputId);
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const dataUrl = await readFileAsDataUrl(file);
+        document.getElementById(hiddenId).value = dataUrl;
+        setPreview(previewId, dataUrl, mobile);
+      }
+
+      async function handleGalleryPreview() {
+        const files = Array.from(document.getElementById('galleryFiles').files || []);
+        const urls = [];
+        for (const file of files) urls.push(await readFileAsDataUrl(file));
+        setPreview('galleryPreview', urls, false);
+      }
+
+      function fillForm(data) {
+        document.getElementById('bannerTitle').value = data.title || '';
+        document.getElementById('bannerUrl').value = data.url || '';
+        document.getElementById('bannerDescription').value = data.description || '';
+        document.getElementById('bannerContent').value = data.content || '';
+        document.getElementById('buttonText').value = data.button_text || '';
+        document.getElementById('featureType').value = data.feature_type || 'Trang chủ';
+        document.getElementById('imageDesktop').value = data.image_desktop || '';
+        document.getElementById('imageMobile').value = data.image_mobile || '';
+        document.getElementById('position').value = data.position || 1;
+        document.getElementById('status').value = data.status || 'show';
+        document.getElementById('typeMainSub').value = data.type_main_sub || 'main';
+        document.getElementById('categoryApply').value = data.category_apply || 'all';
+        document.getElementById('startDate').value = data.start_date || '';
+        document.getElementById('endDate').value = data.end_date || '';
+        document.querySelectorAll('.device-check').forEach(check => {
+          check.checked = (data.device_type || ['Desktop', 'Mobile']).includes(check.value);
+        });
+        setPreview('desktopPreview', data.image_desktop || '', false);
+        setPreview('mobilePreview', data.image_mobile || '', true);
+        setPreview('galleryPreview', [], false);
+      }
+
+      document.getElementById('imageDesktopFile').addEventListener('change', () => handleSingleImage('imageDesktopFile', 'imageDesktop', 'desktopPreview', false));
+      document.getElementById('imageMobileFile').addEventListener('change', () => handleSingleImage('imageMobileFile', 'imageMobile', 'mobilePreview', true));
+      document.getElementById('galleryFiles').addEventListener('change', handleGalleryPreview);
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        showAlert(id ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', 'success');
+        setTimeout(() => {
+          window.location.href = 'web-banner.html';
+        }, 500);
+      });
+
+      if (id && demoData[id]) {
+        pageTitle.textContent = 'Sửa banner';
+        pageCrumb.textContent = 'Sửa';
+        document.getElementById('bannerId').value = id;
+        fillForm(demoData[id]);
+      } else {
+        pageTitle.textContent = 'Thêm banner';
+        pageCrumb.textContent = 'Thêm';
+        fillForm({});
+      }
+    })();
+  </script>
+</body>
+
+</html>
+

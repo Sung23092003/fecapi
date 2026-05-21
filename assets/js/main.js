@@ -439,7 +439,7 @@
       { url: '#', label: 'Quản lý Đầu Trang', keys: ['đầu trang', 'header'] },
       { url: 'web-header.html', label: '  Quản lý TOP - MAIN', keys: ['top main', 'header top', 'header main'] },
       { url: 'web-category.html', label: '  Quản lý Menu (Danh mục)', keys: ['menu', 'danh mục', 'category', 'quản lý menu'] },
-      { url: 'web-header.html', label: '  Quản lý Banner', keys: ['banner', 'header banner'] },
+      { url: 'web-banner.html', label: '  Quản lý Banner', keys: ['banner', 'header banner'] },
 
       { url: '#', label: 'Quản lý Thân Trang', keys: ['thân trang', 'body'] },
       { url: '#', label: 'Quản lý Chân Trang', keys: ['chân trang', 'footer'] },

@@ -36,10 +36,21 @@
       background: #f8f9fa;
     }
 
-    .footer-layout-visual.cols-2 { grid-template-columns: repeat(2, 1fr); }
-    .footer-layout-visual.cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .footer-layout-visual.cols-4 { grid-template-columns: repeat(4, 1fr); }
-    .footer-layout-visual.rows-2 { grid-template-columns: 1fr; }
+    .footer-layout-visual.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-layout-visual.cols-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .footer-layout-visual.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .footer-layout-visual.rows-2 {
+      grid-template-columns: 1fr;
+    }
 
     .footer-layout-visual span {
       display: block;
@@ -49,10 +60,21 @@
       opacity: .9;
     }
 
-    .footer-layout-visual.rows-2 span { min-height: 14px; }
-    .footer-layout-visual.custom span:nth-child(1) { grid-column: span 2; }
-    .footer-layout-visual.custom span:nth-child(2) { background: #20c997; }
-    .footer-layout-visual.custom span:nth-child(3) { background: #f59e0b; }
+    .footer-layout-visual.rows-2 span {
+      min-height: 14px;
+    }
+
+    .footer-layout-visual.custom span:nth-child(1) {
+      grid-column: span 2;
+    }
+
+    .footer-layout-visual.custom span:nth-child(2) {
+      background: #20c997;
+    }
+
+    .footer-layout-visual.custom span:nth-child(3) {
+      background: #f59e0b;
+    }
 
     .footer-item-card {
       border: 1px solid #e9ecef;
@@ -84,7 +106,6 @@
       color: #dc3545;
       background: #fee2e2;
     }
-
   </style>
 </head>
 
@@ -318,7 +339,7 @@
     </nav><!-- End Icons Navigation -->
 
   </header>
-<aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -333,12 +354,18 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
-      <li class="nav-item"><a class="nav-link active" href="web-footer.html"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn hàng</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư vấn</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i
+            class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link active" href="web-footer.html"><i
+            class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản
+            lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn
+            hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư
+            vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý
+            Comment</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
@@ -351,9 +378,12 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+            Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
+            class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu
+            chung</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
@@ -365,8 +395,10 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link
+            Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i
+            class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
@@ -378,14 +410,16 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý SEO</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý
+            SEO</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i
+                class="bi bi-circle"></i><span>Fontawesome</span></a></li>
           <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
           <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
           <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
@@ -399,7 +433,8 @@
         <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
           <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
-          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
+          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện
+                menu</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
         </ul>
@@ -408,7 +443,7 @@
     </ul>
 
   </aside>
-<main id="main" class="main">
+  <main id="main" class="main">
     <div class="pagetitle">
       <h1>Quản lý Chân trang</h1>
       <nav>
@@ -507,12 +542,18 @@
                 <input type="hidden" id="footer_layout_value" name="footer_layout_value" value="1">
 
                 <ul class="nav nav-tabs nav-tabs-bordered flex-wrap" role="tablist">
-                  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-col-1" type="button">QLTT Cột 1</button></li>
-                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-2" type="button">QLTT Cột 2</button></li>
-                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-3" type="button">QLTT Cột 3</button></li>
-                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-4" type="button">QLTT Cột 4</button></li>
-                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-access-time" type="button">Thời gian truy cập</button></li>
-                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-copyright" type="button">Bản quyền</button></li>
+                  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-col-1"
+                      type="button">QLTT Cột 1</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-2"
+                      type="button">QLTT Cột 2</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-3"
+                      type="button">QLTT Cột 3</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-col-4"
+                      type="button">QLTT Cột 4</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-access-time"
+                      type="button">Thời gian truy cập</button></li>
+                  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-copyright"
+                      type="button">Bản quyền</button></li>
                 </ul>
 
                 <div class="tab-content">
@@ -523,7 +564,8 @@
                           <label class="form-label fw-semibold">Ảnh logo</label>
                           <div class="upload-box" id="footer-logo-upload-box">
                             <img id="footer-logo-preview" class="d-none" alt="footer logo preview">
-                            <button type="button" class="btn-remove-image" id="footer-logo-remove" title="Xóa ảnh"><i class="bi bi-x-lg"></i></button>
+                            <button type="button" class="btn-remove-image" id="footer-logo-remove" title="Xóa ảnh"><i
+                                class="bi bi-x-lg"></i></button>
                             <div class="upload-icon"><i class="bi bi-image"></i></div>
                             <div class="upload-text">Nhấp để tải lên</div>
                             <div class="upload-hint">PNG, JPG, SVG</div>
@@ -535,11 +577,13 @@
                       <div class="col-md-7">
                         <div class="form-group mb-3">
                           <label class="form-label fw-semibold">Tên công ty</label>
-                          <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Nhập tên công ty">
+                          <input type="text" class="form-control" id="company_name" name="company_name"
+                            placeholder="Nhập tên công ty">
                         </div>
                         <div class="form-group">
                           <label class="form-label fw-semibold">Mô tả ngắn</label>
-                          <textarea class="form-control" id="company_intro" name="company_intro" rows="5" placeholder="Thông tin giới thiệu hiển thị dưới logo"></textarea>
+                          <textarea class="form-control" id="company_intro" name="company_intro" rows="5"
+                            placeholder="Thông tin giới thiệu hiển thị dưới logo"></textarea>
                         </div>
                       </div>
                     </div>
@@ -547,7 +591,8 @@
                     <hr class="my-4">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                       <h6 class="fw-bold mb-0">Số điện thoại</h6>
-                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-phone"><i class="bi bi-plus-lg"></i> Thêm</button>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-phone"><i
+                          class="bi bi-plus-lg"></i> Thêm</button>
                     </div>
                     <div id="phones-container">
                       <div class="text-muted-2 small" id="phones-empty">Chưa có số điện thoại nào</div>
@@ -557,7 +602,8 @@
                     <hr class="my-4">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                       <h6 class="fw-bold mb-0">Email</h6>
-                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-email"><i class="bi bi-plus-lg"></i> Thêm</button>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-email"><i
+                          class="bi bi-plus-lg"></i> Thêm</button>
                     </div>
                     <div id="emails-container">
                       <div class="text-muted-2 small" id="emails-empty">Chưa có email nào</div>
@@ -571,7 +617,8 @@
                         <label class="form-label fw-semibold">Ảnh chân trang</label>
                         <div class="upload-box" id="footer-bg-upload-box">
                           <img id="footer-bg-preview" class="d-none" alt="footer image preview">
-                          <button type="button" class="btn-remove-image" id="footer-bg-remove" title="Xóa ảnh"><i class="bi bi-x-lg"></i></button>
+                          <button type="button" class="btn-remove-image" id="footer-bg-remove" title="Xóa ảnh"><i
+                              class="bi bi-x-lg"></i></button>
                           <div class="upload-icon"><i class="bi bi-card-image"></i></div>
                           <div class="upload-text">Nhấp để tải lên</div>
                           <div class="upload-hint">Ảnh nền hoặc banner chân trang</div>
@@ -587,42 +634,48 @@
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Chọn màu nền chân trang</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_bg_color" value="#0f2742">
+                          <input type="color" class="form-control form-control-color" id="footer_bg_color"
+                            value="#0f2742">
                           <span class="color-hex" id="footer_bg_color_hex">#0f2742</span>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Chọn màu chữ chân trang</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_text_color" value="#ffffff">
+                          <input type="color" class="form-control form-control-color" id="footer_text_color"
+                            value="#ffffff">
                           <span class="color-hex" id="footer_text_color_hex">#ffffff</span>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Màu nền icon mạng xã hội</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_social_bg_color" value="#ffffff">
+                          <input type="color" class="form-control form-control-color" id="footer_social_bg_color"
+                            value="#ffffff">
                           <span class="color-hex" id="footer_social_bg_color_hex">#ffffff</span>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Màu icon mạng xã hội</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_social_icon_color" value="#0d6efd">
+                          <input type="color" class="form-control form-control-color" id="footer_social_icon_color"
+                            value="#0d6efd">
                           <span class="color-hex" id="footer_social_icon_color_hex">#0d6efd</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu đường kẻ dài</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_line_long_color" value="#0b1b35">
+                          <input type="color" class="form-control form-control-color" id="footer_line_long_color"
+                            value="#0b1b35">
                           <span class="color-hex" id="footer_line_long_color_hex">#0b1b35</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu đường kẻ ngắn</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="footer_line_short_color" value="#9ee7e8">
+                          <input type="color" class="form-control form-control-color" id="footer_line_short_color"
+                            value="#9ee7e8">
                           <span class="color-hex" id="footer_line_short_color_hex">#9ee7e8</span>
                         </div>
                       </div>
@@ -633,17 +686,20 @@
                     <div class="row g-3">
                       <div class="col-md-6 col-xl-4">
                         <label class="form-label fw-semibold">Cột 1</label>
-                        <input type="text" class="form-control" id="footer_col_1_class" value="col-12 col-xl-4" placeholder="Class bootstrap cột 1">
+                        <input type="text" class="form-control" id="footer_col_1_class" value="col-12 col-xl-4"
+                          placeholder="Class bootstrap cột 1">
                         <div class="form-text">Ví dụ: col-12 col-xl-4</div>
                       </div>
                       <div class="col-md-6 col-xl-4">
                         <label class="form-label fw-semibold">Cột 2</label>
-                        <input type="text" class="form-control" id="footer_col_2_class" value="col-12 col-xl-3" placeholder="Class bootstrap cột 2">
+                        <input type="text" class="form-control" id="footer_col_2_class" value="col-12 col-xl-3"
+                          placeholder="Class bootstrap cột 2">
                         <div class="form-text">Ví dụ: col-12 col-xl-3</div>
                       </div>
                       <div class="col-md-6 col-xl-4">
                         <label class="form-label fw-semibold">Cột 3</label>
-                        <input type="text" class="form-control" id="footer_col_3_class" value="col-12 col-xl-5" placeholder="Class bootstrap cột 3">
+                        <input type="text" class="form-control" id="footer_col_3_class" value="col-12 col-xl-5"
+                          placeholder="Class bootstrap cột 3">
                         <div class="form-text">Ví dụ: col-12 col-xl-5</div>
                       </div>
                     </div>
@@ -658,7 +714,8 @@
                       <div class="col-12">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                           <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
-                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col2-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col2-link"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
                         </div>
                         <div id="col2-links-container">
                           <div class="text-muted-2 small" id="col2-links-empty">Chưa có liên kết nào</div>
@@ -676,7 +733,8 @@
                       <div class="col-12">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                           <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
-                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col3-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col3-link"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
                         </div>
                         <div id="col3-links-container">
                           <div class="text-muted-2 small" id="col3-links-empty">Chưa có liên kết nào</div>
@@ -694,7 +752,8 @@
                       <div class="col-12">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                           <h6 class="fw-bold mb-0">Danh sách liên kết</h6>
-                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col4-link"><i class="bi bi-plus-lg"></i> Thêm</button>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-col4-link"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
                         </div>
                         <div id="col4-links-container">
                           <div class="text-muted-2 small" id="col4-links-empty">Chưa có liên kết nào</div>
@@ -705,11 +764,13 @@
                         <hr class="my-2">
                         <div class="form-check form-switch mb-3">
                           <input class="form-check-input" type="checkbox" id="payment_visible" checked>
-                          <label class="form-check-label fw-semibold" for="payment_visible">Phương thức thanh toán</label>
+                          <label class="form-check-label fw-semibold" for="payment_visible">Phương thức thanh
+                            toán</label>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2">
                           <h6 class="fw-bold mb-0">Danh sách thanh toán</h6>
-                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-payment"><i class="bi bi-plus-lg"></i> Thêm</button>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-payment"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
                         </div>
                         <div id="payment-container">
                           <div class="text-muted-2 small" id="payment-empty">Chưa có phương thức thanh toán nào</div>
@@ -723,8 +784,10 @@
                           <label class="form-check-label fw-semibold" for="map_visible">Bản đồ</label>
                         </div>
                         <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
-                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#map-content-tab" type="button">Nội dung</button></li>
-                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#map-preview-tab" type="button">Xem trước</button></li>
+                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab"
+                              data-bs-target="#map-content-tab" type="button">Nội dung</button></li>
+                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab"
+                              data-bs-target="#map-preview-tab" type="button">Xem trước</button></li>
                         </ul>
                         <div class="tab-content pt-3">
                           <div class="tab-pane fade show active" id="map-content-tab" role="tabpanel">
@@ -742,12 +805,15 @@
                           <label class="form-check-label fw-semibold" for="fanpage_visible">Fanpage</label>
                         </div>
                         <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
-                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fanpage-content-tab" type="button">Nội dung</button></li>
-                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#fanpage-preview-tab" type="button">Xem trước</button></li>
+                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab"
+                              data-bs-target="#fanpage-content-tab" type="button">Nội dung</button></li>
+                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab"
+                              data-bs-target="#fanpage-preview-tab" type="button">Xem trước</button></li>
                         </ul>
                         <div class="tab-content pt-3">
                           <div class="tab-pane fade show active" id="fanpage-content-tab" role="tabpanel">
-                            <input type="text" class="form-control" id="fanpage_content" placeholder="Nhập iframe fanpage">
+                            <input type="text" class="form-control" id="fanpage_content"
+                              placeholder="Nhập iframe fanpage">
                           </div>
                           <div class="tab-pane fade" id="fanpage-preview-tab" role="tabpanel">
                             <div class="ratio ratio-16x9 border rounded overflow-hidden" id="fanpage_preview"></div>
@@ -757,7 +823,8 @@
                       <div class="col-md-6">
                         <hr class="my-2">
                         <label class="form-label fw-semibold">Đã thông báo với Bộ Công Thương</label>
-                        <input type="text" class="form-control" id="bct_notification" placeholder="Nhập nội dung hoặc link">
+                        <input type="text" class="form-control" id="bct_notification"
+                          placeholder="Nhập nội dung hoặc link">
                       </div>
                     </div>
                   </div>
@@ -767,30 +834,42 @@
                       <div class="col-md-6">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" id="access_time_visible" checked>
-                          <label class="form-check-label fw-semibold" for="access_time_visible">Cài đặt hiển thị thời gian</label>
+                          <label class="form-check-label fw-semibold" for="access_time_visible">Cài đặt hiển thị thời
+                            gian</label>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-check">
                           <input class="form-check-input" type="checkbox" id="access_count_visible" checked>
-                          <label class="form-check-label fw-semibold" for="access_count_visible">Cài đặt lượt truy cập</label>
+                          <label class="form-check-label fw-semibold" for="access_count_visible">Cài đặt lượt truy
+                            cập</label>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu nền</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="access_bg_color" value="#111827">
+                          <input type="color" class="form-control form-control-color" id="access_bg_color"
+                            value="#111827">
                           <span class="color-hex" id="access_bg_color_hex">#111827</span>
                         </div>
                       </div>
-                      <div class="col-md-6">
+                      <div class="col-md-3">
                         <label class="form-label fw-semibold">Màu chữ</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="access_text_color" value="#ffffff">
+                          <input type="color" class="form-control form-control-color" id="access_text_color"
+                            value="#ffffff">
                           <span class="color-hex" id="access_text_color_hex">#ffffff</span>
                         </div>
                       </div>
+                      <div class="col-md-3">
+                        <div class="d-flex flex-column">
+                        <label class="form-label fw-semibold">Text</label>
+
+                          <input type="text" placeholder="Nhập nội dung ..." />
+                        </div>
+                      </div>
                     </div>
+
                   </div>
 
                   <div class="tab-pane fade" id="tab-copyright" role="tabpanel">
@@ -798,20 +877,23 @@
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu nền</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="copyright_bg_color" value="#111827">
+                          <input type="color" class="form-control form-control-color" id="copyright_bg_color"
+                            value="#111827">
                           <span class="color-hex" id="copyright_bg_color_hex">#111827</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu chữ</label>
                         <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="copyright_text_color" value="#ffffff">
+                          <input type="color" class="form-control form-control-color" id="copyright_text_color"
+                            value="#ffffff">
                           <span class="color-hex" id="copyright_text_color_hex">#ffffff</span>
                         </div>
                       </div>
                       <div class="col-12">
                         <label class="form-label fw-semibold">Nội dung bản quyền</label>
-                        <textarea class="form-control" id="copyright_content" name="copyright_content" rows="4"></textarea>
+                        <textarea class="form-control" id="copyright_content" name="copyright_content"
+                          rows="4"></textarea>
                       </div>
                     </div>
                   </div>
@@ -834,7 +916,8 @@
     </a>
   </div>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

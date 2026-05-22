@@ -639,6 +639,7 @@
                           <span class="color-hex" id="footer_bg_color_hex">#0f2742</span>
                         </div>
                       </div>
+
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Chọn màu chữ chân trang</label>
                         <div class="color-input-group">
@@ -678,6 +679,11 @@
                             value="#9ee7e8">
                           <span class="color-hex" id="footer_line_short_color_hex">#9ee7e8</span>
                         </div>
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label fw-semibold">Độ trong màu nền chân trang</label>
+                        <input type="number" class="form-control" id="footer_bg_opacity" min="0" max="100" step="1"
+                          value="100" placeholder="0 - 100">
                       </div>
                     </div>
 
@@ -863,7 +869,7 @@
                       </div>
                       <div class="col-md-3">
                         <div class="d-flex flex-column">
-                        <label class="form-label fw-semibold">Text</label>
+                          <label class="form-label fw-semibold">Text</label>
 
                           <input type="text" placeholder="Nhập nội dung ..." />
                         </div>
@@ -965,6 +971,21 @@
         const hex = document.getElementById(hexId);
         if (!input || !hex) return;
         input.addEventListener('input', function () { hex.textContent = input.value; });
+      }
+
+      function getPercentInputValue(inputId) {
+        const input = document.getElementById(inputId);
+        if (!input) return 100;
+        const value = parseInt(input.value, 10);
+        if (Number.isNaN(value)) return 100;
+        return Math.min(100, Math.max(0, value));
+      }
+
+      const footerBgOpacityInput = document.getElementById('footer_bg_opacity');
+      if (footerBgOpacityInput) {
+        footerBgOpacityInput.addEventListener('blur', function () {
+          footerBgOpacityInput.value = getPercentInputValue('footer_bg_opacity');
+        });
       }
 
       setupColorPicker('copyright_bg_color', 'copyright_bg_color_hex');
@@ -1355,6 +1376,7 @@
           ,
           style: {
             bg_color: document.getElementById('footer_bg_color').value,
+            bg_opacity: getPercentInputValue('footer_bg_opacity'),
             text_color: document.getElementById('footer_text_color').value,
             social_bg_color: document.getElementById('footer_social_bg_color').value,
             social_icon_color: document.getElementById('footer_social_icon_color').value,

@@ -613,14 +613,14 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label fw-semibold">Màu đường kẻ dài chân trang kiểu 1</label>
+                        <label class="form-label fw-semibold">Màu đường kẻ dài</label>
                         <div class="color-input-group">
                           <input type="color" class="form-control form-control-color" id="footer_line_long_color" value="#0b1b35">
                           <span class="color-hex" id="footer_line_long_color_hex">#0b1b35</span>
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <label class="form-label fw-semibold">Màu đường kẻ ngắn chân trang kiểu 1</label>
+                        <label class="form-label fw-semibold">Màu đường kẻ ngắn</label>
                         <div class="color-input-group">
                           <input type="color" class="form-control form-control-color" id="footer_line_short_color" value="#9ee7e8">
                           <span class="color-hex" id="footer_line_short_color_hex">#9ee7e8</span>
@@ -741,7 +741,18 @@
                           <input class="form-check-input" type="checkbox" id="fanpage_visible" checked>
                           <label class="form-check-label fw-semibold" for="fanpage_visible">Fanpage</label>
                         </div>
-                        <input type="text" class="form-control" id="fanpage_content" placeholder="Nhập nội dung fanpage">
+                        <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                          <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fanpage-content-tab" type="button">Nội dung</button></li>
+                          <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#fanpage-preview-tab" type="button">Xem trước</button></li>
+                        </ul>
+                        <div class="tab-content pt-3">
+                          <div class="tab-pane fade show active" id="fanpage-content-tab" role="tabpanel">
+                            <input type="text" class="form-control" id="fanpage_content" placeholder="Nhập iframe fanpage">
+                          </div>
+                          <div class="tab-pane fade" id="fanpage-preview-tab" role="tabpanel">
+                            <div class="ratio ratio-16x9 border rounded overflow-hidden" id="fanpage_preview"></div>
+                          </div>
+                        </div>
                       </div>
                       <div class="col-md-6">
                         <hr class="my-2">
@@ -1167,6 +1178,14 @@
       if (mapInput && mapPreview) {
         mapInput.addEventListener('input', function () {
           mapPreview.innerHTML = mapInput.value || '';
+        });
+      }
+
+      const fanpageInput = document.getElementById('fanpage_content');
+      const fanpagePreview = document.getElementById('fanpage_preview');
+      if (fanpageInput && fanpagePreview) {
+        fanpageInput.addEventListener('input', function () {
+          fanpagePreview.innerHTML = fanpageInput.value || '';
         });
       }
 

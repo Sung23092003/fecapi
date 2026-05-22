@@ -442,7 +442,7 @@
       { url: 'web-banner.html', label: '  Quản lý Banner', keys: ['banner', 'header banner'] },
 
       { url: '#', label: 'Quản lý Thân Trang', keys: ['thân trang', 'body'] },
-      { url: '#', label: 'Quản lý Chân Trang', keys: ['chân trang', 'footer'] },
+      { url: 'web-footer.html', label: 'Quản lý Chân Trang', keys: ['chân trang', 'footer'] },
       { url: '#', label: 'Quản lý Landing Page', keys: ['landing page', 'landing'] },
       { url: '#', label: 'Quản lý Đơn hàng', keys: ['đơn hàng', 'order'] },
       { url: '#', label: 'QL Yêu cầu tư vấn', keys: ['yêu cầu tư vấn', 'tư vấn', 'consult'] },

@@ -1273,14 +1273,18 @@
       }
 
       const companyNameInput = document.getElementById('company_name');
-      const copyrightNameInput = document.getElementById('copyright_name');
-      if (companyNameInput && copyrightNameInput) {
-        companyNameInput.addEventListener('input', function () {
-          if (!copyrightNameInput.dataset.edited) copyrightNameInput.value = companyNameInput.value;
+      const copyrightContentInput = document.getElementById('copyright_content');
+      if (companyNameInput && copyrightContentInput) {
+        const syncCopyrightContent = function () {
+          if (!copyrightContentInput.dataset.edited) {
+            copyrightContentInput.value = companyNameInput.value;
+          }
+        };
+        companyNameInput.addEventListener('input', syncCopyrightContent);
+        copyrightContentInput.addEventListener('input', function () {
+          copyrightContentInput.dataset.edited = '1';
         });
-        copyrightNameInput.addEventListener('input', function () {
-          copyrightNameInput.dataset.edited = '1';
-        });
+        syncCopyrightContent();
       }
 
       function collectColumnData() {
@@ -1342,7 +1346,7 @@
             text_color: document.getElementById('access_text_color').value
           },
           copyright: {
-            name: document.getElementById('copyright_name').value || document.getElementById('company_name').value,
+            name: document.getElementById('company_name').value,
             bg_color: document.getElementById('copyright_bg_color').value,
             text_color: document.getElementById('copyright_text_color').value,
             content: document.getElementById('copyright_content').value

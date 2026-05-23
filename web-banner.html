@@ -103,26 +103,10 @@
       flex: 1;
     }
 
-    @media (max-width: 767.98px) {
-      .banner-toolbar .btn,
-      .banner-toolbar .form-select {
-        width: 100%;
-      }
-    }
-
-    .banner-filter-row {
-      flex-wrap: nowrap;
-      white-space: nowrap;
-    }
-
-    .banner-filter-row .form-select {
-      width: 180px;
-      min-width: 180px;
-    }
-
-    .banner-filter-row .btn {
-      width: auto !important;
-      flex-shrink: 0;
+    #filter-modal .column-modal-header button {
+      border: 0;
+      background: transparent;
+      color: #6c757d;
     }
   </style>
 </head>
@@ -478,14 +462,24 @@
               </button>
             </div>
 
-            <div class="d-flex gap-2 align-items-center banner-filter-row">
-              <select id="filterStatus" class="form-select">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <select id="filterStatus" class="form-select d-none" aria-hidden="true">
                 <option value="">Tất cả trạng thái</option>
                 <option value="show">Hiện</option>
                 <option value="hide">Ẩn</option>
               </select>
-              <button id="btnResetFilter" type="button" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-counterclockwise"></i> <span>Xóa lọc</span>
+              <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
+                <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button"
+                  title="Xóa lọc">
+                  <i class="bi bi-funnel"></i>
+                </button>
+                <div class="position-absolute" style="top: -6px; right: -6px; z-index: 10;">
+                  <i class="bi bi-x-circle-fill"
+                    style="font-size: 14px; color: #dc3545; background: #fff; border-radius: 50%;"></i>
+                </div>
+              </div>
+              <button id="btn-filter" class="btn btn-outline-primary" type="button">
+                <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
               </button>
             </div>
           </div>
@@ -527,6 +521,31 @@
               </div>
             </div>
           </div>
+
+          <div id="filter-modal" class="column-modal">
+            <div class="column-modal-content">
+              <div class="column-modal-header">
+                <span>Bộ lọc</span>
+                <button type="button" id="filter-modal-close">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              </div>
+              <div class="column-modal-body">
+                <div class="mb-3">
+                  <label class="form-label">Trạng thái</label>
+                  <select id="filter-status-modal" class="form-select">
+                    <option value="" selected>Tất cả trạng thái</option>
+                    <option value="show">Hiện</option>
+                    <option value="hide">Ẩn</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column-modal-footer">
+                <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+                <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -542,6 +561,25 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
             <button type="button" class="btn btn-danger" id="btnConfirmDelete">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="clearFilterConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Xóa bộ lọc</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center py-3">
+            <i class="bi bi-funnel" style="font-size: 24px; color: #dc3545;"></i>
+            <p class="mb-0 mt-2">Bạn có muốn xóa lọc không?</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-confirm-clear-filter">Xác nhận</button>
           </div>
         </div>
       </div>
@@ -639,7 +677,14 @@
         pageInfo: document.getElementById('pageInfo'),
         pagination: document.getElementById('pagination'),
         filterStatus: document.getElementById('filterStatus'),
-        btnResetFilter: document.getElementById('btnResetFilter'),
+        btnFilter: document.getElementById('btn-filter'),
+        btnFilterIconClear: document.getElementById('btn-filter-icon-clear'),
+        filterModal: document.getElementById('filter-modal'),
+        filterModalClose: document.getElementById('filter-modal-close'),
+        filterStatusModal: document.getElementById('filter-status-modal'),
+        btnResetFilter: document.getElementById('btn-reset-filter'),
+        btnApplyFilter: document.getElementById('btn-apply-filter'),
+        btnConfirmClearFilter: document.getElementById('btn-confirm-clear-filter'),
         btnCreate: document.getElementById('btnCreate'),
         btnDeleteSelected: document.getElementById('btnDeleteSelected'),
         columnModal: document.getElementById('column-modal'),
@@ -651,6 +696,7 @@
       };
 
       const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+      const clearFilterConfirmModal = new bootstrap.Modal(document.getElementById('clearFilterConfirmModal'));
 
       function escapeHtml(value) {
         return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -868,17 +914,46 @@
         deleteModal.hide();
       });
 
-      els.filterStatus.addEventListener('change', () => {
+      function applyFilterStatus(value) {
+        els.filterStatus.value = value;
         currentPage = 1;
         selectedIds.clear();
         render();
+      }
+
+      function openFilterModal() {
+        els.filterStatusModal.value = els.filterStatus.value;
+        els.filterModal.classList.add('show');
+      }
+
+      function closeFilterModal() {
+        els.filterModal.classList.remove('show');
+      }
+
+      els.btnFilter.addEventListener('click', openFilterModal);
+      els.filterModalClose.addEventListener('click', closeFilterModal);
+      els.filterModal.addEventListener('click', e => {
+        if (e.target === els.filterModal) closeFilterModal();
+      });
+
+      els.btnApplyFilter.addEventListener('click', () => {
+        applyFilterStatus(els.filterStatusModal.value);
+        closeFilterModal();
       });
 
       els.btnResetFilter.addEventListener('click', () => {
+        els.filterStatusModal.value = '';
+      });
+
+      els.btnFilterIconClear.addEventListener('click', () => {
+        clearFilterConfirmModal.show();
+      });
+
+      els.btnConfirmClearFilter.addEventListener('click', () => {
         els.filterStatus.value = '';
-        currentPage = 1;
-        selectedIds.clear();
-        render();
+        els.filterStatusModal.value = '';
+        applyFilterStatus('');
+        clearFilterConfirmModal.hide();
       });
 
       function openColumnModal() {

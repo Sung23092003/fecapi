@@ -452,7 +452,6 @@
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Quản lý Giao diện</a></li>
               <li class="breadcrumb-item active">Quản lý Thân Trang</li>
             </ol>
           </nav>
@@ -471,9 +470,6 @@
                   <h5 class="card-title mb-0 py-0">Chọn chức năng thân trang</h5>
                   <div class="text-muted small mt-1">Bấm vào từng chức năng để mở khu vực cấu hình tương ứng.</div>
                 </div>
-                <button type="button" class="btn btn-outline-secondary" id="btnCollapseArticle">
-                  <i class="bi bi-layout-sidebar-inset"></i> Mở form bài viết
-                </button>
               </div>
 
               <div class="body-action-grid">
@@ -481,7 +477,7 @@
                   <i class="bi bi-file-earmark-text"></i>
                   <span>Thêm Bài Viết</span>
                 </a>
-                <button type="button" class="body-action"><i class="bi bi-images"></i><span>Thêm Tin Ảnh</span></button>
+                <a href="web-body-image-news-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-images"></i><span>Thêm Tin Ảnh</span></a>
                 <button type="button" class="body-action"><i class="bi bi-calendar2-check"></i><span>Thêm Đặt Lịch Tư Vấn</span></button>
                 <button type="button" class="body-action"><i class="bi bi-list-ul"></i><span>Hiển Thị Menu - Danh Mục</span></button>
                 <button type="button" class="body-action"><i class="bi bi-arrow-right-short"></i><span>Thêm Tin Chạy Trái Qua Phải</span></button>
@@ -495,125 +491,7 @@
             </div>
           </div>
         </div>
-
-        <div class="col-12 d-none" id="articleFormWrap">
-          <form id="formBodyArticle" class="needs-validation" novalidate>
-            <div class="card card-box mb-3">
-              <div class="card-inner">
-                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-                  <div>
-                    <h5 class="card-title mb-0 py-0">Form quản lý bài viết</h5>
-                    <div class="text-muted small mt-1">Các trường có dấu <span class="label-req">*</span> là bắt buộc nhập.</div>
-                  </div>
-                  <span class="badge bg-success">Đang soạn</span>
-                </div>
-
-                <div class="row g-3">
-                  <div class="col-md-6">
-                    <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
-                    <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Bài viết giới thiệu dịch vụ">
-                  </div>
-                  <div class="col-md-3">
-                    <label for="display_columns" class="form-label fw-semibold">Số cột hiển thị theo Bootstrap</label>
-                    <select class="form-select" id="display_columns" name="display_columns">
-                      <option value="col-12">col-12</option>
-                      <option value="col-12 col-lg-6" selected>col-12 col-lg-6</option>
-                      <option value="col-12 col-md-6 col-xl-4">col-12 col-md-6 col-xl-4</option>
-                      <option value="col-12 col-md-6 col-lg-3">col-12 col-md-6 col-lg-3</option>
-                    </select>
-                  </div>
-                  <div class="col-md-3">
-                    <label for="article_order" class="form-label fw-semibold">Thứ tự <span class="label-req">*</span></label>
-                    <input type="number" class="form-control" id="article_order" name="article_order" min="1" value="1" required>
-                    <div class="invalid-feedback">Vui lòng nhập thứ tự.</div>
-                  </div>
-
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Tên hiển thị</label>
-                    <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name"
-                      rows="5"></textarea>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Mô tả</label>
-                    <textarea class="form-control body-tinymce-editor" id="description" name="description"
-                      rows="5"></textarea>
-                  </div>
-                  <div class="col-12">
-                    <label class="form-label fw-semibold">Nội dung</label>
-                    <textarea class="form-control body-tinymce-editor" id="content" name="content" rows="10"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row g-3">
-              <div class="col-lg-7">
-                <div class="card card-box h-100">
-                  <div class="card-inner">
-                    <h6 class="section-label">Cấu hình nút Button</h6>
-                    <div class="row g-3">
-                      <div class="col-md-6">
-                        <label for="button_text" class="form-label fw-semibold">Tên nút</label>
-                        <input type="text" class="form-control" id="button_text" name="button_text" placeholder="Xem chi tiết">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="button_url" class="form-label fw-semibold">URL nút</label>
-                        <input type="url" class="form-control" id="button_url" name="button_url" placeholder="https://example.com">
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label fw-semibold">Màu nền nút</label>
-                        <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="button_bg_color" name="button_bg_color" value="#4154f1">
-                          <span class="color-hex" id="button_bg_color_hex">#4154f1</span>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <label class="form-label fw-semibold">Màu chữ nút</label>
-                        <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="button_text_color" name="button_text_color" value="#ffffff">
-                          <span class="color-hex" id="button_text_color_hex">#ffffff</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-5">
-                <div class="card card-box h-100">
-                  <div class="card-inner">
-                    <h6 class="section-label">Hiển thị</h6>
-                    <div class="row g-3">
-                      <div class="col-sm-6">
-                        <label class="form-label fw-semibold">Màu nền</label>
-                        <div class="color-input-group">
-                          <input type="color" class="form-control form-control-color" id="section_bg_color" name="section_bg_color" value="#ffffff">
-                          <span class="color-hex" id="section_bg_color_hex">#ffffff</span>
-                        </div>
-                      </div>
-                      <div class="col-sm-6">
-                        <label for="article_status" class="form-label fw-semibold">Trạng thái <span class="label-req">*</span></label>
-                        <select class="form-select" id="article_status" name="article_status" required>
-                          <option value="show" selected>Hiển thị</option>
-                          <option value="hide">Ẩn</option>
-                        </select>
-                        <div class="invalid-feedback">Vui lòng chọn trạng thái.</div>
-                      </div>
-                      <div class="col-12">
-                        <div class="body-preview" id="articlePreview">
-                          <div class="small text-muted mb-2">Xem nhanh</div>
-                          <div class="preview-title">Tên hiển thị bài viết</div>
-                          <div class="preview-desc">Mô tả ngắn của bài viết sẽ hiển thị tại đây.</div>
-                          <a href="#" class="btn btn-sm mt-2" id="previewButton">Xem chi tiết</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+      
       </div>
     </section>
   </main>
@@ -648,7 +526,6 @@
 
       const form = document.getElementById('formBodyArticle');
       const articleWrap = document.getElementById('articleFormWrap');
-      const collapseBtn = document.getElementById('btnCollapseArticle');
       const preview = document.getElementById('articlePreview');
       const previewButton = document.getElementById('previewButton');
       const actionButtons = document.querySelectorAll('.body-action');
@@ -746,15 +623,6 @@
           }
         });
       });
-
-      if (collapseBtn && articleWrap) {
-        collapseBtn.addEventListener('click', function () {
-          articleWrap.classList.toggle('d-none');
-          collapseBtn.innerHTML = articleWrap.classList.contains('d-none')
-            ? '<i class="bi bi-layout-sidebar-inset"></i> Mở form bài viết'
-            : '<i class="bi bi-layout-sidebar-inset"></i> Thu gọn form';
-        });
-      }
 
       initTinyEditor('display_name', 240);
       initTinyEditor('description', 260);

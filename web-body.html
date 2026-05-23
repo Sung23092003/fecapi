@@ -47,6 +47,7 @@
       gap: 12px;
       padding: 14px;
       text-align: left;
+      text-decoration: none;
       font-weight: 600;
       transition: all .2s ease;
     }
@@ -471,15 +472,15 @@
                   <div class="text-muted small mt-1">Bấm vào từng chức năng để mở khu vực cấu hình tương ứng.</div>
                 </div>
                 <button type="button" class="btn btn-outline-secondary" id="btnCollapseArticle">
-                  <i class="bi bi-layout-sidebar-inset"></i> Thu gọn form
+                  <i class="bi bi-layout-sidebar-inset"></i> Mở form bài viết
                 </button>
               </div>
 
               <div class="body-action-grid">
-                <button type="button" class="body-action active" data-target="articleFormWrap">
+                <a href="web-body-article-edit.html" target="_blank" rel="noopener noreferrer" class="body-action">
                   <i class="bi bi-file-earmark-text"></i>
                   <span>Thêm Bài Viết</span>
-                </button>
+                </a>
                 <button type="button" class="body-action"><i class="bi bi-images"></i><span>Thêm Tin Ảnh</span></button>
                 <button type="button" class="body-action"><i class="bi bi-calendar2-check"></i><span>Thêm Đặt Lịch Tư Vấn</span></button>
                 <button type="button" class="body-action"><i class="bi bi-list-ul"></i><span>Hiển Thị Menu - Danh Mục</span></button>
@@ -495,7 +496,7 @@
           </div>
         </div>
 
-        <div class="col-12" id="articleFormWrap">
+        <div class="col-12 d-none" id="articleFormWrap">
           <form id="formBodyArticle" class="needs-validation" novalidate>
             <div class="card card-box mb-3">
               <div class="card-inner">

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Thêm bài viết thân trang - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+  <link href="assets/css/web-header.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f6f9ff;
+    }
+
+    .body-article-page {
+      padding: 24px;
+      padding-bottom: 96px;
+    }
+
+    .body-article-page .card-title {
+      color: #012970;
+      font-weight: 700;
+    }
+
+    .body-article-page .form-label {
+      margin-bottom: 6px;
+    }
+
+    .body-article-page textarea.body-tinymce-editor {
+      min-height: 180px;
+    }
+
+    .body-preview {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 16px;
+      transition: background-color .2s ease;
+    }
+
+    .preview-title {
+      color: #012970;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .preview-desc {
+      color: #667085;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .floating-actions {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 999;
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="body-article-page">
+    <div class="pagetitle d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <div>
+        <h1>Thêm Bài Viết</h1>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
+            <li class="breadcrumb-item active">Thêm Bài Viết</li>
+          </ol>
+        </nav>
+      </div>
+      <span class="badge bg-primary">Trang mới</span>
+    </div>
+
+    <section class="section">
+      <form id="formBodyArticle" class="needs-validation" novalidate>
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <div>
+                <h5 class="card-title mb-0 py-0">Form quản lý bài viết</h5>
+                <div class="text-muted small mt-1">Các trường có dấu <span class="label-req">*</span> là bắt buộc nhập.</div>
+              </div>
+              <span class="badge bg-success">Đang soạn</span>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
+                <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Bài viết giới thiệu dịch vụ">
+              </div>
+              <div class="col-md-3">
+                <label for="display_columns" class="form-label fw-semibold">Số cột hiển thị theo Bootstrap</label>
+                <select class="form-select" id="display_columns" name="display_columns">
+                  <option value="col-12">col-12</option>
+                  <option value="col-12 col-lg-6" selected>col-12 col-lg-6</option>
+                  <option value="col-12 col-md-6 col-xl-4">col-12 col-md-6 col-xl-4</option>
+                  <option value="col-12 col-md-6 col-lg-3">col-12 col-md-6 col-lg-3</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label for="article_order" class="form-label fw-semibold">Thứ tự <span class="label-req">*</span></label>
+                <input type="number" class="form-control" id="article_order" name="article_order" min="1" value="1" required>
+                <div class="invalid-feedback">Vui lòng nhập thứ tự.</div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-semibold">Tên hiển thị</label>
+                <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name" rows="5"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Mô tả</label>
+                <textarea class="form-control body-tinymce-editor" id="description" name="description" rows="5"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Nội dung</label>
+                <textarea class="form-control body-tinymce-editor" id="content" name="content" rows="10"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-lg-7">
+            <div class="card card-box h-100">
+              <div class="card-inner">
+                <h6 class="section-label">Cấu hình nút Button</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label for="button_text" class="form-label fw-semibold">Tên nút</label>
+                    <input type="text" class="form-control" id="button_text" name="button_text" placeholder="Xem chi tiết">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="button_url" class="form-label fw-semibold">URL nút</label>
+                    <input type="url" class="form-control" id="button_url" name="button_url" placeholder="https://example.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Màu nền nút</label>
+                    <div class="color-input-group">
+                      <input type="color" class="form-control form-control-color" id="button_bg_color" name="button_bg_color" value="#4154f1">
+                      <span class="color-hex" id="button_bg_color_hex">#4154f1</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-semibold">Màu chữ nút</label>
+                    <div class="color-input-group">
+                      <input type="color" class="form-control form-control-color" id="button_text_color" name="button_text_color" value="#ffffff">
+                      <span class="color-hex" id="button_text_color_hex">#ffffff</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="card card-box h-100">
+              <div class="card-inner">
+                <h6 class="section-label">Hiển thị</h6>
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Màu nền</label>
+                    <div class="color-input-group">
+                      <input type="color" class="form-control form-control-color" id="section_bg_color" name="section_bg_color" value="#ffffff">
+                      <span class="color-hex" id="section_bg_color_hex">#ffffff</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label for="article_status" class="form-label fw-semibold">Trạng thái <span class="label-req">*</span></label>
+                    <select class="form-select" id="article_status" name="article_status" required>
+                      <option value="show" selected>Hiển thị</option>
+                      <option value="hide">Ẩn</option>
+                    </select>
+                    <div class="invalid-feedback">Vui lòng chọn trạng thái.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formBodyArticle">
+      <i class="bi bi-floppy"></i><span>Lưu</span>
+    </button>
+    <a href="web-body.html" class="btn btn-outline-secondary">
+      <i class="bi bi-x-lg"></i><span>Bỏ</span>
+    </a>
+  </div>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const form = document.getElementById('formBodyArticle');
+      const preview = document.getElementById('articlePreview');
+      const previewButton = document.getElementById('previewButton');
+
+      function setupColorPicker(inputId, textId) {
+        const input = document.getElementById(inputId);
+        const text = document.getElementById(textId);
+        if (!input || !text) return;
+        const sync = function () { text.textContent = input.value; updatePreview(); };
+        input.addEventListener('input', sync);
+        sync();
+      }
+
+      function plainTextFromHtml(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html || '';
+        return (tmp.textContent || tmp.innerText || '').trim();
+      }
+
+      function getEditorContent(id) {
+        try {
+          if (window.tinymce) {
+            const editor = tinymce.get(id);
+            if (editor) return editor.getContent();
+          }
+        } catch (e) { }
+        const textarea = document.getElementById(id);
+        return textarea ? textarea.value : '';
+      }
+
+      function setupEditorPreview(id) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.addEventListener('input', updatePreview);
+
+        function bind(editor) {
+          if (!editor) return;
+          editor.on('keyup change input undo redo setcontent', updatePreview);
+        }
+
+        if (window.tinymce) {
+          const editor = tinymce.get(id);
+          if (editor) {
+            bind(editor);
+          } else {
+            tinymce.on('AddEditor', function (event) {
+              if (event.editor && event.editor.id === id) bind(event.editor);
+            });
+          }
+        }
+      }
+
+      function initTinyEditor(id, height) {
+        if (!window.tinymce || !document.getElementById(id)) return;
+        tinymce.init({
+          selector: '#' + id,
+          height: height,
+          menubar: 'edit insert format table tools',
+          plugins: 'link lists table image media code fullscreen preview wordcount',
+          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
+          toolbar_mode: 'sliding',
+          branding: true,
+          setup: function (editor) {
+            editor.on('keyup change input undo redo setcontent', updatePreview);
+          },
+          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+        });
+      }
+
+      function updatePreview() {
+        if (!preview) return;
+        const titleText = plainTextFromHtml(getEditorContent('display_name')) || 'Tên hiển thị bài viết';
+        const descText = plainTextFromHtml(getEditorContent('description')) || 'Mô tả ngắn của bài viết sẽ hiển thị tại đây.';
+        const sectionColor = document.getElementById('section_bg_color')?.value || '#ffffff';
+        const buttonText = document.getElementById('button_text')?.value || 'Xem chi tiết';
+        const buttonUrl = document.getElementById('button_url')?.value || '#';
+        const buttonBg = document.getElementById('button_bg_color')?.value || '#4154f1';
+        const buttonColor = document.getElementById('button_text_color')?.value || '#ffffff';
+
+        preview.style.backgroundColor = sectionColor;
+        preview.querySelector('.preview-title').textContent = titleText;
+        preview.querySelector('.preview-desc').textContent = descText;
+        previewButton.textContent = buttonText;
+        previewButton.href = buttonUrl;
+        previewButton.style.backgroundColor = buttonBg;
+        previewButton.style.color = buttonColor;
+      }
+
+      initTinyEditor('display_name', 240);
+      initTinyEditor('description', 260);
+      initTinyEditor('content', 420);
+      setupEditorPreview('display_name');
+      setupEditorPreview('description');
+      setupEditorPreview('content');
+
+      ['manager_name', 'display_columns', 'button_text', 'button_url', 'article_order', 'article_status'].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', updatePreview);
+        if (el) el.addEventListener('change', updatePreview);
+      });
+
+      setupColorPicker('button_bg_color', 'button_bg_color_hex');
+      setupColorPicker('button_text_color', 'button_text_color_hex');
+      setupColorPicker('section_bg_color', 'section_bg_color_hex');
+
+      if (form) {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          form.classList.add('was-validated');
+          if (!form.checkValidity()) return;
+
+          const payload = {
+            type: 'article',
+            manager_name: document.getElementById('manager_name').value,
+            display_name: getEditorContent('display_name'),
+            description: getEditorContent('description'),
+            content: getEditorContent('content'),
+            bootstrap_class: document.getElementById('display_columns').value,
+            button: {
+              text: document.getElementById('button_text').value,
+              bg_color: document.getElementById('button_bg_color').value,
+              text_color: document.getElementById('button_text_color').value,
+              url: document.getElementById('button_url').value
+            },
+            bg_color: document.getElementById('section_bg_color').value,
+            sort_order: Number(document.getElementById('article_order').value),
+            status: document.getElementById('article_status').value
+          };
+
+          console.log('Body article payload:', payload);
+          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+        });
+      }
+
+      updatePreview();
+    })();
+  </script>
+</body>
+
+</html>

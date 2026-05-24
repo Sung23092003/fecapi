@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Quản lý Thân Trang - NiceAdmin</title>
+  <title>Thêm thư viện ảnh - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -19,95 +19,287 @@
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
-
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/web-statics-edit.css" rel="stylesheet">
   <link href="assets/css/web-header.css" rel="stylesheet">
   <style>
-    .body-manager-page .card-title {
+    body {
+      background: #f6f9ff;
+    }
+
+    .body-gallery-page {
+      padding: 24px;
+      padding-bottom: 96px;
+    }
+
+    .body-gallery-page .card-title {
       color: #012970;
       font-weight: 700;
     }
 
-    .body-action-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 12px;
+    .body-gallery-page .form-label {
+      margin-bottom: 6px;
     }
 
-    .body-action {
-      min-height: 74px;
+    .image-preview-box {
+      min-height: 230px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .image-preview-box img {
+      width: 100%;
+      height: 100%;
+      max-height: 260px;
+      object-fit: cover;
+    }
+
+    .content-preview {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .content-preview .preview-image {
+      min-height: 180px;
+      border-radius: 8px;
+      background: #eef2ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4154f1;
+      overflow: hidden;
+    }
+
+    .content-preview .preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .effect-shake {
+      animation: previewShake .9s ease-in-out infinite;
+    }
+
+    .effect-zoom {
+      animation: previewZoom 1.6s ease-in-out infinite;
+    }
+
+    @keyframes previewShake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-3px);
+      }
+
+      75% {
+        transform: translateX(3px);
+      }
+    }
+
+    @keyframes previewZoom {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+    }
+
+
+    .running-news-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .running-news-item {
       border: 1px solid #e9ecef;
       border-radius: 8px;
       background: #fff;
-      color: #344767;
+      padding: 16px;
+    }
+
+    .running-news-preview {
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      padding: 12px;
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px;
-      text-align: left;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all .2s ease;
+      background: #f8f9fa;
     }
 
-    .body-action i {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: #f0f2ff;
-      color: #4154f1;
-      display: inline-flex;
+    .running-news-thumb {
+      width: 74px;
+      height: 54px;
+      border-radius: 6px;
+      background: #eef2ff;
+      color: #6c757d;
+      font-size: 12px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      overflow: hidden;
       flex-shrink: 0;
+      text-align: center;
     }
 
-    .body-action:hover,
-    .body-action.active {
-      border-color: #4154f1;
-      box-shadow: 0 4px 14px rgba(65, 84, 241, .12);
-      color: #012970;
+    .running-news-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .body-action.active {
-      background: #f8f9ff;
+    .running-news-chip {
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-weight: 600;
+      line-height: 1.2;
     }
 
-    .body-manager-page .form-label {
-      margin-bottom: 6px;
+    .running-news-rule {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      background: #f8f9fa;
+      padding: 12px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      color: #344767;
     }
 
-    .body-manager-page textarea.body-tinymce-editor {
-      min-height: 180px;
+    .consult-meta-list {
+      display: grid;
+      gap: 10px;
     }
 
-    .body-preview {
+    .consult-meta-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .consult-display-modes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .display-panel {
       border: 1px solid #e9ecef;
       border-radius: 8px;
       padding: 16px;
-      transition: background-color .2s ease;
+      background: #fff;
     }
 
-    .preview-title {
-      color: #012970;
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
+    .consult-image-preview,
+    .map-preview-box {
+      min-height: 230px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #6c757d;
     }
 
-    .preview-desc {
-      color: #667085;
-      font-size: 14px;
-      line-height: 1.5;
+    .consult-image-preview img {
+      width: 50%;
+      max-height: 280px;
+      object-fit: cover;
+      border-radius: 8px;
     }
 
-    @media (max-width: 576px) {
-      .body-action-grid {
-        grid-template-columns: 1fr;
-      }
+    .map-preview-box iframe {
+      width: 100%;
+      min-height: 320px;
+      border: 0;
+    }
+
+    .faq-visual-preview {
+      min-height: 240px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      overflow: hidden;
+    }
+
+    .faq-visual-preview img {
+      width: 100%;
+      height: 100%;
+      max-height: 320px;
+      object-fit: cover;
+    }
+
+    .faq-question-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .faq-question-item {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .gallery-count-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .gallery-preview-grid {
+      display: grid;
+      gap: 12px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      min-height: 180px;
+      padding: 14px;
+      align-items: stretch;
+    }
+
+    .gallery-preview-item {
+      min-height: 120px;
+      overflow: hidden;
+      background: #f8f9fa;
+    }
+
+    .gallery-preview-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    .floating-actions {
+      position: fixed;
+      right: 8px;
+      bottom: 80px;
+      z-index: 1100;
+      display: flex;
+      gap: 10px;
     }
   </style>
 </head>
@@ -183,7 +375,7 @@
             </li>
 
             <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
+              <i class="bi bi-info-circle text-success"></i>
               <div>
                 <h4>Sit rerum fuga</h4>
                 <p>Quae dolorem earum veritatis oditseno</p>
@@ -357,8 +549,10 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link active" href="web-body.html"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="web-footer.html"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link active" href="web-body.html"><i
+            class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-footer.html"><i
+            class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản
             lý Landing Page</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn
@@ -444,68 +638,100 @@
     </ul>
 
   </aside>
-  <main id="main" class="main">
-    <div class="pagetitle">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-        <div>
-          <h1 class="mb-0">Quản lý Thân Trang</h1>
-          <nav>
-            <ol class="breadcrumb mb-0">
-              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item active">Quản lý Thân Trang</li>
-            </ol>
-          </nav>
-        </div>
-        <!-- <span class="badge bg-primary">11 chức năng</span> -->
+  <main id="main" class="main body-gallery-page">
+    <div class="pagetitle d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <div>
+        <h1>Thêm Thư Viện Ảnh</h1>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
+            <li class="breadcrumb-item active">Thêm Thư Viện Ảnh</li>
+          </ol>
+        </nav>
       </div>
     </div>
 
-    <section class="section body-manager-page">
-      <div class="row g-3">
-        <div class="col-12">
-          <div class="card card-box mb-0">
-            <div class="card-inner">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-                <div>
-                  <h5 class="card-title mb-0 py-0">Chọn chức năng thân trang</h5>
-                  <div class="text-muted small mt-1">Bấm vào từng chức năng để mở khu vực cấu hình tương ứng.</div>
+    <section class="section">
+      <form id="formBodyGallery" class="needs-validation" novalidate>
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="display_name" class="form-label fw-semibold">Tên hiển thị</label>
+                <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name" rows="5"></textarea>
+              </div>
+              <div class="col-12">
+                <label for="description" class="form-label fw-semibold">Mô tả</label>
+                <textarea class="form-control body-tinymce-editor" id="description" name="description" rows="5"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-semibold">Chọn số ảnh / hàng</label>
+                <div class="gallery-count-options" role="radiogroup" aria-label="Số ảnh trên một hàng">
+                  <input type="hidden" id="images_per_row" name="images_per_row" value="4">
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="2">2 ảnh</button>
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="3">3 ảnh</button>
+                  <button type="button" class="btn btn-primary gallery-count-btn active" data-value="4">4 ảnh</button>
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="6">6 ảnh</button>
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="8">8 ảnh</button>
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="10">10 ảnh</button>
                 </div>
               </div>
-
-              <div class="body-action-grid">
-                <a href="web-body-article-edit.html" target="_blank" rel="noopener noreferrer" class="body-action">
-                  <i class="bi bi-file-earmark-text"></i>
-                  <span>Thêm Bài Viết</span>
-                </a>
-                <a href="web-body-image-news-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-images"></i><span>Thêm Tin Ảnh</span></a>
-                <a href="web-body-consultation-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-calendar2-check"></i><span>Thêm Đặt Lịch Tư Vấn</span></a>
-                <a href="web-body-menu-category-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-list-ul"></i><span>Hiển Thị Menu - Danh Mục</span></a>
-                <a href="web-body-running-news-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-arrow-right-short"></i><span>Thêm Tin Chạy Trái Qua Phải</span></a>
-                <button type="button" class="body-action"><i class="bi bi-briefcase"></i><span>Thêm Dịch Vụ</span></button>
-                <a href="web-body-faq-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-question-circle"></i><span>Thêm Câu Hỏi FAQ</span></a>
-                <a href="web-body-gallery-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i class="bi bi-grid-3x3-gap"></i><span>Thêm Thư Viện Ảnh</span></a>
-                <button type="button" class="body-action"><i class="bi bi-camera"></i><span>Thêm Hình Ảnh Thực Tế</span></button>
-                <button type="button" class="body-action"><i class="bi bi-card-image"></i><span>Thêm Banner</span></button>
-                <button type="button" class="body-action"><i class="bi bi-layout-split"></i><span>Thêm Tin Ảnh Xen Kẽ</span></button>
+              <div class="col-md-6">
+                <label for="gallery_files" class="form-label fw-semibold">Chọn tệp</label>
+                <input type="file" class="form-control" id="gallery_files" name="gallery_files" accept="image/*" multiple>
+              </div>
+              <div class="col-md-6">
+                <label for="border_style" class="form-label fw-semibold">Border</label>
+                <input type="text" class="form-control" id="border_style" name="border_style" value="border: 1px solid #ccc; border-radius: 4px;">
+              </div>
+              <div class="col-md-4">
+                <label for="sort_order" class="form-label fw-semibold">Thứ tự</label>
+                <input type="number" class="form-control" id="sort_order" name="sort_order" min="1" value="1">
+              </div>
+              <div class="col-md-4">
+                <label for="status" class="form-label fw-semibold">Trạng thái</label>
+                <select class="form-select" id="status" name="status">
+                  <option value="show" selected>Hiện</option>
+                  <option value="hide">Ẩn</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Chọn màu nền</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
+                  <span class="color-hex" id="bg_color_hex">#ffffff</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      
-      </div>
+
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <h5 class="card-title mb-3 py-0">Ảnh đã chọn</h5>
+            <div class="gallery-preview-grid" id="galleryPreviewGrid">
+              <div class="text-muted small">Chưa chọn ảnh.</div>
+            </div>
+          </div>
+        </div>
+      </form>
     </section>
   </main>
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formBodyGallery">
+      <i class="bi bi-floppy"></i><span>Lưu</span>
+    </button>
+    <a href="web-body.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>Bỏ</span>
+    </a>
+  </div>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
-  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/chart.js/chart.umd.js"></script>
-  <script src="assets/vendor/echarts/echarts.min.js"></script>
-  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/config.js"></script>
@@ -515,25 +741,27 @@
     (function () {
       "use strict";
 
-      const form = document.getElementById('formBodyArticle');
-      const articleWrap = document.getElementById('articleFormWrap');
-      const preview = document.getElementById('articlePreview');
-      const previewButton = document.getElementById('previewButton');
-      const actionButtons = document.querySelectorAll('.body-action');
+      const form = document.getElementById('formBodyGallery');
+      const galleryFiles = document.getElementById('gallery_files');
+      const previewGrid = document.getElementById('galleryPreviewGrid');
+      const bgColor = document.getElementById('bg_color');
+      const bgColorHex = document.getElementById('bg_color_hex');
+      const borderStyle = document.getElementById('border_style');
+      const imagesPerRow = document.getElementById('images_per_row');
+      const galleryImages = [];
 
-      function setupColorPicker(inputId, textId) {
-        const input = document.getElementById(inputId);
-        const text = document.getElementById(textId);
-        if (!input || !text) return;
-        const sync = function () { text.textContent = input.value; updatePreview(); };
-        input.addEventListener('input', sync);
-        sync();
-      }
-
-      function plainTextFromHtml(html) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html || '';
-        return (tmp.textContent || tmp.innerText || '').trim();
+      function initTinyEditor(id, height) {
+        if (!window.tinymce || !document.getElementById(id)) return;
+        tinymce.init({
+          selector: '#' + id,
+          height: height,
+          menubar: 'edit insert format table tools',
+          plugins: 'link lists table image media code fullscreen preview wordcount',
+          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
+          toolbar_mode: 'sliding',
+          branding: true,
+          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+        });
       }
 
       function getEditorContent(id) {
@@ -547,90 +775,64 @@
         return textarea ? textarea.value : '';
       }
 
-      function setupEditorPreview(id) {
-        const textarea = document.getElementById(id);
-        if (textarea) textarea.addEventListener('input', updatePreview);
-
-        function bind(editor) {
-          if (!editor) return;
-          editor.on('keyup change input undo redo setcontent', updatePreview);
-        }
-
-        if (window.tinymce) {
-          const editor = tinymce.get(id);
-          if (editor) {
-            bind(editor);
-          } else {
-            tinymce.on('AddEditor', function (event) {
-              if (event.editor && event.editor.id === id) bind(event.editor);
-            });
-          }
-        }
+      function getImagesPerRow() {
+        return Number(imagesPerRow.value) || 4;
       }
 
-      function initTinyEditor(id, height) {
-        if (!window.tinymce || !document.getElementById(id)) return;
-        tinymce.init({
-          selector: '#' + id,
-          height: height,
-          menubar: 'edit insert format table tools',
-          plugins: 'link lists table image media code fullscreen preview wordcount',
-          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
-          toolbar_mode: 'sliding',
-          branding: true,
-          setup: function (editor) {
-            editor.on('keyup change input undo redo setcontent', updatePreview);
-          },
-          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+      function renderPreview() {
+        previewGrid.style.backgroundColor = bgColor.value;
+        previewGrid.style.gridTemplateColumns = `repeat(${Math.min(getImagesPerRow(), 6)}, minmax(0, 1fr))`;
+        if (!galleryImages.length) {
+          previewGrid.innerHTML = '<div class="text-muted small">Chưa chọn ảnh.</div>';
+          return;
+        }
+        previewGrid.innerHTML = galleryImages.map(function (src, index) {
+          return `<div class="gallery-preview-item" style="${borderStyle.value}"><img src="${src}" alt="Ảnh ${index + 1}"></div>`;
+        }).join('');
+      }
+
+      if (galleryFiles) {
+        galleryFiles.addEventListener('change', function () {
+          galleryImages.length = 0;
+          const files = Array.from(galleryFiles.files || []);
+          if (!files.length) {
+            renderPreview();
+            return;
+          }
+          let loaded = 0;
+          files.forEach(function (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              galleryImages.push(event.target.result);
+              loaded += 1;
+              if (loaded === files.length) renderPreview();
+            };
+            reader.readAsDataURL(file);
+          });
         });
       }
 
-      function updatePreview() {
-        if (!preview) return;
-        const titleText = plainTextFromHtml(getEditorContent('display_name')) || 'Tên hiển thị bài viết';
-        const descText = plainTextFromHtml(getEditorContent('description')) || 'Mô tả ngắn của bài viết sẽ hiển thị tại đây.';
-        const sectionColor = document.getElementById('section_bg_color')?.value || '#ffffff';
-        const buttonText = document.getElementById('button_text')?.value || 'Xem chi tiết';
-        const buttonUrl = document.getElementById('button_url')?.value || '#';
-        const buttonBg = document.getElementById('button_bg_color')?.value || '#4154f1';
-        const buttonColor = document.getElementById('button_text_color')?.value || '#ffffff';
-
-        preview.style.backgroundColor = sectionColor;
-        preview.querySelector('.preview-title').textContent = titleText;
-        preview.querySelector('.preview-desc').textContent = descText;
-        previewButton.textContent = buttonText;
-        previewButton.href = buttonUrl;
-        previewButton.style.backgroundColor = buttonBg;
-        previewButton.style.color = buttonColor;
-      }
-
-      actionButtons.forEach(function (button) {
+      document.querySelectorAll('.gallery-count-btn').forEach(function (button) {
         button.addEventListener('click', function () {
-          actionButtons.forEach(function (item) { item.classList.remove('active'); });
-          button.classList.add('active');
-          if (button.dataset.target === 'articleFormWrap' && articleWrap) {
-            articleWrap.classList.remove('d-none');
-            articleWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          imagesPerRow.value = button.dataset.value;
+          document.querySelectorAll('.gallery-count-btn').forEach(function (item) {
+            item.classList.toggle('btn-primary', item === button);
+            item.classList.toggle('btn-outline-primary', item !== button);
+            item.classList.toggle('active', item === button);
+          });
+          renderPreview();
         });
       });
+
+      bgColor.addEventListener('input', function () {
+        bgColorHex.textContent = bgColor.value;
+        renderPreview();
+      });
+      borderStyle.addEventListener('input', renderPreview);
 
       initTinyEditor('display_name', 240);
       initTinyEditor('description', 260);
-      initTinyEditor('content', 420);
-      setupEditorPreview('display_name');
-      setupEditorPreview('description');
-      setupEditorPreview('content');
-
-      ['manager_name', 'display_columns', 'button_text', 'button_url', 'article_order', 'article_status'].forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', updatePreview);
-        if (el) el.addEventListener('change', updatePreview);
-      });
-
-      setupColorPicker('button_bg_color', 'button_bg_color_hex');
-      setupColorPicker('button_text_color', 'button_text_color_hex');
-      setupColorPicker('section_bg_color', 'section_bg_color_hex');
+      renderPreview();
 
       if (form) {
         form.addEventListener('submit', function (event) {
@@ -640,29 +842,21 @@
           if (!form.checkValidity()) return;
 
           const payload = {
-            type: 'article',
-            manager_name: document.getElementById('manager_name').value,
+            type: 'gallery',
             display_name: getEditorContent('display_name'),
             description: getEditorContent('description'),
-            content: getEditorContent('content'),
-            bootstrap_class: document.getElementById('display_columns').value,
-            button: {
-              text: document.getElementById('button_text').value,
-              bg_color: document.getElementById('button_bg_color').value,
-              text_color: document.getElementById('button_text_color').value,
-              url: document.getElementById('button_url').value
-            },
-            bg_color: document.getElementById('section_bg_color').value,
-            sort_order: Number(document.getElementById('article_order').value),
-            status: document.getElementById('article_status').value
+            images_per_row: getImagesPerRow(),
+            images: galleryImages,
+            border: borderStyle.value,
+            sort_order: Number(document.getElementById('sort_order').value),
+            status: document.getElementById('status').value,
+            bg_color: bgColor.value
           };
 
-          console.log('Body article payload:', payload);
+          console.log('Body gallery payload:', payload);
           alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
         });
       }
-
-      updatePreview();
     })();
   </script>
 </body>

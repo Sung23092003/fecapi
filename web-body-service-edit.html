@@ -464,9 +464,16 @@
         <div class="card card-box mb-3">
           <div class="card-inner">
             <div class="row g-3">
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
                 <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Dịch vụ nổi bật trang chủ">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Màu nền chung</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
+                  <span class="color-hex" id="bg_color_hex">#ffffff</span>
+                </div>
               </div>
               <div class="col-md-3">
                 <label for="sort_order" class="form-label fw-semibold">Thứ tự <span class="label-req">*</span></label>
@@ -515,20 +522,6 @@
                     </div>
                   </div>
 
-                  <div id="frameOptionsWrap" class="d-none">
-                    <label class="form-label fw-semibold d-block">Bo khung</label>
-                    <div class="d-flex flex-wrap gap-3 mb-3">
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="frame_type" id="frame_none" value="none">
-                        <label class="form-check-label" for="frame_none">Không bo khung</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="frame_type" id="frame_card" value="card">
-                        <label class="form-check-label" for="frame_card">Bo khung tin</label>
-                      </div>
-                    </div>
-                  </div>
-
                   <div id="shapeOptionsWrap" class="d-none">
                     <label class="form-label fw-semibold d-block">Kiểu bo ảnh</label>
                     <div class="d-flex flex-wrap gap-3">
@@ -552,14 +545,25 @@
               <div class="col-lg-6 d-none" id="layoutOptionsWrap">
                 <div class="service-option-panel h-100">
                   <label class="form-label fw-semibold d-block">Loại hiển thị</label>
-                  <div class="row g-2">
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_2" value="type_2" checked><label class="form-check-label" for="layout_2">Loại 2 tin</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3" value="type_3"><label class="form-check-label" for="layout_3">Loại 3 tin</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3_special" value="type_3_special"><label class="form-check-label" for="layout_3_special">Loại 3 tin đặc biệt</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4" value="type_4"><label class="form-check-label" for="layout_4">Loại 4</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4_special" value="type_4_special"><label class="form-check-label" for="layout_4_special">Loại 4 đặc biệt</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_5" value="type_5"><label class="form-check-label" for="layout_5">Loại 5</label></div></div>
-                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_6" value="type_6"><label class="form-check-label" for="layout_6">Loại 6</label></div></div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="fw-semibold text-primary mb-2">Dạng tin</div>
+                      <div class="row g-2">
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_1" value="type_1" checked><label class="form-check-label" for="layout_1">Loại 1</label></div></div>
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_2" value="type_2"><label class="form-check-label" for="layout_2">Loại 2</label></div></div>
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3" value="type_3"><label class="form-check-label" for="layout_3">Loại 3</label></div></div>
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4" value="type_4"><label class="form-check-label" for="layout_4">Loại 4</label></div></div>
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_5" value="type_5"><label class="form-check-label" for="layout_5">Loại 5</label></div></div>
+                        <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_6" value="type_6"><label class="form-check-label" for="layout_6">Loại 6</label></div></div>
+                      </div>
+                    </div>
+                    <div class="col-md-6" id="specialLayoutColumn">
+                      <div class="fw-semibold text-primary mb-2">Dạng đặc biệt</div>
+                      <div class="row g-2">
+                        <div class="col-12"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3_special" value="type_3_special"><label class="form-check-label" for="layout_3_special">Loại 3 tin đặc biệt</label></div></div>
+                        <div class="col-12"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4_special" value="type_4_special"><label class="form-check-label" for="layout_4_special">Loại 4 tin đặc biệt</label></div></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -627,6 +631,8 @@
       const form = document.getElementById('formBodyService');
       const list = document.getElementById('serviceList');
       const btnAdd = document.getElementById('btnAddServiceItem');
+      const bgColor = document.getElementById('bg_color');
+      const bgColorHex = document.getElementById('bg_color_hex');
       let itemIndex = 0;
 
       function initTinyEditor(id, height) {
@@ -661,26 +667,22 @@
 
       function syncOptionFlow() {
         const hasDisplayType = !!getCheckedValue('display_type');
-        const frameType = getCheckedValue('frame_type');
-        const hasFrameType = !!frameType;
-        const hasImageShape = !!getCheckedValue('image_shape');
-        const showShapeOptions = frameType === 'card';
+        const isBorderNews = getCheckedValue('display_type') === 'border_news';
+        const specialLayoutColumn = document.getElementById('specialLayoutColumn');
+        const selectedLayout = getCheckedValue('layout_type');
 
-        document.getElementById('frameOptionsWrap').classList.toggle('d-none', !hasDisplayType);
-        document.getElementById('shapeOptionsWrap').classList.toggle('d-none', !showShapeOptions);
-        document.getElementById('layoutOptionsWrap').classList.toggle('d-none', !hasFrameType || (showShapeOptions && !hasImageShape));
+        document.getElementById('shapeOptionsWrap').classList.toggle('d-none', !hasDisplayType);
+        document.getElementById('layoutOptionsWrap').classList.toggle('d-none', !hasDisplayType);
+        specialLayoutColumn.classList.toggle('d-none', isBorderNews);
 
-        if (frameType === 'none') {
-          document.querySelectorAll('input[name="image_shape"]').forEach(function (input) {
-            input.checked = false;
-          });
+        if (isBorderNews && selectedLayout.includes('special')) {
+          document.getElementById('layout_1').checked = true;
         }
       }
 
       function applyPreviewStyle() {
         const displayType = getCheckedValue('display_type');
         const imageShape = getCheckedValue('image_shape');
-        const frameType = getCheckedValue('frame_type');
         const centerContent = document.getElementById('center_content').checked;
         const radiusText = document.getElementById('border_radius').value || 'border-radius: 8px';
         const paddingText = document.getElementById('item_padding').value || 'padding: 0';
@@ -694,7 +696,7 @@
           const card = item.querySelector('.service-card-preview');
           const preview = item.querySelector('.service-preview');
           thumb.style.borderRadius = imageShape === 'round' ? '999px' : (imageShape === 'square' ? radiusValue : '0');
-          card.style.borderColor = frameType === 'card' || displayType === 'border_news' ? '#d9dee8' : 'transparent';
+          card.style.borderColor = displayType === 'border_news' ? '#d9dee8' : 'transparent';
           card.style.padding = paddingValue;
           preview.style.justifyContent = centerContent ? 'center' : 'flex-start';
         });
@@ -789,7 +791,7 @@
         createServiceItem();
       });
 
-      document.querySelectorAll('input[name="display_type"], input[name="image_shape"], input[name="frame_type"], input[name="layout_type"], #center_content').forEach(function (input) {
+      document.querySelectorAll('input[name="display_type"], input[name="image_shape"], input[name="layout_type"], #center_content').forEach(function (input) {
         input.addEventListener('change', function () {
           syncOptionFlow();
           applyPreviewStyle();
@@ -801,6 +803,11 @@
 
       initTinyEditor('display_name', 240);
       initTinyEditor('description', 260);
+      if (bgColor && bgColorHex) {
+        bgColor.addEventListener('input', function () {
+          bgColorHex.textContent = bgColor.value;
+        });
+      }
       syncOptionFlow();
 
       if (form) {
@@ -823,13 +830,13 @@
           const payload = {
             type: 'service',
             manager_name: document.getElementById('manager_name').value,
+            bg_color: bgColor.value,
             display_name: getEditorContent('display_name'),
             description: getEditorContent('description'),
             sort_order: document.getElementById('sort_order').value,
             items_per_row: Number(document.getElementById('items_per_row').value),
             display_type: getCheckedValue('display_type'),
             image_shape: getCheckedValue('image_shape'),
-            frame_type: getCheckedValue('frame_type'),
             layout_type: getCheckedValue('layout_type'),
             center_content: document.getElementById('center_content').checked,
             border_radius: document.getElementById('border_radius').value,

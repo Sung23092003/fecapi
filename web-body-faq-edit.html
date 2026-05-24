@@ -655,7 +655,7 @@
             <div class="card card-box h-100">
               <div class="card-inner">
                 <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-                  <h5 class="card-title mb-0 py-0">Khung 1: Ảnh / Text</h5>
+                  <h5 class="card-title mb-0 py-0">Khung 1: Ảnh / Text / Video</h5>
                   <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="visual_visible" checked>
                     <label class="form-check-label fw-semibold" for="visual_visible">Hiện</label>
@@ -666,6 +666,7 @@
                   <select class="form-select" id="visual_type" name="visual_type">
                     <option value="image" selected>Ảnh</option>
                     <option value="text">Text</option>
+                    <option value="video">Video</option>
                   </select>
                 </div>
                 <div id="visualImagePanel">
@@ -676,7 +677,16 @@
                 </div>
                 <div id="visualTextPanel" class="d-none">
                   <label for="visual_text" class="form-label fw-semibold">Text</label>
-                  <textarea class="form-control" id="visual_text" name="visual_text" rows="8" placeholder="Nhập nội dung text"></textarea>
+                  <textarea class="form-control body-tinymce-editor" id="visual_text" name="visual_text" rows="8"></textarea>
+                </div>
+                <div id="visualVideoPanel" class="d-none">
+                  <div class="mb-3">
+                    <label for="visual_video_url" class="form-label fw-semibold">Link video</label>
+                    <input type="url" class="form-control" id="visual_video_url" name="visual_video_url" placeholder="https://www.youtube.com/watch?v=...">
+                  </div>
+                  <label for="visual_video_file" class="form-label fw-semibold">Tệp video</label>
+                  <input type="file" class="form-control" id="visual_video_file" name="visual_video_file" accept="video/*">
+                  <input type="hidden" id="visual_video_data" name="visual_video_data">
                 </div>
               </div>
             </div>
@@ -708,6 +718,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </form>
     </section>
@@ -742,9 +753,12 @@
       const visualType = document.getElementById('visual_type');
       const visualImagePanel = document.getElementById('visualImagePanel');
       const visualTextPanel = document.getElementById('visualTextPanel');
+      const visualVideoPanel = document.getElementById('visualVideoPanel');
       const visualImage = document.getElementById('visual_image');
       const visualImageData = document.getElementById('visual_image_data');
       const visualImagePreview = document.getElementById('visualImagePreview');
+      const visualVideoFile = document.getElementById('visual_video_file');
+      const visualVideoData = document.getElementById('visual_video_data');
       const questionWidth = document.getElementById('question_width');
       const questionList = document.getElementById('faqQuestionList');
       const btnAddQuestion = document.getElementById('btnAddQuestion');
@@ -785,15 +799,16 @@
       }
 
       function syncVisualLayout() {
-        const visible = visualVisible.checked;
-        visualColumn.classList.toggle('d-none', !visible);
-        questionColumn.className = visible ? 'col-lg-7' : 'col-lg-8 mx-auto';
+        questionColumn.className = 'col-lg-7';
       }
 
       function syncVisualType() {
         const isImage = visualType.value === 'image';
+        const isText = visualType.value === 'text';
+        const isVideo = visualType.value === 'video';
         visualImagePanel.classList.toggle('d-none', !isImage);
-        visualTextPanel.classList.toggle('d-none', isImage);
+        visualTextPanel.classList.toggle('d-none', !isText);
+        visualVideoPanel.classList.toggle('d-none', !isVideo);
       }
 
       function createQuestionItem(data) {
@@ -843,8 +858,21 @@
         });
       }
 
+      if (visualVideoFile) {
+        visualVideoFile.addEventListener('change', function () {
+          const file = visualVideoFile.files && visualVideoFile.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            visualVideoData.value = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
       initTinyEditor('faq_title', 240);
       initTinyEditor('faq_description', 260);
+      initTinyEditor('visual_text', 260);
       setupColorPicker('bg_color', 'bg_color_hex');
       syncVisualType();
       syncVisualLayout();
@@ -873,7 +901,9 @@
               visible: visualVisible.checked,
               type: visualType.value,
               image: visualImageData.value,
-              text: document.getElementById('visual_text').value
+              text: getEditorContent('visual_text'),
+              video_url: document.getElementById('visual_video_url').value,
+              video_file: visualVideoData.value
             },
             question_width: questionWidth.value,
             questions: questions

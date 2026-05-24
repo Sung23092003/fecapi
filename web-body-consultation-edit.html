@@ -232,6 +232,25 @@
       min-height: 320px;
       border: 0;
     }
+
+    .consult-video-preview {
+      min-height: 230px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #6c757d;
+    }
+
+    .consult-video-preview video {
+      width: 100%;
+      max-height: 320px;
+      display: block;
+      background: #000;
+    }
     .floating-actions {
       position: fixed;
       right: 8px;
@@ -651,6 +670,8 @@
               <label class="btn btn-outline-primary" for="display_mode_article"><i class="bi bi-file-earmark-text"></i> Bài viết</label>
               <input type="radio" class="btn-check" name="display_mode" id="display_mode_map" value="map" autocomplete="off">
               <label class="btn btn-outline-primary" for="display_mode_map"><i class="bi bi-geo-alt"></i> Chèn bản đồ</label>
+              <input type="radio" class="btn-check" name="display_mode" id="display_mode_video" value="video" autocomplete="off">
+              <label class="btn btn-outline-primary" for="display_mode_video"><i class="bi bi-play-btn"></i> Video</label>
             </div>
 
             <div class="display-panel" id="panel_image">
@@ -703,6 +724,29 @@
                 </div>
               </div>
             </div>
+
+            <div class="display-panel d-none" id="panel_video">
+              <ul class="nav nav-tabs" id="videoTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active" id="video-link-tab" data-bs-toggle="tab" data-bs-target="#video-link-pane" type="button" role="tab">Link video</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link" id="video-file-tab" data-bs-toggle="tab" data-bs-target="#video-file-pane" type="button" role="tab">Tệp video</button>
+                </li>
+              </ul>
+              <div class="tab-content border border-top-0 p-3" id="videoTabsContent">
+                <div class="tab-pane fade show active" id="video-link-pane" role="tabpanel">
+                  <label for="video_url" class="form-label fw-semibold">Link video</label>
+                  <input type="url" class="form-control" id="video_url" name="video_url" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="tab-pane fade" id="video-file-pane" role="tabpanel">
+                  <label for="video_file" class="form-label fw-semibold">Tệp video</label>
+                  <input type="file" class="form-control" id="video_file" name="video_file" accept="video/*">
+                  <input type="hidden" id="video_data" name="video_data">
+                  <div class="consult-video-preview mt-3" id="videoPreviewBox">Chưa chọn video</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -739,6 +783,9 @@
       const imagePreviewBox = document.getElementById('imagePreviewBox');
       const mapIframe = document.getElementById('map_iframe');
       const mapPreviewBox = document.getElementById('mapPreviewBox');
+      const videoFile = document.getElementById('video_file');
+      const videoData = document.getElementById('video_data');
+      const videoPreviewBox = document.getElementById('videoPreviewBox');
       let metaIndex = 0;
 
       function initTinyEditor(id, height) {
@@ -792,6 +839,7 @@
         document.getElementById('panel_image').classList.toggle('d-none', mode !== 'image');
         document.getElementById('panel_article').classList.toggle('d-none', mode !== 'article');
         document.getElementById('panel_map').classList.toggle('d-none', mode !== 'map');
+        document.getElementById('panel_video').classList.toggle('d-none', mode !== 'video');
       }
 
       function updateMapPreview() {
@@ -815,6 +863,19 @@
           reader.onload = function (event) {
             imageData.value = event.target.result;
             imagePreviewBox.innerHTML = '<img src="' + event.target.result + '" alt="preview">';
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      if (videoFile) {
+        videoFile.addEventListener('change', function () {
+          const file = videoFile.files && videoFile.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            videoData.value = event.target.result;
+            videoPreviewBox.innerHTML = '<video controls src="' + event.target.result + '"></video>';
           };
           reader.readAsDataURL(file);
         });
@@ -854,7 +915,11 @@
               hide_on_mobile: document.getElementById('hide_image_mobile').checked
             },
             article: getEditorContent('article_content'),
-            map_iframe: mapIframe.value
+            map_iframe: mapIframe.value,
+            video: {
+              url: document.getElementById('video_url').value,
+              file: videoData.value
+            }
           };
 
           console.log('Body consultation payload:', payload);

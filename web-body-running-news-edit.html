@@ -169,6 +169,18 @@
       font-weight: 600;
       line-height: 1.2;
     }
+
+    .running-news-rule {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      background: #f8f9fa;
+      padding: 12px 14px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      color: #344767;
+    }
     .floating-actions {
       position: fixed;
       right: 8px;
@@ -556,13 +568,6 @@
                 <label for="display_name" class="form-label fw-semibold">Tên hiển thị</label>
                 <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name" rows="5"></textarea>
               </div>
-              <div class="col-md-6">
-                <label for="title_position" class="form-label fw-semibold">Vị trí hiển thị tên</label>
-                <select class="form-select" id="title_position" name="title_position">
-                  <option value="left" selected>Ở trái</option>
-                  <option value="center">Ở giữa</option>
-                </select>
-              </div>
               <div class="col-md-3">
                 <label for="items_per_row" class="form-label fw-semibold">Số tin trên 1 hàng <span class="label-req">*</span></label>
                 <select class="form-select" id="items_per_row" name="items_per_row" required>
@@ -598,6 +603,10 @@
                 <i class="bi bi-plus-lg"></i> Thêm
               </button>
             </div>
+            <div class="running-news-rule mb-3">
+              <span class="badge bg-primary">Mặc định chạy trái qua phải</span>
+              <span id="runningNewsRuleText">Nếu số tin chưa đủ số hiển thị thì tin sẽ không chạy.</span>
+            </div>
             <div class="running-news-list" id="runningNewsList"></div>
           </div>
         </div>
@@ -630,6 +639,9 @@
       const form = document.getElementById('formBodyRunningNews');
       const list = document.getElementById('runningNewsList');
       const btnAdd = document.getElementById('btnAddNewsItem');
+      const itemsPerRow = document.getElementById('items_per_row');
+      const rowCount = document.getElementById('row_count');
+      const ruleText = document.getElementById('runningNewsRuleText');
       let itemIndex = 0;
 
       function initTinyEditor(id, height) {
@@ -731,14 +743,39 @@
 
         item.querySelector('.btn-delete-news').addEventListener('click', function () {
           item.remove();
+          updateRunRule();
         });
 
         updateItemPreview();
         list.appendChild(item);
+        updateRunRule();
       }
 
       btnAdd.addEventListener('click', function () {
         createNewsItem();
+      });
+
+      function getVisibleSlotCount() {
+        return Number(itemsPerRow.value) * Number(rowCount.value);
+      }
+
+      function getNewsCount() {
+        return list.querySelectorAll('.running-news-item').length;
+      }
+
+      function updateRunRule() {
+        const visibleSlots = getVisibleSlotCount();
+        const newsCount = getNewsCount();
+        const canRun = newsCount >= visibleSlots;
+        ruleText.textContent = canRun
+          ? `Đang có ${newsCount}/${visibleSlots} tin, đủ số hiển thị nên tin sẽ chạy.`
+          : `Đang có ${newsCount}/${visibleSlots} tin, chưa đủ số hiển thị nên tin sẽ không chạy.`;
+        ruleText.classList.toggle('text-success', canRun);
+        ruleText.classList.toggle('text-danger', !canRun);
+      }
+
+      [itemsPerRow, rowCount].forEach(function (select) {
+        select.addEventListener('change', updateRunRule);
       });
 
       initTinyEditor('display_name', 240);
@@ -763,6 +800,7 @@
 
           const payload = {
             type: 'running_news',
+            direction: 'left_to_right',
             manager_name: document.getElementById('manager_name').value,
             display_name: getEditorContent('display_name'),
             title_position: document.getElementById('title_position').value,
@@ -771,6 +809,8 @@
             status: document.getElementById('status').value,
             items_per_row: Number(document.getElementById('items_per_row').value),
             row_count: Number(document.getElementById('row_count').value),
+            visible_slots: getVisibleSlotCount(),
+            is_running_enabled: news.length >= getVisibleSlotCount(),
             news: news
           };
 
@@ -778,6 +818,8 @@
           alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
         });
       }
+
+      updateRunRule();
     })();
   </script>
 </body>

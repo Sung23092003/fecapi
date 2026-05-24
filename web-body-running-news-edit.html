@@ -546,9 +546,16 @@
           <div class="card-inner">
 
             <div class="row g-3">
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
                 <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Tin khuyến mãi chạy ngang">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Màu nền</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
+                  <span class="color-hex" id="bg_color_hex">#ffffff</span>
+                </div>
               </div>
               <div class="col-md-3">
                 <label for="sort_order" class="form-label fw-semibold">Thứ tự <span class="label-req">*</span></label>
@@ -642,6 +649,8 @@
       const itemsPerRow = document.getElementById('items_per_row');
       const rowCount = document.getElementById('row_count');
       const ruleText = document.getElementById('runningNewsRuleText');
+      const bgColor = document.getElementById('bg_color');
+      const bgColorHex = document.getElementById('bg_color_hex');
       let itemIndex = 0;
 
       function initTinyEditor(id, height) {
@@ -778,6 +787,12 @@
         select.addEventListener('change', updateRunRule);
       });
 
+      if (bgColor && bgColorHex) {
+        bgColor.addEventListener('input', function () {
+          bgColorHex.textContent = bgColor.value;
+        });
+      }
+
       initTinyEditor('display_name', 240);
       initTinyEditor('description', 260);
 
@@ -802,6 +817,7 @@
             type: 'running_news',
             direction: 'left_to_right',
             manager_name: document.getElementById('manager_name').value,
+            bg_color: bgColor.value,
             display_name: getEditorContent('display_name'),
             title_position: document.getElementById('title_position').value,
             description: getEditorContent('description'),

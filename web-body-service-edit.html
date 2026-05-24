@@ -719,6 +719,10 @@
               <label class="form-label fw-semibold">Tên tin</label>
               <input type="text" class="form-control service-title" placeholder="Nhập tên tin" value="${data?.title || ''}">
             </div>
+            <div class="col-12">
+              <label class="form-label fw-semibold" for="service_description_${itemIndex}">Mô tả</label>
+              <textarea class="form-control service-description body-tinymce-editor" id="service_description_${itemIndex}" rows="5">${data?.description || ''}</textarea>
+            </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Màu chữ</label>
               <input type="color" class="form-control form-control-color service-text-color" value="${data?.textColor || '#012970'}">
@@ -741,6 +745,7 @@
                 <div class="service-thumb">Chưa chọn ảnh</div>
                 <div class="service-card-preview">
                   <div class="fw-semibold service-preview-title">Tên tin sẽ hiển thị tại đây</div>
+                  <div class="small text-muted service-preview-description"></div>
                 </div>
               </div>
             </div>
@@ -748,6 +753,7 @@
         `;
 
         const title = item.querySelector('.service-title');
+        const description = item.querySelector('.service-description');
         const textColor = item.querySelector('.service-text-color');
         const bgColor = item.querySelector('.service-bg-color');
         const file = item.querySelector('.service-image-file');
@@ -755,10 +761,19 @@
         const thumb = item.querySelector('.service-thumb');
         const card = item.querySelector('.service-card-preview');
         const previewTitle = item.querySelector('.service-preview-title');
+        const previewDescription = item.querySelector('.service-preview-description');
+
+        function plainTextFromHtml(html) {
+          const tmp = document.createElement('div');
+          tmp.innerHTML = html || '';
+          return (tmp.textContent || tmp.innerText || '').trim();
+        }
 
         function updateItemPreview() {
           previewTitle.textContent = title.value || 'Tên tin sẽ hiển thị tại đây';
           previewTitle.style.color = textColor.value;
+          previewDescription.textContent = plainTextFromHtml(getEditorContent(description.id));
+          previewDescription.style.color = textColor.value;
           card.style.backgroundColor = bgColor.value;
           applyPreviewStyle();
         }
@@ -784,6 +799,14 @@
         });
 
         list.appendChild(item);
+        initTinyEditor(description.id, 180);
+        if (window.tinymce) {
+          tinymce.on('AddEditor', function (event) {
+            if (event.editor && event.editor.id === description.id) {
+              event.editor.on('keyup change input undo redo setcontent', updateItemPreview);
+            }
+          });
+        }
         updateItemPreview();
       }
 
@@ -820,6 +843,7 @@
           const services = Array.from(list.querySelectorAll('.service-item')).map(function (item) {
             return {
               title: item.querySelector('.service-title').value,
+              description: getEditorContent(item.querySelector('.service-description').id),
               text_color: item.querySelector('.service-text-color').value,
               bg_color: item.querySelector('.service-bg-color').value,
               image: item.querySelector('.service-image-data').value,

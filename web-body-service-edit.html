@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Thêm dịch vụ - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+  <link href="assets/css/web-header.css" rel="stylesheet">
+    <style>
+    body {
+      background: #f6f9ff;
+    }
+
+    .body-service-page {
+      padding: 24px;
+      padding-bottom: 96px;
+    }
+
+    .body-service-page .card-title {
+      color: #012970;
+      font-weight: 700;
+    }
+
+    .body-service-page .form-label {
+      margin-bottom: 6px;
+    }
+
+    .service-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .service-item {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .service-preview {
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f8f9fa;
+    }
+
+    .service-thumb {
+      width: 74px;
+      height: 54px;
+      border-radius: 6px;
+      background: #eef2ff;
+      color: #6c757d;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .service-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .service-card-preview {
+      min-height: 54px;
+      border-radius: 8px;
+      padding: 10px 12px;
+      flex: 1;
+      border: 1px solid transparent;
+      background: #fff;
+    }
+
+    .service-option-panel {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .floating-actions {
+      position: fixed;
+      right: 8px;
+      bottom: 80px;
+      z-index: 1100;
+      display: flex;
+      gap: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              You have 3 new messages
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Maria Hudson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Anna Nelson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>6 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>David Muldon</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>8 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 data-user-name></h6>
+              <span>Web Designer</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-logout="true">
+
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header>
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="header-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a></li>
+          <li><a href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link active" href="web-body.html"><i
+            class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-footer.html"><i
+            class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản
+            lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn
+            hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư
+            vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý
+            Comment</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="products-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+            Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
+            class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu
+            chung</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>QL User Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="customers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL User Khách hàng</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link
+            Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i
+            class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Quy định &amp; Hướng dẫn</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="regulations-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Quy định chung</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Hướng dẫn</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý
+            SEO</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i
+                class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện
+                menu</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
+        </ul>
+      </li>
+
+    </ul>
+
+  </aside>
+    <main id="main" class="main body-service-page">
+    <div class="pagetitle d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <div>
+        <h1>Thêm Dịch Vụ</h1>
+        <nav>
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
+            <li class="breadcrumb-item active">Thêm Dịch Vụ</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section class="section">
+      <form id="formBodyService" class="needs-validation" novalidate>
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
+                <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Dịch vụ nổi bật trang chủ">
+              </div>
+              <div class="col-md-3">
+                <label for="sort_order" class="form-label fw-semibold">Thứ tự <span class="label-req">*</span></label>
+                <input type="text" class="form-control" id="sort_order" name="sort_order" value="1" required>
+                <div class="invalid-feedback">Vui lòng nhập thứ tự.</div>
+              </div>
+              <div class="col-md-3">
+                <label for="items_per_row" class="form-label fw-semibold">Chọn số tin trên hàng <span class="label-req">*</span></label>
+                <select class="form-select" id="items_per_row" name="items_per_row" required>
+                  <option value="2">2</option>
+                  <option value="3" selected>3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="8">8</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="display_name" class="form-label fw-semibold">Tên hiển thị</label>
+                <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name" rows="5"></textarea>
+              </div>
+              <div class="col-12">
+                <label for="description" class="form-label fw-semibold">Mô tả</label>
+                <textarea class="form-control body-tinymce-editor" id="description" name="description" rows="5"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <h5 class="card-title py-0 mb-3">Kiểu hiển thị</h5>
+            <div class="row g-3">
+              <div class="col-lg-6">
+                <div class="service-option-panel h-100">
+                  <label class="form-label fw-semibold d-block">Chọn kiểu hiển thị</label>
+                  <div class="d-flex flex-wrap gap-3 mb-3">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="display_type" id="display_original" value="original" required>
+                      <label class="form-check-label" for="display_original">Ảnh gốc</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="display_type" id="display_border_news" value="border_news">
+                      <label class="form-check-label" for="display_border_news">Tin bo viền</label>
+                    </div>
+                  </div>
+
+                  <div id="frameOptionsWrap" class="d-none">
+                    <label class="form-label fw-semibold d-block">Bo khung</label>
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="frame_type" id="frame_none" value="none">
+                        <label class="form-check-label" for="frame_none">Không bo khung</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="frame_type" id="frame_card" value="card">
+                        <label class="form-check-label" for="frame_card">Bo khung tin</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="shapeOptionsWrap" class="d-none">
+                    <label class="form-label fw-semibold d-block">Kiểu bo ảnh</label>
+                    <div class="d-flex flex-wrap gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="image_shape" id="shape_square" value="square">
+                        <label class="form-check-label" for="shape_square">Bo vuông</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="image_shape" id="shape_round" value="round">
+                        <label class="form-check-label" for="shape_round">Bo tròn</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="image_shape" id="shape_original" value="original">
+                        <label class="form-check-label" for="shape_original">Ảnh gốc</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 d-none" id="layoutOptionsWrap">
+                <div class="service-option-panel h-100">
+                  <label class="form-label fw-semibold d-block">Loại hiển thị</label>
+                  <div class="row g-2">
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_2" value="type_2" checked><label class="form-check-label" for="layout_2">Loại 2 tin</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3" value="type_3"><label class="form-check-label" for="layout_3">Loại 3 tin</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_3_special" value="type_3_special"><label class="form-check-label" for="layout_3_special">Loại 3 tin đặc biệt</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4" value="type_4"><label class="form-check-label" for="layout_4">Loại 4</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_4_special" value="type_4_special"><label class="form-check-label" for="layout_4_special">Loại 4 đặc biệt</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_5" value="type_5"><label class="form-check-label" for="layout_5">Loại 5</label></div></div>
+                    <div class="col-sm-6"><div class="form-check"><input class="form-check-input" type="radio" name="layout_type" id="layout_6" value="type_6"><label class="form-check-label" for="layout_6">Loại 6</label></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="service-option-panel">
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="center_content" name="center_content" checked>
+                    <label class="form-check-label fw-semibold" for="center_content">Ở giữa</label>
+                  </div>
+
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="border_radius" class="form-label fw-semibold">Bo góc</label>
+                      <input type="text" class="form-control" id="border_radius" name="border_radius" value="border-radius: 8px">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="item_padding" class="form-label fw-semibold">Khoảng đệm</label>
+                      <input type="text" class="form-control" id="item_padding" name="item_padding" value="padding: 0">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <h5 class="card-title mb-0 py-0">Quản lý tin</h5>
+              <button type="button" class="btn btn-primary" id="btnAddServiceItem">
+                <i class="bi bi-plus-lg"></i> Thêm
+              </button>
+            </div>
+            <div class="service-list" id="serviceList"></div>
+          </div>
+        </div>
+      </form>
+    </section>
+  </main>
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formBodyService">
+      <i class="bi bi-floppy"></i><span>Lưu</span>
+    </button>
+    <a href="web-body.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>Bỏ</span>
+    </a>
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const form = document.getElementById('formBodyService');
+      const list = document.getElementById('serviceList');
+      const btnAdd = document.getElementById('btnAddServiceItem');
+      let itemIndex = 0;
+
+      function initTinyEditor(id, height) {
+        if (!window.tinymce || !document.getElementById(id)) return;
+        tinymce.init({
+          selector: '#' + id,
+          height: height,
+          menubar: 'edit insert format table tools',
+          plugins: 'link lists table image media code fullscreen preview wordcount',
+          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
+          toolbar_mode: 'sliding',
+          branding: true,
+          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+        });
+      }
+
+      function getEditorContent(id) {
+        try {
+          if (window.tinymce) {
+            const editor = tinymce.get(id);
+            if (editor) return editor.getContent();
+          }
+        } catch (e) { }
+        const textarea = document.getElementById(id);
+        return textarea ? textarea.value : '';
+      }
+
+      function getCheckedValue(name) {
+        const checked = document.querySelector('input[name="' + name + '"]:checked');
+        return checked ? checked.value : '';
+      }
+
+      function syncOptionFlow() {
+        const hasDisplayType = !!getCheckedValue('display_type');
+        const frameType = getCheckedValue('frame_type');
+        const hasFrameType = !!frameType;
+        const hasImageShape = !!getCheckedValue('image_shape');
+        const showShapeOptions = frameType === 'card';
+
+        document.getElementById('frameOptionsWrap').classList.toggle('d-none', !hasDisplayType);
+        document.getElementById('shapeOptionsWrap').classList.toggle('d-none', !showShapeOptions);
+        document.getElementById('layoutOptionsWrap').classList.toggle('d-none', !hasFrameType || (showShapeOptions && !hasImageShape));
+
+        if (frameType === 'none') {
+          document.querySelectorAll('input[name="image_shape"]').forEach(function (input) {
+            input.checked = false;
+          });
+        }
+      }
+
+      function applyPreviewStyle() {
+        const displayType = getCheckedValue('display_type');
+        const imageShape = getCheckedValue('image_shape');
+        const frameType = getCheckedValue('frame_type');
+        const centerContent = document.getElementById('center_content').checked;
+        const radiusText = document.getElementById('border_radius').value || 'border-radius: 8px';
+        const paddingText = document.getElementById('item_padding').value || 'padding: 0';
+        const radiusMatch = radiusText.match(/border-radius\s*:\s*([^;]+)/i);
+        const paddingMatch = paddingText.match(/padding\s*:\s*([^;]+)/i);
+        const radiusValue = radiusMatch ? radiusMatch[1].trim() : radiusText.trim();
+        const paddingValue = paddingMatch ? paddingMatch[1].trim() : paddingText.trim();
+
+        list.querySelectorAll('.service-item').forEach(function (item) {
+          const thumb = item.querySelector('.service-thumb');
+          const card = item.querySelector('.service-card-preview');
+          const preview = item.querySelector('.service-preview');
+          thumb.style.borderRadius = imageShape === 'round' ? '999px' : (imageShape === 'square' ? radiusValue : '0');
+          card.style.borderColor = frameType === 'card' || displayType === 'border_news' ? '#d9dee8' : 'transparent';
+          card.style.padding = paddingValue;
+          preview.style.justifyContent = centerContent ? 'center' : 'flex-start';
+        });
+      }
+
+      function createServiceItem(data) {
+        itemIndex += 1;
+        const item = document.createElement('div');
+        item.className = 'service-item';
+        item.dataset.index = String(itemIndex);
+        item.innerHTML = `
+          <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+            <div class="fw-semibold text-primary">Tin #${itemIndex}</div>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-service" title="Xóa tin">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Tên tin</label>
+              <input type="text" class="form-control service-title" placeholder="Nhập tên tin" value="${data?.title || ''}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Màu chữ</label>
+              <input type="color" class="form-control form-control-color service-text-color" value="${data?.textColor || '#012970'}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Màu nền</label>
+              <input type="color" class="form-control form-control-color service-bg-color" value="${data?.bgColor || '#ffffff'}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Hình đại diện</label>
+              <input type="file" class="form-control service-image-file" accept="image/*">
+              <input type="hidden" class="service-image-data" value="${data?.image || ''}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Link</label>
+              <input type="url" class="form-control service-link" placeholder="https://example.com" value="${data?.link || ''}">
+            </div>
+            <div class="col-12">
+              <div class="service-preview">
+                <div class="service-thumb">Chưa chọn ảnh</div>
+                <div class="service-card-preview">
+                  <div class="fw-semibold service-preview-title">Tên tin sẽ hiển thị tại đây</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const title = item.querySelector('.service-title');
+        const textColor = item.querySelector('.service-text-color');
+        const bgColor = item.querySelector('.service-bg-color');
+        const file = item.querySelector('.service-image-file');
+        const imageData = item.querySelector('.service-image-data');
+        const thumb = item.querySelector('.service-thumb');
+        const card = item.querySelector('.service-card-preview');
+        const previewTitle = item.querySelector('.service-preview-title');
+
+        function updateItemPreview() {
+          previewTitle.textContent = title.value || 'Tên tin sẽ hiển thị tại đây';
+          previewTitle.style.color = textColor.value;
+          card.style.backgroundColor = bgColor.value;
+          applyPreviewStyle();
+        }
+
+        [title, textColor, bgColor].forEach(function (input) {
+          input.addEventListener('input', updateItemPreview);
+        });
+
+        file.addEventListener('change', function () {
+          const selected = file.files && file.files[0];
+          if (!selected) return;
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            imageData.value = event.target.result;
+            thumb.innerHTML = '<img src="' + event.target.result + '" alt="preview">';
+            applyPreviewStyle();
+          };
+          reader.readAsDataURL(selected);
+        });
+
+        item.querySelector('.btn-delete-service').addEventListener('click', function () {
+          item.remove();
+        });
+
+        list.appendChild(item);
+        updateItemPreview();
+      }
+
+      btnAdd.addEventListener('click', function () {
+        createServiceItem();
+      });
+
+      document.querySelectorAll('input[name="display_type"], input[name="image_shape"], input[name="frame_type"], input[name="layout_type"], #center_content').forEach(function (input) {
+        input.addEventListener('change', function () {
+          syncOptionFlow();
+          applyPreviewStyle();
+        });
+      });
+      ['border_radius', 'item_padding'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', applyPreviewStyle);
+      });
+
+      initTinyEditor('display_name', 240);
+      initTinyEditor('description', 260);
+      syncOptionFlow();
+
+      if (form) {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          form.classList.add('was-validated');
+          if (!form.checkValidity()) return;
+
+          const services = Array.from(list.querySelectorAll('.service-item')).map(function (item) {
+            return {
+              title: item.querySelector('.service-title').value,
+              text_color: item.querySelector('.service-text-color').value,
+              bg_color: item.querySelector('.service-bg-color').value,
+              image: item.querySelector('.service-image-data').value,
+              link: item.querySelector('.service-link').value
+            };
+          });
+
+          const payload = {
+            type: 'service',
+            manager_name: document.getElementById('manager_name').value,
+            display_name: getEditorContent('display_name'),
+            description: getEditorContent('description'),
+            sort_order: document.getElementById('sort_order').value,
+            items_per_row: Number(document.getElementById('items_per_row').value),
+            display_type: getCheckedValue('display_type'),
+            image_shape: getCheckedValue('image_shape'),
+            frame_type: getCheckedValue('frame_type'),
+            layout_type: getCheckedValue('layout_type'),
+            center_content: document.getElementById('center_content').checked,
+            border_radius: document.getElementById('border_radius').value,
+            item_padding: document.getElementById('item_padding').value,
+            services: services
+          };
+
+          console.log('Body service payload:', payload);
+          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

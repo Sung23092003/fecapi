@@ -1,196 +1,46 @@
-<!DOCTYPE html>
-<html lang="vi">
+﻿<!DOCTYPE html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Quản lý dịch vụ - NiceAdmin</title>
+
+  <title>Web - Quản lý Dịch Vụ - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link
     href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
     rel="stylesheet">
 
+  <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
+  <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
-  <link href="assets/css/web-header.css" rel="stylesheet">
-
+  <link href="assets/css/web-statics.css" rel="stylesheet">
   <style>
-    body {
-      background: #f6f9ff;
-    }
-
-    .service-manager-page {
-      padding-bottom: 96px;
-    }
-
-    .service-manager-page .card-title {
-      color: #012970;
-      font-weight: 700;
-    }
-
-    .body-action-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 12px;
-    }
-
-    .body-action {
-      min-height: 74px;
-      border: 1px solid #e9ecef;
-      border-radius: 8px;
-      background: #fff;
-      color: #344767;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px;
-      text-align: left;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all .2s ease;
-    }
-
-    .body-action i {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      background: #f0f2ff;
-      color: #4154f1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .body-action:hover,
-    .body-action.active {
-      border-color: #4154f1;
-      box-shadow: 0 4px 14px rgba(65, 84, 241, .12);
-      color: #012970;
-    }
-
-    .body-action.active {
-      background: #f8f9ff;
-    }
-
-    .service-table-wrap {
-      overflow-x: auto;
-    }
-
-    .service-table {
-      min-width: 980px;
-      color: #344767;
-      vertical-align: middle;
-    }
-
-    .service-table thead th {
-      border-bottom: 1px solid #98a2b3;
-      color: #344767;
-      font-weight: 700;
-      text-align: center;
-      white-space: nowrap;
-    }
-
-    .service-table tbody td {
-      border-bottom: 1px solid #e9ecef;
-      text-align: center;
-      vertical-align: middle;
-    }
-
-    .service-name-cell {
-      min-width: 290px;
-      text-align: left !important;
-      padding-left: 28px !important;
-    }
-
-    .service-name-content {
-      display: block;
-    }
-
-    .service-row-image {
-      width: 72px;
-      height: 54px;
-      border: 1px dashed #ced4da;
-      border-radius: 8px;
-      background: #f8f9fa;
-      color: #667085;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    .service-row-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .service-row-title {
-      color: #1f2937;
-      font-weight: 700;
-      text-transform: uppercase;
-      line-height: 1.45;
-    }
-
-    .service-row-subtitle {
-      color: #4b5563;
-      line-height: 1.45;
-      margin-top: 4px;
-    }
-
-    .color-swatch {
-      width: 52px;
-      height: 30px;
-      border: 3px solid #d9d9d9;
-      border-radius: 3px;
-      display: inline-block;
-      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1);
-    }
-
-    .status-check {
-      color: #198754;
-      font-size: 20px;
-      line-height: 1;
-    }
-
-    .table-action {
-      width: 40px;
-      height: 36px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 576px) {
-      .body-action-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .service-row-image {
-        width: 58px;
-        height: 46px;
-      }
+    @media (max-width: 767.98px) {
+      .card-info.flex-1.min-width-0 { max-height: 120px; overflow: hidden; }
     }
   </style>
 </head>
 
 <body>
+
+  <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -418,9 +268,10 @@
       </ul>
     </nav><!-- End Icons Navigation -->
 
-  </header>
+  </header><!-- End Header -->
 
-  <aside id="sidebar" class="sidebar">
+      <!-- ======= Sidebar ======= -->
+    <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -509,363 +360,942 @@
 
     </ul>
 
-  </aside>
+  </aside><!-- End Sidebar-->
 
-  <main id="main" class="main service-manager-page">
+  <main id="main" class="main">
+
     <div class="pagetitle">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex flex-wrap md:flex-no-wrap align-items-center justify-content-between gap-3">
         <div>
-          <h1 class="mb-0">Quản lý dịch vụ</h1>
+          <h1 class="mb-0">Quản lý Dịch Vụ</h1>
           <nav>
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-              <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
-              <li class="breadcrumb-item active">Quản lý dịch vụ</li>
+              <li class="breadcrumb-item active">Quản lý Dịch Vụ</li>
             </ol>
           </nav>
         </div>
-        <!-- <a href="web-body-service-edit.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-          <i class="bi bi-plus-lg"></i> Tạo mới
-        </a>
-      </div> -->
+
+        <div class="input-group search-bar" style="max-width:300px;">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="filter-title" type="text" class="form-control" placeholder="Tìm theo tên dịch vụ" />
+        </div>
+      </div>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="card mb-20">
+        <div class="card-body pt-20">
+          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button id="btn-create" type="button" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm dịch vụ</span>
+              </button>
+              <button id="btn-delete-selected" type="button" class="btn btn-danger d-none">
+                <i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa đã chọn</span>
+              </button>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="view-mode-toggle ms-0 ms-md-2">
+                <div class="btn-group" role="group" aria-label="Chọn dạng hiển thị">
+                  <button id="btn-mode-list" type="button" class="btn btn-outline-secondary active">
+                    <i class="bi bi-list"></i>
+                  </button>
+                  <button id="btn-mode-grid" type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-grid"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="position-relative d-inline-block" style="width: 38px; height: 38px;">
+                <button id="btn-filter-icon-clear" class="btn btn-outline-primary w-100 h-100 p-0" type="button"
+                  title="Xóa lọc">
+                  <i class="bi bi-funnel"></i>
+                </button>
+                <div class="position-absolute" style="top: -6px; right: -6px; z-index: 10;">
+                  <i class="bi bi-x-circle-fill"
+                    style="color: red; font-size: 16px; background: white; border-radius: 50%;"></i>
+                </div>
+              </div>
+
+              <button id="btn-filter" class="btn btn-outline-primary" type="button">
+                <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="alert-area" class="alert alert-danger d-none" role="alert"></div>
+
+      <!-- LIST VIEW -->
+      <div id="view-list" class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th style="min-width: 70px;">#</th>
+              <th style="min-width: 70px;">Ảnh</th>
+              <th style="min-width: 200px;">Tiêu đề</th>
+              <th style="min-width: 200px;">Giới thiệu</th>
+              <th style="min-width: 250px;">Nội dung</th>
+              <th style="min-width: 120px;">Trạng thái</th>
+              <th style="min-width: 100px;">Thứ tự</th>
+              <th style="min-width: 180px;">Ngày tạo</th>
+              <th style="min-width: 120px;">Hành động</th>
+              <th style="min-width: 40px;">
+                <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0"
+                  title="Hiển thị cột">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody-services"></tbody>
+        </table>
+      </div>
+
+      <!-- GRID VIEW -->
+      <div id="view-grid" class="news-grid d-none"></div>
+
+      <div id="empty-state" class="empty-state d-none">
+        <div class="text-center">
+          <div class="mb-2">
+            <i class="bi bi-inbox" style="font-size: 40px;"></i>
+          </div>
+          <h5 class="mb-1">Không có dữ liệu</h5>
+          <div class="text-muted-2">Hãy thử thay đổi bộ lọc hoặc thêm dịch vụ mới.</div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted" id="summary-area"></div>
+        <nav>
+          <ul id="pagination" class="pagination mb-0"></ul>
+        </nav>
+      </div>
+
+      <!-- Column Visibility Modal -->
+      <div id="column-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Hiển thị/Ẩn cột</span>
+            <button type="button" id="column-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="column-modal-body" id="column-list"></div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Modal -->
+      <div id="filter-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Bộ lọc</span>
+            <button type="button" id="filter-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="column-modal-body">
+            <div class="mb-3">
+              <label class="form-label">Tìm theo tên dịch vụ</label>
+              <input id="filter-title-modal" type="text" class="form-control" placeholder="Nhập tiêu đề..." />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <select id="filter-status-modal" class="form-select">
+                <option value="-1" selected>Tất cả trạng thái</option>
+                <option value="1">Hiện</option>
+                <option value="0">Ẩn</option>
+              </select>
+            </div>
+          </div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      </div>
+    </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Xác nhận xóa</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc chắn muốn xóa dịch vụ này không? Hành động này không thể hoàn tác.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger" id="btn-confirm-delete">Xác nhận xóa</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <section class="section">
-      <div class="card card-box mb-3">
-        <div class="card-inner">
-          <div id="alertPlaceholder"></div>
-          <form id="formStatics" class="row g-3">
-            <input type="hidden" name="id_hiden" id="id_hiden" value="0" />
-            <input type="hidden" name="statics_image" id="statics_image" value="" />
-            <input type="hidden" name="statics_image_other" id="statics_image_other" value="" />
-
-            <div class="col-xs-12 col-md-6">
-              <div class="form-group">
-                <label class="form-label">Kích thước ảnh đại diện bài viết (430px x 300px)</label>
-                <div class="controls">
-                  <input type="file" class="form-control" name="image" id="bannerUpload" accept="image/*" />
-                </div>
-                <div class="mt-2 position-relative" id="div-cong-viec-image-preview">
-                  <img id="imgPreview" class="preview-thumb d-none" alt="preview"
-                    style="max-width:200px;max-height:140px;object-fit:cover;border-radius:8px;" />
-                  <button type="button" id="btnRemoveImage"
-                    class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 d-none" title="Xóa ảnh">
-                    <i class="bi bi-x-lg"></i>
-                  </button>
-                  <div id="uploadSpinner" class="d-none text-center mt-2">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                    <span class="ms-2 small">Đang tải ảnh...</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Tên bài viết<span class="label-req">*</span></label>
-                <div class="controls">
-                  <input type="text" class="form-control" id="statics_title" name="statics_title" required />
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Alias (URL thân thiện)<span class="label-req">*</span></label>
-                <div class="controls">
-                  <input type="text" class="form-control" id="statics_alias" name="statics_alias" required />
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Mô tả ngắn</label>
-                <div class="controls">
-                  <textarea class="form-control" id="statics_intro" name="statics_intro" cols="30" rows="4"></textarea>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-md-6">
-              <div class="form-group">
-                <label class="form-label">Meta title</label>
-                <div class="controls">
-                  <input type="text" class="form-control" id="meta_title" name="meta_title" />
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Meta keywords</label>
-                <div class="controls">
-                  <textarea class="form-control" id="meta_keywords" name="meta_keywords" cols="30" rows="3"></textarea>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Meta description</label>
-                <div class="controls">
-                  <textarea class="form-control" id="meta_description" name="meta_description" cols="30"
-                    rows="4"></textarea>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Trạng thái</label>
-                <div class="controls">
-                  <select class="form-select" id="statics_status" name="statics_status">
-                    <option value="1">Hiện</option>
-                    <option value="0">Ẩn</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Thứ tự</label>
-                <div class="controls">
-                  <input type="number" class="form-control" id="statics_order_no" name="statics_order_no" value="0" />
-                </div>
-              </div>
-            </div>
-
-            <div class="col-12">
-              <div class="card-footer text-end"></div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <section class="section body-manager-page">
-      <div class="row g-3">
-        <div class="col-12">
-          <div class="card card-box mb-3">
-            <div class="card-inner">
-              <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-                <div>
-                  <h5 class="card-title mb-0 py-0">Chọn chức năng thân trang</h5>
-                  <div class="text-muted small mt-1">Bấm vào từng chức năng để mở khu vực cấu hình tương ứng.</div>
-                </div>
-              </div>
-
-              <div class="body-action-grid">
-                <a href="web-body-article-edit.html" target="_blank" rel="noopener noreferrer" class="body-action">
-                  <i class="bi bi-file-earmark-text"></i>
-                  <span>Thêm Bài Viết</span>
-                </a>
-                <a href="web-body-image-news-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i
-                    class="bi bi-images"></i><span>Thêm Tin Ảnh/ Video</span></a>
-                <a href="web-body-consultation-edit.html" target="_blank" rel="noopener noreferrer"
-                  class="body-action"><i class="bi bi-calendar2-check"></i><span>Thêm Đặt Lịch Tư Vấn</span></a>
-                <a href="web-body-menu-category-edit.html" target="_blank" rel="noopener noreferrer"
-                  class="body-action"><i class="bi bi-list-ul"></i><span>Hiển Thị Menu - Danh Mục</span></a>
-                <a href="web-body-running-news-edit.html" target="_blank" rel="noopener noreferrer"
-                  class="body-action"><i class="bi bi-arrow-right-short"></i><span>Thêm Tin Chạy Trái Qua
-                    Phải</span></a>
-                <a href="web-body-service-edit.html" target="_blank" rel="noopener noreferrer"
-                  class="body-action"><i class="bi bi-briefcase"></i><span>Thêm Dịch Vụ</span></a>
-                <a href="web-body-faq-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i
-                    class="bi bi-question-circle"></i><span>Thêm Câu Hỏi FAQ</span></a>
-                <a href="web-body-gallery-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i
-                    class="bi bi-grid-3x3-gap"></i><span>Thêm Thư Viện Ảnh</span></a>
-                <a href="web-body-real-images-edit.html" target="_blank" rel="noopener noreferrer"
-                  class="body-action"><i class="bi bi-camera"></i><span>Thêm Hình Ảnh Thực Tế</span></a>
-                <a href="web-body-banner-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i
-                    class="bi bi-card-image"></i><span>Thêm Banner</span></a>
-                <a href="web-body-video-news-edit.html" target="_blank" rel="noopener noreferrer" class="body-action"><i
-                    class="bi bi-play-btn"></i><span>Thêm Tin Video</span></a>
-                <button type="button" class="body-action"><i class="bi bi-layout-split"></i><span>Thêm Tin Ảnh Xen
-                    Kẽ</span></button>
-              </div>
-            </div>
+    <!-- Clear Filter Confirmation Modal -->
+    <div class="modal fade" id="clearFilterConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Xóa bộ lọc</h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center py-3">
+            <i class="bi bi-funnel" style="font-size: 24px; color: #dc3545;"></i>
+            <p class="mb-0 mt-2">Bạn có muốn xóa lọc không?</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+            <button type="button" class="btn btn-danger btn-sm" id="btn-confirm-clear-filter">Xác nhận</button>
           </div>
         </div>
       </div>
-    </section>
-
-    <section class="section">
-      <div class="card card-box mb-0">
-        <div class="card-inner">
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-            <div>
-              <h5 class="card-title mb-0 py-0">Danh sách dịch vụ</h5>
-              <div class="text-muted small mt-1">Tổng số: <strong id="serviceTotal">1</strong></div>
-            </div>
-          </div>
-
-          <div class="service-table-wrap">
-            <table class="table service-table mb-0">
-              <thead>
-                <tr>
-                  <th style="width:80px;">STT</th>
-                  <th>Ảnh</th>
-                  <th>Tên thư mục</th>
-                  <th style="width:130px;">Màu chữ</th>
-                  <th style="width:130px;">Màu nền</th>
-                  <th style="width:130px;">Trạng thái</th>
-                  <th style="width:170px;">Kiểu chức năng</th>
-                  <th style="width:150px;">Tùy chọn</th>
-                </tr>
-              </thead>
-              <tbody id="serviceTableBody">
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <label class="service-row-image">
-                      <input type="file" class="d-none row-image-input" accept="image/*">
-                      <span>ảnh</span>
-                    </label>
-                  </td>
-                  <td class="service-name-cell">
-                    <div class="service-name-content">
-                        <div class="service-row-title">Sản phẩm của chúng tôi</div>
-                    </div>
-                  </td>
-                  <td><span class="color-swatch" style="background:#212529;"></span></td>
-                  <td><span class="color-swatch" style="background:#effa6b;"></span></td>
-                  <td><i class="bi bi-check-lg status-check"></i></td>
-                  <td>Dịch vụ</td>
-                  <td>
-                    <a href="web-body-service-edit.html" class="btn btn-outline-secondary table-action" title="Sửa"><i
-                        class="bi bi-pencil-square"></i></a>
-                    <button type="button" class="btn btn-outline-danger table-action btn-delete-row" title="Xóa"><i
-                        class="bi bi-x-lg"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="floating-actions">
-    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formStatics">
-      <i class="bi bi-floppy"></i><span>LƯU</span>
-    </button>
-    <a href="web-body.html" class="btn btn-outline-secondary btn-cancel-floating">
-      <i class="bi bi-x-lg"></i><span>BỎ</span>
-    </a>
-  </div>
+    </div>
+  </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+
+  <script src="assets/js/token-guard.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+
+
+  <!-- Auth + ENV -->
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/config.js"></script>
-  <script src="assets/js/menu-visibility.js"></script>
 
   <script>
     (function () {
       "use strict";
 
-      const bannerUpload = document.getElementById('bannerUpload');
-      const imgPreview = document.getElementById('imgPreview');
-      const btnRemoveImage = document.getElementById('btnRemoveImage');
-      const staticsImage = document.getElementById('statics_image');
-      const tableBody = document.getElementById('serviceTableBody');
-      const serviceTotal = document.getElementById('serviceTotal');
+      const viewList = document.getElementById('view-list');
+      const viewGrid = document.getElementById('view-grid');
+      const emptyState = document.getElementById('empty-state');
+      const tbody = document.getElementById('tbody-services');
+      const paginationEl = document.getElementById('pagination');
+      const summaryArea = document.getElementById('summary-area');
+      const alertArea = document.getElementById('alert-area');
 
-      function readImage(file, callback) {
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          callback(event.target.result);
-        };
-        reader.readAsDataURL(file);
+      const btnCreate = document.getElementById('btn-create');
+      const btnDeleteSelected = document.getElementById('btn-delete-selected');
+      const btnFilter = document.getElementById('btn-filter');
+
+      const filterTitle = document.getElementById('filter-title');
+      let filterStatus = document.getElementById('filter-status');
+      if (!filterStatus) {
+        filterStatus = document.createElement('select');
+        filterStatus.id = 'filter-status';
+        filterStatus.className = 'form-select';
+        filterStatus.innerHTML = `
+          <option value="-1" selected>Tất cả trạng thái</option>
+          <option value="1">Hiện</option>
+          <option value="0">Ẩn</option>
+        `;
       }
 
-      if (bannerUpload && imgPreview && btnRemoveImage) {
-        bannerUpload.addEventListener('change', function () {
-          const file = bannerUpload.files && bannerUpload.files[0];
-          readImage(file, function (src) {
-            imgPreview.src = src;
-            staticsImage.value = src;
-            imgPreview.classList.remove('d-none');
-            btnRemoveImage.classList.remove('d-none');
-          });
-        });
+      const btnModeList = document.getElementById('btn-mode-list');
+      const btnModeGrid = document.getElementById('btn-mode-grid');
+      const viewModeToggle = document.querySelector('.view-mode-toggle');
 
-        btnRemoveImage.addEventListener('click', function () {
-          bannerUpload.value = '';
-          staticsImage.value = '';
-          imgPreview.src = '';
-          imgPreview.classList.add('d-none');
-          btnRemoveImage.classList.add('d-none');
-        });
+      // Column Visibility
+      const btnColumnVisibility = document.getElementById('btn-column-visibility');
+      const columnModal = document.getElementById('column-modal');
+      const columnModalClose = document.getElementById('column-modal-close');
+      const columnList = document.getElementById('column-list');
+      const btnResetColumns = document.getElementById('btn-reset-columns');
+      const btnDoneColumns = document.getElementById('btn-done-columns');
+
+      const columns = [
+        { key: 'index', label: '#', default: true, minWidth: '70px' },
+        { key: 'image', label: 'Ảnh', default: true, minWidth: '90px' },
+        { key: 'image_other', label: 'Ảnh phụ', default: false, minWidth: '140px' },
+        { key: 'title', label: 'Tên dịch vụ', default: true, minWidth: '250px' },
+        { key: 'alias', label: 'Alias', default: true, minWidth: '200px' },
+        { key: 'intro', label: 'Mô tả ngắn', default: true, minWidth: '250px' },
+        { key: 'content', label: 'Nội dung', default: true, minWidth: '300px' },
+        { key: 'status', label: 'Trạng thái', default: true, minWidth: '120px' },
+        { key: 'order', label: 'Thứ tự', default: true, minWidth: '100px' },
+        { key: 'created', label: 'Ngày tạo', default: true, minWidth: '180px' },
+        { key: 'view_num', label: 'Lượt xem', default: true, minWidth: '120px' },
+        { key: 'actions', label: 'Hành động', default: true, minWidth: '140px' }
+      ];
+
+      let visibleColumns = {};
+      let selectedIds = new Set();
+      let currentPage = 1;
+      let lastTotalPage = 1;
+
+      let serviceItems = [
+        {
+          statics_id: 1,
+          statics_image: 'assets/img/news-1.jpg',
+          statics_image_other: ['assets/img/news-2.jpg', 'assets/img/news-3.jpg'],
+          statics_title: 'Dịch vụ thiết kế website trọn gói',
+          statics_alias: 'dich-vu-thiet-ke-website-tron-goi',
+          statics_intro: 'Tư vấn, thiết kế giao diện, lập trình và bàn giao website theo yêu cầu.',
+          statics_content: '<p>Gói dịch vụ mẫu dùng tạm khi chưa kết nối API.</p>',
+          statics_status: 1,
+          statics_order_no: 1,
+          statics_created: 1716508800,
+          statics_view_num: 25
+        }
+      ];
+
+      // Setup Toast Alert
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'pageAlert';
+      alertDiv.style.zIndex = '9999';
+      alertDiv.style.minWidth = '250px';
+      alertDiv.style.maxWidth = '350px';
+      alertDiv.className = 'd-none';
+      document.body.appendChild(alertDiv);
+
+      function showAlert(message, type = 'success') {
+        alertDiv.innerHTML = message;
+        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => {
+          alertDiv.classList.add('d-none');
+        }, 5000);
       }
 
-      function bindRowImages(context) {
-        context.querySelectorAll('.row-image-input').forEach(function (input) {
-          input.addEventListener('change', function () {
-            const file = input.files && input.files[0];
-            const holder = input.closest('.service-row-image');
-            readImage(file, function (src) {
-              holder.innerHTML = '<input type="file" class="d-none row-image-input" accept="image/*"><img src="' + src + '" alt="service">';
-              bindRowImages(holder);
+      // Initialize visible columns
+      function initColumns() {
+        const saved = localStorage.getItem('services-visible-columns');
+        if (saved) {
+          try {
+            visibleColumns = JSON.parse(saved);
+            columns.forEach(col => {
+              if (visibleColumns[col.key] === undefined) {
+                visibleColumns[col.key] = col.default;
+              }
             });
-          });
-        });
-      }
-
-      function updateTotal() {
-        if (serviceTotal && tableBody) {
-          serviceTotal.textContent = tableBody.querySelectorAll('tr').length;
+          } catch {
+            columns.forEach(col => visibleColumns[col.key] = col.default);
+          }
+        } else {
+          columns.forEach(col => visibleColumns[col.key] = col.default);
         }
       }
 
-      bindRowImages(document);
+      function saveColumns() {
+        localStorage.setItem('services-visible-columns', JSON.stringify(visibleColumns));
+      }
 
-      tableBody.addEventListener('click', function (event) {
-        const deleteBtn = event.target.closest('.btn-delete-row');
-        if (!deleteBtn) return;
-        deleteBtn.closest('tr').remove();
-        updateTotal();
-      });
+      function toggleColumn(key) {
+        visibleColumns[key] = !visibleColumns[key];
+        saveColumns();
+      }
 
-      document.getElementById('btnAddRow').addEventListener('click', function () {
-        const rowCount = tableBody.querySelectorAll('tr').length + 1;
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${rowCount}</td>
-          <td>
-            <label class="service-row-image">
-              <input type="file" class="d-none row-image-input" accept="image/*">
-              <span>ảnh</span>
-            </label>
-          </td>
-          <td class="service-name-cell">
-            <div class="service-name-content">
-              <div class="service-row-subtitle">Dịch vụ mới</div>
-            </div>
-          </td>
-          <td><span class="color-swatch" style="background:#212529;"></span></td>
-          <td><span class="color-swatch" style="background:#ffffff;"></span></td>
-          <td><i class="bi bi-check-lg status-check"></i></td>
-          <td>Dịch vụ</td>
-          <td>
-            <a href="web-body-service-edit.html" class="btn btn-outline-secondary table-action" title="Sửa"><i class="bi bi-pencil-square"></i></a>
-            <button type="button" class="btn btn-outline-danger table-action btn-delete-row" title="Xóa"><i class="bi bi-x-lg"></i></button>
-          </td>
-        `;
-        tableBody.appendChild(row);
-        bindRowImages(row);
-        updateTotal();
-      });
+      function resetColumns() {
+        columns.forEach(col => visibleColumns[col.key] = col.default);
+        saveColumns();
+        renderColumnList();
+      }
 
-      if (window.tinymce) {
-        tinymce.init({
-          selector: '#content_editor',
-          height: 300,
-          menubar: 'edit insert format table tools',
-          plugins: 'link lists table image media code fullscreen preview wordcount',
-          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
-          toolbar_mode: 'sliding',
-          branding: true,
-          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+      function renderColumnList() {
+        columnList.innerHTML = '';
+        columns.forEach(col => {
+          const label = document.createElement('label');
+          label.className = 'column-item';
+          label.innerHTML = `
+              <input type="checkbox" ${visibleColumns[col.key] ? 'checked' : ''} onchange="window.__toggleColumn('${col.key}')" />
+              ${col.label}
+            `;
+          columnList.appendChild(label);
         });
       }
 
+      // Expose toggle function globally
+      window.__toggleColumn = toggleColumn;
+
+      function openColumnModal() {
+        renderColumnList();
+        columnModal.classList.add('show');
+      }
+
+      function closeColumnModal() {
+        columnModal.classList.remove('show');
+      }
+
+      // Responsive: on tablet/mobile (<=991.98px) force grid, hide toggle; on PC default list
+      function checkResponsive() {
+        if (window.innerWidth <= 991.98) {
+          setView('grid');
+          if (viewModeToggle) viewModeToggle.style.display = 'none';
+        } else {
+          setView('list');
+          if (viewModeToggle) viewModeToggle.style.display = '';
+        }
+      }
+
+      // Initial check
+      checkResponsive();
+      window.addEventListener('resize', checkResponsive);
+
+      function formatStatus(st) {
+        if (st === 1) return { text: 'Hiện', cls: 'bg-success' };
+        if (st === 0) return { text: 'Ẩn', cls: 'bg-secondary' };
+        return { text: 'Tất cả', cls: 'bg-primary' };
+      }
+
+      function formatDateTime(unixSeconds) {
+        if (!unixSeconds) return '';
+        const d = new Date(unixSeconds * 1000);
+        return d.toLocaleString('vi-VN');
+      }
+
+      function setError(message) {
+        alertArea.textContent = message;
+        alertArea.classList.remove('d-none');
+      }
+
+      function clearError() {
+        alertArea.textContent = '';
+        alertArea.classList.add('d-none');
+      }
+
+      // Debounce function for search
+      function debounce(func, delay) {
+        let timeoutId;
+        return function (...args) {
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => func.apply(this, args), delay);
+        };
+      }
+
+      const debouncedSearch = debounce(() => {
+        currentPage = 1;
+        loadData();
+      }, 500);
+
+      function setView(mode) {
+        const isList = mode === 'list';
+        viewList.classList.toggle('d-none', !isList);
+        viewGrid.classList.toggle('d-none', isList);
+        btnModeList.classList.toggle('active', isList);
+        btnModeGrid.classList.toggle('active', !isList);
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '<')
+          .replaceAll('>', '>')
+          .replaceAll('"', '"')
+          .replaceAll("'", '&#039;');
+      }
+
+      function decodeHtmlContent(content) {
+        if (!content) return '';
+        return String(content)
+          .replace(/\\\//g, '/')
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '\\');
+      }
+
+      function renderTableHeader() {
+        const thead = viewList.querySelector('thead tr');
+        thead.innerHTML = '';
+
+        const thCheck = document.createElement('th');
+        thCheck.style.width = '40px';
+        thCheck.innerHTML = '<input type=\"checkbox\" id=\"select-all\" />';
+        thead.appendChild(thCheck);
+
+        columns.forEach(col => {
+          if (!visibleColumns[col.key]) return;
+
+          const th = document.createElement('th');
+          th.textContent = col.label;
+
+          if (col.minWidth) {
+            th.style.minWidth = col.minWidth;
+          }
+
+          thead.appendChild(th);
+        });
+
+        const thDot = document.createElement('th');
+
+        thDot.innerHTML = `
+    <button type="button" id="btn-column-visibility"
+      class="btn btn-sm btn-link text-dark p-0">
+      <i class="bi bi-three-dots-vertical"></i>
+    </button>
+  `;
+
+        thead.appendChild(thDot);
+
+        const btn = document.getElementById('btn-column-visibility');
+
+        if (btn) {
+          btn.addEventListener('click', openColumnModal);
+        }
+      }
+      function renderList(items) {
+        tbody.innerHTML = '';
+        selectedIds.clear();
+        updateDeleteButton();
+        const frag = document.createDocumentFragment();
+
+        items.forEach((it, idx) => {
+          const tr = document.createElement('tr');
+          const st = formatStatus(it.statics_status);
+          const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+          const imageHtml = it.statics_image
+            ? `<img src="${escapeHtml(it.statics_image)}" alt="" style="width:60px;height:40px;object-fit:cover;border-radius:4px;">`
+            : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="40" viewBox="0 0 60 40" style="border-radius:4px;border:1px solid #dee2e6;">
+                  <rect width="60" height="40" fill="#f8f9fa"/>
+                  <text x="30" y="22" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
+                </svg>`;
+
+          const ckTd = document.createElement('td');
+          ckTd.innerHTML = `<input type=\"checkbox\" class=\"row-checkbox\" value=\"${it.statics_id}\" />`;
+          tr.appendChild(ckTd);
+
+          columns.forEach(col => {
+            if (!visibleColumns[col.key]) return;
+            if (col.key === 'index') {
+              const th = document.createElement('th');
+              th.scope = 'row';
+              th.textContent = (currentPage - 1) * 20 + idx + 1;
+              tr.appendChild(th);
+            } else if (col.key === 'image') {
+              const td = document.createElement('td');
+              td.className = 'text-center';
+              td.innerHTML = imageHtml;
+              tr.appendChild(td);
+            } else if (col.key === 'image_other') {
+              const td = document.createElement('td');
+              let html = '';
+              let others = it.statics_image_other;
+              if (typeof others === 'string') { try { others = JSON.parse(others); } catch { others = [others]; } }
+              if (Array.isArray(others)) {
+                html = others.filter(Boolean).map(url =>
+                  `<img src="${escapeHtml(url)}" alt="" style="width:40px;height:30px;object-fit:cover;border-radius:3px;margin:1px;">`
+                ).join('');
+              }
+              td.innerHTML = html || '<span class="text-muted small">—</span>';
+              tr.appendChild(td);
+            } else if (col.key === 'title') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="fw-bold">${escapeHtml(it.statics_title)}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'alias') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="small text-muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_alias || '')}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'intro') {
+              const td = document.createElement('td');
+              td.innerHTML = `<div class="small text-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(it.statics_intro || '')}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'content') {
+              const td = document.createElement('td');
+              const cleanContent = decodeHtmlContent(it.statics_content);
+              td.innerHTML = `<div class="small text-muted" style="max-width:250px;max-height:60px;overflow:hidden;">${cleanContent}</div>`;
+              tr.appendChild(td);
+            } else if (col.key === 'status') {
+              const td = document.createElement('td');
+              td.innerHTML = statusHtml;
+              tr.appendChild(td);
+            } else if (col.key === 'order') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(it.statics_order_no);
+              tr.appendChild(td);
+            } else if (col.key === 'created') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(formatDateTime(it.statics_created));
+              tr.appendChild(td);
+            } else if (col.key === 'view_num') {
+              const td = document.createElement('td');
+              td.textContent = escapeHtml(it.statics_view_num || 0);
+              tr.appendChild(td);
+            } else if (col.key === 'actions') {
+              const td = document.createElement('td');
+              td.innerHTML = `
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                  </div>
+                `;
+              tr.appendChild(td);
+            }
+          });
+          const tdDot = document.createElement('td');
+          tr.appendChild(tdDot);
+          frag.appendChild(tr);
+        });
+
+        tbody.appendChild(frag);
+      }
+
+      function renderGrid(items) {
+        viewGrid.innerHTML = '';
+        if (!items.length) return;
+
+        items.forEach(it => {
+          const st = formatStatus(it.statics_status);
+          const card = document.createElement('div');
+          card.className = 'news-card';
+
+          let cardHtml = '<div class="card d-flex flex-row align-items-start gap-3 p-3 h-100 mb-0">';
+
+          // Image on left
+          if (visibleColumns['image']) {
+            cardHtml += '<div class="card-img-wrapper">';
+            cardHtml += it.statics_image
+              ? `<img class="card-news-thumb" src="${escapeHtml(it.statics_image)}" alt="">`
+              : `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" class="card-news-thumb no-photo-svg">
+                    <rect width="60" height="60" fill="#f8f9fa"/>
+                    <text x="30" y="35" text-anchor="middle" font-size="8" fill="#6c757d">No Photo</text>
+                  </svg>`;
+            if (visibleColumns['image_other']) {
+              let others = it.statics_image_other;
+              if (typeof others === 'string') { try { others = JSON.parse(others); } catch { others = [others]; } }
+              if (Array.isArray(others) && others.length) {
+                cardHtml += '<div class="d-flex flex-wrap gap-1 mt-1 d-none d-md-block">';
+                others.filter(Boolean).forEach(url => {
+                  cardHtml += `<img src="${escapeHtml(url)}" alt="" style="width:40px;height:30px;object-fit:cover;border-radius:3px;">`;
+                });
+                cardHtml += '</div>';
+              }
+            }
+            cardHtml += '</div>';
+          }
+
+          // Info section (middle)
+          cardHtml += '<div class="card-info flex-1 min-width-0">';
+
+          // Header: title + status
+          if (visibleColumns['title'] || visibleColumns['status']) {
+            cardHtml += '<div class="d-flex align-items-center justify-content-between gap-2 mb-1">';
+            if (visibleColumns['title']) {
+              cardHtml += `<div class="fw-bold text-truncate" style="font-size:14px;">${escapeHtml(it.statics_title)}</div>`;
+            }
+            if (visibleColumns['status']) {
+              cardHtml += `<span class="badge ${st.cls} status-pill flex-shrink-0">${st.text}</span>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          // Alias
+          if (visibleColumns['alias']) {
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">Alias: ${escapeHtml(it.statics_alias || '')}</div>`;
+          }
+
+          // Intro
+          if (visibleColumns['intro']) {
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${escapeHtml(it.statics_intro || '')}</div>`;
+          }
+
+          // Content
+          if (visibleColumns['content']) {
+            const cleanContent = decodeHtmlContent(it.statics_content);
+            cardHtml += `<div class="small text-muted text-truncate" style="font-size:12px;">${cleanContent}</div>`;
+          }
+
+          // Footer: order + date + view_num
+          if (visibleColumns['order'] || visibleColumns['created'] || visibleColumns['view_num']) {
+            cardHtml += '<div class="d-flex justify-content-between align-items-center mt-1" style="font-size:11px;">';
+            if (visibleColumns['order']) {
+              cardHtml += `<span class="text-muted">Thứ tự: <span class="fw-semibold">${escapeHtml(it.statics_order_no)}</span></span>`;
+            }
+            if (visibleColumns['created']) {
+              cardHtml += `<span class="text-muted">${escapeHtml(formatDateTime(it.statics_created))}</span>`;
+            }
+            if (visibleColumns['view_num']) {
+              cardHtml += `<span class="text-muted">Lượt xem: ${escapeHtml(it.statics_view_num || 0)}</span>`;
+            }
+            cardHtml += '</div>';
+          }
+
+          cardHtml += '</div>';
+
+          // Actions (right)
+          if (visibleColumns['actions']) {
+            cardHtml += `
+                <div class="card-actions flex-shrink-0 d-flex flex-column gap-1">
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="view" data-id="${it.statics_id}" title="Xem"><i class="bi bi-eye"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#e0f2fe;color:#0284c7;border:none;border-radius:6px;" data-action="edit" data-id="${it.statics_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
+                  <button type="button" class="btn btn-sm p-1" style="background:#fee2e2;color:#dc2626;border:none;border-radius:6px;" data-action="delete" data-id="${it.statics_id}" title="Xóa"><i class="bi bi-trash"></i></button>
+                </div>
+              `;
+          }
+
+          cardHtml += '</div>';
+          card.innerHTML = cardHtml;
+          viewGrid.appendChild(card);
+        });
+      }
+
+      function renderPagination(page, totalPage) {
+        paginationEl.innerHTML = '';
+        if (totalPage <= 1) return;
+
+        function addItem(label, p, disabled, active) {
+          const li = document.createElement('li');
+          li.className = 'page-item';
+          if (disabled) li.classList.add('disabled');
+          if (active) li.classList.add('active');
+
+          const a = document.createElement('a');
+          a.className = 'page-link';
+          a.href = '#';
+          a.textContent = label;
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (disabled) return;
+            currentPage = p;
+            loadData();
+          });
+
+          li.appendChild(a);
+          paginationEl.appendChild(li);
+        }
+
+        addItem('«', Math.max(1, page - 1), page === 1, false);
+
+        // show window around current
+        const start = Math.max(1, page - 2);
+        const end = Math.min(totalPage, page + 2);
+        for (let p = start; p <= end; p++) {
+          addItem(String(p), p, false, p === page);
+        }
+
+        addItem('»', Math.min(totalPage, page + 1), page === totalPage, false);
+      }
+
+      async function loadData() {
+        clearError();
+        emptyState.classList.add('d-none');
+
+        const title = filterTitle.value.trim().toLowerCase();
+        const st = parseInt(filterStatus.value, 10);
+        const items = serviceItems.filter(item => {
+          const matchTitle = !title || String(item.statics_title || '').toLowerCase().includes(title);
+          const matchStatus = Number.isNaN(st) || st === -1 || item.statics_status === st;
+          return matchTitle && matchStatus;
+        });
+
+        lastTotalPage = 1;
+        summaryArea.textContent = `Tổng: ${items.length} • Trang 1/${lastTotalPage}`;
+
+        if (!items.length) {
+          tbody.innerHTML = '';
+          viewGrid.innerHTML = '';
+          emptyState.classList.remove('d-none');
+        } else {
+          emptyState.classList.add('d-none');
+          renderList(items);
+          renderGrid(items);
+        }
+
+        renderPagination(1, lastTotalPage);
+
+        tbody.querySelectorAll('button[data-action]').forEach(btn => {
+          btn.addEventListener('click', () => handleAction(btn.dataset.action, btn.dataset.id));
+        });
+        viewGrid.querySelectorAll('button[data-action]').forEach(btn => {
+          btn.addEventListener('click', () => handleAction(btn.dataset.action, btn.dataset.id));
+        });
+      }
+
+      async function deleteItem(id) {
+        const ids = (Array.isArray(id) ? id : [id]).map(item => parseInt(item, 10)).filter(Number.isFinite);
+        if (!ids.length) return;
+
+        serviceItems = serviceItems.filter(item => !ids.includes(parseInt(item.statics_id, 10)));
+        selectedIds.clear();
+        updateDeleteButton();
+        showAlert('Xóa dịch vụ thành công.', 'success');
+        loadData();
+      }
+
+      function updateDeleteButton() {
+        const count = selectedIds.size;
+        btnDeleteSelected.classList.toggle('d-none', count === 0);
+        btnDeleteSelected.innerHTML = `<i class="bi bi-trash"></i> <span class="d-none d-md-inline">Xóa (` + count + `)</span>`;
+      }
+
+      function getSelectedIds() {
+        return Array.from(document.querySelectorAll('.row-checkbox:checked')).map(cb => parseInt(cb.value, 10));
+      }
+
+      function handleCheckboxChange() {
+        selectedIds = new Set(getSelectedIds());
+        const selectAll = document.getElementById('select-all');
+        if (selectAll) {
+          const checks = Array.from(document.querySelectorAll('.row-checkbox'));
+          selectAll.checked = checks.length > 0 && checks.every(cb => cb.checked);
+        }
+        updateDeleteButton();
+      }
+
+      async function deleteSelected() {
+        const ids = getSelectedIds();
+        if (ids.length === 0) return;
+        const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+        if (deleteModalBody) deleteModalBody.textContent = `Xóa ${ids.length} dich vu da chon?`;
+        deleteTargetId = ids;
+        getDeleteModal().show();
+      }
+
+      tbody.addEventListener('change', (e) => {
+        if (e.target.classList.contains('row-checkbox')) handleCheckboxChange();
+      });
+
+      document.addEventListener('change', (e) => {
+        if (e.target.id === 'select-all') {
+          document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.checked = e.target.checked;
+          });
+          handleCheckboxChange();
+        }
+      });
+
+      btnDeleteSelected.addEventListener('click', deleteSelected);
+      let deleteTargetId = null;
+      let deleteModal = null;
+      const defaultDeleteMessage = document.querySelector('#deleteConfirmModal .modal-body')?.textContent || '';
+
+      function getDeleteModal() {
+        if (!deleteModal) {
+          deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+        }
+        return deleteModal;
+      }
+
+      document.getElementById('btn-confirm-delete').addEventListener('click', () => {
+        if (deleteTargetId) {
+          getDeleteModal().hide();
+          deleteItem(deleteTargetId);
+          deleteTargetId = null;
+        }
+      });
+
+      function handleAction(action, id) {
+        if (!id) return;
+        if (action === 'view' || action === 'edit') {
+          window.location.href = `web-service-edit.html?id=${id}`;
+        } else if (action === 'delete') {
+          deleteTargetId = id;
+          const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
+          if (deleteModalBody) deleteModalBody.textContent = defaultDeleteMessage;
+          getDeleteModal().show();
+        }
+      }
+
+      btnCreate.addEventListener('click', () => {
+        // Điều hướng tới trang thêm (id=0)
+        window.location.href = 'web-service-edit.html?id=0';
+      });
+
+      filterTitle.addEventListener('input', debouncedSearch);
+
+      btnModeList.addEventListener('click', () => setView('list'));
+      btnModeGrid.addEventListener('click', () => setView('grid'));
+
+      // Column visibility event listeners
+      btnColumnVisibility.addEventListener('click', openColumnModal);
+      columnModalClose.addEventListener('click', closeColumnModal);
+      btnDoneColumns.addEventListener('click', () => location.reload());
+      btnResetColumns.addEventListener('click', resetColumns);
+
+      columnModal.addEventListener('click', (e) => {
+        if (e.target === columnModal) closeColumnModal();
+      });
+
+      // Filter Modal
+      const filterModal = document.getElementById('filter-modal');
+      const filterModalClose = document.getElementById('filter-modal-close');
+      const btnApplyFilter = document.getElementById('btn-apply-filter');
+      const btnResetFilter = document.getElementById('btn-reset-filter');
+      const filterTitleModal = document.getElementById('filter-title-modal');
+      const filterStatusModal = document.getElementById('filter-status-modal');
+
+      function openFilterModal() {
+        filterTitleModal.value = filterTitle.value;
+        filterStatusModal.value = filterStatus.value;
+        filterModal.style.display = 'flex';
+      }
+
+      function closeFilterModal() {
+        filterModal.style.display = 'none';
+      }
+
+      btnFilter.addEventListener('click', openFilterModal);
+      filterModalClose.addEventListener('click', closeFilterModal);
+      filterModal.addEventListener('click', (e) => {
+        if (e.target === filterModal) closeFilterModal();
+      });
+
+      btnApplyFilter.addEventListener('click', () => {
+        filterTitle.value = filterTitleModal.value;
+        filterStatus.value = filterStatusModal.value;
+        closeFilterModal();
+        currentPage = 1;
+        loadData();
+      });
+
+      btnResetFilter.addEventListener('click', () => {
+        filterTitleModal.value = '';
+        filterStatusModal.value = '-1';
+      });
+
+      const btnFilterIconClear = document.getElementById('btn-filter-icon-clear');
+      const clearFilterConfirmModal = new bootstrap.Modal(document.getElementById('clearFilterConfirmModal'));
+      const btnConfirmClearFilter = document.getElementById('btn-confirm-clear-filter');
+
+      btnFilterIconClear.addEventListener('click', () => {
+        clearFilterConfirmModal.show();
+      });
+
+      btnConfirmClearFilter.addEventListener('click', () => {
+        filterTitle.value = '';
+        filterTitleModal.value = '';
+        filterStatus.value = '-1';
+        filterStatusModal.value = '-1';
+        currentPage = 1;
+        loadData();
+        clearFilterConfirmModal.hide();
+      });
+
+      // Init
+      initColumns();
+      renderTableHeader();
+      checkResponsive();
+      loadData();
     })();
   </script>
 </body>
 
 </html>
+

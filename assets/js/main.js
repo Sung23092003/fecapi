@@ -453,7 +453,7 @@
       { url: '#', label: '  QL Sản phẩm bán chạy', keys: ['sản phẩm bán chạy', 'best seller'] },
       { url: '#', label: '  QL Thông tin thanh toán', keys: ['thanh toán', 'payment'] },
 
-      { url: '#', label: 'Quản lý Dịch Vụ', keys: ['dịch vụ', 'service'] },
+      { url: 'web-service.html', label: 'Quản lý Dịch Vụ', keys: ['dịch vụ', 'service'] },
       { url: 'web-statics.html', label: 'Quản lý Bài viết', keys: ['bài viết', 'tin tức', 'statics', 'news'] },
       { url: '#', label: 'Giới thiệu chung', keys: ['giới thiệu', 'about'] },
 

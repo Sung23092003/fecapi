@@ -177,6 +177,17 @@
       border-radius: 4px;
     }
 
+    .service-bulk-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .service-select-cell {
+      width: 54px;
+      text-align: center !important;
+    }
+
     @media (max-width: 576px) {
       .body-action-grid {
         grid-template-columns: 1fr;
@@ -685,12 +696,20 @@
               <h5 class="card-title mb-0 py-0">Danh sách dịch vụ</h5>
               <div class="text-muted small mt-1">Tổng số: <strong id="serviceTotal">1</strong></div>
             </div>
+            <div class="service-bulk-actions">
+              <button type="button" class="btn btn-outline-danger btn-sm d-none" id="btnDeleteSelectedServices" disabled>
+                <i class="bi bi-trash"></i> Xóa
+              </button>
+            </div>
           </div>
 
           <div class="service-table-wrap">
             <table class="table service-table mb-0">
               <thead>
                 <tr>
+                  <th class="service-select-cell">
+                    <input type="checkbox" class="form-check-input" id="selectAllServices" aria-label="Chá»n táº¥t cáº£ dá»‹ch vá»¥">
+                  </th>
                   <th style="width:80px;">STT</th>
                   <th>Ảnh</th>
                   <th>Tên thư mục</th>
@@ -703,6 +722,9 @@
               </thead>
               <tbody id="serviceTableBody">
                 <tr>
+                  <td class="service-select-cell">
+                    <input type="checkbox" class="form-check-input service-row-check" aria-label="Chá»n dá»‹ch vá»¥">
+                  </td>
                   <td>1</td>
                   <td>
                     <label class="service-row-image">
@@ -746,6 +768,26 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
+  <div class="modal fade" id="deleteSelectedServicesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">X&aacute;c nh&#7853;n x&oacute;a</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Dong"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0" id="deleteSelectedServicesMessage">B&#7841;n c&oacute; ch&#7855;c mu&#7889;n x&oacute;a c&aacute;c d&#7883;ch v&#7909; &#273;&atilde; ch&#7885;n?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">H&#7911;y</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmDeleteSelectedServices">
+            <i class="bi bi-trash"></i> X&oacute;a
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/js/main.js"></script>
@@ -765,6 +807,15 @@
       const breadcrumbAction = document.getElementById('breadcrumb-action');
       const tableBody = document.getElementById('serviceTableBody');
       const serviceTotal = document.getElementById('serviceTotal');
+      const selectAllServices = document.getElementById('selectAllServices');
+      const selectedServiceCount = document.getElementById('selectedServiceCount');
+      const btnDeleteSelectedServices = document.getElementById('btnDeleteSelectedServices');
+      const deleteSelectedServicesModalEl = document.getElementById('deleteSelectedServicesModal');
+      const deleteSelectedServicesMessage = document.getElementById('deleteSelectedServicesMessage');
+      const btnConfirmDeleteSelectedServices = document.getElementById('btnConfirmDeleteSelectedServices');
+      const btnAddRow = document.getElementById('btnAddRow');
+      let selectedRowsPendingDelete = [];
+      let deleteSelectedServicesModal = null;
 
       const params = new URLSearchParams(window.location.search);
       const serviceId = params.get('id') || '0';
@@ -772,6 +823,10 @@
 
       if (idHidden) idHidden.value = serviceId;
       if (breadcrumbAction) breadcrumbAction.textContent = isEditMode ? 'Sửa' : 'Thêm';
+
+      if (deleteSelectedServicesModalEl && window.bootstrap) {
+        deleteSelectedServicesModal = new bootstrap.Modal(deleteSelectedServicesModalEl);
+      }
 
       function readImage(file, callback) {
         if (!file) return;
@@ -821,19 +876,103 @@
         }
       }
 
+      function refreshRowNumbers() {
+        if (!tableBody) return;
+        tableBody.querySelectorAll('tr').forEach(function (row, index) {
+          const numberCell = row.querySelector('td:nth-child(2)');
+          if (numberCell) numberCell.textContent = index + 1;
+        });
+      }
+
+      function updateSelectionState() {
+        if (!tableBody) return;
+        const checks = Array.from(tableBody.querySelectorAll('.service-row-check'));
+        const checked = checks.filter(function (input) {
+          return input.checked;
+        });
+
+        if (selectedServiceCount) {
+          selectedServiceCount.textContent = 'ÄÃ£ chá»n: ' + checked.length;
+        }
+
+        if (btnDeleteSelectedServices) {
+          const hasSelection = checked.length > 0;
+          btnDeleteSelectedServices.disabled = !hasSelection;
+          btnDeleteSelectedServices.classList.toggle('d-none', !hasSelection);
+        }
+
+        if (selectAllServices) {
+          selectAllServices.checked = checks.length > 0 && checked.length === checks.length;
+          selectAllServices.indeterminate = checked.length > 0 && checked.length < checks.length;
+        }
+      }
+
+      function refreshTableState() {
+        refreshRowNumbers();
+        updateTotal();
+        updateSelectionState();
+      }
+
       bindRowImages(document);
 
       tableBody.addEventListener('click', function (event) {
         const deleteBtn = event.target.closest('.btn-delete-row');
         if (!deleteBtn) return;
         deleteBtn.closest('tr').remove();
-        updateTotal();
+        refreshTableState();
       });
 
-      document.getElementById('btnAddRow').addEventListener('click', function () {
+      tableBody.addEventListener('change', function (event) {
+        if (!event.target.matches('.service-row-check')) return;
+        updateSelectionState();
+      });
+
+      if (selectAllServices) {
+        selectAllServices.addEventListener('change', function () {
+          tableBody.querySelectorAll('.service-row-check').forEach(function (input) {
+            input.checked = selectAllServices.checked;
+          });
+          updateSelectionState();
+        });
+      }
+
+      if (btnDeleteSelectedServices) {
+        btnDeleteSelectedServices.addEventListener('click', function () {
+          const checkedRows = Array.from(tableBody.querySelectorAll('.service-row-check:checked'));
+          if (!checkedRows.length) return;
+
+          selectedRowsPendingDelete = checkedRows;
+
+          if (deleteSelectedServicesMessage) {
+            deleteSelectedServicesMessage.textContent = 'B\u1ea1n c\u00f3 ch\u1eafc mu\u1ed1n x\u00f3a ' + checkedRows.length + ' d\u1ecbch v\u1ee5 \u0111\u00e3 ch\u1ecdn?';
+          }
+
+          if (deleteSelectedServicesModal) {
+            deleteSelectedServicesModal.show();
+          }
+        });
+      }
+
+      if (btnConfirmDeleteSelectedServices) {
+        btnConfirmDeleteSelectedServices.addEventListener('click', function () {
+          selectedRowsPendingDelete.forEach(function (input) {
+            input.closest('tr').remove();
+          });
+          selectedRowsPendingDelete = [];
+          refreshTableState();
+          if (deleteSelectedServicesModal) {
+            deleteSelectedServicesModal.hide();
+          }
+        });
+      }
+
+      if (btnAddRow) btnAddRow.addEventListener('click', function () {
         const rowCount = tableBody.querySelectorAll('tr').length + 1;
         const row = document.createElement('tr');
         row.innerHTML = `
+          <td class="service-select-cell">
+            <input type="checkbox" class="form-check-input service-row-check" aria-label="Chá»n dá»‹ch vá»¥">
+          </td>
           <td>${rowCount}</td>
           <td>
             <label class="service-row-image">
@@ -857,8 +996,10 @@
         `;
         tableBody.appendChild(row);
         bindRowImages(row);
-        updateTotal();
+        refreshTableState();
       });
+
+      refreshTableState();
 
       if (window.tinymce) {
         tinymce.init({

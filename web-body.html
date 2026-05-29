@@ -601,72 +601,71 @@
           </div>
         </div>
         <div class="col-12">
-      <div class="card card-box mb-0">
-        <div class="card-inner">
-          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-            <div>
-              <h5 class="card-title mb-0 py-0">Danh sách dịch vụ</h5>
-              <div class="text-muted small mt-1">Tổng số: <strong id="serviceTotal">1</strong></div>
-            </div>
-            <div class="service-bulk-actions">
-              <button type="button" class="btn btn-outline-danger btn-sm d-none" id="btnDeleteSelectedServices" disabled>
-                <i class="bi bi-trash"></i> Xóa
-              </button>
-            </div>
-          </div>
+          <div class="card card-box mb-0">
+            <div class="card-inner">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div>
+                  <h5 class="card-title mb-0 py-0">Danh sách khối thân trang</h5>
+                  <div class="text-muted small mt-1" id="sectionTotal">Tổng số: <strong>0</strong></div>
+                </div>
+                <div class="d-flex flex-wrap gap-2 align-items-center flex-md-nowrap">
+                  <div class="input-group" style="max-width:200px;">
+                    <input id="searchName" type="text" class="form-control form-control-sm" placeholder="Tìm kiếm...">
+                  </div>
+                  <select id="filterType" class="form-select form-select-sm" style="max-width:150px;">
+                    <option value="">Tất cả loại</option>
+                    <option value="article">Bài Viết</option>
+                    <option value="image_news">Tin Ảnh/Video</option>
+                    <option value="consultation">Đặt Lịch Tư Vấn</option>
+                    <option value="menu_category">Menu - Danh Mục</option>
+                    <option value="running_news">Tin Chạy</option>
+                    <option value="service">Dịch Vụ</option>
+                    <option value="faq">FAQ</option>
+                    <option value="gallery">Thư Viện Ảnh</option>
+                    <option value="real_image">Hình Ảnh Thực Tế</option>
+                    <option value="banner">Banner</option>
+                    <option value="video_news">Tin Video</option>
+                  </select>
+                  <select id="filterStatus" class="form-select form-select-sm" style="max-width:130px;">
+                    <option value="-1">Tất cả trạng thái</option>
+                    <option value="1">Hiển thị</option>
+                    <option value="0">Ẩn</option>
+                  </select>
+                </div>
+              </div>
 
-          <div class="service-table-wrap">
-            <table class="table service-table mb-0">
-              <thead>
-                <tr>
-                  <th class="service-select-cell">
-                    <input type="checkbox" class="form-check-input" id="selectAllServices" aria-label="Chọn tất cả dịch vụ">
-                  </th>
-                  <th style="width:80px;">STT</th>
-                  <th>Ảnh</th>
-                  <th>Tên thư mục</th>
-                  <th style="width:130px;">Màu chữ</th>
-                  <th style="width:130px;">Màu nền</th>
-                  <th style="width:130px;">Trạng thái</th>
-                  <th style="width:170px;">Kiểu chức năng</th>
-                  <th style="width:150px;">Tùy chọn</th>
-                </tr>
-              </thead>
-              <tbody id="serviceTableBody">
-                <tr>
-                  <td class="service-select-cell">
-                    <input type="checkbox" class="form-check-input service-row-check" aria-label="Chọn dịch vụ">
-                  </td>
-                  <td>1</td>
-                  <td>
-                    <label class="service-row-image">
-                      <input type="file" class="d-none row-image-input" accept="image/*">
-                      <span>ảnh</span>
-                    </label>
-                  </td>
-                  <td class="service-name-cell">
-                    <div class="service-name-content">
-                      <div class="service-row-title">Sản phẩm của chúng tôi</div>
-                    </div>
-                  </td>
-                  <td><span class="color-swatch" style="background:#212529;"></span></td>
-                  <td><span class="color-swatch" style="background:#effa6b;"></span></td>
-                  <td><i class="bi bi-check-lg status-check"></i></td>
-                  <td>Dịch vụ</td>
-                  <td>
-                    <a href="web-body-service-edit.html" class="btn btn-outline-secondary table-action" title="Sửa"><i
-                        class="bi bi-pencil-square"></i></a>
-                    <button type="button" class="btn btn-outline-danger table-action btn-delete-row" title="Xóa"><i
-                        class="bi bi-x-lg"></i></button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <div id="sectionAlert" class="alert alert-danger d-none" role="alert"></div>
+
+              <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="sectionTable">
+                  <thead>
+                    <tr>
+                      <th style="width:60px;">#</th>
+                      <th>Tên khối</th>
+                      <th style="width:140px;">Loại khối</th>
+                      <th style="width:80px;">Thứ tự</th>
+                      <th style="width:110px;">Trạng thái</th>
+                      <th style="width:160px;">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sectionTbody"></tbody>
+                </table>
+              </div>
+
+              <div class="d-none text-center py-4" id="sectionEmpty">
+                <i class="bi bi-inbox" style="font-size:32px;color:#adb5bd;"></i>
+                <p class="text-muted mt-2 mb-0">Chưa có khối thân trang nào.</p>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="text-muted small" id="sectionSummary"></div>
+                <nav>
+                  <ul id="sectionPagination" class="pagination pagination-sm mb-0"></ul>
+                </nav>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  
       </div>
     </section>
 
@@ -675,21 +674,21 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
-  <div class="modal fade" id="deleteSelectedServicesModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">X&aacute;c nh&#7853;n x&oacute;a</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Dong"></button>
+          <h6 class="modal-title">Xác nhận xóa</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body">
-          <p class="mb-0" id="deleteSelectedServicesMessage">B&#7841;n c&oacute; ch&#7855;c mu&#7889;n x&oacute;a c&aacute;c d&#7883;ch v&#7909; &#273;&atilde; ch&#7885;n?</p>
+        <div class="modal-body text-center py-3">
+          <i class="bi bi-exclamation-triangle text-danger" style="font-size:28px;"></i>
+          <p class="mb-0 mt-2" id="deleteModalMessage">Bạn có chắc muốn xóa khối này?</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">H&#7911;y</button>
-          <button type="button" class="btn btn-danger" id="btnConfirmDeleteSelectedServices">
-            <i class="bi bi-trash"></i> X&oacute;a
-          </button>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger btn-sm" id="btnConfirmDelete">Xóa</button>
         </div>
       </div>
     </div>
@@ -711,284 +710,275 @@
     (function () {
       "use strict";
 
-      const form = document.getElementById('formBodyArticle');
-      const articleWrap = document.getElementById('articleFormWrap');
-      const preview = document.getElementById('articlePreview');
-      const previewButton = document.getElementById('previewButton');
-      const actionButtons = document.querySelectorAll('.body-action');
-      const serviceTableBody = document.getElementById('serviceTableBody');
-      const serviceTotal = document.getElementById('serviceTotal');
-      const selectAllServices = document.getElementById('selectAllServices');
-      const btnDeleteSelectedServices = document.getElementById('btnDeleteSelectedServices');
-      const deleteSelectedServicesModalEl = document.getElementById('deleteSelectedServicesModal');
-      const deleteSelectedServicesMessage = document.getElementById('deleteSelectedServicesMessage');
-      const btnConfirmDeleteSelectedServices = document.getElementById('btnConfirmDeleteSelectedServices');
-      let selectedRowsPendingDelete = [];
-      let deleteSelectedServicesModal = null;
+      /* ===== Mapping ===== */
+      var typeLabels = {
+        article: 'Bài Viết', image_news: 'Tin Ảnh/Video', consultation: 'Đặt Lịch Tư Vấn',
+        menu_category: 'Menu - Danh Mục', running_news: 'Tin Chạy', service: 'Dịch Vụ',
+        faq: 'FAQ', gallery: 'Thư Viện Ảnh', real_image: 'Hình Ảnh Thực Tế',
+        banner: 'Banner', video_news: 'Tin Video'
+      };
+      var typeEditMap = {
+        article: 'web-body-article-edit.html', image_news: 'web-body-image-news-edit.html',
+        consultation: 'web-body-consultation-edit.html', menu_category: 'web-body-menu-category-edit.html',
+        running_news: 'web-body-running-news-edit.html', service: 'web-body-service-edit.html',
+        faq: 'web-body-faq-edit.html', gallery: 'web-body-gallery-edit.html',
+        real_image: 'web-body-real-images-edit.html', banner: 'web-body-banner-edit.html',
+        video_news: 'web-body-video-news-edit.html'
+      };
+      var defaultEditPage = 'web-body-article-edit.html';
 
-      if (deleteSelectedServicesModalEl && window.bootstrap) {
-        deleteSelectedServicesModal = new bootstrap.Modal(deleteSelectedServicesModalEl);
+      /* ===== DOM refs ===== */
+      var tbody = document.getElementById('sectionTbody');
+      var empty = document.getElementById('sectionEmpty');
+      var totalEl = document.querySelector('#sectionTotal strong');
+      var summaryEl = document.getElementById('sectionSummary');
+      var paginationEl = document.getElementById('sectionPagination');
+      var alertEl = document.getElementById('sectionAlert');
+      var searchInput = document.getElementById('searchName');
+      var filterType = document.getElementById('filterType');
+      var filterStatus = document.getElementById('filterStatus');
+
+      /* ===== State ===== */
+      var items = [];
+      var currentPage = 1;
+      var pageSize = 20;
+      var totalPages = 1;
+
+      var deleteModal = null;
+      var deleteTargetId = null;
+      var deleteModalEl = document.getElementById('deleteModal');
+      if (deleteModalEl && window.bootstrap) {
+        deleteModal = new bootstrap.Modal(deleteModalEl);
       }
-
-      function setupColorPicker(inputId, textId) {
-        const input = document.getElementById(inputId);
-        const text = document.getElementById(textId);
-        if (!input || !text) return;
-        const sync = function () { text.textContent = input.value; updatePreview(); };
-        input.addEventListener('input', sync);
-        sync();
-      }
-
-      function plainTextFromHtml(html) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html || '';
-        return (tmp.textContent || tmp.innerText || '').trim();
-      }
-
-      function readImage(file, callback) {
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (event) {
-          callback(event.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-
-      function bindRowImages(context) {
-        context.querySelectorAll('.row-image-input').forEach(function (input) {
-          input.addEventListener('change', function () {
-            const file = input.files && input.files[0];
-            const holder = input.closest('.service-row-image');
-            readImage(file, function (src) {
-              holder.innerHTML = '<input type="file" class="d-none row-image-input" accept="image/*"><img src="' + src + '" alt="service">';
-              bindRowImages(holder);
-            });
-          });
-        });
-      }
-
-      function updateServiceTotal() {
-        if (serviceTotal && serviceTableBody) {
-          serviceTotal.textContent = serviceTableBody.querySelectorAll('tr').length;
+      document.getElementById('btnConfirmDelete').addEventListener('click', function () {
+        if (deleteTargetId !== null) {
+          apiDelete(deleteTargetId);
+          deleteTargetId = null;
+          if (deleteModal) deleteModal.hide();
         }
+      });
+
+      /* ===== Helpers ===== */
+      function escapeHtml(str) {
+        return String(str ?? '')
+          .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
       }
 
-      function refreshServiceRowNumbers() {
-        if (!serviceTableBody) return;
-        serviceTableBody.querySelectorAll('tr').forEach(function (row, index) {
-          const numberCell = row.querySelector('td:nth-child(2)');
-          if (numberCell) numberCell.textContent = index + 1;
-        });
+      function getTypeLabel(type) { return typeLabels[type] || type; }
+
+      function getEditPage(type) { return typeEditMap[type] || defaultEditPage; }
+
+      function formatStatus(st) {
+        if (st == 1) return { text: 'Hiển thị', cls: 'bg-success' };
+        return { text: 'Ẩn', cls: 'bg-secondary' };
       }
 
-      function updateServiceSelectionState() {
-        if (!serviceTableBody) return;
-        const checks = Array.from(serviceTableBody.querySelectorAll('.service-row-check'));
-        const checked = checks.filter(function (input) {
-          return input.checked;
-        });
+      function setError(msg) {
+        if (!msg) { alertEl.classList.add('d-none'); return; }
+        alertEl.textContent = msg;
+        alertEl.classList.remove('d-none');
+      }
 
-        if (btnDeleteSelectedServices) {
-          const hasSelection = checked.length > 0;
-          btnDeleteSelectedServices.disabled = !hasSelection;
-          btnDeleteSelectedServices.classList.toggle('d-none', !hasSelection);
+      function showToast(msg, type) {
+        type = type || 'success';
+        var div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:350px;';
+          div.className = 'd-none';
+          document.body.appendChild(div);
         }
-
-        if (selectAllServices) {
-          selectAllServices.checked = checks.length > 0 && checked.length === checks.length;
-          selectAllServices.indeterminate = checked.length > 0 && checked.length < checks.length;
-        }
+        div.innerHTML = msg;
+        div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.classList.remove('d-none');
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
       }
 
-      function refreshServiceTableState() {
-        refreshServiceRowNumbers();
-        updateServiceTotal();
-        updateServiceSelectionState();
+      /* ===== API ===== */
+      function apiUrl(path) {
+        return ENV.BASE_URL + '/admin/page-section' + path;
       }
 
-      function getEditorContent(id) {
+      function apiHeaders() {
+        return Auth.getAuthHeader();
+      }
+
+      async function loadData() {
+        setError(null);
+        var name = searchInput.value.trim();
+        var type = filterType.value;
+        var st = parseInt(filterStatus.value, 10);
+
+        var params = new URLSearchParams();
+        params.set('page', currentPage);
+        params.set('limit', pageSize);
+        if (name) params.set('section_name', name);
+        if (type) params.set('section_type', type);
+        if (!isNaN(st) && st !== -1) params.set('section_status', st);
+
         try {
-          if (window.tinymce) {
-            const editor = tinymce.get(id);
-            if (editor) return editor.getContent();
+          var res = await fetch(apiUrl('?' + params.toString()), { headers: apiHeaders() });
+          var json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            setError(json?.message || 'Lỗi tải dữ liệu');
+            return;
           }
-        } catch (e) { }
-        const textarea = document.getElementById(id);
-        return textarea ? textarea.value : '';
-      }
-
-      function setupEditorPreview(id) {
-        const textarea = document.getElementById(id);
-        if (textarea) textarea.addEventListener('input', updatePreview);
-
-        function bind(editor) {
-          if (!editor) return;
-          editor.on('keyup change input undo redo setcontent', updatePreview);
-        }
-
-        if (window.tinymce) {
-          const editor = tinymce.get(id);
-          if (editor) {
-            bind(editor);
-          } else {
-            tinymce.on('AddEditor', function (event) {
-              if (event.editor && event.editor.id === id) bind(event.editor);
-            });
-          }
+          var raw = json.data;
+          items = (raw && (raw.data || raw)) || [];
+          var total = (raw && raw.total) || items.length;
+          totalPages = Math.max(1, Math.ceil(total / pageSize));
+          if (currentPage > totalPages) { currentPage = totalPages; loadData(); return; }
+          render();
+        } catch (e) {
+          setError('Không thể kết nối đến máy chủ.');
         }
       }
 
-      function initTinyEditor(id, height) {
-        if (!window.tinymce || !document.getElementById(id)) return;
-        tinymce.init({
-          selector: '#' + id,
-          height: height,
-          menubar: 'edit insert format table tools',
-          plugins: 'link lists table image media code fullscreen preview wordcount',
-          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
-          toolbar_mode: 'sliding',
-          branding: true,
-          setup: function (editor) {
-            editor.on('keyup change input undo redo setcontent', updatePreview);
-          },
-          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
-        });
-      }
-
-      function updatePreview() {
-        if (!preview) return;
-        const titleText = plainTextFromHtml(getEditorContent('display_name')) || 'Tên hiển thị bài viết';
-        const descText = plainTextFromHtml(getEditorContent('description')) || 'Mô tả ngắn của bài viết sẽ hiển thị tại đây.';
-        const sectionColor = document.getElementById('section_bg_color')?.value || '#ffffff';
-        const buttonText = document.getElementById('button_text')?.value || 'Xem chi tiết';
-        const buttonUrl = document.getElementById('button_url')?.value || '#';
-        const buttonBg = document.getElementById('button_bg_color')?.value || '#4154f1';
-        const buttonColor = document.getElementById('button_text_color')?.value || '#ffffff';
-
-        preview.style.backgroundColor = sectionColor;
-        preview.querySelector('.preview-title').textContent = titleText;
-        preview.querySelector('.preview-desc').textContent = descText;
-        previewButton.textContent = buttonText;
-        previewButton.href = buttonUrl;
-        previewButton.style.backgroundColor = buttonBg;
-        previewButton.style.color = buttonColor;
-      }
-
-      actionButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-          actionButtons.forEach(function (item) { item.classList.remove('active'); });
-          button.classList.add('active');
-          if (button.dataset.target === 'articleFormWrap' && articleWrap) {
-            articleWrap.classList.remove('d-none');
-            articleWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      async function apiToggleStatus(id, newStatus) {
+        try {
+          var res = await fetch(apiUrl('/change-status'), {
+            method: 'POST',
+            headers: apiHeaders(),
+            body: JSON.stringify({ id: id, status: newStatus })
+          });
+          var json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            showToast(json?.message || 'Lỗi cập nhật trạng thái!', 'danger');
+            return;
           }
+          showToast('Cập nhật trạng thái thành công.');
+          loadData();
+        } catch (e) {
+          showToast('Lỗi kết nối!', 'danger');
+        }
+      }
+
+      async function apiDelete(id) {
+        try {
+          var res = await fetch(apiUrl('/delete/' + id), {
+            method: 'POST',
+            headers: apiHeaders()
+          });
+          var json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            showToast(json?.message || 'Lỗi xóa!', 'danger');
+            return;
+          }
+          showToast('Xóa khối thành công.');
+          loadData();
+        } catch (e) {
+          showToast('Lỗi kết nối!', 'danger');
+        }
+      }
+
+      /* ===== Render ===== */
+      function render() {
+        tbody.innerHTML = '';
+        empty.classList.add('d-none');
+        totalEl.textContent = items.length;
+
+        if (!items.length) {
+          empty.classList.remove('d-none');
+          summaryEl.textContent = '';
+          paginationEl.innerHTML = '';
+          return;
+        }
+
+        var frag = document.createDocumentFragment();
+        items.forEach(function (it, idx) {
+          var tr = document.createElement('tr');
+          var st = formatStatus(it.section_status);
+          var typeLabel = getTypeLabel(it.section_type);
+          var editPage = getEditPage(it.section_type);
+
+          tr.innerHTML =
+            '<td>' + ((currentPage - 1) * pageSize + idx + 1) + '</td>' +
+            '<td><div class="fw-semibold">' + escapeHtml(it.section_name) + '</div></td>' +
+            '<td><span class="badge bg-info text-dark">' + escapeHtml(typeLabel) + '</span></td>' +
+            '<td>' + (it.section_order_no || 0) + '</td>' +
+            '<td><span class="badge ' + st.cls + '">' + st.text + '</span></td>' +
+            '<td>' +
+              '<div class="d-flex gap-1">' +
+                '<a href="' + editPage + '?id=' + it.id + '" class="btn btn-sm btn-outline-primary" title="Sửa"><i class="bi bi-pencil"></i></a>' +
+                '<button type="button" class="btn btn-sm btn-outline-' + (it.section_status == 1 ? 'warning' : 'success') + ' btn-toggle-status" data-id="' + it.id + '" data-status="' + (it.section_status == 1 ? 0 : 1) + '" title="' + (it.section_status == 1 ? 'Ẩn' : 'Hiện') + '"><i class="bi bi-eye' + (it.section_status == 1 ? '-slash' : '') + '"></i></button>' +
+                '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-section" data-id="' + it.id + '" title="Xóa"><i class="bi bi-trash"></i></button>' +
+              '</div>' +
+            '</td>';
+          frag.appendChild(tr);
         });
+        tbody.appendChild(frag);
+
+        summaryEl.textContent = 'Trang ' + currentPage + '/' + totalPages;
+        renderPagination();
+      }
+
+      function renderPagination() {
+        paginationEl.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        function addItem(label, p, disabled, active) {
+          var li = document.createElement('li');
+          li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+          var a = document.createElement('a');
+          a.className = 'page-link';
+          a.href = '#';
+          a.textContent = label;
+          a.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (disabled) return;
+            currentPage = p;
+            loadData();
+          });
+          li.appendChild(a);
+          paginationEl.appendChild(li);
+        }
+
+        addItem('«', Math.max(1, currentPage - 1), currentPage === 1, false);
+        var start = Math.max(1, currentPage - 2);
+        var end = Math.min(totalPages, currentPage + 2);
+        for (var p = start; p <= end; p++) {
+          addItem(String(p), p, false, p === currentPage);
+        }
+        addItem('»', Math.min(totalPages, currentPage + 1), currentPage === totalPages, false);
+      }
+
+      /* ===== Event delegation ===== */
+      tbody.addEventListener('click', function (e) {
+        var btn = e.target.closest('button');
+        if (!btn) return;
+
+        if (btn.classList.contains('btn-toggle-status')) {
+          var id = parseInt(btn.dataset.id, 10);
+          var status = parseInt(btn.dataset.status, 10);
+          if (id) apiToggleStatus(id, status);
+        } else if (btn.classList.contains('btn-delete-section')) {
+          var id2 = parseInt(btn.dataset.id, 10);
+          if (id2) {
+            deleteTargetId = id2;
+            if (deleteModal) deleteModal.show();
+          }
+        }
       });
 
-      if (serviceTableBody) {
-        bindRowImages(serviceTableBody);
-
-        serviceTableBody.addEventListener('click', function (event) {
-          const deleteBtn = event.target.closest('.btn-delete-row');
-          if (!deleteBtn) return;
-          deleteBtn.closest('tr').remove();
-          refreshServiceTableState();
-        });
-
-        serviceTableBody.addEventListener('change', function (event) {
-          if (!event.target.matches('.service-row-check')) return;
-          updateServiceSelectionState();
-        });
+      /* ===== Search / Filter ===== */
+      function debounce(fn, ms) {
+        var timer;
+        return function () {
+          clearTimeout(timer);
+          timer = setTimeout(fn, ms);
+        };
       }
+      searchInput.addEventListener('input', debounce(function () {
+        currentPage = 1;
+        loadData();
+      }, 400));
+      filterType.addEventListener('change', function () { currentPage = 1; loadData(); });
+      filterStatus.addEventListener('change', function () { currentPage = 1; loadData(); });
 
-      if (selectAllServices && serviceTableBody) {
-        selectAllServices.addEventListener('change', function () {
-          serviceTableBody.querySelectorAll('.service-row-check').forEach(function (input) {
-            input.checked = selectAllServices.checked;
-          });
-          updateServiceSelectionState();
-        });
-      }
-
-      if (btnDeleteSelectedServices && serviceTableBody) {
-        btnDeleteSelectedServices.addEventListener('click', function () {
-          const checkedRows = Array.from(serviceTableBody.querySelectorAll('.service-row-check:checked'));
-          if (!checkedRows.length) return;
-
-          selectedRowsPendingDelete = checkedRows;
-
-          if (deleteSelectedServicesMessage) {
-            deleteSelectedServicesMessage.textContent = 'B\u1ea1n c\u00f3 ch\u1eafc mu\u1ed1n x\u00f3a ' + checkedRows.length + ' d\u1ecbch v\u1ee5 \u0111\u00e3 ch\u1ecdn?';
-          }
-
-          if (deleteSelectedServicesModal) {
-            deleteSelectedServicesModal.show();
-          }
-        });
-      }
-
-      if (btnConfirmDeleteSelectedServices) {
-        btnConfirmDeleteSelectedServices.addEventListener('click', function () {
-          selectedRowsPendingDelete.forEach(function (input) {
-            input.closest('tr').remove();
-          });
-          selectedRowsPendingDelete = [];
-          refreshServiceTableState();
-          if (deleteSelectedServicesModal) {
-            deleteSelectedServicesModal.hide();
-          }
-        });
-      }
-
-      initTinyEditor('display_name', 240);
-      initTinyEditor('description', 260);
-      initTinyEditor('content', 420);
-      setupEditorPreview('display_name');
-      setupEditorPreview('description');
-      setupEditorPreview('content');
-
-      ['manager_name', 'display_columns', 'button_text', 'button_url', 'article_order', 'article_status'].forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', updatePreview);
-        if (el) el.addEventListener('change', updatePreview);
-      });
-
-      setupColorPicker('button_bg_color', 'button_bg_color_hex');
-      setupColorPicker('button_text_color', 'button_text_color_hex');
-      setupColorPicker('section_bg_color', 'section_bg_color_hex');
-
-      if (form) {
-        form.addEventListener('submit', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-          form.classList.add('was-validated');
-          if (!form.checkValidity()) return;
-
-          const payload = {
-            type: 'article',
-            manager_name: document.getElementById('manager_name').value,
-            display_name: getEditorContent('display_name'),
-            description: getEditorContent('description'),
-            content: getEditorContent('content'),
-            bootstrap_class: document.getElementById('display_columns').value,
-            button: {
-              text: document.getElementById('button_text').value,
-              bg_color: document.getElementById('button_bg_color').value,
-              text_color: document.getElementById('button_text_color').value,
-              url: document.getElementById('button_url').value
-            },
-            bg_color: document.getElementById('section_bg_color').value,
-            sort_order: Number(document.getElementById('article_order').value),
-            status: document.getElementById('article_status').value
-          };
-
-          console.log('Body article payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
-        });
-      }
-
-      updatePreview();
-      refreshServiceTableState();
+      /* ===== Init ===== */
+      loadData();
     })();
   </script>
 </body>

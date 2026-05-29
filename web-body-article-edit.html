@@ -543,58 +543,37 @@
     (function () {
       "use strict";
 
-      const form = document.getElementById('formBodyArticle');
-      const preview = document.getElementById('articlePreview');
-      const previewButton = document.getElementById('previewButton');
+      var form = document.getElementById('formBodyArticle');
+      var breadcrumbAction = document.getElementById('breadcrumb-action') || document.querySelector('.breadcrumb-item.active');
+      var params = new URLSearchParams(window.location.search);
+      var editId = parseInt(params.get('id'), 10) || 0;
+      var isEdit = editId > 0;
 
-      function setupColorPicker(inputId, textId) {
-        const input = document.getElementById(inputId);
-        const text = document.getElementById(textId);
-        if (!input || !text) return;
-        const sync = function () { text.textContent = input.value; updatePreview(); };
-        input.addEventListener('input', sync);
-        sync();
-      }
-
-      function plainTextFromHtml(html) {
-        const tmp = document.createElement('div');
-        tmp.innerHTML = html || '';
-        return (tmp.textContent || tmp.innerText || '').trim();
-      }
+      if (breadcrumbAction) breadcrumbAction.textContent = isEdit ? 'Sửa Bài Viết' : 'Thêm Bài Viết';
 
       function getEditorContent(id) {
         try {
           if (window.tinymce) {
-            const editor = tinymce.get(id);
+            var editor = tinymce.get(id);
             if (editor) return editor.getContent();
           }
         } catch (e) { }
-        const textarea = document.getElementById(id);
+        var textarea = document.getElementById(id);
         return textarea ? textarea.value : '';
       }
 
-      function setupEditorPreview(id) {
-        const textarea = document.getElementById(id);
-        if (textarea) textarea.addEventListener('input', updatePreview);
-
-        function bind(editor) {
-          if (!editor) return;
-          editor.on('keyup change input undo redo setcontent', updatePreview);
-        }
-
-        if (window.tinymce) {
-          const editor = tinymce.get(id);
-          if (editor) {
-            bind(editor);
-          } else {
-            tinymce.on('AddEditor', function (event) {
-              if (event.editor && event.editor.id === id) bind(event.editor);
-            });
+      function setEditorContent(id, content) {
+        try {
+          if (window.tinymce) {
+            var editor = tinymce.get(id);
+            if (editor) { editor.setContent(content || ''); return; }
           }
-        }
+        } catch (e) { }
+        var textarea = document.getElementById(id);
+        if (textarea) textarea.value = content || '';
       }
 
-      function initTinyEditor(id, height) {
+      function initTinyEditor(id, height, callback) {
         if (!window.tinymce || !document.getElementById(id)) return;
         tinymce.init({
           selector: '#' + id,
@@ -605,48 +584,101 @@
           toolbar_mode: 'sliding',
           branding: true,
           setup: function (editor) {
-            editor.on('keyup change input undo redo setcontent', updatePreview);
+            editor.on('init', function () { if (callback) callback(editor); });
           },
           content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
         });
       }
 
-      function updatePreview() {
-        if (!preview) return;
-        const titleText = plainTextFromHtml(getEditorContent('display_name')) || 'Tên hiển thị bài viết';
-        const descText = plainTextFromHtml(getEditorContent('description')) || 'Mô tả ngắn của bài viết sẽ hiển thị tại đây.';
-        const sectionColor = document.getElementById('section_bg_color')?.value || '#ffffff';
-        const buttonText = document.getElementById('button_text')?.value || 'Xem chi tiết';
-        const buttonUrl = document.getElementById('button_url')?.value || '#';
-        const buttonBg = document.getElementById('button_bg_color')?.value || '#4154f1';
-        const buttonColor = document.getElementById('button_text_color')?.value || '#ffffff';
-
-        preview.style.backgroundColor = sectionColor;
-        preview.querySelector('.preview-title').textContent = titleText;
-        preview.querySelector('.preview-desc').textContent = descText;
-        previewButton.textContent = buttonText;
-        previewButton.href = buttonUrl;
-        previewButton.style.backgroundColor = buttonBg;
-        previewButton.style.color = buttonColor;
+      function setupColorPicker(inputId, textId) {
+        var input = document.getElementById(inputId);
+        var text = document.getElementById(textId);
+        if (!input || !text) return;
+        input.addEventListener('input', function () { text.textContent = input.value; });
+        text.textContent = input.value;
       }
 
-      initTinyEditor('display_name', 240);
-      initTinyEditor('description', 260);
-      initTinyEditor('content', 420);
-      setupEditorPreview('display_name');
-      setupEditorPreview('description');
-      setupEditorPreview('content');
+      function apiUrl(path) {
+        return ENV.BASE_URL + '/admin/page-section' + path;
+      }
 
-      ['manager_name', 'display_columns', 'button_text', 'button_url', 'article_order', 'article_status'].forEach(function (id) {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', updatePreview);
-        if (el) el.addEventListener('change', updatePreview);
-      });
+      function apiHeaders() {
+        return Auth.getAuthHeader();
+      }
 
-      setupColorPicker('button_bg_color', 'button_bg_color_hex');
-      setupColorPicker('button_text_color', 'button_text_color_hex');
-      setupColorPicker('section_bg_color', 'section_bg_color_hex');
+      function showToast(msg, type) {
+        type = type || 'success';
+        var div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:350px;';
+          div.className = 'd-none';
+          document.body.appendChild(div);
+        }
+        div.innerHTML = msg;
+        div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.classList.remove('d-none');
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
 
+      /* ===== Load existing data ===== */
+      function loadSection() {
+        if (!isEdit) return;
+        fetch(apiUrl('/' + editId), { headers: apiHeaders() })
+          .then(function (res) { return res.json().catch(function () { return null; }); })
+          .then(function (json) {
+            if (!json || !json.success || !json.data) {
+              showToast('Không tìm thấy khối bài viết!', 'danger');
+              return;
+            }
+            var item = json.data;
+            if (item.section_type !== 'article') {
+              showToast('Khối này không phải loại Bài Viết!', 'warning');
+            }
+            // Populate top-level fields
+            var mn = document.getElementById('manager_name');
+            if (mn) mn.value = item.section_name || '';
+            var ord = document.getElementById('article_order');
+            if (ord) ord.value = item.section_order_no || 1;
+            var st = document.getElementById('article_status');
+            if (st) st.value = item.section_status == 1 ? 'show' : 'hide';
+
+            // Parse section_data
+            var data = item.section_data;
+            if (typeof data === 'string') { try { data = JSON.parse(data); } catch (e) { data = {}; } }
+            if (data) {
+              setEditorContent('display_name', data.display_name);
+              setEditorContent('description', data.description);
+              setEditorContent('content', data.content);
+              var dc = document.getElementById('display_columns');
+              if (dc) dc.value = data.bootstrap_class || '';
+              var bt = document.getElementById('button_text');
+              if (bt) bt.value = (data.button && data.button.text) || '';
+              var bu = document.getElementById('button_url');
+              if (bu) bu.value = (data.button && data.button.url) || '';
+              var bbg = document.getElementById('button_bg_color');
+              if (bbg) bbg.value = (data.button && data.button.bg_color) || '#4154f1';
+              var tclr = document.getElementById('button_text_color');
+              if (tclr) tclr.value = (data.button && data.button.text_color) || '#ffffff';
+              if (setupColorPicker) {
+                var bbgText = document.getElementById('button_bg_color_hex');
+                if (bbgText) bbgText.textContent = bbg ? bbg.value : '#4154f1';
+                var tclrText = document.getElementById('button_text_color_hex');
+                if (tclrText) tclrText.textContent = tclr ? tclr.value : '#ffffff';
+              }
+              var bg = document.getElementById('section_bg_color');
+              if (bg) bg.value = data.bg_color || '#ffffff';
+              var bgText = document.getElementById('section_bg_color_hex');
+              if (bgText) bgText.textContent = bg ? bg.value : '#ffffff';
+            }
+          })
+          .catch(function () {
+            showToast('Lỗi kết nối khi tải dữ liệu!', 'danger');
+          });
+      }
+
+      /* ===== Save ===== */
       if (form) {
         form.addEventListener('submit', function (event) {
           event.preventDefault();
@@ -654,9 +686,7 @@
           form.classList.add('was-validated');
           if (!form.checkValidity()) return;
 
-          const payload = {
-            type: 'article',
-            manager_name: document.getElementById('manager_name').value,
+          var sectionData = {
             display_name: getEditorContent('display_name'),
             description: getEditorContent('description'),
             content: getEditorContent('content'),
@@ -667,17 +697,61 @@
               text_color: document.getElementById('button_text_color').value,
               url: document.getElementById('button_url').value
             },
-            bg_color: document.getElementById('section_bg_color').value,
-            sort_order: Number(document.getElementById('article_order').value),
-            status: document.getElementById('article_status').value
+            bg_color: document.getElementById('section_bg_color').value
           };
 
-          console.log('Body article payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          var payload = {
+            id: editId,
+            section_name: document.getElementById('manager_name').value,
+            section_type: 'article',
+            section_data: JSON.stringify(sectionData),
+            section_order_no: Number(document.getElementById('article_order').value),
+            section_status: document.getElementById('article_status').value === 'show' ? 1 : 0
+          };
+
+          fetch(apiUrl(''), {
+            method: 'POST',
+            headers: apiHeaders(),
+            body: JSON.stringify(payload)
+          })
+            .then(function (res) { return res.json().catch(function () { return null; }); })
+            .then(function (json) {
+              if (json && json.success) {
+                showToast(isEdit ? 'Cập nhật bài viết thành công.' : 'Thêm bài viết thành công.');
+                if (!isEdit) {
+                  // Reset form for new entry
+                  form.reset();
+                  form.classList.remove('was-validated');
+                  ['display_name', 'description', 'content'].forEach(function (id) {
+                    setEditorContent(id, '');
+                  });
+                }
+              } else {
+                showToast(json?.message || 'Lỗi lưu dữ liệu!', 'danger');
+              }
+            })
+            .catch(function () {
+              showToast('Lỗi kết nối!', 'danger');
+            });
         });
       }
 
-      updatePreview();
+      var editorsReady = 0;
+      var totalEditors = 3;
+      function onEditorReady() {
+        editorsReady++;
+        if (editorsReady >= totalEditors && isEdit) loadSection();
+      }
+      initTinyEditor('display_name', 240, onEditorReady);
+      initTinyEditor('description', 260, onEditorReady);
+      initTinyEditor('content', 420, onEditorReady);
+
+      setupColorPicker('button_bg_color', 'button_bg_color_hex');
+      setupColorPicker('button_text_color', 'button_text_color_hex');
+      setupColorPicker('section_bg_color', 'section_bg_color_hex');
+
+      // Fallback if TinyMCE doesn't fire init
+      if (isEdit) setTimeout(function () { if (editorsReady < totalEditors) loadSection(); }, 2000);
     })();
   </script>
 </body>

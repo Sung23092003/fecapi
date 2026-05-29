@@ -993,10 +993,10 @@
           '<td><input type="text" class="form-control form-control-sm main-item-name" placeholder="Tên" value="' + (data.name || '') + '"></td>' +
           '<td><input type="text" class="form-control form-control-sm main-item-content" placeholder="Nội dung" value="' + (data.content || '') + '"></td>' +
           '<td><input type="text" class="form-control form-control-sm main-item-icon" placeholder="Icon" value="' + (data.icon || '') + '"></td>' +
-          '<td><input type="number" class="form-control form-control-sm main-item-cols" value="' + (data.cols != null ? data.cols : '1') + '" min="1" max="12" step="1"></td>' +
-          '<td><input type="number" class="form-control form-control-sm main-item-order" value="' + (data.order != null ? data.order : '0') + '" min="0" step="1"></td>' +
-          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-visible" ' + (data.visible !== false ? 'checked' : '') + '></td>' +
-          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-mobile" ' + (data.mobile !== false ? 'checked' : '') + '></td>' +
+          '<td><input type="number" class="form-control form-control-sm main-item-cols" value="' + (data.columns != null ? data.columns : '1') + '" min="1" max="12" step="1"></td>' +
+          '<td><input type="number" class="form-control form-control-sm main-item-order" value="' + (data.position != null ? data.position : '0') + '" min="0" step="1"></td>' +
+          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-visible" ' + (data.show_desktop !== false ? 'checked' : '') + '></td>' +
+          '<td class="text-center"><input type="checkbox" class="form-check-input main-item-mobile" ' + (data.show_mobile !== false ? 'checked' : '') + '></td>' +
           '<td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger main-item-del"><i class="bi bi-x-lg"></i></button></td>';
 
         // Image upload
@@ -1070,10 +1070,10 @@
             name: tr.querySelector('.main-item-name').value || '',
             content: tr.querySelector('.main-item-content').value || '',
             icon: tr.querySelector('.main-item-icon').value || '',
-            cols: parseInt(tr.querySelector('.main-item-cols').value, 10) || 1,
-            order: parseInt(tr.querySelector('.main-item-order').value, 10) || 0,
-            visible: tr.querySelector('.main-item-visible').checked,
-            mobile: tr.querySelector('.main-item-mobile').checked
+            columns: parseInt(tr.querySelector('.main-item-cols').value, 10) || 1,
+            position: parseInt(tr.querySelector('.main-item-order').value, 10) || 0,
+            show_desktop: tr.querySelector('.main-item-visible').checked,
+            show_mobile: tr.querySelector('.main-item-mobile').checked
           });
         });
         document.getElementById('header_main_items').value = JSON.stringify(data);
@@ -1115,28 +1115,35 @@
         e.preventDefault();
         updateLinksHidden();
 
+        const style = parseInt(document.getElementById('header_layout_value').value, 10);
         const payload = {
-          header_layout: parseInt(document.getElementById('header_layout_value').value, 10),
-          favicon_image: document.getElementById('favicon_image').value,
-          logo_image: document.getElementById('logo_image').value,
-          social_image: document.getElementById('social_image').value,
-          header_top_bg_color: document.getElementById('header_top_bg_color').value,
-          header_top_text_color: document.getElementById('header_top_text_color').value,
-          header_top_border_color: document.getElementById('header_top_border_color').value,
-          header_top_border_width: parseInt(document.getElementById('header_top_border_width').value, 10) || 0,
-          header_top_links_left: JSON.parse(document.getElementById('header_top_links_left').value || '[]'),
-          header_top_links_right: JSON.parse(document.getElementById('header_top_links_right').value || '[]'),
-          header_main_bg_color: document.getElementById('header_main_bg_color').value,
-          header_main_text_color: document.getElementById('header_main_text_color').value,
-          header_main_border_color: document.getElementById('header_main_border_color').value,
-          header_main_border_width: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
-          header_main_logo: document.getElementById('header_main_logo').value,
-          header_main_search: parseInt(document.getElementById('header_main_search').value, 10),
-          header_main_items: JSON.parse(document.getElementById('header_main_items').value || '[]')
+          style: style,
+          logo: {
+            favicon: document.getElementById('favicon_image').value,
+            logo_main: document.getElementById('logo_image').value,
+            social_image: document.getElementById('social_image').value
+          },
+          header_top: {
+            bg_color: document.getElementById('header_top_bg_color').value,
+            text_color: document.getElementById('header_top_text_color').value,
+            border_color: document.getElementById('header_top_border_color').value,
+            border_thickness: parseInt(document.getElementById('header_top_border_width').value, 10) || 0,
+            left_links: JSON.parse(document.getElementById('header_top_links_left').value || '[]'),
+            right_links: JSON.parse(document.getElementById('header_top_links_right').value || '[]')
+          },
+          header_main: {
+            bg_color: document.getElementById('header_main_bg_color').value,
+            text_color: document.getElementById('header_main_text_color').value,
+            border_color: document.getElementById('header_main_border_color').value,
+            border_thickness: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
+            logo: document.getElementById('header_main_logo').value,
+            search_show: parseInt(document.getElementById('header_main_search').value, 10),
+            item_list: JSON.parse(document.getElementById('header_main_items').value || '[]')
+          }
         };
 
         try {
-          const url = ENV.BASE_URL + '/admin/header/save';
+          const url = ENV.BASE_URL + '/admin/config/header';
           const headers = {
             ...Auth.getAuthHeader(),
             'Content-Type': 'application/json'
@@ -1156,7 +1163,7 @@
       /* ===================== Load Data ===================== */
       async function loadData() {
         try {
-          const url = ENV.BASE_URL + '/admin/header/get';
+          const url = ENV.BASE_URL + '/admin/config/header';
           const headers = Auth.getAuthHeader();
           const res = await fetch(url, { method: 'GET', headers });
           if (!res.ok) return;
@@ -1165,8 +1172,8 @@
           const d = json.data.data || json.data;
 
           // Layout
-          if (d.header_layout) {
-            const val = String(d.header_layout);
+          if (d.style) {
+            const val = String(d.style);
             document.querySelector('input[name="header_layout"][value="' + val + '"]').checked = true;
             layoutOptions.forEach(function (o) {
               o.classList.toggle('active', o.dataset.value === val);
@@ -1175,44 +1182,50 @@
           }
 
           // Logo tab
-          if (d.favicon_image) setUploadedImage('favicon-preview', 'favicon_image', 'favicon-upload-box', d.favicon_image);
-          if (d.logo_image) setUploadedImage('logo-preview', 'logo_image', 'logo-upload-box', d.logo_image);
-          if (d.social_image) setUploadedImage('social-preview', 'social_image', 'social-upload-box', d.social_image);
+          if (d.logo) {
+            if (d.logo.favicon) setUploadedImage('favicon-preview', 'favicon_image', 'favicon-upload-box', d.logo.favicon);
+            if (d.logo.logo_main) setUploadedImage('logo-preview', 'logo_image', 'logo-upload-box', d.logo.logo_main);
+            if (d.logo.social_image) setUploadedImage('social-preview', 'social_image', 'social-upload-box', d.logo.social_image);
+          }
 
           // Header Top
-          if (d.header_top_bg_color) setColor('header_top_bg_color', 'header_top_bg_color_hex', d.header_top_bg_color);
-          if (d.header_top_text_color) setColor('header_top_text_color', 'header_top_text_color_hex', d.header_top_text_color);
-          if (d.header_top_border_color) setColor('header_top_border_color', 'header_top_border_color_hex', d.header_top_border_color);
-          if (d.header_top_border_width != null) document.getElementById('header_top_border_width').value = d.header_top_border_width;
+          if (d.header_top) {
+            if (d.header_top.bg_color) setColor('header_top_bg_color', 'header_top_bg_color_hex', d.header_top.bg_color);
+            if (d.header_top.text_color) setColor('header_top_text_color', 'header_top_text_color_hex', d.header_top.text_color);
+            if (d.header_top.border_color) setColor('header_top_border_color', 'header_top_border_color_hex', d.header_top.border_color);
+            if (d.header_top.border_thickness != null) document.getElementById('header_top_border_width').value = d.header_top.border_thickness;
 
-          // Links
-          if (d.header_top_links_left && Array.isArray(d.header_top_links_left)) {
-            d.header_top_links_left.forEach(function (item) {
-              addLink('links-left-container', 'links-left-empty', item.name, item.icon, item.link);
-            });
-          }
-          if (d.header_top_links_right && Array.isArray(d.header_top_links_right)) {
-            d.header_top_links_right.forEach(function (item) {
-              addLink('links-right-container', 'links-right-empty', item.name, item.icon, item.link);
-            });
+            // Links
+            if (d.header_top.left_links && Array.isArray(d.header_top.left_links)) {
+              d.header_top.left_links.forEach(function (item) {
+                addLink('links-left-container', 'links-left-empty', item.name, item.icon, item.link);
+              });
+            }
+            if (d.header_top.right_links && Array.isArray(d.header_top.right_links)) {
+              d.header_top.right_links.forEach(function (item) {
+                addLink('links-right-container', 'links-right-empty', item.name, item.icon, item.link);
+              });
+            }
           }
 
           // Header Main
-          if (d.header_main_bg_color) setColor('header_main_bg_color', 'header_main_bg_color_hex', d.header_main_bg_color);
-          if (d.header_main_text_color) setColor('header_main_text_color', 'header_main_text_color_hex', d.header_main_text_color);
-          if (d.header_main_border_color) setColor('header_main_border_color', 'header_main_border_color_hex', d.header_main_border_color);
-          if (d.header_main_border_width != null) document.getElementById('header_main_border_width').value = d.header_main_border_width;
-          if (d.header_main_logo) setUploadedImage('header-main-logo-preview', 'header_main_logo', 'header-main-logo-upload-box', d.header_main_logo);
-          if (d.header_main_search != null) document.getElementById('header_main_search').value = String(d.header_main_search);
+          if (d.header_main) {
+            if (d.header_main.bg_color) setColor('header_main_bg_color', 'header_main_bg_color_hex', d.header_main.bg_color);
+            if (d.header_main.text_color) setColor('header_main_text_color', 'header_main_text_color_hex', d.header_main.text_color);
+            if (d.header_main.border_color) setColor('header_main_border_color', 'header_main_border_color_hex', d.header_main.border_color);
+            if (d.header_main.border_thickness != null) document.getElementById('header_main_border_width').value = d.header_main.border_thickness;
+            if (d.header_main.logo) setUploadedImage('header-main-logo-preview', 'header_main_logo', 'header-main-logo-upload-box', d.header_main.logo);
+            if (d.header_main.search_show != null) document.getElementById('header_main_search').value = String(d.header_main.search_show);
 
-          // Main items table
-          if (d.header_main_items && Array.isArray(d.header_main_items)) {
-            var tbody = document.getElementById('main-items-tbody');
-            d.header_main_items.forEach(function (item) {
-              tbody.appendChild(createMainItemRow(item));
-            });
-            updateMainItemsHidden();
-            toggleMainItemsEmpty();
+            // Main items table
+            if (d.header_main.item_list && Array.isArray(d.header_main.item_list)) {
+              var tbody = document.getElementById('main-items-tbody');
+              d.header_main.item_list.forEach(function (item) {
+                tbody.appendChild(createMainItemRow(item));
+              });
+              updateMainItemsHidden();
+              toggleMainItemsEmpty();
+            }
           }
 
         } catch (err) {

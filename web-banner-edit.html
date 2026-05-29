@@ -287,7 +287,7 @@
         <ul id="header-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
           <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a></li>
-          <li><a class="active" class="active" href="web-banner-edit.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+           <li><a class="active" href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
         </ul>
       </li>
 
@@ -553,124 +553,156 @@
 
   <script>
     (function () {
-      const demoData = {
-        1: {
-          title: 'Banner khuyến mãi trang chủ',
-          url: '/khuyen-mai',
-          description: 'Ưu đãi sản phẩm nổi bật trong tháng.',
-          content: 'Hiển thị tại vị trí chính trên trang chủ.',
-          button_text: 'Mua ngay',
-          feature_type: 'Trang chủ',
-          image_desktop: 'assets/img/slides-1.jpg',
-          image_mobile: 'assets/img/news-1.jpg',
-          position: 1,
-          status: 'show',
-          type_main_sub: 'main',
-          category_apply: 'all',
-          start_date: '2026-05-01',
-          end_date: '2026-06-30',
-          device_type: ['Desktop', 'Mobile']
-        },
-        2: {
-          title: 'Slide giải pháp dịch vụ',
-          url: '/dich-vu',
-          description: 'Banner phụ cho nhóm dịch vụ.',
-          content: 'Dùng trong khu vực slide dịch vụ.',
-          button_text: 'Tìm hiểu',
-          feature_type: 'Slide',
-          image_desktop: 'assets/img/slides-2.jpg',
-          image_mobile: 'assets/img/news-2.jpg',
-          position: 2,
-          status: 'show',
-          type_main_sub: 'sub',
-          category_apply: 'service',
-          start_date: '2026-05-10',
-          end_date: '2026-07-10',
-          device_type: ['Desktop', 'Tablet']
-        }
-      };
-
       const id = Number(new URLSearchParams(window.location.search).get('id') || 0);
       const pageTitle = document.getElementById('pageTitle');
       const pageCrumb = document.getElementById('pageCrumb');
       const form = document.getElementById('formBanner');
 
+      const typeMap = {
+        1: 'Trang chủ', 2: 'Slide', 3: 'Tin tức',
+        4: 'Danh mục sản phẩm', 5: 'Landing Page', 6: 'Giới thiệu', 7: 'Khác'
+      };
+      const revTypeMap = Object.fromEntries(Object.entries(typeMap).map(e => [e[1], Number(e[0])]));
+
       function showAlert(message, type) {
-        document.getElementById('alertPlaceholder').innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        document.getElementById('alertPlaceholder').innerHTML = '<div class="alert alert-' + type + '">' + message + '</div>';
       }
 
       function setPreview(containerId, urls, mobile) {
         const container = document.getElementById(containerId);
         const list = Array.isArray(urls) ? urls : (urls ? [urls] : []);
         container.innerHTML = list.length
-          ? list.map(url => `<img class="${mobile ? 'mobile-preview' : ''}" src="${url}" alt="preview">`).join('')
+          ? list.map(function (url) { return '<img class="' + (mobile ? 'mobile-preview' : '') + '" src="' + url + '" alt="preview">'; }).join('')
           : '<span class="small text-muted">Chưa có ảnh preview</span>';
       }
 
-      function readFileAsDataUrl(file) {
-        return new Promise(resolve => {
-          const reader = new FileReader();
-          reader.onload = e => resolve(e.target.result);
-          reader.readAsDataURL(file);
-        });
+      async function uploadFile(file) {
+        if (!file) return '';
+        const formData = new FormData();
+        formData.append('file', file);
+        const headers = Auth.getAuthHeader();
+        delete headers['Content-Type'];
+        try {
+          const res = await fetch(ENV.BASE_URL + '/admin/media/upload', { method: 'POST', headers: headers, body: formData });
+          const json = await res.json();
+          if (json.success) {
+            var raw = json.data.url || '';
+            var m = raw.match(/https?:\/\/[^\s"']+/);
+            return m ? m[0] : raw;
+          }
+        } catch (e) {}
+        return '';
       }
 
       async function handleSingleImage(inputId, hiddenId, previewId, mobile) {
         const input = document.getElementById(inputId);
         const file = input.files && input.files[0];
         if (!file) return;
-        const dataUrl = await readFileAsDataUrl(file);
-        document.getElementById(hiddenId).value = dataUrl;
-        setPreview(previewId, dataUrl, mobile);
+        const url = await uploadFile(file);
+        if (url) {
+          document.getElementById(hiddenId).value = url;
+          setPreview(previewId, url, mobile);
+        } else {
+          // Fallback: local preview if upload fails
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById(hiddenId).value = e.target.result;
+            setPreview(previewId, e.target.result, mobile);
+          };
+          reader.readAsDataURL(file);
+        }
       }
 
       async function handleGalleryPreview() {
         const files = Array.from(document.getElementById('galleryFiles').files || []);
         const urls = [];
-        for (const file of files) urls.push(await readFileAsDataUrl(file));
+        for (const file of files) {
+          const url = await uploadFile(file);
+          if (url) urls.push(url);
+        }
         setPreview('galleryPreview', urls, false);
       }
 
       function fillForm(data) {
-        document.getElementById('bannerTitle').value = data.title || '';
-        document.getElementById('bannerUrl').value = data.url || '';
-        document.getElementById('bannerDescription').value = data.description || '';
+        document.getElementById('bannerTitle').value = data.banner_title || '';
+        document.getElementById('bannerUrl').value = data.banner_url || '';
+        document.getElementById('bannerDescription').value = data.banner_intro || '';
         document.getElementById('bannerContent').value = data.content || '';
         document.getElementById('buttonText').value = data.button_text || '';
-        document.getElementById('featureType').value = data.feature_type || 'Trang chủ';
-        document.getElementById('imageDesktop').value = data.image_desktop || '';
-        document.getElementById('imageMobile').value = data.image_mobile || '';
-        document.getElementById('position').value = data.position || 1;
-        document.getElementById('status').value = data.status || 'show';
-        document.getElementById('typeMainSub').value = data.type_main_sub || 'main';
+        document.getElementById('featureType').value = typeMap[data.banner_type] || 'Trang chủ';
+        document.getElementById('imageDesktop').value = data.banner_image_desktop || '';
+        document.getElementById('imageMobile').value = data.banner_image_mobile || '';
+        document.getElementById('position').value = data.banner_order_no || 1;
+        document.getElementById('status').value = data.banner_status === 1 ? 'show' : (data.banner_status === 0 ? 'hide' : (data.status || 'show'));
+        document.getElementById('typeMainSub').value = data.banner_is_main === 1 ? 'main' : (data.banner_is_main === 0 ? 'sub' : (data.type_main_sub || 'main'));
         document.getElementById('categoryApply').value = data.category_apply || 'all';
         document.getElementById('startDate').value = data.start_date || '';
         document.getElementById('endDate').value = data.end_date || '';
-        document.querySelectorAll('.device-check').forEach(check => {
+        document.querySelectorAll('.device-check').forEach(function (check) {
           check.checked = (data.device_type || ['Desktop', 'Mobile']).includes(check.value);
         });
-        setPreview('desktopPreview', data.image_desktop || '', false);
-        setPreview('mobilePreview', data.image_mobile || '', true);
+        setPreview('desktopPreview', data.banner_image_desktop || '', false);
+        setPreview('mobilePreview', data.banner_image_mobile || '', true);
         setPreview('galleryPreview', [], false);
       }
 
-      document.getElementById('imageDesktopFile').addEventListener('change', () => handleSingleImage('imageDesktopFile', 'imageDesktop', 'desktopPreview', false));
-      document.getElementById('imageMobileFile').addEventListener('change', () => handleSingleImage('imageMobileFile', 'imageMobile', 'mobilePreview', true));
+      document.getElementById('imageDesktopFile').addEventListener('change', function () { handleSingleImage('imageDesktopFile', 'imageDesktop', 'desktopPreview', false); });
+      document.getElementById('imageMobileFile').addEventListener('change', function () { handleSingleImage('imageMobileFile', 'imageMobile', 'mobilePreview', true); });
       document.getElementById('galleryFiles').addEventListener('change', handleGalleryPreview);
 
-      form.addEventListener('submit', e => {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        showAlert(id ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', 'success');
-        setTimeout(() => {
-          window.location.href = 'web-banner.html';
-        }, 500);
+        const payload = {
+          id: id,
+          banner_title: document.getElementById('bannerTitle').value,
+          banner_intro: document.getElementById('bannerDescription').value,
+          banner_image_desktop: document.getElementById('imageDesktop').value,
+          banner_image_mobile: document.getElementById('imageMobile').value,
+          banner_url: document.getElementById('bannerUrl').value,
+          banner_type: revTypeMap[document.getElementById('featureType').value] || 1,
+          banner_is_main: document.getElementById('typeMainSub').value === 'main' ? 1 : 0,
+          banner_status: document.getElementById('status').value === 'show' ? 1 : 0,
+          banner_order_no: parseInt(document.getElementById('position').value, 10) || 1
+        };
+        try {
+          const url = ENV.BASE_URL + '/admin/banner';
+          const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
+          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(payload) });
+          const json = await res.json().catch(function () { return null; });
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || 'Lỗi: ' + res.status, 'danger');
+            return;
+          }
+          showAlert(id ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', 'success');
+          setTimeout(function () { window.location.href = 'web-banner.html'; }, 500);
+        } catch (err) {
+          showAlert('Có lỗi xảy ra khi lưu!', 'danger');
+        }
       });
 
-      if (id && demoData[id]) {
+      async function loadBannerData() {
+        if (!id) return;
+        try {
+          const url = ENV.BASE_URL + '/admin/banner/' + id;
+          const res = await fetch(url, { method: 'GET', headers: Auth.getAuthHeader() });
+          if (!res.ok) return;
+          const json = await res.json();
+          if (!json.success || !json.data) return;
+          const d = json.data.data || json.data;
+          pageTitle.textContent = 'Sửa banner';
+          pageCrumb.textContent = 'Sửa';
+          document.getElementById('bannerId').value = id;
+          fillForm(d);
+        } catch (err) {
+          // Silent fail — show empty form
+        }
+      }
+
+      if (id) {
         pageTitle.textContent = 'Sửa banner';
         pageCrumb.textContent = 'Sửa';
         document.getElementById('bannerId').value = id;
-        fillForm(demoData[id]);
+        loadBannerData();
       } else {
         pageTitle.textContent = 'Thêm banner';
         pageCrumb.textContent = 'Thêm';

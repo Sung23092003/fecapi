@@ -108,6 +108,141 @@
       background: transparent;
       color: #6c757d;
     }
+
+    /* Banner Grid - Desktop: vertical card layout matching web-statics */
+    .banner-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .banner-card {
+      grid-column: span 4;
+    }
+    .banner-card .card {
+      display: block !important;
+      height: 100%;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .banner-card .card:hover {
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .banner-card .card-img-wrapper {
+      width: 100% !important;
+      background: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-card .card-img-wrapper img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+    .banner-card .card-info {
+      padding: 12px;
+    }
+    .banner-card .card-info .fw-bold {
+      font-size: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
+      line-height: 1.4;
+      max-height: 2.8em;
+    }
+    .banner-card .card-info .small {
+      font-size: 12px;
+      color: #6c757d;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 4px;
+      line-height: 1.4;
+      max-height: 4.2em;
+    }
+    .banner-card .card-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 8px !important;
+      padding: 0 12px 12px 12px !important;
+      flex-shrink: unset !important;
+    }
+    .banner-card .card-actions .btn {
+      flex: 1 !important;
+      justify-content: center !important;
+    }
+    @media (max-width: 1199.98px) {
+      .banner-card { grid-column: span 6; }
+      .view-mode-toggle { display: none !important; }
+    }
+    @media (max-width: 767.98px) {
+      .banner-grid { display: flex; flex-direction: column; }
+      .banner-card .card {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+        padding: 12px !important;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+      }
+      .banner-card .card-img-wrapper {
+        width: 60px !important;
+        min-height: 60px !important;
+        flex-shrink: 0 !important;
+        border-radius: 8px !important;
+      }
+      .banner-card .card-img-wrapper img {
+        width: 60px !important;
+        height: 60px !important;
+        border-radius: 8px !important;
+      }
+      .banner-card .card-info {
+        flex: 1 !important;
+        min-width: 0 !important;
+        padding: 0 !important;
+      }
+      .banner-card .card-info .fw-bold {
+        margin-bottom: 4px !important;
+        max-height: unset !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .banner-card .card-info .small {
+        margin-top: 2px !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .banner-card .card-actions {
+        flex-shrink: 0 !important;
+        flex-direction: column !important;
+        gap: 4px !important;
+        padding: 0 !important;
+      }
+      .banner-card .card-actions .btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+    }
+    .view-mode-toggle.ms-0.ms-md-2 {
+      display: inline-flex;
+    }
+    @media (max-width: 991.98px) {
+      .view-mode-toggle.ms-0.ms-md-2 { display: none !important; }
+    }
   </style>
 </head>
 
@@ -353,7 +488,7 @@
         <ul id="header-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
           <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
           <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a></li>
-          <li><a class="active" class="active" href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+           <li><a class="active" href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
         </ul>
       </li>
 
@@ -452,7 +587,7 @@
     <section class="section">
       <div class="card mb-20">
         <div class="card-body pt-20">
-          <div class="banner-toolbar d-flex flex-row gap-2 align-items-md-center justify-content-between mb-3 flex-wrap">
+          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-wrap">
             <div class="d-flex flex-wrap gap-2 align-items-center">
               <button id="btnCreate" type="button" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm banner</span>
@@ -463,6 +598,17 @@
             </div>
 
             <div class="d-flex flex-wrap gap-2 align-items-center">
+              <div class="view-mode-toggle ms-0 ms-md-2">
+                <div class="btn-group" role="group" aria-label="Chọn dạng hiển thị">
+                  <button id="btn-mode-list" type="button" class="btn btn-outline-secondary active">
+                    <i class="bi bi-list"></i>
+                  </button>
+                  <button id="btn-mode-grid" type="button" class="btn btn-outline-secondary">
+                    <i class="bi bi-grid"></i>
+                  </button>
+                </div>
+              </div>
+
               <select id="filterStatus" class="form-select d-none" aria-hidden="true">
                 <option value="">Tất cả trạng thái</option>
                 <option value="show">Hiện</option>
@@ -483,68 +629,70 @@
               </button>
             </div>
           </div>
+        </div>
+      </div>
 
-          <div id="alertArea" class="alert d-none" role="alert"></div>
+      <div id="alertArea" class="alert d-none" role="alert"></div>
 
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead>
-                <tr id="bannerTableHead"></tr>
-              </thead>
-              <tbody id="bannerTableBody"></tbody>
-            </table>
+      <div id="view-list" class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr id="bannerTableHead"></tr>
+          </thead>
+          <tbody id="bannerTableBody"></tbody>
+        </table>
+      </div>
+
+      <div id="view-grid" class="banner-grid d-none"></div>
+
+      <div id="emptyState" class="text-center text-muted py-4 d-none">
+        Không có banner phù hợp.
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-muted" id="pageInfo"></div>
+        <nav>
+          <ul id="pagination" class="pagination mb-0"></ul>
+        </nav>
+      </div>
+
+      <div id="column-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Hiển thị/Ẩn cột</span>
+            <button type="button" id="column-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
           </div>
-
-          <div id="emptyState" class="text-center text-muted py-4 d-none">
-            Không có banner phù hợp.
+          <div class="column-modal-body" id="column-list"></div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
           </div>
+        </div>
+      </div>
 
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="text-muted" id="pageInfo"></div>
-            <nav>
-              <ul id="pagination" class="pagination mb-0"></ul>
-            </nav>
+      <div id="filter-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Bộ lọc</span>
+            <button type="button" id="filter-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
           </div>
-
-          <div id="column-modal" class="column-modal">
-            <div class="column-modal-content">
-              <div class="column-modal-header">
-                <span>Hiển thị/Ẩn cột</span>
-                <button type="button" id="column-modal-close">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </div>
-              <div class="column-modal-body" id="column-list"></div>
-              <div class="column-modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
-                <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
-              </div>
+          <div class="column-modal-body">
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <select id="filter-status-modal" class="form-select">
+                <option value="" selected>Tất cả trạng thái</option>
+                <option value="show">Hiện</option>
+                <option value="hide">Ẩn</option>
+              </select>
             </div>
           </div>
-
-          <div id="filter-modal" class="column-modal">
-            <div class="column-modal-content">
-              <div class="column-modal-header">
-                <span>Bộ lọc</span>
-                <button type="button" id="filter-modal-close">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              </div>
-              <div class="column-modal-body">
-                <div class="mb-3">
-                  <label class="form-label">Trạng thái</label>
-                  <select id="filter-status-modal" class="form-select">
-                    <option value="" selected>Tất cả trạng thái</option>
-                    <option value="show">Hiện</option>
-                    <option value="hide">Ẩn</option>
-                  </select>
-                </div>
-              </div>
-              <div class="column-modal-footer">
-                <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
-                <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
-              </div>
-            </div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
           </div>
         </div>
       </div>
@@ -609,50 +757,11 @@
       let selectedIds = new Set();
       let deleteTargetIds = [];
 
-      let banners = [
-        {
-          id: 1,
-          image_desktop: 'assets/img/slides-1.jpg',
-          image_mobile: 'assets/img/news-1.jpg',
-          title: 'Banner khuyến mãi trang chủ',
-          description: 'Ưu đãi sản phẩm nổi bật trong tháng.',
-          url: '/khuyen-mai',
-          type_main_sub: 'main',
-          position: 1,
-          status: 'show',
-          feature_type: 'Trang chủ',
-          created_at: '2026-05-21',
-          deleted: false
-        },
-        {
-          id: 2,
-          image_desktop: 'assets/img/slides-2.jpg',
-          image_mobile: 'assets/img/news-2.jpg',
-          title: 'Slide giới thiệu dịch vụ',
-          description: 'Banner phụ cho nhóm dịch vụ.',
-          url: '/dich-vu',
-          type_main_sub: 'sub',
-          position: 2,
-          status: 'show',
-          feature_type: 'Slide',
-          created_at: '2026-05-20',
-          deleted: false
-        },
-        {
-          id: 3,
-          image_desktop: 'assets/img/slides-3.jpg',
-          image_mobile: 'assets/img/news-3.jpg',
-          title: 'Banner tin tức mới',
-          description: 'Dẫn tới danh sách tin mới.',
-          url: '/tin-tuc',
-          type_main_sub: 'sub',
-          position: 3,
-          status: 'hide',
-          feature_type: 'Tin tức',
-          created_at: '2026-05-19',
-          deleted: false
-        }
-      ];
+      let banners = [];
+      let totalBanners = 0;
+      let apiBannerTitle = '';
+      let apiBannerType = -1;
+      let currentView = 'list';
 
       const columns = [
         { key: 'index', label: 'STT', minWidth: '70px' },
@@ -692,7 +801,12 @@
         columnList: document.getElementById('column-list'),
         btnResetColumns: document.getElementById('btn-reset-columns'),
         btnDoneColumns: document.getElementById('btn-done-columns'),
-        deleteText: document.getElementById('deleteConfirmText')
+        deleteText: document.getElementById('deleteConfirmText'),
+        viewList: document.getElementById('view-list'),
+        viewGrid: document.getElementById('view-grid'),
+        btnModeList: document.getElementById('btn-mode-list'),
+        btnModeGrid: document.getElementById('btn-mode-grid'),
+        viewModeToggle: document.querySelector('.view-mode-toggle')
       };
 
       const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
@@ -767,11 +881,7 @@
       }
 
       function getFilteredBanners() {
-        const status = els.filterStatus.value;
-        return banners
-          .filter(item => !item.deleted)
-          .filter(item => !status || item.status === status)
-          .sort((a, b) => Number(a.position) - Number(b.position));
+        return banners;
       }
 
       function addCell(row, key, html) {
@@ -793,7 +903,7 @@
             e.preventDefault();
             if (disabled) return;
             currentPage = page;
-            render();
+            loadBanners();
           });
           els.pagination.appendChild(li);
         };
@@ -805,19 +915,79 @@
         addPage('»', Math.min(totalPages, currentPage + 1), currentPage === totalPages, false);
       }
 
+      function escapeHtmlSimple(text) {
+        return String(text ?? '').replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c];
+        });
+      }
+
+      function setView(mode) {
+        const isList = mode === 'list';
+        currentView = mode;
+        els.viewList.classList.toggle('d-none', !isList);
+        els.viewGrid.classList.toggle('d-none', isList);
+        els.btnModeList.classList.toggle('active', isList);
+        els.btnModeGrid.classList.toggle('active', !isList);
+      }
+
+      function checkResponsive() {
+        if (window.innerWidth <= 991.98) {
+          if (els.viewModeToggle) els.viewModeToggle.style.display = 'none';
+          setView('grid');
+        } else {
+          if (els.viewModeToggle) els.viewModeToggle.style.display = '';
+          if (currentView === 'grid') setView('grid');
+          else setView('list');
+        }
+      }
+
+      function renderGrid(items) {
+        els.viewGrid.innerHTML = '';
+        if (!items.length) return;
+        items.forEach(function (item) {
+          var desktopSrc = escapeHtmlSimple(item.image_desktop);
+          var mobileSrc = escapeHtmlSimple(item.image_mobile);
+          var title = escapeHtmlSimple(item.title);
+          var desc = escapeHtmlSimple(item.description);
+          var statusBadge = item.status === 'show'
+            ? '<span class="badge bg-success">Hiện</span>'
+            : '<span class="badge bg-warning text-dark">Ẩn</span>';
+          var imgHtml = desktopSrc
+            ? '<img src="' + desktopSrc + '" alt="' + title + '">'
+            : '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="120" viewBox="0 0 120 90"><rect width="120" height="90" fill="#f8f9fa"/><text x="60" y="48" text-anchor="middle" font-size="10" fill="#6c757d">No Photo</text></svg>';
+          var card = document.createElement('div');
+          card.className = 'banner-card';
+          card.innerHTML =
+            '<div class="card">' +
+            '<div class="card-img-wrapper">' + imgHtml + '</div>' +
+            '<div class="card-info">' +
+            '<div class="fw-bold text-truncate">' + title + ' ' + statusBadge + '</div>' +
+            '<div class="small">' + desc + '</div>' +
+            '<div class="small mt-1"><span class="text-muted">' + escapeHtmlSimple(item.feature_type) + '</span></div>' +
+            '</div>' +
+            '<div class="card-actions">' +
+            '<button type="button" class="btn btn-outline-primary" data-action="edit" data-id="' + item.id + '" title="Sửa"><i class="bi bi-pencil"></i></button>' +
+            '<button type="button" class="btn btn-outline-' + (item.status === 'show' ? 'warning' : 'success') + '" data-action="toggle" data-id="' + item.id + '" title="' + (item.status === 'show' ? 'Ẩn' : 'Hiện') + '"><i class="bi bi-eye' + (item.status === 'show' ? '-slash' : '') + '"></i></button>' +
+            '<button type="button" class="btn btn-outline-danger" data-action="delete" data-id="' + item.id + '" title="Xóa"><i class="bi bi-trash"></i></button>' +
+            '</div>' +
+            '</div>';
+          els.viewGrid.appendChild(card);
+        });
+      }
+
       function render() {
         renderTableHeader();
         const filtered = getFilteredBanners();
-        const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+        const totalPages = Math.max(1, Math.ceil(totalBanners / pageSize));
         if (currentPage > totalPages) currentPage = totalPages;
         const start = (currentPage - 1) * pageSize;
-        const pageItems = filtered.slice(start, start + pageSize);
+        const pageItems = filtered;
 
-        els.total.textContent = `Tổng: ${filtered.length} banner`;
+        els.total.textContent = `Tổng: ${totalBanners} banner`;
         els.pageInfo.textContent = `Trang ${currentPage}/${totalPages}`;
         els.empty.classList.toggle('d-none', pageItems.length > 0);
         els.tbody.innerHTML = '';
-
+        renderGrid(pageItems);
         pageItems.forEach((item, index) => {
           const tr = document.createElement('tr');
           tr.innerHTML = `<td><input class="row-check" type="checkbox" value="${item.id}" ${selectedIds.has(item.id) ? 'checked' : ''}></td>`;
@@ -851,12 +1021,124 @@
         renderPagination(totalPages);
       }
 
-      function softDelete(ids) {
-        banners = banners.map(item => ids.includes(item.id) ? { ...item, deleted: true } : item);
-        selectedIds.clear();
-        showAlert('Đã xóa mềm banner.', 'success');
-        render();
+      async function apiDelete(id) {
+        try {
+          const url = ENV.BASE_URL + '/admin/banner/delete/' + id;
+          const res = await fetch(url, { method: 'POST', headers: Auth.getAuthHeader() });
+          const json = await res.json().catch(() => null);
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || 'Lỗi xóa banner!', 'danger');
+            return false;
+          }
+          return true;
+        } catch (err) {
+          showAlert('Có lỗi xảy ra khi xóa!', 'danger');
+          return false;
+        }
       }
+
+      async function softDelete(ids) {
+        for (const id of ids) {
+          const ok = await apiDelete(id);
+          if (!ok) return;
+        }
+        selectedIds.clear();
+        showAlert('Đã xóa banner thành công.', 'success');
+        loadBanners();
+      }
+
+      async function toggleStatus(id) {
+        const item = banners.find(entry => entry.id === id);
+        if (!item) return;
+        const newStatus = item.status === 'show' ? 0 : 1;
+        try {
+          const url = ENV.BASE_URL + '/admin/banner/change-status';
+          const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
+          const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify({ id, status: newStatus }) });
+          const json = await res.json().catch(() => null);
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || 'Lỗi đổi trạng thái!', 'danger');
+            return;
+          }
+          showAlert(newStatus === 1 ? 'Đã hiện banner.' : 'Đã ẩn banner.', 'success');
+          loadBanners();
+        } catch (err) {
+          showAlert('Có lỗi xảy ra khi đổi trạng thái!', 'danger');
+        }
+      }
+
+      async function loadBanners() {
+        try {
+          const statusMap = { '': -1, 'show': 1, 'hide': 0 };
+          const statusVal = statusMap[els.filterStatus.value] ?? -1;
+          const params = new URLSearchParams({
+            limit: String(pageSize),
+            page: String(currentPage),
+            banner_status: String(statusVal),
+            banner_type: String(apiBannerType),
+            sort_order: 'desc'
+          });
+          if (apiBannerTitle) params.set('banner_title', apiBannerTitle);
+          const url = ENV.BASE_URL + '/admin/banner?' + params.toString();
+          const res = await fetch(url, { method: 'GET', headers: Auth.getAuthHeader() });
+          if (!res.ok) return;
+          const json = await res.json();
+          if (!json.success || !json.data) return;
+          const d = json.data.data || json.data;
+          const list = Array.isArray(d) ? d : (Array.isArray(d.data) ? d.data : []);
+          const mapper = function (item) {
+            return {
+              id: item.id,
+              image_desktop: item.banner_image_desktop || '',
+              image_mobile: item.banner_image_mobile || '',
+              title: item.banner_title || '',
+              description: item.banner_intro || '',
+              url: item.banner_url || '',
+              type_main_sub: item.banner_is_main === 1 ? 'main' : 'sub',
+              position: item.banner_order_no || 0,
+              status: item.banner_status === 1 ? 'show' : 'hide',
+              feature_type: typeMap[item.banner_type] || 'Khác',
+              created_at: item.created_at || ''
+            };
+          };
+          banners = (Array.isArray(list) ? list : []).map(mapper);
+          totalBanners = json.data.total || banners.length;
+          render();
+        } catch (err) {
+          // Silent fail
+        }
+      }
+
+      const typeMap = {
+        1: 'Trang chủ',
+        2: 'Slide',
+        3: 'Tin tức',
+        4: 'Danh mục sản phẩm',
+        5: 'Landing Page',
+        6: 'Giới thiệu',
+        7: 'Khác'
+      };
+      const revTypeMap = Object.fromEntries(Object.entries(typeMap).map(entry => [entry[1], Number(entry[0])]));
+
+      els.btnModeList.addEventListener('click', function () { setView('list'); });
+      els.btnModeGrid.addEventListener('click', function () { setView('grid'); });
+      window.addEventListener('resize', checkResponsive);
+
+      els.viewGrid.addEventListener('click', function (e) {
+        var button = e.target.closest('button[data-action]');
+        if (!button) return;
+        var id = Number(button.dataset.id);
+        if (button.dataset.action === 'edit') {
+          window.location.href = 'web-banner-edit.html?id=' + id;
+        } else if (button.dataset.action === 'toggle') {
+          toggleStatus(id);
+        } else if (button.dataset.action === 'delete') {
+          var item = banners.find(function (entry) { return entry.id === id; });
+          deleteTargetIds = [id];
+          els.deleteText.textContent = 'Bạn có chắc chắn muốn xóa banner "' + (item ? item.title : '') + '" không?';
+          deleteModal.show();
+        }
+      });
 
       els.btnCreate.addEventListener('click', () => {
         window.location.href = 'web-banner-edit.html?id=0';
@@ -891,9 +1173,7 @@
         if (button.dataset.action === 'edit') {
           window.location.href = `web-banner-edit.html?id=${id}`;
         } else if (button.dataset.action === 'toggle') {
-          item.status = item.status === 'show' ? 'hide' : 'show';
-          showAlert(item.status === 'show' ? 'Đã hiện banner.' : 'Đã ẩn banner.', 'success');
-          render();
+          toggleStatus(id);
         } else if (button.dataset.action === 'delete') {
           deleteTargetIds = [id];
           els.deleteText.textContent = `Bạn có chắc chắn muốn xóa mềm banner "${item.title}" không?`;
@@ -908,8 +1188,8 @@
         deleteModal.show();
       });
 
-      document.getElementById('btnConfirmDelete').addEventListener('click', () => {
-        softDelete(deleteTargetIds);
+      document.getElementById('btnConfirmDelete').addEventListener('click', async () => {
+        await softDelete(deleteTargetIds);
         deleteTargetIds = [];
         deleteModal.hide();
       });
@@ -918,7 +1198,7 @@
         els.filterStatus.value = value;
         currentPage = 1;
         selectedIds.clear();
-        render();
+        loadBanners();
       }
 
       function openFilterModal() {
@@ -983,7 +1263,8 @@
       });
 
       loadColumnState();
-      render();
+      checkResponsive();
+      loadBanners();
     })();
   </script>
 </body>

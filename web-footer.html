@@ -870,7 +870,7 @@
                         <div class="d-flex flex-column">
                           <label class="form-label fw-semibold">Text</label>
 
-                          <input type="text" placeholder="Nhập nội dung ..." />
+                          <input type="text" id="access_time_text" placeholder="Nhập nội dung ..." />
                         </div>
                       </div>
                     </div>
@@ -1307,46 +1307,6 @@
         syncCopyrightContent();
       }
 
-      function collectColumnData() {
-        const columns = [{
-          column: 1,
-          logo: document.getElementById('footer_logo').value,
-          company_name: document.getElementById('company_name').value,
-          company_intro: document.getElementById('company_intro').value,
-          phones: JSON.parse(document.getElementById('footer_phones').value || '[]'),
-          emails: JSON.parse(document.getElementById('footer_emails').value || '[]')
-        }];
-        columns.push({
-          column: 2,
-          title: document.getElementById('col2_title').value,
-          links: JSON.parse(document.getElementById('col2_links').value || '[]')
-        });
-        columns.push({
-          column: 3,
-          title: document.getElementById('col3_title').value,
-          links: JSON.parse(document.getElementById('col3_links').value || '[]')
-        });
-        columns.push({
-          column: 4,
-          title: document.getElementById('col4_title').value,
-          links: JSON.parse(document.getElementById('col4_links').value || '[]'),
-          payment: {
-            visible: document.getElementById('payment_visible').checked,
-            items: JSON.parse(document.getElementById('payment_items').value || '[]')
-          },
-          map: {
-            visible: document.getElementById('map_visible').checked,
-            iframe: document.getElementById('map_iframe').value
-          },
-          fanpage: {
-            visible: document.getElementById('fanpage_visible').checked,
-            content: document.getElementById('fanpage_content').value
-          },
-          bct_notification: document.getElementById('bct_notification').value
-        });
-        return columns;
-      }
-
       document.getElementById('buttonSubmit').addEventListener('click', async function (event) {
         event.preventDefault();
         updatePhonesHidden();
@@ -1356,42 +1316,74 @@
         updateCol4Links();
         updatePaymentHidden();
 
+        function boolToInt(v) { return v ? 1 : 0; }
+
         const payload = {
-          footer_layout: parseInt(document.getElementById('footer_layout_value').value, 10),
-          columns: collectColumnData(),
+          style: parseInt(document.getElementById('footer_layout_value').value, 10),
+          col_1: {
+            logo: document.getElementById('footer_logo').value,
+            company_name: document.getElementById('company_name').value,
+            short_description: document.getElementById('company_intro').value,
+            phone_list: JSON.parse(document.getElementById('footer_phones').value || '[]'),
+            email_list: JSON.parse(document.getElementById('footer_emails').value || '[]'),
+            footer_image: document.getElementById('footer_image').value,
+            colors: {
+              bg_color: document.getElementById('footer_bg_color').value,
+              text_color: document.getElementById('footer_text_color').value,
+              social_icon_bg_color: document.getElementById('footer_social_bg_color').value,
+              social_icon_color: document.getElementById('footer_social_icon_color').value,
+              long_border_color: document.getElementById('footer_line_long_color').value,
+              short_border_color: document.getElementById('footer_line_short_color').value,
+              bg_opacity: getPercentInputValue('footer_bg_opacity')
+            },
+            bootstrap_size: {
+              col_1_class: document.getElementById('footer_col_1_class').value,
+              col_2_class: document.getElementById('footer_col_2_class').value,
+              col_3_class: document.getElementById('footer_col_3_class').value
+            }
+          },
+          col_2: {
+            title: document.getElementById('col2_title').value,
+            link_list: JSON.parse(document.getElementById('col2_links').value || '[]')
+          },
+          col_3: {
+            title: document.getElementById('col3_title').value,
+            link_list: JSON.parse(document.getElementById('col3_links').value || '[]')
+          },
+          col_4: {
+            title: document.getElementById('col4_title').value,
+            link_list: JSON.parse(document.getElementById('col4_links').value || '[]'),
+            payment_method: {
+              show: boolToInt(document.getElementById('payment_visible').checked),
+              payment_list: JSON.parse(document.getElementById('payment_items').value || '[]')
+            },
+            map: {
+              show: boolToInt(document.getElementById('map_visible').checked),
+              iframe: document.getElementById('map_iframe').value
+            },
+            fanpage: {
+              show: boolToInt(document.getElementById('fanpage_visible').checked),
+              iframe: document.getElementById('fanpage_content').value
+            },
+            bct_notice: {
+              content: document.getElementById('bct_notification').value
+            }
+          },
           access_time: {
-            time_visible: document.getElementById('access_time_visible').checked,
-            count_visible: document.getElementById('access_count_visible').checked,
+            show_time: boolToInt(document.getElementById('access_time_visible').checked),
+            show_visitor_count: boolToInt(document.getElementById('access_count_visible').checked),
             bg_color: document.getElementById('access_bg_color').value,
-            text_color: document.getElementById('access_text_color').value
+            text_color: document.getElementById('access_text_color').value,
+            text: document.getElementById('access_time_text').value
           },
           copyright: {
-            name: document.getElementById('company_name').value,
-            bg_color: document.getElementById('copyright_bg_color').value,
-            text_color: document.getElementById('copyright_text_color').value,
-            content: document.getElementById('copyright_content').value
-          },
-          footer_image: document.getElementById('footer_image').value
-          ,
-          style: {
-            bg_color: document.getElementById('footer_bg_color').value,
-            bg_opacity: getPercentInputValue('footer_bg_opacity'),
-            text_color: document.getElementById('footer_text_color').value,
-            social_bg_color: document.getElementById('footer_social_bg_color').value,
-            social_icon_color: document.getElementById('footer_social_icon_color').value,
-            line_long_color: document.getElementById('footer_line_long_color').value,
-            line_short_color: document.getElementById('footer_line_short_color').value
-          },
-          column_classes: {
-            col_1: document.getElementById('footer_col_1_class').value,
-            col_2: document.getElementById('footer_col_2_class').value,
-            col_3: document.getElementById('footer_col_3_class').value
+            text: document.getElementById('copyright_content').value
           }
         };
 
         try {
           const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };
-          const res = await fetch(ENV.BASE_URL + '/admin/footer/save', { method: 'POST', headers: headers, body: JSON.stringify(payload) });
+          const res = await fetch(ENV.BASE_URL + '/admin/config/footer', { method: 'POST', headers: headers, body: JSON.stringify(payload) });
           const json = await res.json().catch(function () { return null; });
           if (!res.ok || !json || !json.success) {
             showAlert(json?.message || 'Lỗi: ' + res.status, 'danger');
@@ -1402,6 +1394,177 @@
           showAlert('Có lỗi xảy ra khi lưu cấu hình chân trang!', 'danger');
         }
       });
+
+      /* ===================== Load Data ===================== */
+      async function loadData() {
+        try {
+          const res = await fetch(ENV.BASE_URL + '/admin/config/footer', { method: 'GET', headers: Auth.getAuthHeader() });
+          if (!res.ok) return;
+          const json = await res.json();
+          if (!json.success || !json.data) return;
+          const d = json.data.data || json.data;
+
+          // Layout
+          if (d.style) {
+            var val = String(d.style);
+            var radio = document.querySelector('input[name="footer_layout"][value="' + val + '"]');
+            if (radio) {
+              radio.checked = true;
+              layoutOptions.forEach(function (o) {
+                o.classList.toggle('active', o.dataset.value === val);
+              });
+              layoutValueInput.value = val;
+            }
+          }
+
+          // Col 1
+          if (d.col_1) {
+            var c1 = d.col_1;
+            if (c1.logo) setUploadedImage('footer-logo-preview', 'footer_logo', 'footer-logo-upload-box', c1.logo);
+            if (c1.company_name) document.getElementById('company_name').value = c1.company_name;
+            if (c1.short_description) document.getElementById('company_intro').value = c1.short_description;
+            if (c1.footer_image) setUploadedImage('footer-bg-preview', 'footer_image', 'footer-bg-upload-box', c1.footer_image);
+
+            // Phones
+            if (c1.phone_list && Array.isArray(c1.phone_list)) {
+              c1.phone_list.forEach(function (item) {
+                var container = document.getElementById('phones-container');
+                container.appendChild(createPhoneRow(item));
+              });
+              updatePhonesHidden();
+            }
+
+            // Emails
+            if (c1.email_list && Array.isArray(c1.email_list)) {
+              c1.email_list.forEach(function (item) {
+                var container = document.getElementById('emails-container');
+                container.appendChild(createEmailRow(item.content || ''));
+              });
+              updateEmailsHidden();
+            }
+
+            // Colors
+            if (c1.colors) {
+              var cols = c1.colors;
+              if (cols.bg_color) setColor('footer_bg_color', 'footer_bg_color_hex', cols.bg_color);
+              if (cols.text_color) setColor('footer_text_color', 'footer_text_color_hex', cols.text_color);
+              if (cols.social_icon_bg_color) setColor('footer_social_bg_color', 'footer_social_bg_color_hex', cols.social_icon_bg_color);
+              if (cols.social_icon_color) setColor('footer_social_icon_color', 'footer_social_icon_color_hex', cols.social_icon_color);
+              if (cols.long_border_color) setColor('footer_line_long_color', 'footer_line_long_color_hex', cols.long_border_color);
+              if (cols.short_border_color) setColor('footer_line_short_color', 'footer_line_short_color_hex', cols.short_border_color);
+              if (cols.bg_opacity != null) document.getElementById('footer_bg_opacity').value = cols.bg_opacity;
+            }
+
+            // Bootstrap size
+            if (c1.bootstrap_size) {
+              var bs = c1.bootstrap_size;
+              if (bs.col_1_class) document.getElementById('footer_col_1_class').value = bs.col_1_class;
+              if (bs.col_2_class) document.getElementById('footer_col_2_class').value = bs.col_2_class;
+              if (bs.col_3_class) document.getElementById('footer_col_3_class').value = bs.col_3_class;
+            }
+          }
+
+          // Col 2
+          if (d.col_2) {
+            if (d.col_2.title) document.getElementById('col2_title').value = d.col_2.title;
+            if (d.col_2.link_list && Array.isArray(d.col_2.link_list)) {
+              d.col_2.link_list.forEach(function (item) {
+                var container = document.getElementById('col2-links-container');
+                container.appendChild(createTextLinkRow(updateCol2Links, item));
+              });
+              updateCol2Links();
+            }
+          }
+
+          // Col 3
+          if (d.col_3) {
+            if (d.col_3.title) document.getElementById('col3_title').value = d.col_3.title;
+            if (d.col_3.link_list && Array.isArray(d.col_3.link_list)) {
+              d.col_3.link_list.forEach(function (item) {
+                var container = document.getElementById('col3-links-container');
+                container.appendChild(createTextLinkRow(updateCol3Links, item));
+              });
+              updateCol3Links();
+            }
+          }
+
+          // Col 4
+          if (d.col_4) {
+            var c4 = d.col_4;
+            if (c4.title) document.getElementById('col4_title').value = c4.title;
+            if (c4.link_list && Array.isArray(c4.link_list)) {
+              c4.link_list.forEach(function (item) {
+                var container = document.getElementById('col4-links-container');
+                container.appendChild(createFileLinkRow(updateCol4Links, item));
+              });
+              updateCol4Links();
+            }
+
+            // Payment
+            if (c4.payment_method) {
+              document.getElementById('payment_visible').checked = c4.payment_method.show === 1;
+              if (c4.payment_method.payment_list && Array.isArray(c4.payment_method.payment_list)) {
+                c4.payment_method.payment_list.forEach(function (item) {
+                  var container = document.getElementById('payment-container');
+                  container.appendChild(createPaymentRow(item));
+                });
+                updatePaymentHidden();
+              }
+            }
+
+            // Map
+            if (c4.map) {
+              document.getElementById('map_visible').checked = c4.map.show === 1;
+              if (c4.map.iframe) {
+                document.getElementById('map_iframe').value = c4.map.iframe;
+                document.getElementById('map_preview').innerHTML = c4.map.iframe;
+              }
+            }
+
+            // Fanpage
+            if (c4.fanpage) {
+              document.getElementById('fanpage_visible').checked = c4.fanpage.show === 1;
+              if (c4.fanpage.iframe) {
+                document.getElementById('fanpage_content').value = c4.fanpage.iframe;
+                document.getElementById('fanpage_preview').innerHTML = c4.fanpage.iframe;
+              }
+            }
+
+            // BCT notice
+            if (c4.bct_notice && c4.bct_notice.content) {
+              document.getElementById('bct_notification').value = c4.bct_notice.content;
+            }
+          }
+
+          // Access time
+          if (d.access_time) {
+            var at = d.access_time;
+            if (at.show_time != null) document.getElementById('access_time_visible').checked = at.show_time === 1;
+            if (at.show_visitor_count != null) document.getElementById('access_count_visible').checked = at.show_visitor_count === 1;
+            if (at.bg_color) setColor('access_bg_color', 'access_bg_color_hex', at.bg_color);
+            if (at.text_color) setColor('access_text_color', 'access_text_color_hex', at.text_color);
+            if (at.text) document.getElementById('access_time_text').value = at.text;
+          }
+
+          // Copyright
+          if (d.copyright) {
+            if (d.copyright.text) {
+              document.getElementById('copyright_content').value = d.copyright.text;
+              copyrightContentInput.dataset.edited = '1';
+            }
+          }
+
+        } catch (err) {
+          // Silent fail — page works with defaults
+        }
+      }
+
+      function setColor(inputId, hexId, value) {
+        document.getElementById(inputId).value = value;
+        document.getElementById(hexId).textContent = value;
+      }
+
+      loadData();
     })();
   </script>
 </body>

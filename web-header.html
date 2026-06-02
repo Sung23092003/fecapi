@@ -780,6 +780,11 @@
                             <input type="hidden" id="header_main_logo" name="header_main_logo" value="">
                           </div>
                         </div>
+                        <div class="form-group mt-2">
+                          <label class="form-label">Tỷ lệ Bootstrap</label>
+                          <input type="text" class="form-control" id="header_main_logo_col"
+                            name="header_main_logo_col" placeholder="VD: col-3" value="col-3">
+                        </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
@@ -788,6 +793,16 @@
                             <option value="1">Hiện</option>
                             <option value="0">Ẩn</option>
                           </select>
+                        </div>
+                        <div class="form-group mt-2">
+                          <label class="form-label">Tỷ lệ Bootstrap</label>
+                          <input type="text" class="form-control" id="header_main_search_col"
+                            name="header_main_search_col" placeholder="VD: col-6" value="col-6">
+                        </div>
+                        <div class="form-group mt-2">
+                          <label class="form-label">Placeholder</label>
+                          <input type="text" class="form-control" id="header_main_search_placeholder"
+                            name="header_main_search_placeholder" placeholder="Search...">
                         </div>
                       </div>
                     </div>
@@ -1254,7 +1269,10 @@
             border_color: document.getElementById('header_main_border_color').value,
             border_thickness: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
             logo: document.getElementById('header_main_logo').value,
+            logo_col: document.getElementById('header_main_logo_col').value,
             search_show: parseInt(document.getElementById('header_main_search').value, 10),
+            search_col: document.getElementById('header_main_search_col').value,
+            search_placeholder: document.getElementById('header_main_search_placeholder').value,
             item_list: JSON.parse(document.getElementById('header_main_items').value || '[]')
           }
         };
@@ -1339,6 +1357,9 @@
             if (d.header_main.border_thickness != null) document.getElementById('header_main_border_width').value = d.header_main.border_thickness;
             if (d.header_main.logo) setUploadedImage('header-main-logo-preview', 'header_main_logo', 'header-main-logo-upload-box', d.header_main.logo);
             if (d.header_main.search_show != null) document.getElementById('header_main_search').value = String(d.header_main.search_show);
+            if (d.header_main.logo_col) document.getElementById('header_main_logo_col').value = d.header_main.logo_col;
+            if (d.header_main.search_col) document.getElementById('header_main_search_col').value = d.header_main.search_col;
+            if (d.header_main.search_placeholder != null) document.getElementById('header_main_search_placeholder').value = d.header_main.search_placeholder;
 
             // Main items table
             if (d.header_main.item_list && Array.isArray(d.header_main.item_list)) {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,6 +31,7 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/web-category.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
 </head>
 
 <body>
@@ -516,6 +517,47 @@
 
         </div>
       </div>
+
+      <!-- Menu Appearance Settings -->
+      <div class="card mt-4">
+        <div class="card-body pt-20">
+          <h5 class="card-title mb-3">Cấu hình giao diện Menu</h5>
+          <form id="formMenuAppearance">
+            <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
+              <div class="form-group flex-fill">
+                <label class="form-label fw-semibold">Màu nền menu</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="menu_bg_color"
+                    name="menu_bg_color" value="#ffffff">
+                  <span class="color-hex" id="menu_bg_color_hex">#ffffff</span>
+                </div>
+              </div>
+              <div class="form-group flex-fill">
+                <label class="form-label fw-semibold">Màu nền rê chuột / đã chọn menu</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="menu_hover_bg_color"
+                    name="menu_hover_bg_color" value="#0d6efd">
+                  <span class="color-hex" id="menu_hover_bg_color_hex">#0d6efd</span>
+                </div>
+              </div>
+              <div class="form-group flex-fill">
+                <label class="form-label fw-semibold">Màu chữ menu</label>
+                <div class="color-input-group">
+                  <input type="color" class="form-control form-control-color" id="menu_text_color"
+                    name="menu_text_color" value="#333333">
+                  <span class="color-hex" id="menu_text_color_hex">#333333</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="menu_bold">
+                <label class="form-check-label fw-bold" for="menu_bold">In đậm</label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </section>
 
     <!-- Delete Confirmation Modal -->
@@ -557,6 +599,15 @@
       </div>
     </div>
   </main><!-- End #main -->
+
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formMenuAppearance">
+      <i class="bi bi-floppy"></i><span>LƯU</span>
+    </button>
+    <a href="web-category.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>BỎ</span>
+    </a>
+  </div>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
@@ -1309,6 +1360,56 @@
         loadData();
         clearFilterConfirmModal.hide();
       });
+
+      /* ===== Menu Appearance Color Pickers ===== */
+      function setupMenuColorPicker(inputId, hexId) {
+        var input = document.getElementById(inputId);
+        var hex = document.getElementById(hexId);
+        if (input && hex) {
+          input.addEventListener('input', function () { hex.textContent = input.value; });
+        }
+      }
+      setupMenuColorPicker('menu_bg_color', 'menu_bg_color_hex');
+      setupMenuColorPicker('menu_hover_bg_color', 'menu_hover_bg_color_hex');
+      setupMenuColorPicker('menu_text_color', 'menu_text_color_hex');
+
+      /* ===== Menu Appearance Save ===== */
+      var menuForm = document.getElementById('formMenuAppearance');
+      if (menuForm) {
+        menuForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var payload = {
+            menu_bg_color: document.getElementById('menu_bg_color').value,
+            menu_hover_bg_color: document.getElementById('menu_hover_bg_color').value,
+            menu_text_color: document.getElementById('menu_text_color').value,
+            menu_bold: document.getElementById('menu_bold').checked
+          };
+          // Save to localStorage
+          localStorage.setItem('menu_appearance', JSON.stringify(payload));
+          showAlert('Đã lưu cấu hình giao diện menu.', 'success');
+        });
+      }
+
+      /* ===== Load saved menu appearance ===== */
+      (function loadMenuAppearance() {
+        var saved = localStorage.getItem('menu_appearance');
+        if (!saved) return;
+        try {
+          var data = JSON.parse(saved);
+          var bg = document.getElementById('menu_bg_color');
+          var bgHex = document.getElementById('menu_bg_color_hex');
+          if (bg && data.menu_bg_color) { bg.value = data.menu_bg_color; if (bgHex) bgHex.textContent = data.menu_bg_color; }
+          var hover = document.getElementById('menu_hover_bg_color');
+          var hoverHex = document.getElementById('menu_hover_bg_color_hex');
+          if (hover && data.menu_hover_bg_color) { hover.value = data.menu_hover_bg_color; if (hoverHex) hoverHex.textContent = data.menu_hover_bg_color; }
+          var text = document.getElementById('menu_text_color');
+          var textHex = document.getElementById('menu_text_color_hex');
+          if (text && data.menu_text_color) { text.value = data.menu_text_color; if (textHex) textHex.textContent = data.menu_text_color; }
+          var bold = document.getElementById('menu_bold');
+          if (bold && data.menu_bold !== undefined) bold.checked = data.menu_bold;
+        } catch (e) {}
+      })();
 
       // Init
       initColumns();

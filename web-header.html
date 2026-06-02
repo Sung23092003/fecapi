@@ -602,6 +602,38 @@
                         </div>
                       </div>
                     </div>
+                    <div class="row g-4 mt-1">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu nền rê chuột</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_top_hover_bg_color"
+                              name="header_top_hover_bg_color" value="#f8f9fa">
+                            <span class="color-hex" id="header_top_hover_bg_color_hex">#f8f9fa</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu nền đã chọn</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_top_active_bg_color"
+                              name="header_top_active_bg_color" value="#0d6efd">
+                            <span class="color-hex" id="header_top_active_bg_color_hex">#0d6efd</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu chữ đã chọn</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_top_active_text_color"
+                              name="header_top_active_text_color" value="#ffffff">
+                            <span class="color-hex" id="header_top_active_text_color_hex">#ffffff</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
                     <hr class="my-3">
                     <h6 class="fw-bold mb-3">Đường kẻ</h6>
@@ -672,6 +704,38 @@
                             <input type="color" class="form-control form-control-color" id="header_main_text_color"
                               name="header_main_text_color" value="#333333">
                             <span class="color-hex" id="header_main_text_color_hex">#333333</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row g-4 mt-1">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu nền rê chuột</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_main_hover_bg_color"
+                              name="header_main_hover_bg_color" value="#f8f9fa">
+                            <span class="color-hex" id="header_main_hover_bg_color_hex">#f8f9fa</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu nền đã chọn</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_main_active_bg_color"
+                              name="header_main_active_bg_color" value="#0d6efd">
+                            <span class="color-hex" id="header_main_active_bg_color_hex">#0d6efd</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Màu chữ đã chọn</label>
+                          <div class="color-input-group">
+                            <input type="color" class="form-control form-control-color" id="header_main_active_text_color"
+                              name="header_main_active_text_color" value="#ffffff">
+                            <span class="color-hex" id="header_main_active_text_color_hex">#ffffff</span>
                           </div>
                         </div>
                       </div>
@@ -843,9 +907,15 @@
       }
       setupColorPicker('header_top_bg_color', 'header_top_bg_color_hex');
       setupColorPicker('header_top_text_color', 'header_top_text_color_hex');
+      setupColorPicker('header_top_hover_bg_color', 'header_top_hover_bg_color_hex');
+      setupColorPicker('header_top_active_bg_color', 'header_top_active_bg_color_hex');
+      setupColorPicker('header_top_active_text_color', 'header_top_active_text_color_hex');
       setupColorPicker('header_top_border_color', 'header_top_border_color_hex');
       setupColorPicker('header_main_bg_color', 'header_main_bg_color_hex');
       setupColorPicker('header_main_text_color', 'header_main_text_color_hex');
+      setupColorPicker('header_main_hover_bg_color', 'header_main_hover_bg_color_hex');
+      setupColorPicker('header_main_active_bg_color', 'header_main_active_bg_color_hex');
+      setupColorPicker('header_main_active_text_color', 'header_main_active_text_color_hex');
       setupColorPicker('header_main_border_color', 'header_main_border_color_hex');
 
       /* ===================== File Upload ===================== */
@@ -1167,6 +1237,9 @@
           header_top: {
             bg_color: document.getElementById('header_top_bg_color').value,
             text_color: document.getElementById('header_top_text_color').value,
+            hover_bg_color: document.getElementById('header_top_hover_bg_color').value,
+            active_bg_color: document.getElementById('header_top_active_bg_color').value,
+            active_text_color: document.getElementById('header_top_active_text_color').value,
             border_color: document.getElementById('header_top_border_color').value,
             border_thickness: parseInt(document.getElementById('header_top_border_width').value, 10) || 0,
             left_links: JSON.parse(document.getElementById('header_top_links_left').value || '[]'),
@@ -1175,6 +1248,9 @@
           header_main: {
             bg_color: document.getElementById('header_main_bg_color').value,
             text_color: document.getElementById('header_main_text_color').value,
+            hover_bg_color: document.getElementById('header_main_hover_bg_color').value,
+            active_bg_color: document.getElementById('header_main_active_bg_color').value,
+            active_text_color: document.getElementById('header_main_active_text_color').value,
             border_color: document.getElementById('header_main_border_color').value,
             border_thickness: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
             logo: document.getElementById('header_main_logo').value,
@@ -1233,6 +1309,9 @@
           if (d.header_top) {
             if (d.header_top.bg_color) setColor('header_top_bg_color', 'header_top_bg_color_hex', d.header_top.bg_color);
             if (d.header_top.text_color) setColor('header_top_text_color', 'header_top_text_color_hex', d.header_top.text_color);
+            if (d.header_top.hover_bg_color) setColor('header_top_hover_bg_color', 'header_top_hover_bg_color_hex', d.header_top.hover_bg_color);
+            if (d.header_top.active_bg_color) setColor('header_top_active_bg_color', 'header_top_active_bg_color_hex', d.header_top.active_bg_color);
+            if (d.header_top.active_text_color) setColor('header_top_active_text_color', 'header_top_active_text_color_hex', d.header_top.active_text_color);
             if (d.header_top.border_color) setColor('header_top_border_color', 'header_top_border_color_hex', d.header_top.border_color);
             if (d.header_top.border_thickness != null) document.getElementById('header_top_border_width').value = d.header_top.border_thickness;
 
@@ -1253,6 +1332,9 @@
           if (d.header_main) {
             if (d.header_main.bg_color) setColor('header_main_bg_color', 'header_main_bg_color_hex', d.header_main.bg_color);
             if (d.header_main.text_color) setColor('header_main_text_color', 'header_main_text_color_hex', d.header_main.text_color);
+            if (d.header_main.hover_bg_color) setColor('header_main_hover_bg_color', 'header_main_hover_bg_color_hex', d.header_main.hover_bg_color);
+            if (d.header_main.active_bg_color) setColor('header_main_active_bg_color', 'header_main_active_bg_color_hex', d.header_main.active_bg_color);
+            if (d.header_main.active_text_color) setColor('header_main_active_text_color', 'header_main_active_text_color_hex', d.header_main.active_text_color);
             if (d.header_main.border_color) setColor('header_main_border_color', 'header_main_border_color_hex', d.header_main.border_color);
             if (d.header_main.border_thickness != null) document.getElementById('header_main_border_width').value = d.header_main.border_thickness;
             if (d.header_main.logo) setUploadedImage('header-main-logo-preview', 'header_main_logo', 'header-main-logo-upload-box', d.header_main.logo);

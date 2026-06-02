@@ -985,8 +985,11 @@
         var tr = document.createElement('tr');
         tr.innerHTML =
           '<td>' +
+          '<div class="main-item-image-box">' +
           '<img class="main-item-thumb d-none" alt="">' +
           '<div class="main-item-thumb-placeholder"><i class="bi bi-image"></i></div>' +
+          '<button type="button" class="main-item-img-remove" title="Xóa ảnh"><i class="bi bi-x-lg"></i></button>' +
+          '</div>' +
           '<input type="file" class="main-item-img-input" accept="image/*">' +
           '<input type="hidden" class="main-item-img-value" value="' + (data.image || '') + '">' +
           '</td>' +
@@ -1002,27 +1005,48 @@
         // Image upload
         var imgThumb = tr.querySelector('.main-item-thumb');
         var imgPlaceholder = tr.querySelector('.main-item-thumb-placeholder');
+        var imgRemove = tr.querySelector('.main-item-img-remove');
         var imgInput = tr.querySelector('.main-item-img-input');
         var imgHidden = tr.querySelector('.main-item-img-value');
 
+        function setMainItemImage(url) {
+          if (url) {
+            imgThumb.src = url;
+            imgThumb.classList.remove('d-none');
+            imgPlaceholder.classList.add('d-none');
+            imgRemove.classList.remove('d-none');
+          } else {
+            imgThumb.src = '';
+            imgThumb.classList.add('d-none');
+            imgPlaceholder.classList.remove('d-none');
+            imgRemove.classList.add('d-none');
+            imgInput.value = '';
+          }
+        }
+
         if (data.image) {
-          imgThumb.src = data.image;
-          imgThumb.classList.remove('d-none');
-          imgPlaceholder.classList.add('d-none');
+          setMainItemImage(data.image);
+        } else {
+          setMainItemImage('');
         }
 
         function triggerUpload() { imgInput.click(); }
         imgThumb.addEventListener('click', triggerUpload);
         imgPlaceholder.addEventListener('click', triggerUpload);
+        imgRemove.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+          imgHidden.value = '';
+          setMainItemImage('');
+          updateMainItemsHidden();
+        });
 
         imgInput.addEventListener('change', function () {
           var file = this.files && this.files[0];
           if (!file) return;
           var reader = new FileReader();
           reader.onload = function (e) {
-            imgThumb.src = e.target.result;
-            imgThumb.classList.remove('d-none');
-            imgPlaceholder.classList.add('d-none');
+            setMainItemImage(e.target.result);
           };
           reader.readAsDataURL(file);
 

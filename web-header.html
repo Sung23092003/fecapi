@@ -980,8 +980,25 @@
       });
 
       /* ===================== Main Items Table ===================== */
+      function normalizeIconClass(icon) {
+        var value = String(icon == null ? '' : icon)
+          .replace(/\\"/g, '"')
+          .replace(/&quot;|&#34;/g, '"')
+          .replace(/&#39;/g, "'")
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .trim();
+        var match;
+        if (!value) return '';
+        match = value.match(/\bclass\s*=\s*["']([^"']+)["']/i) || value.match(/\bclass\s*=\s*([^\s>]+)/i);
+        if (match && match[1]) value = match[1];
+        value = value.replace(/[<>="'`]/g, ' ').replace(/\s+/g, ' ').trim();
+        return /^[a-z0-9_\-:\s]+$/i.test(value) ? value : '';
+      }
+
       function createMainItemRow(data) {
         data = data || {};
+        data.icon = normalizeIconClass(data.icon);
         var tr = document.createElement('tr');
         tr.innerHTML =
           '<td>' +
@@ -1093,7 +1110,7 @@
             image: tr.querySelector('.main-item-img-value').value || '',
             name: tr.querySelector('.main-item-name').value || '',
             content: tr.querySelector('.main-item-content').value || '',
-            icon: tr.querySelector('.main-item-icon').value || '',
+            icon: normalizeIconClass(tr.querySelector('.main-item-icon').value || ''),
             columns: parseInt(tr.querySelector('.main-item-cols').value, 10) || 1,
             position: parseInt(tr.querySelector('.main-item-order').value, 10) || 0,
             show_desktop: tr.querySelector('.main-item-visible').checked,

@@ -394,14 +394,14 @@
                 </div>
               </div>
 
-              <div class="form-group mt-3">
+              <div class="form-group mt-3 d-none">
                 <label class="form-label">URL</label>
                 <div class="controls">
                   <input type="text" class="form-control" id="bannerUrl" placeholder="/landing-page">
                 </div>
               </div>
 
-              <div class="form-group mt-3">
+              <div class="form-group mt-3 d-none">
                 <label class="form-label">Mô tả ngắn</label>
                 <div class="controls">
                   <textarea class="form-control" id="bannerDescription" rows="4"></textarea>
@@ -553,7 +553,8 @@
 
   <script>
     (function () {
-      const id = Number(new URLSearchParams(window.location.search).get('id') || 0);
+      const id = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = id && id !== '0';
       const pageTitle = document.getElementById('pageTitle');
       const pageCrumb = document.getElementById('pageCrumb');
       const form = document.getElementById('formBanner');
@@ -653,7 +654,7 @@
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
         const payload = {
-          id: id,
+          id: isEdit ? id : 0,
           banner_title: document.getElementById('bannerTitle').value,
           banner_intro: document.getElementById('bannerDescription').value,
           banner_image_desktop: document.getElementById('imageDesktop').value,
@@ -673,7 +674,7 @@
             showAlert(json?.message || 'Lỗi: ' + res.status, 'danger');
             return;
           }
-          showAlert(id ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', 'success');
+          showAlert(isEdit ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', 'success');
           setTimeout(function () { window.location.href = 'web-banner.html'; }, 500);
         } catch (err) {
           showAlert('Có lỗi xảy ra khi lưu!', 'danger');
@@ -681,7 +682,7 @@
       });
 
       async function loadBannerData() {
-        if (!id) return;
+        if (!isEdit) return;
         try {
           const url = ENV.BASE_URL + '/admin/banner/' + id;
           const res = await fetch(url, { method: 'GET', headers: Auth.getAuthHeader() });
@@ -698,7 +699,7 @@
         }
       }
 
-      if (id) {
+      if (isEdit) {
         pageTitle.textContent = 'Sửa banner';
         pageCrumb.textContent = 'Sửa';
         document.getElementById('bannerId').value = id;

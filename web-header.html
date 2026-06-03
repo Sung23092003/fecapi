@@ -23,10 +23,189 @@
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" rel="stylesheet">
 
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/web-statics-edit.css" rel="stylesheet">
   <link href="assets/css/web-header.css" rel="stylesheet">
+
+  <style>
+    .admin-color-control {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .admin-color-preview {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: var(--admin-color, #ffffff);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+      cursor: pointer;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .admin-color-preview:hover,
+    .admin-color-preview:focus-visible {
+      outline: 0;
+      border-color: #4154f1;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+    }
+
+    .admin-color-input-shell {
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+      min-width: 170px;
+      max-width: 240px;
+      height: 40px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .admin-color-input-shell:hover,
+    .admin-color-input-shell:focus-within {
+      border-color: #4154f1;
+    }
+
+    .admin-color-input-shell:focus-within {
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12);
+    }
+
+    .admin-color-input-shell .clr-field {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .admin-color-input-shell .clr-field button {
+      display: none;
+    }
+
+    .admin-color-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 0;
+      background: transparent;
+      color: #1f2937;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: lowercase;
+      box-shadow: none !important;
+    }
+
+    .admin-color-input:focus {
+      border: 0;
+      outline: 0;
+      box-shadow: none !important;
+    }
+
+    .admin-color-copy {
+      width: 34px;
+      height: 34px;
+      margin-right: 3px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #667085;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .18s ease, color .18s ease;
+    }
+
+    .admin-color-copy:hover {
+      background: #f3f4f6;
+      color: #4154f1;
+    }
+
+    .color-hex {
+      display: none;
+    }
+
+    .clr-picker {
+      border: 1px solid #e5e7eb !important;
+      border-radius: 12px !important;
+      padding: 16px !important;
+      background: #fff !important;
+      box-shadow: 0 18px 45px rgba(16, 24, 40, 0.22) !important;
+    }
+
+    .clr-picker::before,
+    .clr-picker::after {
+      display: none !important;
+    }
+
+    .clr-picker input {
+      height: 38px !important;
+      border: 1px solid #d9d9d9 !important;
+      border-radius: 8px !important;
+      color: #1f2937 !important;
+      font-family: "Courier New", monospace;
+      font-weight: 600 !important;
+      text-transform: lowercase !important;
+    }
+
+    .clr-picker input:focus {
+      border-color: #4154f1 !important;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12) !important;
+    }
+
+    .clr-gradient,
+    .clr-hue {
+      border-radius: 10px !important;
+    }
+
+    .clr-swatches {
+      gap: 8px !important;
+      margin-top: 12px !important;
+    }
+
+    .clr-swatches button {
+      width: 24px !important;
+      height: 24px !important;
+      border-radius: 7px !important;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .clr-copy-hex {
+      width: 100%;
+      height: 38px;
+      margin-top: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: #fff;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .clr-copy-hex:hover {
+      border-color: #4154f1;
+      color: #4154f1;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.08);
+    }
+
+    @media (max-width: 767.98px) {
+      .admin-color-control {
+        align-items: flex-start;
+      }
+
+      .admin-color-input-shell {
+        max-width: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -584,9 +763,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_bg_color"
-                              name="header_top_bg_color" value="#ffffff">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_bg_color_preview" aria-label="Chọn màu nền"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_bg_color"
+                                name="header_top_bg_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_bg_color_hex">#ffffff</span>
                           </div>
                         </div>
@@ -594,9 +777,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu chữ</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_text_color"
-                              name="header_top_text_color" value="#333333">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_text_color_preview" aria-label="Chọn màu chữ"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_text_color"
+                                name="header_top_text_color" value="#333333" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_text_color_hex">#333333</span>
                           </div>
                         </div>
@@ -606,9 +793,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền rê chuột</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_hover_bg_color"
-                              name="header_top_hover_bg_color" value="#f8f9fa">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_hover_bg_color_preview" aria-label="Chọn màu nền rê chuột"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_hover_bg_color"
+                                name="header_top_hover_bg_color" value="#f8f9fa" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_hover_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_hover_bg_color_hex">#f8f9fa</span>
                           </div>
                         </div>
@@ -616,9 +807,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền đã chọn</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_active_bg_color"
-                              name="header_top_active_bg_color" value="#0d6efd">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_active_bg_color_preview" aria-label="Chọn màu nền đã chọn"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_active_bg_color"
+                                name="header_top_active_bg_color" value="#0d6efd" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_active_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_active_bg_color_hex">#0d6efd</span>
                           </div>
                         </div>
@@ -626,9 +821,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu chữ đã chọn</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_active_text_color"
-                              name="header_top_active_text_color" value="#ffffff">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_active_text_color_preview" aria-label="Chọn màu chữ đã chọn"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_active_text_color"
+                                name="header_top_active_text_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_active_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_active_text_color_hex">#ffffff</span>
                           </div>
                         </div>
@@ -641,9 +840,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Màu đường kẻ</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_top_border_color"
-                              name="header_top_border_color" value="#dee2e6">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_top_border_color_preview" aria-label="Chọn màu đường kẻ"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_top_border_color"
+                                name="header_top_border_color" value="#dee2e6" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_top_border_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_top_border_color_hex">#dee2e6</span>
                           </div>
                         </div>
@@ -690,9 +893,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_bg_color"
-                              name="header_main_bg_color" value="#ffffff">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_bg_color_preview" aria-label="Chọn màu nền"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_bg_color"
+                                name="header_main_bg_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_bg_color_hex">#ffffff</span>
                           </div>
                         </div>
@@ -700,9 +907,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu chữ</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_text_color"
-                              name="header_main_text_color" value="#333333">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_text_color_preview" aria-label="Chọn màu chữ"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_text_color"
+                                name="header_main_text_color" value="#333333" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_text_color_hex">#333333</span>
                           </div>
                         </div>
@@ -712,9 +923,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền rê chuột</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_hover_bg_color"
-                              name="header_main_hover_bg_color" value="#f8f9fa">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_hover_bg_color_preview" aria-label="Chọn màu nền rê chuột"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_hover_bg_color"
+                                name="header_main_hover_bg_color" value="#f8f9fa" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_hover_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_hover_bg_color_hex">#f8f9fa</span>
                           </div>
                         </div>
@@ -722,9 +937,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu nền đã chọn</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_active_bg_color"
-                              name="header_main_active_bg_color" value="#0d6efd">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_active_bg_color_preview" aria-label="Chọn màu nền đã chọn"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_active_bg_color"
+                                name="header_main_active_bg_color" value="#0d6efd" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_active_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_active_bg_color_hex">#0d6efd</span>
                           </div>
                         </div>
@@ -732,9 +951,13 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="form-label fw-semibold">Màu chữ đã chọn</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_active_text_color"
-                              name="header_main_active_text_color" value="#ffffff">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_active_text_color_preview" aria-label="Chọn màu chữ đã chọn"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_active_text_color"
+                                name="header_main_active_text_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_active_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_active_text_color_hex">#ffffff</span>
                           </div>
                         </div>
@@ -747,9 +970,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="form-label">Màu đường kẻ</label>
-                          <div class="color-input-group">
-                            <input type="color" class="form-control form-control-color" id="header_main_border_color"
-                              name="header_main_border_color" value="#dee2e6">
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_main_border_color_preview" aria-label="Chọn màu đường kẻ"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_main_border_color"
+                                name="header_main_border_color" value="#dee2e6" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_main_border_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
                             <span class="color-hex" id="header_main_border_color_hex">#dee2e6</span>
                           </div>
                         </div>
@@ -865,6 +1092,7 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth.js"></script>
@@ -913,25 +1141,157 @@
       });
 
       /* ===================== Color pickers ===================== */
-      function setupColorPicker(inputId, hexId) {
-        const input = document.getElementById(inputId);
-        const hex = document.getElementById(hexId);
-        if (input && hex) {
-          input.addEventListener('input', () => { hex.textContent = input.value; });
+      function isValidHex(color) {
+        return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(String(color || '').trim());
+      }
+
+      function rgbToHex(r, g, b) {
+        function toHex(value) {
+          var channel = Math.max(0, Math.min(255, parseInt(value, 10) || 0));
+          return channel.toString(16).padStart(2, '0');
+        }
+        return '#' + toHex(r) + toHex(g) + toHex(b);
+      }
+
+      function normalizeColorToHex(color) {
+        var value = String(color || '').trim();
+        if (isValidHex(value)) {
+          var hex = value.slice(1);
+          if (hex.length === 3) hex = hex.split('').map(function (char) { return char + char; }).join('');
+          return '#' + hex.toLowerCase();
+        }
+        var rgbMatch = value.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(?:\d?(?:\.\d+)?))?\s*\)$/i);
+        if (rgbMatch) return rgbToHex(rgbMatch[1], rgbMatch[2], rgbMatch[3]);
+        return '#ffffff';
+      }
+
+      if (window.Coloris) {
+        Coloris({
+          el: '[data-coloris]',
+          theme: 'polaroid',
+          themeMode: 'light',
+          format: 'hex',
+          alpha: false,
+          swatches: ['#ffffff', '#f8f9fa', '#dee2e6', '#333333', '#0d6efd', '#0284c7', '#dc2626', '#16a34a']
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(function () {});
+        } else {
+          var temp = document.createElement('textarea');
+          temp.value = text;
+          temp.style.position = 'fixed';
+          temp.style.opacity = '0';
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          temp.remove();
         }
       }
-      setupColorPicker('header_top_bg_color', 'header_top_bg_color_hex');
-      setupColorPicker('header_top_text_color', 'header_top_text_color_hex');
-      setupColorPicker('header_top_hover_bg_color', 'header_top_hover_bg_color_hex');
-      setupColorPicker('header_top_active_bg_color', 'header_top_active_bg_color_hex');
-      setupColorPicker('header_top_active_text_color', 'header_top_active_text_color_hex');
-      setupColorPicker('header_top_border_color', 'header_top_border_color_hex');
-      setupColorPicker('header_main_bg_color', 'header_main_bg_color_hex');
-      setupColorPicker('header_main_text_color', 'header_main_text_color_hex');
-      setupColorPicker('header_main_hover_bg_color', 'header_main_hover_bg_color_hex');
-      setupColorPicker('header_main_active_bg_color', 'header_main_active_bg_color_hex');
-      setupColorPicker('header_main_active_text_color', 'header_main_active_text_color_hex');
-      setupColorPicker('header_main_border_color', 'header_main_border_color_hex');
+
+      function ensureColorisCopyButton(getActiveColor) {
+        window.setTimeout(function () {
+          var picker = document.querySelector('.clr-picker');
+          if (!picker || picker.querySelector('.clr-copy-hex')) return;
+          var button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'clr-copy-hex';
+          button.textContent = 'Copy HEX';
+          button.addEventListener('click', function () {
+            var value = getActiveColor();
+            copyText(value);
+            button.textContent = 'Copied ' + value;
+            window.setTimeout(function () { button.textContent = 'Copy HEX'; }, 1200);
+          });
+          picker.appendChild(button);
+        }, 0);
+      }
+
+      function setupColorPicker(inputId, hexId, previewId) {
+        const input = document.getElementById(inputId);
+        const hex = document.getElementById(hexId);
+        const preview = document.getElementById(previewId);
+        if (!input || !hex || !preview) {
+          return {
+            getValue: function () { return '#ffffff'; },
+            setValue: function () {}
+          };
+        }
+
+        function setValue(value) {
+          var normalized = normalizeColorToHex(value);
+          input.value = normalized;
+          hex.textContent = normalized;
+          preview.style.setProperty('--admin-color', normalized);
+          if (input.parentElement && input.parentElement.classList.contains('clr-field')) {
+            input.parentElement.style.color = normalized;
+          }
+        }
+
+        function syncFromInput() {
+          var value = input.value.trim();
+          if (isValidHex(value) || /^rgba?\(/i.test(value)) setValue(value);
+        }
+
+        input.addEventListener('input', syncFromInput);
+        input.addEventListener('change', function () { setValue(input.value); });
+        input.addEventListener('blur', function () { setValue(input.value); });
+        input.addEventListener('paste', function () { window.setTimeout(syncFromInput, 0); });
+        input.addEventListener('coloris:pick', function (event) {
+          setValue(event.detail && event.detail.color ? event.detail.color : input.value);
+        });
+        preview.addEventListener('click', function () {
+          input.focus();
+          input.click();
+        });
+
+        setValue(input.value);
+        return {
+          getValue: function () { return normalizeColorToHex(input.value); },
+          setValue: setValue
+        };
+      }
+
+      const headerColorPickers = {
+        topBg: setupColorPicker('header_top_bg_color', 'header_top_bg_color_hex', 'header_top_bg_color_preview'),
+        topText: setupColorPicker('header_top_text_color', 'header_top_text_color_hex', 'header_top_text_color_preview'),
+        topHoverBg: setupColorPicker('header_top_hover_bg_color', 'header_top_hover_bg_color_hex', 'header_top_hover_bg_color_preview'),
+        topActiveBg: setupColorPicker('header_top_active_bg_color', 'header_top_active_bg_color_hex', 'header_top_active_bg_color_preview'),
+        topActiveText: setupColorPicker('header_top_active_text_color', 'header_top_active_text_color_hex', 'header_top_active_text_color_preview'),
+        topBorder: setupColorPicker('header_top_border_color', 'header_top_border_color_hex', 'header_top_border_color_preview'),
+        mainBg: setupColorPicker('header_main_bg_color', 'header_main_bg_color_hex', 'header_main_bg_color_preview'),
+        mainText: setupColorPicker('header_main_text_color', 'header_main_text_color_hex', 'header_main_text_color_preview'),
+        mainHoverBg: setupColorPicker('header_main_hover_bg_color', 'header_main_hover_bg_color_hex', 'header_main_hover_bg_color_preview'),
+        mainActiveBg: setupColorPicker('header_main_active_bg_color', 'header_main_active_bg_color_hex', 'header_main_active_bg_color_preview'),
+        mainActiveText: setupColorPicker('header_main_active_text_color', 'header_main_active_text_color_hex', 'header_main_active_text_color_preview'),
+        mainBorder: setupColorPicker('header_main_border_color', 'header_main_border_color_hex', 'header_main_border_color_preview')
+      };
+
+      const getHeaderColor = (key) => headerColorPickers[key].getValue();
+
+      let activeHeaderColorInput = document.getElementById('header_top_bg_color');
+      document.querySelectorAll('[data-coloris]').forEach(function (input) {
+        input.addEventListener('focus', function () {
+          activeHeaderColorInput = input;
+          ensureColorisCopyButton(function () { return normalizeColorToHex(activeHeaderColorInput.value); });
+        });
+        input.addEventListener('click', function () {
+          activeHeaderColorInput = input;
+          ensureColorisCopyButton(function () { return normalizeColorToHex(activeHeaderColorInput.value); });
+        });
+      });
+
+      document.querySelectorAll('[data-copy-color]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var input = document.getElementById(button.dataset.copyColor);
+          if (!input) return;
+          copyText(normalizeColorToHex(input.value));
+          button.classList.add('text-primary');
+          window.setTimeout(function () { button.classList.remove('text-primary'); }, 900);
+        });
+      });
 
       /* ===================== File Upload ===================== */
       function setupUpload(uploadId, previewId, hiddenId, removeId, boxId) {
@@ -1250,23 +1610,23 @@
             social_image: document.getElementById('social_image').value
           },
           header_top: {
-            bg_color: document.getElementById('header_top_bg_color').value,
-            text_color: document.getElementById('header_top_text_color').value,
-            hover_bg_color: document.getElementById('header_top_hover_bg_color').value,
-            active_bg_color: document.getElementById('header_top_active_bg_color').value,
-            active_text_color: document.getElementById('header_top_active_text_color').value,
-            border_color: document.getElementById('header_top_border_color').value,
+            bg_color: getHeaderColor('topBg'),
+            text_color: getHeaderColor('topText'),
+            hover_bg_color: getHeaderColor('topHoverBg'),
+            active_bg_color: getHeaderColor('topActiveBg'),
+            active_text_color: getHeaderColor('topActiveText'),
+            border_color: getHeaderColor('topBorder'),
             border_thickness: parseInt(document.getElementById('header_top_border_width').value, 10) || 0,
             left_links: JSON.parse(document.getElementById('header_top_links_left').value || '[]'),
             right_links: JSON.parse(document.getElementById('header_top_links_right').value || '[]')
           },
           header_main: {
-            bg_color: document.getElementById('header_main_bg_color').value,
-            text_color: document.getElementById('header_main_text_color').value,
-            hover_bg_color: document.getElementById('header_main_hover_bg_color').value,
-            active_bg_color: document.getElementById('header_main_active_bg_color').value,
-            active_text_color: document.getElementById('header_main_active_text_color').value,
-            border_color: document.getElementById('header_main_border_color').value,
+            bg_color: getHeaderColor('mainBg'),
+            text_color: getHeaderColor('mainText'),
+            hover_bg_color: getHeaderColor('mainHoverBg'),
+            active_bg_color: getHeaderColor('mainActiveBg'),
+            active_text_color: getHeaderColor('mainActiveText'),
+            border_color: getHeaderColor('mainBorder'),
             border_thickness: parseInt(document.getElementById('header_main_border_width').value, 10) || 0,
             logo: document.getElementById('header_main_logo').value,
             logo_col: document.getElementById('header_main_logo_col').value,
@@ -1390,8 +1750,16 @@
       }
 
       function setColor(inputId, hexId, value) {
-        document.getElementById(inputId).value = value;
-        document.getElementById(hexId).textContent = value;
+        const input = document.getElementById(inputId);
+        const hex = document.getElementById(hexId);
+        const preview = document.getElementById(inputId + '_preview');
+        const normalized = normalizeColorToHex(value);
+        if (input) input.value = normalized;
+        if (hex) hex.textContent = normalized;
+        if (preview) preview.style.setProperty('--admin-color', normalized);
+        if (input && input.parentElement && input.parentElement.classList.contains('clr-field')) {
+          input.parentElement.style.color = normalized;
+        }
       }
 
       loadData();

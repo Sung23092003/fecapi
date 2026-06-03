@@ -27,11 +27,209 @@
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <link href="assets/css/web-category.css" rel="stylesheet">
   <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+
+  <style>
+    #formMenuAppearance .menu-color-row {
+      flex-wrap: wrap !important;
+      justify-content: flex-start !important;
+      gap: 18px 20px !important;
+    }
+
+    #formMenuAppearance .menu-color-field {
+      flex: 1 1 280px;
+      min-width: 280px;
+    }
+
+    .menu-color-control {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .menu-color-preview {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: var(--menu-color, #ffffff);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+      cursor: pointer;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .menu-color-preview:hover {
+      border-color: #4154f1;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+    }
+
+    .menu-color-preview:focus-visible {
+      outline: 0;
+      border-color: #4154f1;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.18);
+    }
+
+    .menu-color-input-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+      min-width: 170px;
+      max-width: 240px;
+      height: 40px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .menu-color-input-shell:hover,
+    .menu-color-input-shell:focus-within {
+      border-color: #4154f1;
+    }
+
+    .menu-color-input-shell:focus-within {
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12);
+    }
+
+    .menu-color-input-shell .clr-field {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .menu-color-input-shell .clr-field button {
+      display: none;
+    }
+
+    .menu-coloris-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px;
+      border: 0;
+      background: transparent;
+      color: #1f2937;
+      font-family: "Courier New", monospace;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: lowercase;
+      box-shadow: none !important;
+    }
+
+    .menu-coloris-input:focus {
+      border: 0;
+      outline: 0;
+      box-shadow: none !important;
+    }
+
+    .menu-color-copy {
+      width: 34px;
+      height: 34px;
+      margin-right: 3px;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: #667085;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .18s ease, color .18s ease;
+    }
+
+    .menu-color-copy:hover {
+      background: #f3f4f6;
+      color: #4154f1;
+    }
+
+    .color-hex {
+      display: none;
+    }
+
+    .clr-picker {
+      border: 1px solid #e5e7eb !important;
+      border-radius: 12px !important;
+      padding: 16px !important;
+      background: #fff !important;
+      box-shadow: 0 18px 45px rgba(16, 24, 40, 0.22) !important;
+    }
+
+    .clr-picker::before,
+    .clr-picker::after {
+      display: none !important;
+    }
+
+    .clr-picker input {
+      height: 38px !important;
+      border: 1px solid #d9d9d9 !important;
+      border-radius: 8px !important;
+      color: #1f2937 !important;
+      font-family: "Courier New", monospace;
+      font-weight: 600 !important;
+      text-transform: lowercase !important;
+    }
+
+    .clr-picker input:focus {
+      border-color: #4154f1 !important;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.12) !important;
+    }
+
+    .clr-gradient,
+    .clr-hue {
+      border-radius: 10px !important;
+    }
+
+    .clr-swatches {
+      gap: 8px !important;
+      margin-top: 12px !important;
+    }
+
+    .clr-swatches button {
+      width: 24px !important;
+      height: 24px !important;
+      border-radius: 7px !important;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .clr-copy-hex {
+      width: 100%;
+      height: 38px;
+      margin-top: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 8px;
+      background: #fff;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .clr-copy-hex:hover {
+      border-color: #4154f1;
+      color: #4154f1;
+      box-shadow: 0 0 0 3px rgba(65, 84, 241, 0.08);
+    }
+
+    @media (max-width: 767.98px) {
+      #formMenuAppearance .menu-color-field {
+        min-width: 100%;
+      }
+
+      .menu-color-control {
+        align-items: flex-start;
+      }
+
+      .menu-color-input-shell {
+        max-width: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -523,28 +721,49 @@
         <div class="card-body pt-20">
           <h5 class="card-title mb-3">Cấu hình giao diện Menu</h5>
           <form id="formMenuAppearance">
-            <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
-              <div class="form-group flex-fill">
+            <div class="menu-color-row d-flex flex-row gap-3 align-items-md-center justify-content-between mb-0 flex-wrap">
+              <div class="menu-color-field form-group flex-fill">
                 <label class="form-label fw-semibold">Màu nền menu</label>
-                <div class="color-input-group">
-                  <input type="color" class="form-control form-control-color" id="menu_bg_color"
-                    name="menu_bg_color" value="#ffffff">
+                <div class="menu-color-control">
+                  <button type="button" class="menu-color-preview" id="menu_bg_color_preview"
+                    aria-label="Chọn màu nền menu"></button>
+                  <div class="menu-color-input-shell">
+                    <input type="text" data-coloris class="menu-coloris-input" id="menu_bg_color"
+                      name="menu_bg_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                    <button type="button" class="menu-color-copy" data-copy-color="menu_bg_color" title="Copy HEX">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <span class="color-hex" id="menu_bg_color_hex">#ffffff</span>
                 </div>
               </div>
-              <div class="form-group flex-fill">
+              <div class="menu-color-field form-group flex-fill">
                 <label class="form-label fw-semibold">Màu nền rê chuột / đã chọn menu</label>
-                <div class="color-input-group">
-                  <input type="color" class="form-control form-control-color" id="menu_hover_bg_color"
-                    name="menu_hover_bg_color" value="#0d6efd">
+                <div class="menu-color-control">
+                  <button type="button" class="menu-color-preview" id="menu_hover_bg_color_preview"
+                    aria-label="Chọn màu nền rê chuột menu"></button>
+                  <div class="menu-color-input-shell">
+                    <input type="text" data-coloris class="menu-coloris-input" id="menu_hover_bg_color"
+                      name="menu_hover_bg_color" value="#0d6efd" autocomplete="off" spellcheck="false">
+                    <button type="button" class="menu-color-copy" data-copy-color="menu_hover_bg_color" title="Copy HEX">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <span class="color-hex" id="menu_hover_bg_color_hex">#0d6efd</span>
                 </div>
               </div>
-              <div class="form-group flex-fill">
+              <div class="menu-color-field form-group flex-fill">
                 <label class="form-label fw-semibold">Màu chữ menu</label>
-                <div class="color-input-group">
-                  <input type="color" class="form-control form-control-color" id="menu_text_color"
-                    name="menu_text_color" value="#333333">
+                <div class="menu-color-control">
+                  <button type="button" class="menu-color-preview" id="menu_text_color_preview"
+                    aria-label="Chọn màu chữ menu"></button>
+                  <div class="menu-color-input-shell">
+                    <input type="text" data-coloris class="menu-coloris-input" id="menu_text_color"
+                      name="menu_text_color" value="#333333" autocomplete="off" spellcheck="false">
+                    <button type="button" class="menu-color-copy" data-copy-color="menu_text_color" title="Copy HEX">
+                      <i class="bi bi-clipboard"></i>
+                    </button>
+                  </div>
                   <span class="color-hex" id="menu_text_color_hex">#333333</span>
                 </div>
               </div>
@@ -621,6 +840,7 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js"></script>
 
   <!-- Template Main JS File -->
 
@@ -1362,16 +1582,166 @@
       });
 
       /* ===== Menu Appearance Color Pickers ===== */
-      function setupMenuColorPicker(inputId, hexId) {
-        var input = document.getElementById(inputId);
-        var hex = document.getElementById(hexId);
-        if (input && hex) {
-          input.addEventListener('input', function () { hex.textContent = input.value; });
+      function isValidHex(color) {
+        return /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(String(color || '').trim());
+      }
+
+      function rgbToHex(r, g, b) {
+        function toHex(value) {
+          var channel = Math.max(0, Math.min(255, parseInt(value, 10) || 0));
+          return channel.toString(16).padStart(2, '0');
+        }
+
+        return '#' + toHex(r) + toHex(g) + toHex(b);
+      }
+
+      function normalizeColorToHex(color) {
+        var value = String(color || '').trim();
+
+        if (isValidHex(value)) {
+          var hex = value.slice(1);
+          if (hex.length === 3) {
+            hex = hex.split('').map(function (char) { return char + char; }).join('');
+          }
+          return '#' + hex.toLowerCase();
+        }
+
+        var rgbMatch = value.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(?:\d?(?:\.\d+)?))?\s*\)$/i);
+        if (rgbMatch) {
+          return rgbToHex(rgbMatch[1], rgbMatch[2], rgbMatch[3]);
+        }
+
+        return '#ffffff';
+      }
+
+      if (window.Coloris) {
+        Coloris({
+          el: '[data-coloris]',
+          theme: 'polaroid',
+          themeMode: 'light',
+          format: 'hex',
+          alpha: false,
+          swatches: [
+            '#ffffff',
+            '#f8f9fa',
+            '#dee2e6',
+            '#333333',
+            '#0d6efd',
+            '#0284c7',
+            '#dc2626',
+            '#16a34a'
+          ]
+        });
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(function () {});
+        } else {
+          var temp = document.createElement('textarea');
+          temp.value = text;
+          temp.style.position = 'fixed';
+          temp.style.opacity = '0';
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand('copy');
+          temp.remove();
         }
       }
-      setupMenuColorPicker('menu_bg_color', 'menu_bg_color_hex');
-      setupMenuColorPicker('menu_hover_bg_color', 'menu_hover_bg_color_hex');
-      setupMenuColorPicker('menu_text_color', 'menu_text_color_hex');
+
+      function ensureColorisCopyButton(getActiveColor) {
+        window.setTimeout(function () {
+          var picker = document.querySelector('.clr-picker');
+          if (!picker || picker.querySelector('.clr-copy-hex')) return;
+
+          var button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'clr-copy-hex';
+          button.textContent = 'Copy HEX';
+          button.addEventListener('click', function () {
+            var value = getActiveColor();
+            copyText(value);
+            button.textContent = 'Copied ' + value;
+            window.setTimeout(function () { button.textContent = 'Copy HEX'; }, 1200);
+          });
+          picker.appendChild(button);
+        }, 0);
+      }
+
+      function setupMenuColorPicker(inputId, hexId, previewId) {
+        var input = document.getElementById(inputId);
+        var hex = document.getElementById(hexId);
+        var preview = document.getElementById(previewId);
+        if (!input || !hex || !preview) {
+          return {
+            getValue: function () { return '#ffffff'; },
+            setValue: function () {}
+          };
+        }
+
+        function setValue(value) {
+          var normalized = normalizeColorToHex(value);
+          input.value = normalized;
+          hex.textContent = normalized;
+          preview.style.setProperty('--menu-color', normalized);
+          if (input.parentElement && input.parentElement.classList.contains('clr-field')) {
+            input.parentElement.style.color = normalized;
+          }
+        }
+
+        function syncFromInput() {
+          var value = input.value.trim();
+          if (isValidHex(value) || /^rgba?\(/i.test(value)) setValue(value);
+        }
+
+        input.addEventListener('input', syncFromInput);
+        input.addEventListener('change', function () { setValue(input.value); });
+        input.addEventListener('blur', function () { setValue(input.value); });
+        input.addEventListener('paste', function () {
+          window.setTimeout(syncFromInput, 0);
+        });
+        input.addEventListener('coloris:pick', function (event) {
+          setValue(event.detail && event.detail.color ? event.detail.color : input.value);
+        });
+        preview.addEventListener('click', function () {
+          input.focus();
+          input.click();
+        });
+
+        setValue(input.value);
+        return {
+          getValue: function () { return normalizeColorToHex(input.value); },
+          setValue: setValue
+        };
+      }
+      var menuColorPickers = {
+        bg: setupMenuColorPicker('menu_bg_color', 'menu_bg_color_hex', 'menu_bg_color_preview'),
+        hoverBg: setupMenuColorPicker('menu_hover_bg_color', 'menu_hover_bg_color_hex', 'menu_hover_bg_color_preview'),
+        text: setupMenuColorPicker('menu_text_color', 'menu_text_color_hex', 'menu_text_color_preview')
+      };
+
+      var activeMenuColorInput = document.getElementById('menu_bg_color');
+      document.querySelectorAll('[data-coloris]').forEach(function (input) {
+        input.addEventListener('focus', function () {
+          activeMenuColorInput = input;
+          ensureColorisCopyButton(function () { return normalizeColorToHex(activeMenuColorInput.value); });
+        });
+        input.addEventListener('click', function () {
+          activeMenuColorInput = input;
+          ensureColorisCopyButton(function () { return normalizeColorToHex(activeMenuColorInput.value); });
+        });
+      });
+
+      document.querySelectorAll('[data-copy-color]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          var input = document.getElementById(button.dataset.copyColor);
+          if (!input) return;
+          var value = normalizeColorToHex(input.value);
+          copyText(value);
+          button.classList.add('text-primary');
+          window.setTimeout(function () { button.classList.remove('text-primary'); }, 900);
+        });
+      });
 
       /* ===== Menu Appearance Save ===== */
       var menuForm = document.getElementById('formMenuAppearance');
@@ -1380,9 +1750,9 @@
           e.preventDefault();
           e.stopPropagation();
           var payload = {
-            menu_bg_color: document.getElementById('menu_bg_color').value,
-            menu_hover_bg_color: document.getElementById('menu_hover_bg_color').value,
-            menu_text_color: document.getElementById('menu_text_color').value,
+            menu_bg_color: menuColorPickers.bg.getValue(),
+            menu_hover_bg_color: menuColorPickers.hoverBg.getValue(),
+            menu_text_color: menuColorPickers.text.getValue(),
             menu_bold: document.getElementById('menu_bold').checked
           };
           // Save to localStorage
@@ -1397,15 +1767,9 @@
         if (!saved) return;
         try {
           var data = JSON.parse(saved);
-          var bg = document.getElementById('menu_bg_color');
-          var bgHex = document.getElementById('menu_bg_color_hex');
-          if (bg && data.menu_bg_color) { bg.value = data.menu_bg_color; if (bgHex) bgHex.textContent = data.menu_bg_color; }
-          var hover = document.getElementById('menu_hover_bg_color');
-          var hoverHex = document.getElementById('menu_hover_bg_color_hex');
-          if (hover && data.menu_hover_bg_color) { hover.value = data.menu_hover_bg_color; if (hoverHex) hoverHex.textContent = data.menu_hover_bg_color; }
-          var text = document.getElementById('menu_text_color');
-          var textHex = document.getElementById('menu_text_color_hex');
-          if (text && data.menu_text_color) { text.value = data.menu_text_color; if (textHex) textHex.textContent = data.menu_text_color; }
+          if (data.menu_bg_color) menuColorPickers.bg.setValue(data.menu_bg_color);
+          if (data.menu_hover_bg_color) menuColorPickers.hoverBg.setValue(data.menu_hover_bg_color);
+          if (data.menu_text_color) menuColorPickers.text.setValue(data.menu_text_color);
           var bold = document.getElementById('menu_bold');
           if (bold && data.menu_bold !== undefined) bold.checked = data.menu_bold;
         } catch (e) {}

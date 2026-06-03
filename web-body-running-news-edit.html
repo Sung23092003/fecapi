@@ -553,7 +553,7 @@
               <div class="col-md-3">
                 <label class="form-label fw-semibold">Màu nền</label>
                 <div class="color-input-group">
-                  <input type="color" class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
+                  <input type="text" data-coloris class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
                   <span class="color-hex" id="bg_color_hex">#ffffff</span>
                 </div>
               </div>
@@ -697,11 +697,11 @@
             </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Màu chữ</label>
-              <input type="color" class="form-control form-control-color news-text-color" value="${data?.textColor || '#012970'}">
+              <input type="text" data-coloris class="form-control form-control-color news-text-color" value="${data?.textColor || '#012970'}">
             </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Màu nền</label>
-              <input type="color" class="form-control form-control-color news-bg-color" value="${data?.bgColor || '#f6f9ff'}">
+              <input type="text" data-coloris class="form-control form-control-color news-bg-color" value="${data?.bgColor || '#f6f9ff'}">
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Hình đại diện</label>

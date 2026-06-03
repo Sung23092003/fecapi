@@ -39,6 +39,123 @@
   }
 
   /**
+   * Global HEX color picker.
+   */
+  const isValidHexColor = (color) => /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(String(color || '').trim());
+
+  const rgbToHexColor = (r, g, b) => {
+    const toHex = (value) => {
+      const channel = Math.max(0, Math.min(255, parseInt(value, 10) || 0));
+      return channel.toString(16).padStart(2, '0');
+    };
+    return '#' + toHex(r) + toHex(g) + toHex(b);
+  };
+
+  const normalizeColorToHex = (color, fallback = '#ffffff') => {
+    const value = String(color || '').trim();
+    if (isValidHexColor(value)) {
+      let hex = value.slice(1);
+      if (hex.length === 3) hex = hex.split('').map((char) => char + char).join('');
+      return '#' + hex.toLowerCase();
+    }
+
+    const rgbMatch = value.match(/^rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})(?:\s*,\s*(?:\d?(?:\.\d+)?))?\s*\)$/i);
+    if (rgbMatch) return rgbToHexColor(rgbMatch[1], rgbMatch[2], rgbMatch[3]);
+
+    return isValidHexColor(fallback) ? normalizeColorToHex(fallback, '#ffffff') : '#ffffff';
+  };
+
+  const normalizeColorisInputs = () => {
+    document.querySelectorAll('[data-coloris]').forEach((input) => {
+      input.value = normalizeColorToHex(input.value || input.getAttribute('value'));
+      input.setAttribute('value', input.value);
+      const hexLabel = document.getElementById(input.id + '_hex');
+      if (hexLabel) hexLabel.textContent = input.value;
+    });
+  };
+
+  const configureColoris = () => {
+    if (!window.Coloris) return;
+    window.Coloris({
+      el: '[data-coloris]',
+      theme: 'polaroid',
+      themeMode: 'light',
+      format: 'hex',
+      alpha: false,
+      swatches: ['#ffffff', '#f8f9fa', '#dee2e6', '#333333', '#0d6efd', '#0284c7', '#dc2626', '#16a34a']
+    });
+    normalizeColorisInputs();
+  };
+
+  const loadColoris = () => {
+    if (!document.querySelector('link[data-coloris-cdn]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css';
+      link.dataset.colorisCdn = 'true';
+      document.head.appendChild(link);
+    }
+
+    if (window.Coloris) {
+      configureColoris();
+      return;
+    }
+
+    const existingScript = document.querySelector('script[data-coloris-cdn]');
+    if (existingScript) {
+      existingScript.addEventListener('load', configureColoris, { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js';
+    script.dataset.colorisCdn = 'true';
+    script.addEventListener('load', configureColoris, { once: true });
+    document.head.appendChild(script);
+  };
+
+  const initGlobalColorPickers = () => {
+    if (document.querySelector('[data-coloris]')) loadColoris();
+
+    document.addEventListener('input', (event) => {
+      if (!event.target.matches('[data-coloris]')) return;
+      const value = event.target.value.trim();
+      if (isValidHexColor(value) || /^rgba?\(/i.test(value)) {
+        event.target.value = normalizeColorToHex(value);
+      }
+    });
+
+    document.addEventListener('change', (event) => {
+      if (event.target.matches('[data-coloris]')) event.target.value = normalizeColorToHex(event.target.value);
+    });
+
+    document.addEventListener('blur', (event) => {
+      if (event.target.matches('[data-coloris]')) event.target.value = normalizeColorToHex(event.target.value);
+    }, true);
+
+    document.addEventListener('click', normalizeColorisInputs, true);
+
+    let normalizeTicks = 0;
+    const normalizeTimer = window.setInterval(() => {
+      normalizeColorisInputs();
+      normalizeTicks += 1;
+      if (normalizeTicks >= 20) window.clearInterval(normalizeTimer);
+    }, 500);
+
+    new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => node.nodeType === 1 && (node.matches?.('[data-coloris]') || node.querySelector?.('[data-coloris]'))))) {
+        loadColoris();
+      }
+    }).observe(document.body, { childList: true, subtree: true });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initGlobalColorPickers);
+  } else {
+    initGlobalColorPickers();
+  }
+
+  /**
    * Sidebar toggle
    */
   if (select('.toggle-sidebar-btn')) {

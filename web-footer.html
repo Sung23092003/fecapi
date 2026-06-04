@@ -1731,11 +1731,10 @@
             text: document.getElementById('copyright_content').value
           }
         };
-
         [2, 3, 4].forEach(function (column) {
           if (!visibleFooterColumns.includes(column)) {
-            delete payload['col_' + column];
-            delete payload.col_1.bootstrap_size['col_' + column + '_class'];
+            payload['col_' + column] = null;
+            payload.col_1.bootstrap_size['col_' + column + '_class'] = null;
           }
         });
 

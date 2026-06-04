@@ -1647,17 +1647,10 @@
 
       const companyNameInput = document.getElementById('company_name');
       const copyrightContentInput = document.getElementById('copyright_content');
-      if (companyNameInput && copyrightContentInput) {
-        const syncCopyrightContent = function () {
-          if (!copyrightContentInput.dataset.edited) {
-            copyrightContentInput.value = companyNameInput.value;
-          }
-        };
-        companyNameInput.addEventListener('input', syncCopyrightContent);
+      if (copyrightContentInput) {
         copyrightContentInput.addEventListener('input', function () {
           copyrightContentInput.dataset.edited = '1';
         });
-        syncCopyrightContent();
       }
 
       applyFooterLayoutColumns(layoutValueInput.value);

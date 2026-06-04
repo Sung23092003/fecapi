@@ -702,6 +702,10 @@
                       data-bs-target="#tab-header-main" type="button" role="tab" aria-selected="false">Header
                       Main</button>
                   </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="tab-header-news-btn" data-bs-toggle="tab"
+                      data-bs-target="#tab-header-news" type="button" role="tab" aria-selected="false">Tin tức</button>
+                  </li>
                 </ul>
 
                 <div class="tab-content">
@@ -1035,6 +1039,69 @@
                     </div>
                     <input type="hidden" id="header_main_items" name="header_main_items" value="[]">
                   </div>
+
+                  <!-- ======= TAB 4: TIN TUC MAU 4 ======= -->
+                  <div class="tab-pane fade" id="tab-header-news" role="tabpanel">
+                    <div class="row g-3 mb-3">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Mau nen</label>
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_news_bg_color_preview" aria-label="Chon mau nen tin tuc"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_news_bg_color" name="header_news_bg_color" value="#0282a5" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_news_bg_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
+                            <span class="color-hex" id="header_news_bg_color_hex">#0282a5</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Mau chu</label>
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_news_text_color_preview" aria-label="Chon mau chu tin tuc"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_news_text_color" name="header_news_text_color" value="#ffffff" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_news_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
+                            <span class="color-hex" id="header_news_text_color_hex">#ffffff</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="form-label fw-semibold">Mau chu di chuot</label>
+                          <div class="admin-color-control">
+                            <button type="button" class="admin-color-preview" id="header_news_hover_text_color_preview" aria-label="Chon mau chu di chuot tin tuc"></button>
+                            <div class="admin-color-input-shell">
+                              <input type="text" data-coloris class="admin-color-input" id="header_news_hover_text_color" name="header_news_hover_text_color" value="#ffeb3b" autocomplete="off" spellcheck="false">
+                              <button type="button" class="admin-color-copy" data-copy-color="header_news_hover_text_color" title="Copy HEX"><i class="bi bi-clipboard"></i></button>
+                            </div>
+                            <span class="color-hex" id="header_news_hover_text_color_hex">#ffeb3b</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                      <h6 class="fw-bold mb-0">Danh sách</h6>
+                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-header-news"><i class="bi bi-plus-lg"></i> Thêm</button>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-bordered table-hover align-middle mb-2" id="header-news-table">
+                        <thead class="table-light">
+                          <tr>
+                            <th style="min-width:260px;">Nội dung chữ chạy</th>
+                            <th style="min-width:220px;">Link</th>
+                            <th style="width:44px;"></th>
+                          </tr>
+                        </thead>
+                        <tbody id="header-news-tbody"></tbody>
+                      </table>
+                    </div>
+                    <div class="text-muted-2 small" id="header-news-empty">Chưa có dữ liệu</div>
+                    <input type="hidden" id="header_news_items" name="header_news_items" value="[]">
+                  </div>
                 </div>
               </form>
             </div>
@@ -1232,6 +1299,9 @@
         topHoverBg: setupColorPicker('header_top_hover_bg_color', 'header_top_hover_bg_color_hex', 'header_top_hover_bg_color_preview'),
         topHoverText: setupColorPicker('header_top_hover_text_color', 'header_top_hover_text_color_hex', 'header_top_hover_text_color_preview'),
         topBorder: setupColorPicker('header_top_border_color', 'header_top_border_color_hex', 'header_top_border_color_preview'),
+        newsBg: setupColorPicker('header_news_bg_color', 'header_news_bg_color_hex', 'header_news_bg_color_preview'),
+        newsText: setupColorPicker('header_news_text_color', 'header_news_text_color_hex', 'header_news_text_color_preview'),
+        newsHoverText: setupColorPicker('header_news_hover_text_color', 'header_news_hover_text_color_hex', 'header_news_hover_text_color_preview'),
         mainBg: setupColorPicker('header_main_bg_color', 'header_main_bg_color_hex', 'header_main_bg_color_preview'),
         mainText: setupColorPicker('header_main_text_color', 'header_main_text_color_hex', 'header_main_text_color_preview'),
         mainHoverBg: setupColorPicker('header_main_hover_bg_color', 'header_main_hover_bg_color_hex', 'header_main_hover_bg_color_preview'),
@@ -1549,6 +1619,64 @@
         toggleMainItemsEmpty();
       });
 
+      /* ===================== Header News / Mau 4 ===================== */
+      function escapeInputValue(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function createHeaderNewsRow(data) {
+        data = data || {};
+        var tr = document.createElement('tr');
+        tr.innerHTML =
+          '<td><input type="text" class="form-control form-control-sm header-news-text" placeholder="Noi dung chu chay" value="' + escapeInputValue(data.text || data.title || data.name || data.content || '') + '"></td>' +
+          '<td><input type="text" class="form-control form-control-sm header-news-link" placeholder="VD: /tin-tuc" value="' + escapeInputValue(data.link || data.url || data.href || '') + '"></td>' +
+          '<td class="text-center"><button type="button" class="btn btn-sm btn-outline-danger header-news-del"><i class="bi bi-x-lg"></i></button></td>';
+
+        tr.querySelector('.header-news-del').addEventListener('click', function () {
+          tr.remove();
+          updateHeaderNewsHidden();
+          toggleHeaderNewsEmpty();
+        });
+        tr.querySelectorAll('input').forEach(function (input) {
+          input.addEventListener('input', updateHeaderNewsHidden);
+        });
+        return tr;
+      }
+
+      function updateHeaderNewsHidden() {
+        var rows = document.querySelectorAll('#header-news-tbody tr');
+        var data = [];
+        rows.forEach(function (tr) {
+          var text = tr.querySelector('.header-news-text').value || '';
+          var link = tr.querySelector('.header-news-link').value || '';
+          if (text.trim() || link.trim()) {
+            data.push({ text: text, link: link });
+          }
+        });
+        document.getElementById('header_news_items').value = JSON.stringify(data);
+      }
+
+      function toggleHeaderNewsEmpty() {
+        var rows = document.querySelectorAll('#header-news-tbody tr').length;
+        var empty = document.getElementById('header-news-empty');
+        if (empty) empty.style.display = rows === 0 ? '' : 'none';
+      }
+
+      function addHeaderNews(data) {
+        var tbody = document.getElementById('header-news-tbody');
+        var tr = createHeaderNewsRow(data || {});
+        tbody.appendChild(tr);
+        updateHeaderNewsHidden();
+        toggleHeaderNewsEmpty();
+      }
+
+      document.getElementById('btn-add-header-news').addEventListener('click', function () {
+        addHeaderNews({});
+      });
       /* ===================== Alert ===================== */
       const alertPlaceholder = document.getElementById('alertPlaceholder');
       const alertDiv = document.createElement('div');
@@ -1570,8 +1698,10 @@
       document.getElementById('buttonSubmit').addEventListener('click', async function (e) {
         e.preventDefault();
         updateLinksHidden();
+        updateHeaderNewsHidden();
 
         const style = parseInt(document.getElementById('header_layout_value').value, 10);
+        const headerNewsItems = JSON.parse(document.getElementById('header_news_items').value || '[]');
         const payload = {
           style: style,
           logo: {
@@ -1587,7 +1717,12 @@
             border_color: getHeaderColor('topBorder'),
             border_thickness: parseInt(document.getElementById('header_top_border_width').value, 10) || 0,
             left_links: JSON.parse(document.getElementById('header_top_links_left').value || '[]'),
-            right_links: JSON.parse(document.getElementById('header_top_links_right').value || '[]')
+            right_links: JSON.parse(document.getElementById('header_top_links_right').value || '[]'),
+            news_list: headerNewsItems,
+            news_items: headerNewsItems,
+            news_bg_color: getHeaderColor('newsBg'),
+            news_text_color: getHeaderColor('newsText'),
+            news_hover_text_color: getHeaderColor('newsHoverText')
           },
           header_main: {
             bg_color: getHeaderColor('mainBg'),
@@ -1658,6 +1793,9 @@
             if (d.header_top.hover_bg_color) setColor('header_top_hover_bg_color', 'header_top_hover_bg_color_hex', d.header_top.hover_bg_color);
             if (d.header_top.hover_text_color) setColor('header_top_hover_text_color', 'header_top_hover_text_color_hex', d.header_top.hover_text_color);
             if (d.header_top.border_color) setColor('header_top_border_color', 'header_top_border_color_hex', d.header_top.border_color);
+            if (d.header_top.news_bg_color) setColor('header_news_bg_color', 'header_news_bg_color_hex', d.header_top.news_bg_color);
+            if (d.header_top.news_text_color) setColor('header_news_text_color', 'header_news_text_color_hex', d.header_top.news_text_color);
+            if (d.header_top.news_hover_text_color) setColor('header_news_hover_text_color', 'header_news_hover_text_color_hex', d.header_top.news_hover_text_color);
             if (d.header_top.border_thickness != null) document.getElementById('header_top_border_width').value = d.header_top.border_thickness;
 
             // Links
@@ -1672,6 +1810,19 @@
               });
             }
           }
+
+          // Header News / Mau 4
+          var headerTopNews = d.header_top ? (d.header_top.news_list || d.header_top.news_items || []) : [];
+          var legacyHeaderNews = d.header_news || {};
+          var newsItems = Array.isArray(headerTopNews) ? headerTopNews :
+            (Array.isArray(legacyHeaderNews.items) ? legacyHeaderNews.items :
+              (Array.isArray(legacyHeaderNews.item_list) ? legacyHeaderNews.item_list :
+                (legacyHeaderNews.text ? [{ text: legacyHeaderNews.text, link: legacyHeaderNews.link || '' }] : [])));
+          newsItems.forEach(function (item) {
+            addHeaderNews(item);
+          });
+          updateHeaderNewsHidden();
+          toggleHeaderNewsEmpty();
 
           // Header Main
           if (d.header_main) {

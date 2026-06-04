@@ -909,6 +909,7 @@
       let expandedCategoryIds = new Set();
       let currentPage = 1;
       let lastTotalPage = 1;
+      let latestCategoryPayload = null;
 
       // Setup Toast Alert
       const alertDiv = document.createElement('div');
@@ -1341,6 +1342,13 @@
             throw new Error(json.message || 'Không lấy được dữ liệu');
           }
 
+          latestCategoryPayload = json.data && typeof json.data === 'object'
+            ? JSON.parse(JSON.stringify(json.data))
+            : {};
+          if (latestCategoryPayload.themeSetting) {
+            applyMenuAppearance(latestCategoryPayload.themeSetting);
+          }
+
           let normalized;
           if (Array.isArray(json.data?.data)) {
             normalized = normalizeCategoryItems(json.data.data);
@@ -1743,21 +1751,57 @@
         });
       });
 
+      function getMenuThemeSetting() {
+        return {
+          menu_bg_color: menuColorPickers.bg.getValue(),
+          menu_hover_bg_color: menuColorPickers.hoverBg.getValue(),
+          menu_text_color: menuColorPickers.text.getValue(),
+          menu_bold: document.getElementById('menu_bold').checked
+        };
+      }
+
+      function applyMenuAppearance(data) {
+        if (!data || typeof data !== 'object') return;
+        if (data.menu_bg_color) menuColorPickers.bg.setValue(data.menu_bg_color);
+        if (data.menu_hover_bg_color) menuColorPickers.hoverBg.setValue(data.menu_hover_bg_color);
+        if (data.menu_text_color) menuColorPickers.text.setValue(data.menu_text_color);
+        var bold = document.getElementById('menu_bold');
+        if (bold && data.menu_bold !== undefined) bold.checked = data.menu_bold;
+      }
+
       /* ===== Menu Appearance Save ===== */
       var menuForm = document.getElementById('formMenuAppearance');
       if (menuForm) {
-        menuForm.addEventListener('submit', function (e) {
+        menuForm.addEventListener('submit', async function (e) {
           e.preventDefault();
           e.stopPropagation();
-          var payload = {
-            menu_bg_color: menuColorPickers.bg.getValue(),
-            menu_hover_bg_color: menuColorPickers.hoverBg.getValue(),
-            menu_text_color: menuColorPickers.text.getValue(),
-            menu_bold: document.getElementById('menu_bold').checked
-          };
-          // Save to localStorage
-          localStorage.setItem('menu_appearance', JSON.stringify(payload));
-          showAlert('Đã lưu cấu hình giao diện menu.', 'success');
+
+          var themeSetting = getMenuThemeSetting();
+          var payload = Object.assign({}, latestCategoryPayload || {}, {
+            themeSetting: themeSetting
+          });
+
+          try {
+            const url = `${ENV.BASE_URL}/admin/category`;
+            const headers = Auth.getAuthHeader();
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json().catch(function () { return null; });
+            if (!res.ok || !json || !json.success) {
+              showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+              return;
+            }
+            latestCategoryPayload = json.data && typeof json.data === 'object'
+              ? JSON.parse(JSON.stringify(json.data))
+              : payload;
+            localStorage.setItem('menu_appearance', JSON.stringify(themeSetting));
+            showAlert('Đã lưu cấu hình giao diện menu.', 'success');
+          } catch (err) {
+            showAlert('Có lỗi xảy ra khi lưu cấu hình giao diện menu.', 'danger');
+          }
         });
       }
 
@@ -1766,15 +1810,9 @@
         var saved = localStorage.getItem('menu_appearance');
         if (!saved) return;
         try {
-          var data = JSON.parse(saved);
-          if (data.menu_bg_color) menuColorPickers.bg.setValue(data.menu_bg_color);
-          if (data.menu_hover_bg_color) menuColorPickers.hoverBg.setValue(data.menu_hover_bg_color);
-          if (data.menu_text_color) menuColorPickers.text.setValue(data.menu_text_color);
-          var bold = document.getElementById('menu_bold');
-          if (bold && data.menu_bold !== undefined) bold.checked = data.menu_bold;
+          applyMenuAppearance(JSON.parse(saved));
         } catch (e) {}
       })();
-
       // Init
       initColumns();
       renderTableHeader();

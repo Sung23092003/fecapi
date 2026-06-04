@@ -1660,8 +1660,10 @@
 
         function boolToInt(v) { return v ? 1 : 0; }
 
+        const selectedFooterLayout = String(document.getElementById('footer_layout_value').value || '1');
+        const visibleFooterColumns = getVisibleFooterColumns(selectedFooterLayout);
         const payload = {
-          style: parseInt(document.getElementById('footer_layout_value').value, 10),
+          style: parseInt(selectedFooterLayout, 10),
           col_1: {
             logo: document.getElementById('footer_logo').value,
             company_name: document.getElementById('company_name').value,
@@ -1729,6 +1731,13 @@
             text: document.getElementById('copyright_content').value
           }
         };
+
+        [2, 3, 4].forEach(function (column) {
+          if (!visibleFooterColumns.includes(column)) {
+            delete payload['col_' + column];
+            delete payload.col_1.bootstrap_size['col_' + column + '_class'];
+          }
+        });
 
         try {
           const headers = { ...Auth.getAuthHeader(), 'Content-Type': 'application/json' };

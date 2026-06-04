@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -910,6 +910,7 @@
       let currentPage = 1;
       let lastTotalPage = 1;
       let latestCategoryPayload = null;
+      let latestFirstCategoryItem = null;
 
       // Setup Toast Alert
       const alertDiv = document.createElement('div');
@@ -1021,7 +1022,7 @@
 
       const debouncedSearch = debounce(() => {
         currentPage = 1;
-        loadData();
+      loadData();
       }, 500);
 
       function setView(mode) {
@@ -1299,7 +1300,7 @@
             e.preventDefault();
             if (disabled) return;
             currentPage = p;
-            loadData();
+      loadData();
           });
 
           li.appendChild(a);
@@ -1345,9 +1346,6 @@
           latestCategoryPayload = json.data && typeof json.data === 'object'
             ? JSON.parse(JSON.stringify(json.data))
             : {};
-          if (latestCategoryPayload.themeSetting) {
-            applyMenuAppearance(latestCategoryPayload.themeSetting);
-          }
 
           let normalized;
           if (Array.isArray(json.data?.data)) {
@@ -1362,6 +1360,9 @@
 
           const items = normalized.listItems;
           const gridItems = normalized.gridItems;
+          latestFirstCategoryItem = Array.isArray(gridItems) && gridItems.length
+            ? JSON.parse(JSON.stringify(gridItems[0]))
+            : null;
           lastTotalPage = json.data?.pagination?.total_page || json.total_page || json.data?.total_page || 1;
 
           summaryArea.textContent = `Tổng: ${json.data?.pagination?.total ?? gridItems.length} • Trang ${json.data?.pagination?.page ?? currentPage}/${lastTotalPage}`;
@@ -1417,7 +1418,7 @@
           showAlert('Xóa danh mục thành công.', 'success');
           selectedIds.clear();
           updateDeleteButton();
-          loadData();
+      loadData();
         } catch (err) {
           console.error(err);
           showAlert('Có lỗi xảy ra khi xóa', 'danger');
@@ -1467,7 +1468,7 @@
         } else {
           expandedCategoryIds.add(id);
         }
-        loadData();
+      loadData();
       });
 
       document.addEventListener('change', (e) => {
@@ -1563,7 +1564,7 @@
         filterStatus.value = filterStatusModal.value;
         closeFilterModal();
         currentPage = 1;
-        loadData();
+      loadData();
       });
 
       btnResetFilter.addEventListener('click', () => {
@@ -1585,7 +1586,7 @@
         filterStatus.value = '-1';
         filterStatusModal.value = '-1';
         currentPage = 1;
-        loadData();
+      loadData();
         clearFilterConfirmModal.hide();
       });
 
@@ -1777,14 +1778,26 @@
           e.stopPropagation();
 
           var themeSetting = getMenuThemeSetting();
-          var payload = Object.assign({}, latestCategoryPayload || {}, {
-            themeSetting: themeSetting
-          });
 
           try {
-            const url = `${ENV.BASE_URL}/admin/category`;
-            const headers = Auth.getAuthHeader();
-            const res = await fetch(url, {
+            const headers = {
+              ...Auth.getAuthHeader(),
+              'Content-Type': 'application/json'
+            };
+            const getRes = await fetch(`${ENV.BASE_URL}/admin/config/header`, {
+              method: 'GET',
+              headers: Auth.getAuthHeader()
+            });
+            const currentHeaderJson = await getRes.json().catch(function () { return null; });
+            const currentHeader = currentHeaderJson && currentHeaderJson.data
+              ? (currentHeaderJson.data.data || currentHeaderJson.data)
+              : {};
+            const payload = Object.assign({}, currentHeader, {
+              header_top: Object.assign({}, currentHeader.header_top || {}, {
+                themeSettingCategory: themeSetting
+              })
+            });
+            const res = await fetch(`${ENV.BASE_URL}/admin/config/header`, {
               method: 'POST',
               headers: headers,
               body: JSON.stringify(payload)
@@ -1805,6 +1818,21 @@
         });
       }
 
+      async function loadHeaderCategoryThemeSetting() {
+        try {
+          const headers = Auth.getAuthHeader();
+          const res = await fetch(`${ENV.BASE_URL}/admin/config/header`, { method: 'GET', headers: headers });
+          if (!res.ok) return;
+          const json = await res.json().catch(function () { return null; });
+          const headerData = json && json.data ? (json.data.data || json.data) : null;
+          const headerTop = headerData && (headerData.header_top || headerData.headerTop || {});
+          const themeSetting = headerTop && (headerTop.themeSettingCategory || headerTop.theme_setting_category);
+          if (themeSetting && typeof themeSetting === 'object') {
+            applyMenuAppearance(themeSetting);
+            localStorage.setItem('menu_appearance', JSON.stringify(themeSetting));
+          }
+        } catch (e) {}
+      }
       /* ===== Load saved menu appearance ===== */
       (function loadMenuAppearance() {
         var saved = localStorage.getItem('menu_appearance');
@@ -1816,6 +1844,7 @@
       // Init
       initColumns();
       renderTableHeader();
+      loadHeaderCategoryThemeSetting();
       loadData();
     })();
   </script>

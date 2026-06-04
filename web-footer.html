@@ -774,6 +774,12 @@
                           placeholder="Class bootstrap cột 3">
                         <div class="form-text">Ví dụ: col-5 col-md-4 col-xl-3</div>
                       </div>
+                      <div class="col-md-6 col-xl-4">
+                        <label class="form-label fw-semibold">Cột 4</label>
+                        <input type="text" class="form-control" id="footer_col_4_class" value="col-12 col-md-4 col-xl-5"
+                          placeholder="Class bootstrap cột 4">
+                        <div class="form-text">Ví dụ: col-12 col-md-4 col-xl-5</div>
+                      </div>
                     </div>
                   </div>
 
@@ -1600,7 +1606,8 @@
             bootstrap_size: {
               col_1_class: document.getElementById('footer_col_1_class').value,
               col_2_class: document.getElementById('footer_col_2_class').value,
-              col_3_class: document.getElementById('footer_col_3_class').value
+              col_3_class: document.getElementById('footer_col_3_class').value,
+              col_4_class: document.getElementById('footer_col_4_class').value
             }
           },
           col_2: {
@@ -1736,6 +1743,7 @@
               if (bs.col_1_class) document.getElementById('footer_col_1_class').value = bs.col_1_class;
               if (bs.col_2_class) document.getElementById('footer_col_2_class').value = bs.col_2_class;
               if (bs.col_3_class) document.getElementById('footer_col_3_class').value = bs.col_3_class;
+              if (bs.col_4_class) document.getElementById('footer_col_4_class').value = bs.col_4_class;
             }
           }
 

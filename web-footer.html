@@ -980,6 +980,49 @@
         return Math.min(100, Math.max(0, value));
       }
 
+      function normalizeBooleanValue(value) {
+        return value === true || value === 1 || value === '1' || value === 'true';
+      }
+
+      function getFirstDefined() {
+        for (var i = 0; i < arguments.length; i++) {
+          if (arguments[i] !== undefined && arguments[i] !== null) return arguments[i];
+        }
+        return undefined;
+      }
+
+      function setAccessTimeGroupVisible(visible) {
+        const tabButton = document.querySelector('[data-bs-target="#tab-access-time"]');
+        const tabItem = tabButton ? tabButton.closest('.nav-item') : null;
+        const tabPane = document.getElementById('tab-access-time');
+        if (tabItem) tabItem.classList.toggle('d-none', !visible);
+        if (tabPane) tabPane.classList.toggle('d-none', !visible);
+
+        if (!visible && tabButton && tabButton.classList.contains('active')) {
+          const firstTabButton = document.querySelector('[data-bs-target="#tab-col-1"]');
+          if (firstTabButton) bootstrap.Tab.getOrCreateInstance(firstTabButton).show();
+        }
+      }
+
+      function getAccessTimeConfig(data) {
+        return getFirstDefined(
+          data && data.access_time,
+          data && data.accessTime,
+          data && data.footer_access_time,
+          data && data.footerAccessTime,
+          data && data.access_time_config,
+          data && data.accessTimeConfig,
+          data && data.footer && data.footer.access_time
+        );
+      }
+
+      function isAccessTimeGroupVisible(config) {
+        if (config === 0 || config === '0' || config === false) return false;
+        if (!config || typeof config !== 'object') return true;
+        const visibleValue = getFirstDefined(config.show, config.visible, config.enabled, config.status, config.active);
+        return visibleValue === undefined ? true : normalizeBooleanValue(visibleValue);
+      }
+
       const footerBgOpacityInput = document.getElementById('footer_bg_opacity');
       if (footerBgOpacityInput) {
         footerBgOpacityInput.addEventListener('blur', function () {
@@ -1377,6 +1420,8 @@
             text: document.getElementById('access_time_text').value
           },
           copyright: {
+            bg_color: document.getElementById('copyright_bg_color').value,
+            text_color: document.getElementById('copyright_text_color').value,
             text: document.getElementById('copyright_content').value
           }
         };
@@ -1537,17 +1582,29 @@
           }
 
           // Access time
-          if (d.access_time) {
-            var at = d.access_time;
-            if (at.show_time != null) document.getElementById('access_time_visible').checked = at.show_time === 1;
-            if (at.show_visitor_count != null) document.getElementById('access_count_visible').checked = at.show_visitor_count === 1;
-            if (at.bg_color) setColor('access_bg_color', 'access_bg_color_hex', at.bg_color);
-            if (at.text_color) setColor('access_text_color', 'access_text_color_hex', at.text_color);
-            if (at.text) document.getElementById('access_time_text').value = at.text;
+          var accessTimeConfig = getAccessTimeConfig(d);
+          var shouldShowAccessTime = isAccessTimeGroupVisible(accessTimeConfig);
+          setAccessTimeGroupVisible(shouldShowAccessTime);
+
+          if (shouldShowAccessTime && accessTimeConfig && typeof accessTimeConfig === 'object') {
+            var at = accessTimeConfig;
+            var showTime = getFirstDefined(at.show_time, at.showTime, at.show, at.visible, at.enabled);
+            var showVisitorCount = getFirstDefined(at.show_visitor_count, at.showVisitorCount, at.show_count, at.showCount);
+            var bgColor = getFirstDefined(at.bg_color, at.bgColor, at.background_color, at.backgroundColor);
+            var textColor = getFirstDefined(at.text_color, at.textColor, at.color);
+            var textValue = getFirstDefined(at.text, at.content, at.label);
+
+            if (showTime !== undefined) document.getElementById('access_time_visible').checked = normalizeBooleanValue(showTime);
+            if (showVisitorCount !== undefined) document.getElementById('access_count_visible').checked = normalizeBooleanValue(showVisitorCount);
+            if (bgColor) setColor('access_bg_color', 'access_bg_color_hex', bgColor);
+            if (textColor) setColor('access_text_color', 'access_text_color_hex', textColor);
+            if (textValue !== undefined) document.getElementById('access_time_text').value = textValue;
           }
 
           // Copyright
           if (d.copyright) {
+            if (d.copyright.bg_color) setColor('copyright_bg_color', 'copyright_bg_color_hex', d.copyright.bg_color);
+            if (d.copyright.text_color) setColor('copyright_text_color', 'copyright_text_color_hex', d.copyright.text_color);
             if (d.copyright.text) {
               document.getElementById('copyright_content').value = d.copyright.text;
               copyrightContentInput.dataset.edited = '1';

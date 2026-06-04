@@ -106,6 +106,7 @@
       color: #dc3545;
       background: #fee2e2;
     }
+
     .social-preview-box {
       width: 42px;
       height: 42px;
@@ -131,6 +132,7 @@
       font-size: 18px;
       line-height: 1;
     }
+
     .link-icon-preview-box {
       width: 34px;
       height: 34px;
@@ -156,6 +158,7 @@
       font-size: 16px;
       line-height: 1;
     }
+
     .footer-thumb-box {
       width: 46px;
       height: 38px;
@@ -429,7 +432,8 @@
         </ul>
       </li>
 
-     <li class="nav-item"><a class="nav-link collapsed" href="web-body.html"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-body.html"><i
+            class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
       <li class="nav-item"><a class="nav-link active" href="web-footer.html"><i
             class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản
@@ -452,7 +456,8 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i
+            class="bi bi-briefcase"></i><span>Quản lý Dịch
             Vụ</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
             class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
@@ -683,7 +688,16 @@
                       <div class="text-muted-2 small" id="emails-empty">Chưa có email nào</div>
                     </div>
                     <input type="hidden" id="footer_emails" name="footer_emails" value="[]">
-
+                    <div class="form-group mt-3">
+                      <label class="form-label fw-semibold">MST</label>
+                      <input type="text" class="form-control" id="company_tax_code" name="company_tax_code"
+                        placeholder="Nhap ma so thue">
+                    </div>
+                    <div class="form-group mt-3">
+                      <label class="form-label fw-semibold">Địa chỉ</label>
+                      <textarea class="form-control" id="company_address" name="company_address" rows="2"
+                        placeholder="Nhap dia chi cong ty"></textarea>
+                    </div>
                     <hr class="my-4">
                     <div class="d-flex align-items-center justify-content-between mb-2">
                       <h6 class="fw-bold mb-0">Mạng xã hội</h6>
@@ -742,32 +756,32 @@
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Màu nền icon mạng xã hội</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="footer_social_bg_color"
-                            value="#ffffff">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="footer_social_bg_color" value="#ffffff">
                           <span class="color-hex" id="footer_social_bg_color_hex">#ffffff</span>
                         </div>
                       </div>
                       <div class="col-md-6 col-xl-3">
                         <label class="form-label fw-semibold">Màu icon mạng xã hội</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="footer_social_icon_color"
-                            value="#0d6efd">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="footer_social_icon_color" value="#0d6efd">
                           <span class="color-hex" id="footer_social_icon_color_hex">#0d6efd</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu đường kẻ dài</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="footer_line_long_color"
-                            value="#0b1b35">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="footer_line_long_color" value="#0b1b35">
                           <span class="color-hex" id="footer_line_long_color_hex">#0b1b35</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu đường kẻ ngắn</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="footer_line_short_color"
-                            value="#9ee7e8">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="footer_line_short_color" value="#9ee7e8">
                           <span class="color-hex" id="footer_line_short_color_hex">#9ee7e8</span>
                         </div>
                       </div>
@@ -980,16 +994,16 @@
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu nền</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="copyright_bg_color"
-                            value="#111827">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="copyright_bg_color" value="#111827">
                           <span class="color-hex" id="copyright_bg_color_hex">#111827</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <label class="form-label fw-semibold">Màu chữ</label>
                         <div class="color-input-group">
-                          <input type="text" data-coloris class="form-control form-control-color" id="copyright_text_color"
-                            value="#ffffff">
+                          <input type="text" data-coloris class="form-control form-control-color"
+                            id="copyright_text_color" value="#ffffff">
                           <span class="color-hex" id="copyright_text_color_hex">#ffffff</span>
                         </div>
                       </div>
@@ -1331,8 +1345,8 @@
         div.innerHTML =
           '<div class="d-flex gap-2 align-items-start flex-wrap">' +
           '<div class="social-preview-box">' +
-            '<img class="social-image-preview' + (imageValue ? '' : ' d-none') + '" src="' + escapeHtml(imageValue) + '" alt="social preview">' +
-            '<span class="social-image-placeholder' + (imageValue ? ' d-none' : '') + '"><i class="bi bi-image"></i></span>' +
+          '<img class="social-image-preview' + (imageValue ? '' : ' d-none') + '" src="' + escapeHtml(imageValue) + '" alt="social preview">' +
+          '<span class="social-image-placeholder' + (imageValue ? ' d-none' : '') + '"><i class="bi bi-image"></i></span>' +
           '</div>' +
           '<div style="width:170px;"><input type="file" class="form-control form-control-sm social-image-file" accept="image/*,.svg"></div>' +
           '<input type="hidden" class="social-image" value="' + escapeHtml(imageValue) + '">' +
@@ -1384,7 +1398,7 @@
               setSocialPreview(uploadedUrl || hidden.value);
               updateSocialsHidden();
             }
-          } catch (err) {}
+          } catch (err) { }
         });
         return div;
       }
@@ -1508,7 +1522,7 @@
             hidden.value = uploadedUrl || hidden.value;
             setFooterThumb(div, '.link-thumb', hidden.value);
             updateFn();
-          } catch (err) {}
+          } catch (err) { }
         });
         return div;
       }
@@ -1544,7 +1558,7 @@
             hidden.value = uploadedUrl || hidden.value;
             setFooterThumb(div, '.payment-thumb', hidden.value);
             updatePaymentHidden();
-          } catch (err) {}
+          } catch (err) { }
         });
         return div;
       }
@@ -1668,6 +1682,8 @@
             logo: document.getElementById('footer_logo').value,
             company_name: document.getElementById('company_name').value,
             short_description: document.getElementById('company_intro').value,
+            tax_code: document.getElementById('company_tax_code').value,
+            address: document.getElementById('company_address').value,
             phone_list: JSON.parse(document.getElementById('footer_phones').value || '[]'),
             email_list: JSON.parse(document.getElementById('footer_emails').value || '[]'),
             social_list: JSON.parse(document.getElementById('footer_socials').value || '[]'),
@@ -1781,6 +1797,8 @@
             if (c1.logo) setUploadedImage('footer-logo-preview', 'footer_logo', 'footer-logo-upload-box', c1.logo);
             if (c1.company_name) document.getElementById('company_name').value = c1.company_name;
             if (c1.short_description) document.getElementById('company_intro').value = c1.short_description;
+            if (c1.tax_code != null) document.getElementById('company_tax_code').value = c1.tax_code;
+            if (c1.address != null) document.getElementById('company_address').value = c1.address;
             if (c1.footer_image) setUploadedImage('footer-bg-preview', 'footer_image', 'footer-bg-upload-box', c1.footer_image);
 
             // Phones

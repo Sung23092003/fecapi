@@ -131,6 +131,31 @@
       font-size: 18px;
       line-height: 1;
     }
+    .link-icon-preview-box {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 34px;
+      color: #4154f1;
+    }
+
+    .link-icon-preview-img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .link-icon-preview-symbol {
+      font-size: 16px;
+      line-height: 1;
+    }
   </style>
 </head>
 
@@ -739,9 +764,9 @@
                       </div>
                       <div class="col-md-6 col-xl-4">
                         <label class="form-label fw-semibold">Cột 2</label>
-                        <input type="text" class="form-control" id="footer_col_2_class" value="col-12 col-xl-3"
+                        <input type="text" class="form-control" id="footer_col_2_class" value="col-5 col-md-4 col-xl-3"
                           placeholder="Class bootstrap cột 2">
-                        <div class="form-text">Ví dụ: col-12 col-xl-3</div>
+                        <div class="form-text">Ví dụ: col-5 col-md-4 col-xl-3</div>
                       </div>
                       <div class="col-md-6 col-xl-4">
                         <label class="form-label fw-semibold">Cột 3</label>
@@ -1355,17 +1380,42 @@
 
       function createTextLinkRow(updateFn, data) {
         data = data || {};
+        const iconValue = data.icon || data.icon_file || data.favicon || '';
         const div = document.createElement('div');
         div.className = 'footer-item-card';
         div.innerHTML =
-          '<div class="d-flex gap-2 align-items-start">' +
-          '<div style="width:120px;"><input type="text" class="form-control form-control-sm link-icon" placeholder="Icon" value="' + escapeHtml(data.icon) + '"></div>' +
+          '<div class="d-flex gap-2 align-items-start flex-wrap">' +
+          '<div class="link-icon-preview-box"><img class="link-icon-preview-img d-none" alt="icon preview"><span class="link-icon-preview-symbol"><i class="bi bi-link-45deg"></i></span></div>' +
+          '<div style="width:180px;"><input type="text" class="form-control form-control-sm link-icon" placeholder="Icon class hoặc favicon URL" value="' + escapeHtml(iconValue) + '"></div>' +
           '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-name" placeholder="Tên" value="' + escapeHtml(data.name) + '"></div>' +
           '<div class="flex-fill"><input type="text" class="form-control form-control-sm link-url" placeholder="Link" value="' + escapeHtml(data.link) + '"></div>' +
           '<button type="button" class="footer-row-close" title="Xóa"><i class="bi bi-x-lg"></i></button>' +
           '</div>';
+
+        function refreshIconPreview() {
+          const value = div.querySelector('.link-icon').value.trim();
+          const img = div.querySelector('.link-icon-preview-img');
+          const symbol = div.querySelector('.link-icon-preview-symbol');
+          if (/^(https?:|\/|\.\/|\.\.\/|data:image\/)/i.test(value)) {
+            img.src = value;
+            img.classList.remove('d-none');
+            symbol.classList.add('d-none');
+          } else {
+            img.src = '';
+            img.classList.add('d-none');
+            symbol.classList.remove('d-none');
+            symbol.innerHTML = value ? '<i class="' + escapeHtml(value) + '"></i>' : '<i class="bi bi-link-45deg"></i>';
+          }
+        }
+
         div.querySelector('.footer-row-close').addEventListener('click', function () { div.remove(); updateFn(); });
-        div.querySelectorAll('input').forEach(function (input) { input.addEventListener('input', updateFn); });
+        div.querySelectorAll('input').forEach(function (input) {
+          input.addEventListener('input', function () {
+            refreshIconPreview();
+            updateFn();
+          });
+        });
+        refreshIconPreview();
         return div;
       }
 

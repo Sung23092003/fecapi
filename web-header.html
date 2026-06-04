@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -702,7 +702,7 @@
                       data-bs-target="#tab-header-main" type="button" role="tab" aria-selected="false">Header
                       Main</button>
                   </li>
-                  <li class="nav-item" role="presentation">
+                  <li class="nav-item d-none" role="presentation" id="tab-header-news-item">
                     <button class="nav-link" id="tab-header-news-btn" data-bs-toggle="tab"
                       data-bs-target="#tab-header-news" type="button" role="tab" aria-selected="false">Tin tức</button>
                   </li>
@@ -1166,6 +1166,17 @@
       const layoutRadios = document.querySelectorAll('input[name="header_layout"]');
       const layoutOptions = document.querySelectorAll('.layout-option');
       const layoutValueInput = document.getElementById('header_layout_value');
+      const newsTabItem = document.getElementById('tab-header-news-item');
+      const newsTabButton = document.getElementById('tab-header-news-btn');
+      const logoTabButton = document.getElementById('tab-logo-btn');
+
+      function syncNewsTabVisibility() {
+        var isLayout4 = layoutValueInput.value === '4';
+        if (newsTabItem) newsTabItem.classList.toggle('d-none', !isLayout4);
+        if (!isLayout4 && newsTabButton && newsTabButton.classList.contains('active') && logoTabButton && window.bootstrap) {
+          new bootstrap.Tab(logoTabButton).show();
+        }
+      }
 
       layoutOptions.forEach(opt => {
         opt.addEventListener('click', function () {
@@ -1175,9 +1186,11 @@
             layoutOptions.forEach(o => o.classList.remove('active'));
             this.classList.add('active');
             layoutValueInput.value = radio.value;
+            syncNewsTabVisibility();
           }
         });
       });
+      syncNewsTabVisibility();
 
       /* ===================== Color pickers ===================== */
       function isValidHex(color) {
@@ -1777,6 +1790,7 @@
               o.classList.toggle('active', o.dataset.value === val);
             });
             layoutValueInput.value = val;
+            syncNewsTabVisibility();
           }
 
           // Logo tab

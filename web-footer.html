@@ -699,23 +699,6 @@
                         placeholder="Nhap dia chi cong ty"></textarea>
                     </div>
                     <hr class="my-4">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                      <h6 class="fw-bold mb-0">Mạng xã hội</h6>
-                      <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-social"><i
-                          class="bi bi-plus-lg"></i> Thêm</button>
-                    </div>
-                    <div id="socials-container">
-                      <div class="text-muted-2 small" id="socials-empty">Chưa có mạng xã hội nào</div>
-                    </div>
-                    <input type="hidden" id="footer_socials" name="footer_socials" value="[]">
-
-                    <hr class="my-4">
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="bct_visible">
-                      <label class="form-check-label fw-semibold" for="bct_visible">Hiển thị Bộ Công Thương</label>
-                    </div>
-
-                    <hr class="my-4">
                     <h6 class="fw-bold mb-3">Thêm Up ảnh chân trang</h6>
                     <div class="row g-4">
                       <div class="col-md-6">
@@ -860,9 +843,50 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="tab-col-4" role="tabpanel">
+                                    <div class="tab-pane fade" id="tab-col-4" role="tabpanel">
                     <div class="row g-4">
                       <div class="col-12">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Mạng xã hội</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-social"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="socials-container">
+                          <div class="text-muted-2 small" id="socials-empty">Chưa có mạng xã hội nào</div>
+                        </div>
+                        <input type="hidden" id="footer_socials" name="footer_socials" value="[]">
+                      </div>
+
+                      <div class="col-12">
+                        <hr class="my-2">
+                        <div class="form-check form-switch mb-3">
+                          <input class="form-check-input" type="checkbox" id="payment_visible" checked>
+                          <label class="form-check-label fw-semibold" for="payment_visible">Phương thức thanh toán</label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                          <h6 class="fw-bold mb-0">Danh sách thanh toán</h6>
+                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-payment"><i
+                              class="bi bi-plus-lg"></i> Thêm</button>
+                        </div>
+                        <div id="payment-container">
+                          <div class="text-muted-2 small" id="payment-empty">Chưa có phương thức thanh toán nào</div>
+                        </div>
+                        <input type="hidden" id="payment_items" value="[]">
+                      </div>
+
+                      <div class="col-12">
+                        <hr class="my-2">
+                        <div class="form-check form-switch mb-3">
+                          <input class="form-check-input" type="checkbox" id="bct_visible">
+                          <label class="form-check-label fw-semibold" for="bct_visible">Hiển thị Bộ Công Thương</label>
+                        </div>
+                        <label class="form-label fw-semibold">Đã thông báo với Bộ Công Thương</label>
+                        <input type="text" class="form-control" id="bct_notification"
+                          placeholder="Nhập nội dung hoặc link">
+                      </div>
+
+                      <div class="col-12">
+                        <hr class="my-2">
                         <label class="form-label fw-semibold">Tiêu đề cột 4</label>
                         <input type="text" class="form-control" id="col4_title" placeholder="Nhập tiêu đề">
                       </div>
@@ -877,23 +901,7 @@
                         </div>
                         <input type="hidden" id="col4_links" value="[]">
                       </div>
-                      <div class="col-12">
-                        <hr class="my-2">
-                        <div class="form-check form-switch mb-3">
-                          <input class="form-check-input" type="checkbox" id="payment_visible" checked>
-                          <label class="form-check-label fw-semibold" for="payment_visible">Phương thức thanh
-                            toán</label>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                          <h6 class="fw-bold mb-0">Danh sách thanh toán</h6>
-                          <button type="button" class="btn btn-sm btn-outline-primary" id="btn-add-payment"><i
-                              class="bi bi-plus-lg"></i> Thêm</button>
-                        </div>
-                        <div id="payment-container">
-                          <div class="text-muted-2 small" id="payment-empty">Chưa có phương thức thanh toán nào</div>
-                        </div>
-                        <input type="hidden" id="payment_items" value="[]">
-                      </div>
+
                       <div class="col-12">
                         <hr class="my-2">
                         <div class="form-check form-switch mb-3">
@@ -915,7 +923,8 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+
+                      <div class="col-12">
                         <hr class="my-2">
                         <div class="form-check form-switch mb-2">
                           <input class="form-check-input" type="checkbox" id="fanpage_visible" checked>
@@ -937,16 +946,9 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <hr class="my-2">
-                        <label class="form-label fw-semibold">Đã thông báo với Bộ Công Thương</label>
-                        <input type="text" class="form-control" id="bct_notification"
-                          placeholder="Nhập nội dung hoặc link">
-                      </div>
                     </div>
                   </div>
-
-                  <div class="tab-pane fade" id="tab-access-time" role="tabpanel">
+<div class="tab-pane fade" id="tab-access-time" role="tabpanel">
                     <div class="row g-4">
                       <div class="col-md-6">
                         <div class="form-check">
@@ -1679,10 +1681,6 @@
             address: document.getElementById('company_address').value,
             phone_list: JSON.parse(document.getElementById('footer_phones').value || '[]'),
             email_list: JSON.parse(document.getElementById('footer_emails').value || '[]'),
-            social_list: JSON.parse(document.getElementById('footer_socials').value || '[]'),
-            bct_notice: {
-              show: boolToInt(document.getElementById('bct_visible').checked)
-            },
             footer_image: document.getElementById('footer_image').value,
             colors: {
               bg_color: document.getElementById('footer_bg_color').value,
@@ -1711,6 +1709,7 @@
           col_4: {
             title: document.getElementById('col4_title').value,
             link_list: JSON.parse(document.getElementById('col4_links').value || '[]'),
+            social_list: JSON.parse(document.getElementById('footer_socials').value || '[]'),
             payment_method: {
               show: boolToInt(document.getElementById('payment_visible').checked),
               payment_list: JSON.parse(document.getElementById('payment_items').value || '[]')
@@ -1724,6 +1723,7 @@
               iframe: document.getElementById('fanpage_content').value
             },
             bct_notice: {
+              show: boolToInt(document.getElementById('bct_visible').checked),
               content: document.getElementById('bct_notification').value
             }
           },
@@ -1812,14 +1812,14 @@
               updateEmailsHidden();
             }
 
-            if (c1.social_list && Array.isArray(c1.social_list)) {
+            if ((!d.col_4 || !Array.isArray(d.col_4.social_list) || !d.col_4.social_list.length) && c1.social_list && Array.isArray(c1.social_list)) {
               var socialsContainer = document.getElementById('socials-container');
               c1.social_list.forEach(function (item) {
                 socialsContainer.appendChild(createSocialRow(item));
               });
               updateSocialsHidden();
             }
-            if (c1.bct_notice && c1.bct_notice.show != null) {
+            if ((!d.col_4 || !d.col_4.bct_notice || d.col_4.bct_notice.show == null) && c1.bct_notice && c1.bct_notice.show != null) {
               document.getElementById('bct_visible').checked = c1.bct_notice.show === 1 || c1.bct_notice.show === true || c1.bct_notice.show === '1';
             }
 
@@ -1881,6 +1881,16 @@
               updateCol4Links();
             }
 
+            if (c4.social_list && Array.isArray(c4.social_list)) {
+              var socialsContainer = document.getElementById('socials-container');
+              c4.social_list.forEach(function (item) {
+                socialsContainer.appendChild(createSocialRow(item));
+              });
+              updateSocialsHidden();
+            }
+            if (c4.bct_notice && c4.bct_notice.show != null) {
+              document.getElementById('bct_visible').checked = c4.bct_notice.show === 1 || c4.bct_notice.show === true || c4.bct_notice.show === '1';
+            }
             // Payment
             if (c4.payment_method) {
               document.getElementById('payment_visible').checked = c4.payment_method.show === 1;

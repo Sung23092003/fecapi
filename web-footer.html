@@ -962,8 +962,41 @@
           layoutOptions.forEach(function (item) { item.classList.remove('active'); });
           option.classList.add('active');
           layoutValueInput.value = radio.value;
+          applyFooterLayoutColumns(radio.value);
         });
       });
+
+      function getVisibleFooterColumns(layoutValue) {
+        const layoutColumns = {
+          '1': [1, 2],
+          '2': [1, 2, 3],
+          '3': [1, 2, 3, 4],
+          '4': [1, 2],
+          '5': [1, 2, 3]
+        };
+        return layoutColumns[String(layoutValue)] || [1, 2, 3, 4];
+      }
+
+      function applyFooterLayoutColumns(layoutValue) {
+        const visibleColumns = getVisibleFooterColumns(layoutValue);
+        let activeTabWasHidden = false;
+
+        [1, 2, 3, 4].forEach(function (column) {
+          const isVisible = visibleColumns.includes(column);
+          const tabButton = document.querySelector('[data-bs-target="#tab-col-' + column + '"]');
+          const tabItem = tabButton ? tabButton.closest('.nav-item') : null;
+          const tabPane = document.getElementById('tab-col-' + column);
+
+          if (tabItem) tabItem.classList.toggle('d-none', !isVisible);
+          if (tabPane) tabPane.classList.toggle('d-none', !isVisible);
+          if (!isVisible && tabButton && tabButton.classList.contains('active')) activeTabWasHidden = true;
+        });
+
+        if (activeTabWasHidden) {
+          const nextTabButton = document.querySelector('[data-bs-target="#tab-col-' + visibleColumns[0] + '"]');
+          if (nextTabButton) bootstrap.Tab.getOrCreateInstance(nextTabButton).show();
+        }
+      }
 
       function setupColorPicker(inputId, hexId) {
         const input = document.getElementById(inputId);
@@ -1350,6 +1383,8 @@
         syncCopyrightContent();
       }
 
+      applyFooterLayoutColumns(layoutValueInput.value);
+
       document.getElementById('buttonSubmit').addEventListener('click', async function (event) {
         event.preventDefault();
         updatePhonesHidden();
@@ -1459,6 +1494,7 @@
                 o.classList.toggle('active', o.dataset.value === val);
               });
               layoutValueInput.value = val;
+              applyFooterLayoutColumns(val);
             }
           }
 

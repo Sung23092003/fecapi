@@ -13,7 +13,7 @@
   }
 
   function redirectToLogin() {
-    window.location.href = "pages-login.html";
+    window.location.replace("pages-login.html");
   }
 
   function hasToken() {
@@ -32,13 +32,19 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function requireToken() {
     // Không guard các trang public
     if (isAuthPage()) return;
 
     if (!hasToken()) {
       redirectToLogin();
     }
+  }
+
+  requireToken();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    requireToken();
   });
 
   // Intercept toàn cầu cho hàm fetch để bắt lỗi 401

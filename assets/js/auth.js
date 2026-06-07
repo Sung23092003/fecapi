@@ -7,6 +7,11 @@ const Auth = (function () {
 
   // Key lưu trữ trong localStorage
   const STORAGE_KEY = "cms_auth";
+  const PUBLIC_PAGES = [
+    "pages-login.html",
+    "pages-register.html",
+    "pages-error-404.html",
+  ];
 
 
   function setAuth(authData) {
@@ -60,6 +65,21 @@ const Auth = (function () {
    */
   function isLoggedIn() {
     return !!getToken();
+  }
+
+  function isPublicPage() {
+    const path = window.location.pathname || "";
+    const file = path.split("/").pop() || "index.html";
+
+    return PUBLIC_PAGES.includes(file);
+  }
+
+  function requireAuth(loginPageUrl = "pages-login.html") {
+    if (isPublicPage()) return true;
+    if (isLoggedIn()) return true;
+
+    window.location.replace(loginPageUrl);
+    return false;
   }
 
   /**
@@ -133,8 +153,11 @@ const Auth = (function () {
     getUser,
     clearAuth,
     isLoggedIn,
+    requireAuth,
     getAuthHeader,
     login,
     logout,
   };
 })();
+
+Auth.requireAuth();

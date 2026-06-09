@@ -722,6 +722,20 @@
                 </div>
               </div>
               <div class="col-md-4">
+                <label class="form-label fw-semibold">Màu chữ tiêu đề</label>
+                <div class="color-input-group">
+                  <input type="text" data-coloris class="form-control form-control-color" id="title_color" name="title_color" value="#101828">
+                  <span class="color-hex" id="title_color_hex">#101828</span>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold">Màu chữ mô tả</label>
+                <div class="color-input-group">
+                  <input type="text" data-coloris class="form-control form-control-color" id="description_color" name="description_color" value="#344054">
+                  <span class="color-hex" id="description_color_hex">#344054</span>
+                </div>
+              </div>
+              <div class="col-md-4">
                 <label for="items_per_row" class="form-label fw-semibold">Số tin trên hàng</label>
                 <select class="form-select" id="items_per_row" name="items_per_row">
                   <option value="3" selected>3</option>
@@ -800,6 +814,10 @@
       const btnAdd = document.getElementById('btnAddRealItem');
       const bgColor = document.getElementById('bg_color');
       const bgColorHex = document.getElementById('bg_color_hex');
+      const titleColor = document.getElementById('title_color');
+      const titleColorHex = document.getElementById('title_color_hex');
+      const descriptionColor = document.getElementById('description_color');
+      const descriptionColorHex = document.getElementById('description_color_hex');
       const sectionIdInput = document.getElementById('section_id');
       const managerNameInput = document.getElementById('manager_name');
       const submitButton = document.getElementById('buttonSubmit');
@@ -972,6 +990,27 @@
               <label class="form-label fw-semibold">Mô tả</label>
               <input type="text" class="form-control real-description" placeholder="Nhập mô tả" value="${escapeHtml(data.description || '')}">
             </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Màu nền item</label>
+              <div class="color-input-group">
+                <input type="text" data-coloris class="form-control form-control-color real-bg-color" value="${escapeHtml(data.bg_color || '#ffffff')}">
+                <span class="color-hex real-bg-color-hex">${escapeHtml(data.bg_color || '#ffffff')}</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Màu tiêu đề item</label>
+              <div class="color-input-group">
+                <input type="text" data-coloris class="form-control form-control-color real-title-color" value="${escapeHtml(data.title_color || data.text_color || '#333333')}">
+                <span class="color-hex real-title-color-hex">${escapeHtml(data.title_color || data.text_color || '#333333')}</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Màu mô tả item</label>
+              <div class="color-input-group">
+                <input type="text" data-coloris class="form-control form-control-color real-description-color" value="${escapeHtml(data.description_color || data.text_color || '#333333')}">
+                <span class="color-hex real-description-color-hex">${escapeHtml(data.description_color || data.text_color || '#333333')}</span>
+              </div>
+            </div>
           </div>
         `;
 
@@ -980,6 +1019,12 @@
         const preview = item.querySelector('.real-image-preview');
         const titleInput = item.querySelector('.real-title');
         const urlInput = item.querySelector('.real-url');
+        const itemBgColor = item.querySelector('.real-bg-color');
+        const itemBgColorHex = item.querySelector('.real-bg-color-hex');
+        const itemTitleColor = item.querySelector('.real-title-color');
+        const itemTitleColorHex = item.querySelector('.real-title-color-hex');
+        const itemDescriptionColor = item.querySelector('.real-description-color');
+        const itemDescriptionColorHex = item.querySelector('.real-description-color-hex');
         let urlTouched = !!(data.url || data.link);
 
         if (data.image) {
@@ -1019,7 +1064,20 @@
           urlInput.value = slugify(urlInput.value);
         });
 
+        itemBgColor.addEventListener('input', function () {
+          itemBgColorHex.textContent = itemBgColor.value;
+        });
+
+        itemTitleColor.addEventListener('input', function () {
+          itemTitleColorHex.textContent = itemTitleColor.value;
+        });
+
+        itemDescriptionColor.addEventListener('input', function () {
+          itemDescriptionColorHex.textContent = itemDescriptionColor.value;
+        });
+
         list.appendChild(item);
+        return item;
       }
 
       function buildSectionData(items) {
@@ -1027,6 +1085,8 @@
           display_name: getEditorContent('display_name'),
           description: getEditorContent('description'),
           bg_color: bgColor.value,
+          title_color: titleColor.value,
+          description_color: descriptionColor.value,
           items_per_row: Number(document.getElementById('items_per_row').value),
           row_count: Number(document.getElementById('row_count').value),
           items: items
@@ -1043,6 +1103,10 @@
         document.getElementById('status').value = statusFromApi(section.section_status ?? data.status);
         bgColor.value = data.bg_color || '#ffffff';
         bgColorHex.textContent = bgColor.value;
+        titleColor.value = data.title_color || '#101828';
+        titleColorHex.textContent = titleColor.value;
+        descriptionColor.value = data.description_color || '#344054';
+        descriptionColorHex.textContent = descriptionColor.value;
         document.getElementById('items_per_row').value = String(data.items_per_row || 3);
         document.getElementById('row_count').value = String(data.row_count || 1);
         setEditorContent('display_name', data.display_name || '');
@@ -1073,11 +1137,25 @@
       }
 
       btnAdd.addEventListener('click', function () {
-        createRealItem();
+        const item = createRealItem();
+        if (!item) return;
+        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(function () {
+          const titleInput = item.querySelector('.real-title');
+          if (titleInput) titleInput.focus();
+        }, 280);
       });
 
       bgColor.addEventListener('input', function () {
         bgColorHex.textContent = bgColor.value;
+      });
+
+      titleColor.addEventListener('input', function () {
+        titleColorHex.textContent = titleColor.value;
+      });
+
+      descriptionColor.addEventListener('input', function () {
+        descriptionColorHex.textContent = descriptionColor.value;
       });
 
       initTinyEditor('display_name', 240);
@@ -1098,7 +1176,10 @@
               image: item.querySelector('.real-image-data').value,
               title: item.querySelector('.real-title').value,
               url: item.querySelector('.real-url').value,
-              description: item.querySelector('.real-description').value
+              description: item.querySelector('.real-description').value,
+              bg_color: item.querySelector('.real-bg-color').value || '#ffffff',
+              title_color: item.querySelector('.real-title-color').value || '#333333',
+              description_color: item.querySelector('.real-description-color').value || '#333333'
             };
           });
 

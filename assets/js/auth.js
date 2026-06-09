@@ -82,6 +82,30 @@ const Auth = (function () {
     return false;
   }
 
+  function handleUnauthorized(loginPageUrl = "pages-login.html") {
+    if (isPublicPage()) return;
+
+    clearAuth();
+    window.location.replace(loginPageUrl);
+  }
+
+  function installFetchGuard() {
+    if (window.__authFetchGuardInstalled || typeof window.fetch !== "function") return;
+
+    const originalFetch = window.fetch.bind(window);
+    window.__authFetchGuardInstalled = true;
+
+    window.fetch = async function (...args) {
+      const response = await originalFetch(...args);
+
+      if (response && response.status === 401) {
+        handleUnauthorized();
+      }
+
+      return response;
+    };
+  }
+
   /**
    * Tạo header Authorization cho các API request
    * @returns {Object} Header chứa Bearer Token
@@ -145,6 +169,8 @@ const Auth = (function () {
     window.location.href = loginPageUrl;
   }
 
+  installFetchGuard();
+
   // Public API
   return {
     setAuth,
@@ -157,6 +183,7 @@ const Auth = (function () {
     getAuthHeader,
     login,
     logout,
+    handleUnauthorized,
   };
 })();
 

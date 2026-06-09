@@ -715,6 +715,7 @@
         article: 'Bài Viết', image_news: 'Tin Ảnh/Video', consultation: 'Đặt Lịch Tư Vấn',
         menu_category: 'Menu - Danh Mục', running_news: 'Tin Chạy', service: 'Dịch Vụ',
         faq: 'FAQ', gallery: 'Thư Viện Ảnh', real_image: 'Hình Ảnh Thực Tế',
+        real_images: 'Hình Ảnh Thực Tế',
         banner: 'Banner', video_news: 'Tin Video'
       };
       var typeEditMap = {
@@ -723,7 +724,8 @@
         running_news: 'web-body-running-news-edit.html', service: 'web-body-service-edit.html',
         faq: 'web-body-faq-edit.html', gallery: 'web-body-gallery-edit.html',
         real_image: 'web-body-real-images-edit.html', banner: 'web-body-banner-edit.html',
-        video_news: 'web-body-video-news-edit.html'
+        video_news: 'web-body-video-news-edit.html',
+        real_images: 'web-body-real-images-edit.html'
       };
       var defaultEditPage = 'web-body-article-edit.html';
 
@@ -768,6 +770,10 @@
       function getTypeLabel(type) { return typeLabels[type] || type; }
 
       function getEditPage(type) { return typeEditMap[type] || defaultEditPage; }
+
+      function getSectionId(item) {
+        return item?.id ?? item?.section_id ?? item?._id ?? '';
+      }
 
       function formatStatus(st) {
         if (st == 1) return { text: 'Hiển thị', cls: 'bg-success' };
@@ -892,6 +898,7 @@
           var st = formatStatus(it.section_status);
           var typeLabel = getTypeLabel(it.section_type);
           var editPage = getEditPage(it.section_type);
+          var sectionId = getSectionId(it);
 
           tr.innerHTML =
             '<td>' + ((currentPage - 1) * pageSize + idx + 1) + '</td>' +
@@ -901,9 +908,9 @@
             '<td><span class="badge ' + st.cls + '">' + st.text + '</span></td>' +
             '<td>' +
               '<div class="d-flex gap-1">' +
-                '<a href="' + editPage + '?id=' + it.id + '" class="btn btn-sm btn-outline-primary" title="Sửa"><i class="bi bi-pencil"></i></a>' +
-                '<button type="button" class="btn btn-sm btn-outline-' + (it.section_status == 1 ? 'warning' : 'success') + ' btn-toggle-status" data-id="' + it.id + '" data-status="' + (it.section_status == 1 ? 0 : 1) + '" title="' + (it.section_status == 1 ? 'Ẩn' : 'Hiện') + '"><i class="bi bi-eye' + (it.section_status == 1 ? '-slash' : '') + '"></i></button>' +
-                '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-section" data-id="' + it.id + '" title="Xóa"><i class="bi bi-trash"></i></button>' +
+                '<a href="' + editPage + '?id=' + encodeURIComponent(sectionId) + '" class="btn btn-sm btn-outline-primary" title="Sửa"><i class="bi bi-pencil"></i></a>' +
+                '<button type="button" class="btn btn-sm btn-outline-' + (it.section_status == 1 ? 'warning' : 'success') + ' btn-toggle-status" data-id="' + escapeHtml(sectionId) + '" data-status="' + (it.section_status == 1 ? 0 : 1) + '" title="' + (it.section_status == 1 ? 'Ẩn' : 'Hiện') + '"><i class="bi bi-eye' + (it.section_status == 1 ? '-slash' : '') + '"></i></button>' +
+                '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-section" data-id="' + escapeHtml(sectionId) + '" title="Xóa"><i class="bi bi-trash"></i></button>' +
               '</div>' +
             '</td>';
           frag.appendChild(tr);
@@ -950,11 +957,11 @@
         if (!btn) return;
 
         if (btn.classList.contains('btn-toggle-status')) {
-          var id = parseInt(btn.dataset.id, 10);
+          var id = btn.dataset.id;
           var status = parseInt(btn.dataset.status, 10);
           if (id) apiToggleStatus(id, status);
         } else if (btn.classList.contains('btn-delete-section')) {
-          var id2 = parseInt(btn.dataset.id, 10);
+          var id2 = btn.dataset.id;
           if (id2) {
             deleteTargetId = id2;
             if (deleteModal) deleteModal.show();

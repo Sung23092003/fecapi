@@ -690,9 +690,10 @@
         <div class="card card-box mb-3">
           <div class="card-inner">
             <div class="row g-3">
+              <input type="hidden" id="section_id" name="section_id" value="">
               <div class="col-md-6">
                 <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
-                <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Hình ảnh thực tế dự án">
+                <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Hình ảnh thực tế dự án" required>
               </div>
               <div class="col-md-3">
                 <label for="sort_order" class="form-label fw-semibold">Thứ tự</label>
@@ -768,6 +769,21 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
+  <div class="modal fade" id="saveResultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveResultTitle">Thông báo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="saveResultMessage"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đồng ý</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/js/main.js"></script>
@@ -784,7 +800,121 @@
       const btnAdd = document.getElementById('btnAddRealItem');
       const bgColor = document.getElementById('bg_color');
       const bgColorHex = document.getElementById('bg_color_hex');
+      const sectionIdInput = document.getElementById('section_id');
+      const managerNameInput = document.getElementById('manager_name');
+      const submitButton = document.getElementById('buttonSubmit');
+      const saveResultModalEl = document.getElementById('saveResultModal');
+      const saveResultTitle = document.getElementById('saveResultTitle');
+      const saveResultMessage = document.getElementById('saveResultMessage');
+      const saveResultModal = saveResultModalEl && window.bootstrap ? new bootstrap.Modal(saveResultModalEl) : null;
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
       let itemIndex = 0;
+      let modalCloseCallback = null;
+
+      function apiUrl(path) {
+        return ENV.BASE_URL + '/admin/page-section' + path;
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      function slugify(value) {
+        return String(value || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/\u0111/g, 'd')
+          .replace(/\u0110/g, 'D')
+          .toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+      }
+
+      function statusToApi(value) {
+        return value === 'hide' || value === 0 || value === '0' ? 0 : 1;
+      }
+
+      function statusFromApi(value) {
+        return value === 0 || value === '0' || value === 'hide' ? 'hide' : 'show';
+      }
+
+      function parseSectionData(value) {
+        if (!value) return {};
+        if (typeof value === 'object') return value;
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function getSectionId(section) {
+        return section?.id ?? section?.section_id ?? section?._id ?? editId ?? '';
+      }
+
+      function getSectionDetail(json) {
+        const raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+
+        const nested = raw.data ?? raw.item ?? raw.detail ?? raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        if (nested && typeof nested === 'object') return nested;
+        return raw;
+      }
+
+      function setEditorContent(id, value) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.value = value || '';
+
+        let attempts = 0;
+        function applyEditorContent() {
+          attempts += 1;
+          try {
+            const editor = window.tinymce && tinymce.get(id);
+            if (editor && editor.initialized) {
+              editor.setContent(value || '');
+              return;
+            }
+          } catch (e) { }
+          if (attempts < 20) setTimeout(applyEditorContent, 100);
+        }
+        applyEditorContent();
+      }
+
+      function showPopup(title, message, onClose) {
+        if (!saveResultModal || !saveResultTitle || !saveResultMessage) {
+          if (typeof onClose === 'function') onClose();
+          return;
+        }
+        modalCloseCallback = typeof onClose === 'function' ? onClose : null;
+        saveResultTitle.textContent = title;
+        saveResultMessage.textContent = message;
+        saveResultModal.show();
+      }
+
+      if (saveResultModalEl) {
+        saveResultModalEl.addEventListener('hidden.bs.modal', function () {
+          const callback = modalCloseCallback;
+          modalCloseCallback = null;
+          if (callback) callback();
+        });
+      }
+
+      function setSaving(isSaving) {
+        if (!submitButton) return;
+        submitButton.disabled = isSaving;
+        submitButton.innerHTML = isSaving
+          ? '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span><span>Đang lưu</span>'
+          : '<i class="bi bi-floppy"></i><span>Lưu</span>';
+      }
 
       function initTinyEditor(id, height) {
         if (!window.tinymce || !document.getElementById(id)) return;
@@ -812,6 +942,7 @@
       }
 
       function createRealItem(data) {
+        data = data || {};
         itemIndex += 1;
         const item = document.createElement('div');
         item.className = 'real-image-item';
@@ -823,19 +954,23 @@
             </button>
           </div>
           <div class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label fw-semibold">Hình đại diện</label>
               <input type="file" class="form-control real-image-file" accept="image/*">
-              <input type="hidden" class="real-image-data" value="${data?.image || ''}">
+              <input type="hidden" class="real-image-data" value="${escapeHtml(data.image || '')}">
               <div class="real-image-preview mt-2">Chưa chọn ảnh</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label fw-semibold">Tên tin</label>
-              <input type="text" class="form-control real-title" placeholder="Nhập tên tin" value="${data?.title || ''}">
+              <input type="text" class="form-control real-title" placeholder="Nhập tên tin" value="${escapeHtml(data.title || '')}">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">URL</label>
+              <input type="text" class="form-control real-url" placeholder="url-tin" value="${escapeHtml(data.url || '')}">
+            </div>
+            <div class="col-md-3">
               <label class="form-label fw-semibold">Mô tả</label>
-              <input type="text" class="form-control real-description" placeholder="Nhập mô tả" value="${data?.description || ''}">
+              <input type="text" class="form-control real-description" placeholder="Nhập mô tả" value="${escapeHtml(data.description || '')}">
             </div>
           </div>
         `;
@@ -843,6 +978,17 @@
         const file = item.querySelector('.real-image-file');
         const imageData = item.querySelector('.real-image-data');
         const preview = item.querySelector('.real-image-preview');
+        const titleInput = item.querySelector('.real-title');
+        const urlInput = item.querySelector('.real-url');
+        let urlTouched = !!(data.url || data.link);
+
+        if (data.image) {
+          preview.innerHTML = '<img src="' + escapeHtml(data.image) + '" alt="preview">';
+        }
+
+        if (!urlTouched && titleInput && urlInput) {
+          urlInput.value = slugify(titleInput.value);
+        }
 
         file.addEventListener('change', function () {
           const selected = file.files && file.files[0];
@@ -859,7 +1005,71 @@
           item.remove();
         });
 
+        titleInput.addEventListener('input', function () {
+          if (!urlTouched) {
+            urlInput.value = slugify(titleInput.value);
+          }
+        });
+
+        urlInput.addEventListener('input', function () {
+          urlTouched = true;
+        });
+
+        urlInput.addEventListener('blur', function () {
+          urlInput.value = slugify(urlInput.value);
+        });
+
         list.appendChild(item);
+      }
+
+      function buildSectionData(items) {
+        return {
+          display_name: getEditorContent('display_name'),
+          description: getEditorContent('description'),
+          bg_color: bgColor.value,
+          items_per_row: Number(document.getElementById('items_per_row').value),
+          row_count: Number(document.getElementById('row_count').value),
+          items: items
+        };
+      }
+
+      function fillForm(section) {
+        if (!section) return;
+        const data = parseSectionData(section.section_data);
+        const managerName = section.section_name || section.name || data.manager_name || '';
+        sectionIdInput.value = getSectionId(section);
+        managerNameInput.value = managerName;
+        document.getElementById('sort_order').value = section.section_order_no ?? data.sort_order ?? 1;
+        document.getElementById('status').value = statusFromApi(section.section_status ?? data.status);
+        bgColor.value = data.bg_color || '#ffffff';
+        bgColorHex.textContent = bgColor.value;
+        document.getElementById('items_per_row').value = String(data.items_per_row || 3);
+        document.getElementById('row_count').value = String(data.row_count || 1);
+        setEditorContent('display_name', data.display_name || '');
+        setEditorContent('description', data.description || '');
+        list.innerHTML = '';
+        itemIndex = 0;
+        (Array.isArray(data.items) ? data.items : []).forEach(createRealItem);
+      }
+
+      async function loadEditDetail() {
+        if (!editId) return;
+        try {
+          const res = await fetch(apiUrl('/' + encodeURIComponent(editId)), { headers: Auth.getAuthHeader() });
+          const json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            showPopup('Lỗi', json?.message || 'Không tải được dữ liệu khối.');
+            return;
+          }
+          const section = getSectionDetail(json);
+          if (!section) {
+            showPopup('Lỗi', 'Không tìm thấy dữ liệu khối.');
+            return;
+          }
+          fillForm(section);
+        } catch (e) {
+          showPopup('Lỗi', 'Không thể kết nối đến máy chủ.');
+        }
       }
 
       btnAdd.addEventListener('click', function () {
@@ -874,37 +1084,58 @@
       initTinyEditor('description', 260);
 
       if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
           event.preventDefault();
           event.stopPropagation();
-          form.classList.add('was-validated');
-          if (!form.checkValidity()) return;
+          if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+          }
+          form.classList.remove('was-validated');
 
           const items = Array.from(list.querySelectorAll('.real-image-item')).map(function (item) {
             return {
               image: item.querySelector('.real-image-data').value,
               title: item.querySelector('.real-title').value,
+              url: item.querySelector('.real-url').value,
               description: item.querySelector('.real-description').value
             };
           });
 
+          const sectionData = buildSectionData(items);
           const payload = {
-            type: 'real_images',
-            manager_name: document.getElementById('manager_name').value,
-            display_name: getEditorContent('display_name'),
-            description: getEditorContent('description'),
-            sort_order: document.getElementById('sort_order').value,
-            status: document.getElementById('status').value,
-            bg_color: bgColor.value,
-            items_per_row: Number(document.getElementById('items_per_row').value),
-            row_count: Number(document.getElementById('row_count').value),
-            items: items
+            id: sectionIdInput.value || editId || 0,
+            section_name: managerNameInput.value.trim(),
+            section_type: 'real_image',
+            section_data: JSON.stringify(sectionData),
+            section_order_no: Number(document.getElementById('sort_order').value || 0),
+            section_status: statusToApi(document.getElementById('status').value)
           };
 
-          console.log('Body real images payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          setSaving(true);
+          try {
+            const res = await fetch(apiUrl(''), {
+              method: 'POST',
+              headers: Auth.getAuthHeader(),
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json().catch(function () { return null; });
+            if (!json || !json.success) {
+              showPopup('Lỗi', json?.message || 'Lưu khối hình ảnh thực tế thất bại.');
+              return;
+            }
+            form.classList.remove('was-validated');
+            showPopup('Thành công', 'Lưu khối hình ảnh thực tế thành công.', function () {
+              window.location.href = 'web-body.html';
+            });
+          } catch (e) {
+            showPopup('Lỗi', 'Không thể kết nối đến máy chủ.');
+          } finally {
+            setSaving(false);
+          }
         });
       }
+      loadEditDetail();
     })();
   </script>
 </body>

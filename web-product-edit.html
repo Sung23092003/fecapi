@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Quản lý bài sản phẩm - NiceAdmin</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+
+  <style>
+    .product-edit-page .card-box {
+      border: 0;
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(1, 41, 112, .08);
+    }
+
+    .product-edit-page .card-inner {
+      padding: 22px;
+    }
+
+    .product-edit-page .nav-tabs {
+      border-bottom-color: #dce3f0;
+      gap: 2px;
+    }
+
+    .product-edit-page .nav-tabs .nav-link {
+      color: #4154f1;
+      border-radius: 0;
+      font-weight: 700;
+      padding: 14px 18px;
+    }
+
+    .product-edit-page .nav-tabs .nav-link.active {
+      color: #344767;
+      background: #f3f4f6;
+      border-color: #dce3f0 #dce3f0 #f3f4f6;
+    }
+
+    .form-section-title {
+      color: #012970;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+
+    .label-req {
+      color: #dc3545;
+      margin-left: 3px;
+    }
+
+    .image-upload-box {
+      border: 1px dashed #b8c2d6;
+      border-radius: 8px;
+      background: #f8faff;
+      min-height: 146px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .image-upload-box input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .image-upload-box img {
+      width: 100%;
+      height: 100%;
+      min-height: 146px;
+      object-fit: cover;
+    }
+
+    .image-placeholder {
+      color: #667085;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .image-placeholder i {
+      color: #4154f1;
+      font-size: 28px;
+    }
+
+    .slider-preview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .slider-thumb {
+      aspect-ratio: 4 / 3;
+      border: 1px solid #dce3f0;
+      border-radius: 6px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .menu-picker-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .menu-picker-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .menu-picker-row .btn {
+      width: 42px;
+      flex: 0 0 42px;
+    }
+
+    .tiny-area {
+      min-height: 92px;
+    }
+
+    .seo-subtabs {
+      border-bottom: 1px solid #dce3f0;
+      margin-top: 28px;
+    }
+
+    .seo-subtabs .nav-link {
+      border: 1px solid transparent;
+      border-radius: 0;
+      color: #4154f1;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 14px 28px;
+    }
+
+    .seo-subtabs .nav-link.active {
+      color: #344767;
+      background: #f3f4f6;
+      border-color: #dce3f0 #dce3f0 #fff;
+    }
+
+    .seo-helper-text {
+      color: #344767;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 14px 0 16px;
+    }
+
+    .seo-panel {
+      padding: 24px 12px 6px;
+    }
+
+    .seo-panel .form-label {
+      color: #344767;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .seo-preview-card {
+      border: 1px solid #dce3f0;
+      border-radius: 4px;
+      min-height: 520px;
+      padding: 18px 20px;
+      background: #fff;
+    }
+
+    .seo-preview-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .seo-preview-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #e6d5d5;
+      flex: 0 0 56px;
+    }
+
+    .seo-preview-name {
+      color: #344767;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .seo-preview-time {
+      color: #667085;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .seo-preview-image {
+      width: 176px;
+      height: 92px;
+      background: #20272d;
+      color: #d7dde5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .seo-preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .seo-preview-url {
+      color: #d0d0d0;
+      margin-top: 12px;
+      font-size: 15px;
+    }
+
+    .robots-section {
+      border-top: 1px solid #e5e7eb;
+      padding: 34px 0;
+    }
+
+    .robots-section:first-child {
+      border-top: 0;
+      padding-top: 12px;
+    }
+
+    .robots-label {
+      color: #344767;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .robots-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 12px 80px;
+    }
+
+    .robots-option {
+      min-height: 32px;
+    }
+
+    .script-textarea {
+      min-height: 280px;
+      font-family: Consolas, Monaco, monospace;
+      resize: vertical;
+    }
+
+    .coming-soon-box {
+      border: 1px dashed #b8c2d6;
+      border-radius: 8px;
+      color: #667085;
+      padding: 42px 18px;
+      text-align: center;
+    }
+
+    @media (max-width: 575.98px) {
+      .product-edit-page .card-inner {
+        padding: 16px;
+      }
+
+      .product-edit-page .nav-tabs .nav-link,
+      .seo-subtabs .nav-link {
+        width: 100%;
+        text-align: left;
+      }
+
+      .menu-picker-row {
+        align-items: stretch;
+      }
+
+      .seo-preview-card {
+        min-height: 320px;
+      }
+
+      .robots-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">NiceAdmin</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a><!-- End Search Icon-->
+        </li>
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="badge bg-success badge-number">3</span>
+          </a><!-- End Messages Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+            <li class="dropdown-header">
+              You have 3 new messages
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Maria Hudson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>4 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>Anna Nelson</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>6 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="message-item">
+              <a href="#">
+                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                <div>
+                  <h4>David Muldon</h4>
+                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                  <p>8 hrs. ago</p>
+                </div>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="dropdown-footer">
+              <a href="#">Show all messages</a>
+            </li>
+
+          </ul><!-- End Messages Dropdown Items -->
+
+        </li>
+
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name></span>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 data-user-name></h6>
+              <span>Web Designer</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#" data-logout="true">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Đăng xuất</span>
+              </a>
+            </li>
+          </ul>
+        </li><!-- End Profile Nav -->
+      </ul>
+    </nav><!-- End Icons Navigation -->
+  </header>
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="header-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="web-header.html"><i class="bi bi-circle"></i><span>Quản lý TOP - MAIN</span></a></li>
+          <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu</span></a></li>
+          <li><a href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="web-body.html"><i class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-footer.html"><i class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-file-earmark-richtext"></i><span>Quản lý Landing Page</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-cart"></i><span>Quản lý Đơn hàng</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-dots"></i><span>QL Yêu cầu tư vấn</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="products-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          <li><a href="web-product-edit.html" class="active"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>QL User Khách hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="customers-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL User Khách hàng</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý cấp độ VIP</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-book"></i><span>Quy định &amp; Hướng dẫn</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="regulations-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Quy định chung</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>QL Hướng dẫn</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-search"></i><span>Quản lý SEO</span></a></li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Danh sách Icon</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="https://fontawesome.com/search?ic=free-collection" target="_blank"><i class="bi bi-circle"></i><span>Fontawesome</span></a></li>
+          <li><a href="icons-bootstrap.html" class=""><i class="bi bi-circle"></i><span>Bootstrap</span></a></li>
+          <li><a href="icons-remix.html" class=""><i class="bi bi-circle"></i><span>Remix</span></a></li>
+          <li><a href="icons-boxicons.html" class=""><i class="bi bi-circle"></i><span>Boxicons</span></a></li>
+        </ul>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+          <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a></li>
+          <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện menu</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Quản lý ĐVHC</span></a></li>
+          <li><a href="#"><i class="bi bi-circle"></i><span>Hướng dẫn BFE</span></a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main product-edit-page">
+    <div class="pagetitle">
+      <h1>Thêm sản phẩm</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item">Quản lý sản phẩm</li>
+          <li class="breadcrumb-item active">Thêm sản phẩm</li>
+        </ol>
+      </nav>
+    </div>
+
+    <section class="section">
+      <div class="card card-box">
+        <div class="card-inner">
+          <form id="formProduct" class="row g-3">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic-pane"
+                  type="button" role="tab" aria-controls="basic-pane" aria-selected="true">Thông tin sản phẩm Cơ bản</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="advanced-tab" data-bs-toggle="tab" data-bs-target="#advanced-pane"
+                  type="button" role="tab" aria-controls="advanced-pane" aria-selected="false">Thông tin sản phẩm Nâng cao</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="seo-tab" data-bs-toggle="tab" data-bs-target="#seo-pane" type="button"
+                  role="tab" aria-controls="seo-pane" aria-selected="false">Quản lý SEO</button>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="productTabsContent">
+              <div class="tab-pane fade show active" id="basic-pane" role="tabpanel" aria-labelledby="basic-tab"
+                tabindex="0">
+                <div class="row g-4">
+                  <div class="col-lg-4">
+                    <h2 class="form-section-title">Hình ảnh sản phẩm</h2>
+                    <div class="form-group">
+                      <label class="form-label">Ảnh đại diện</label>
+                      <label class="image-upload-box">
+                        <input type="file" id="product_avatar" accept="image/*">
+                        <span class="image-placeholder" id="avatarPlaceholder">
+                          <i class="bi bi-image"></i>
+                          <span>Chọn ảnh đại diện</span>
+                        </span>
+                        <img id="avatarPreview" class="d-none" alt="Ảnh đại diện">
+                      </label>
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <label class="form-label">Ảnh Slider</label>
+                      <input type="file" class="form-control" id="product_slider" accept="image/*" multiple>
+                      <div class="slider-preview" id="sliderPreview"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-8">
+                    <h2 class="form-section-title">Thông tin bán hàng</h2>
+                    <div class="row g-3">
+                      <div class="col-md-8">
+                        <label class="form-label">Tên sản phẩm<span class="label-req">*</span> <span class="text-muted fw-normal">(Thẻ Meta title cho SEO)</span></label>
+                        <input type="text" class="form-control" id="product_name" name="product_name" required>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Mã sản phẩm</label>
+                        <input type="text" class="form-control" id="product_code" name="product_code">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Giá bán</label>
+                        <input type="number" min="0" step="1000" class="form-control price-input" id="product_price"
+                          name="product_price">
+                      </div>
+
+                      <div class="col-md-4">
+                        <label class="form-label">Giá bán khuyến mãi</label>
+                        <input type="number" min="0" step="1000" class="form-control price-input" id="sale_price"
+                          name="sale_price">
+                      </div>
+
+                      <div class="col-md-2">
+                        <label class="form-label">VAT %</label>
+                        <input type="number" min="0" max="100" step="0.1" class="form-control price-input" id="vat_percent"
+                          name="vat_percent" value="0">
+                      </div>
+
+                      <div class="col-md-2">
+                        <label class="form-label">Giá sau VAT</label>
+                        <input type="text" class="form-control" id="price_after_vat" name="price_after_vat" readonly>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Chọn menu đăng</label>
+                        <div class="menu-picker-list" id="menuPickerList">
+                          <div class="menu-picker-row">
+                            <select class="form-select" name="post_menu[]">
+                              <option value="">Chọn menu</option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary btn-add-menu" title="Thêm menu">
+                              <i class="bi bi-plus-lg"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label">Thời gian Bảo hành</label>
+                        <input type="text" class="form-control" id="warranty_time" name="warranty_time"
+                          placeholder="12 tháng">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label">Đơn vị tính</label>
+                        <input type="text" class="form-control" id="product_unit" name="product_unit"
+                          placeholder="Chiếc, bộ...">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label">Thứ tự</label>
+                        <input type="number" class="form-control" id="product_order" name="product_order" value="0">
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" id="product_status" name="product_status">
+                          <option value="1">Hiện</option>
+                          <option value="0">Ẩn</option>
+                        </select>
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label">Mô tả ngắn<span class="label-req">*</span> <span class="text-muted fw-normal">(Thẻ Meta description cho SEO)</span></label>
+                        <textarea class="form-control tiny-area tinymce-small" id="short_description"
+                          name="short_description" rows="4" required></textarea>
+                      </div>
+
+                      <div class="col-12">
+                        <label class="form-label">Nội dung thông tin sản phẩm</label>
+                        <textarea class="form-control tinymce-editor" id="product_content" name="product_content"
+                          rows="10"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="advanced-pane" role="tabpanel" aria-labelledby="advanced-tab" tabindex="0">
+                <div class="coming-soon-box">
+                  <i class="bi bi-tools fs-2 d-block mb-2"></i>
+                  Thông tin sản phẩm Nâng cao.
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="seo-pane" role="tabpanel" aria-labelledby="seo-tab" tabindex="0">
+                <ul class="nav seo-subtabs" id="seoSubTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="social-tab" data-bs-toggle="tab" data-bs-target="#social-pane"
+                      type="button" role="tab" aria-controls="social-pane" aria-selected="true">
+                      <i class="bi bi-gear-fill me-2"></i>Chia sẻ mạng xã hội
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="seo-advanced-tab" data-bs-toggle="tab" data-bs-target="#seo-advanced-pane"
+                      type="button" role="tab" aria-controls="seo-advanced-pane" aria-selected="false">
+                      <i class="bi bi-briefcase-fill me-2"></i>Nâng cao
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="script-tab" data-bs-toggle="tab" data-bs-target="#script-pane"
+                      type="button" role="tab" aria-controls="script-pane" aria-selected="false">
+                      &lt; &gt; Insert Script
+                    </button>
+                  </li>
+                </ul>
+
+                <div class="tab-content" id="seoSubTabsContent">
+                  <div class="tab-pane fade show active" id="social-pane" role="tabpanel" aria-labelledby="social-tab"
+                    tabindex="0">
+                    <div class="seo-panel">
+                      <div class="row g-4">
+                        <div class="col-lg-8">
+                          <div class="form-group mb-3">
+                            <label class="form-label">Ảnh mạng xã hội (1200px X 628px)</label>
+                            <input type="file" class="form-control" id="social_image" name="social_image" accept="image/*">
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="form-label">Thẻ Meta title cho SEO</label>
+                            <input type="text" class="form-control" id="meta_title" name="meta_title">
+                            <input type="hidden" id="social_title" name="social_title">
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="form-label">Url SEO</label>
+                            <input type="url" class="form-control" id="seo_url" name="seo_url"
+                              value="https://we1.io.vn/chon-menu/">
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="form-label">Url tùy chỉnh</label>
+                            <div class="mb-2 fst-italic text-dark">https://we1.io.vn//</div>
+                            <input type="text" class="form-control" id="custom_url" name="custom_url">
+                          </div>
+
+                          <div class="form-group mb-3">
+                            <label class="form-label">Từ khóa</label>
+                            <textarea class="form-control" id="meta_keywords" name="meta_keywords" rows="3"></textarea>
+                          </div>
+
+                          <div class="form-group">
+                            <label class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="meta_description" name="meta_description" rows="6"></textarea>
+                            <input type="hidden" id="social_description" name="social_description">
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                          <div class="seo-preview-card">
+                            <div class="seo-preview-head">
+                              <div class="seo-preview-avatar"></div>
+                              <div>
+                                <div class="seo-preview-name">admin</div>
+                                <div class="seo-preview-time">2 hrs · <i class="bi bi-globe2"></i></div>
+                              </div>
+                            </div>
+                            <div class="seo-preview-image" id="socialImagePreview">
+                              PLEASE UPLOAD IMAGE
+                            </div>
+                            <div class="seo-preview-url" id="seoPreviewUrl">we1.io.vn</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="seo-advanced-pane" role="tabpanel" aria-labelledby="seo-advanced-tab"
+                    tabindex="0">
+                    <div class="seo-panel">
+                      <div class="robots-section">
+                        <div class="row g-3 align-items-start">
+                          <div class="col-lg-4 robots-label">ROBOTS META</div>
+                          <div class="col-lg-8">
+                            <div class="robots-grid">
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_index" name="robots_meta[]"
+                                  value="index" checked>
+                                <label class="form-check-label" for="robot_index">Index</label>
+                              </div>
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_noindex" name="robots_meta[]"
+                                  value="noindex">
+                                <label class="form-check-label" for="robot_noindex">No Index</label>
+                              </div>
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_nofollow" name="robots_meta[]"
+                                  value="nofollow">
+                                <label class="form-check-label" for="robot_nofollow">Nofollow</label>
+                              </div>
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_noarchive" name="robots_meta[]"
+                                  value="noarchive">
+                                <label class="form-check-label" for="robot_noarchive">No Archive</label>
+                              </div>
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_noimageindex"
+                                  name="robots_meta[]" value="noimageindex">
+                                <label class="form-check-label" for="robot_noimageindex">No Image Index</label>
+                              </div>
+                              <div class="form-check robots-option">
+                                <input class="form-check-input" type="checkbox" id="robot_nosnippet" name="robots_meta[]"
+                                  value="nosnippet">
+                                <label class="form-check-label" for="robot_nosnippet">No Snippet</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="robots-section">
+                        <div class="row g-3 align-items-start">
+                          <div class="col-lg-4 robots-label">ADVANCED ROBOTS META</div>
+                          <div class="col-lg-8">
+                            <div class="row gy-3 align-items-center">
+                              <div class="col-md-5">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="max_snippet_enabled">
+                                  <label class="form-check-label" for="max_snippet_enabled">Max Snippet</label>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <input type="number" class="form-control" id="max_snippet" name="max_snippet" value="-1">
+                              </div>
+
+                              <div class="col-md-5">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="max_video_enabled">
+                                  <label class="form-check-label" for="max_video_enabled">Max Video Preview</label>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <input type="number" class="form-control" id="max_video_preview" name="max_video_preview"
+                                  value="-1">
+                              </div>
+
+                              <div class="col-md-5">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="max_image_enabled">
+                                  <label class="form-check-label" for="max_image_enabled">Max Image Preview</label>
+                                </div>
+                              </div>
+                              <div class="col-md-4">
+                                <select class="form-select" id="max_image_preview" name="max_image_preview">
+                                  <option value="large">Large</option>
+                                  <option value="standard">Standard</option>
+                                  <option value="none">None</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="robots-section">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-lg-4 robots-label text-lg-start">Canonical URL</div>
+                          <div class="col-lg-6">
+                            <input type="url" class="form-control" id="canonical_url" name="canonical_url"
+                              value="https://we1.io.vn/chon-menu/">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="script-pane" role="tabpanel" aria-labelledby="script-tab" tabindex="0">
+                    <div class="seo-panel">
+                      <div class="seo-helper-text">The script in the following textbox will be inserted to the head section.</div>
+                      <textarea class="form-control script-textarea" id="head_script" name="head_script"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formProduct">
+      <i class="bi bi-floppy"></i><span>LƯU</span>
+    </button>
+    <a href="web-product-edit.html" class="btn btn-outline-secondary btn-cancel-floating">
+      <i class="bi bi-x-lg"></i><span>BỎ</span>
+    </a>
+  </div>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/menu-visibility.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const productName = document.getElementById('product_name');
+      const shortDescription = document.getElementById('short_description');
+      const metaTitle = document.getElementById('meta_title');
+      const metaDescription = document.getElementById('meta_description');
+      const socialTitle = document.getElementById('social_title');
+      const socialDescription = document.getElementById('social_description');
+      const productPrice = document.getElementById('product_price');
+      const salePrice = document.getElementById('sale_price');
+      const vatPercent = document.getElementById('vat_percent');
+      const priceAfterVat = document.getElementById('price_after_vat');
+      const menuPickerList = document.getElementById('menuPickerList');
+      const socialImage = document.getElementById('social_image');
+      const socialImagePreview = document.getElementById('socialImagePreview');
+      const seoUrl = document.getElementById('seo_url');
+      const seoPreviewUrl = document.getElementById('seoPreviewUrl');
+
+      let metaTitleEdited = false;
+      let metaDescriptionEdited = false;
+
+      function formatMoney(value) {
+        if (!Number.isFinite(value)) return '';
+        return value.toLocaleString('vi-VN');
+      }
+
+      function calculateVatPrice() {
+        const base = parseFloat(salePrice.value || productPrice.value || '0');
+        const vat = parseFloat(vatPercent.value || '0');
+        if (!base) {
+          priceAfterVat.value = '';
+          return;
+        }
+        priceAfterVat.value = formatMoney(base + (base * vat / 100));
+      }
+
+      function readFirstImage(input, callback) {
+        const file = input.files && input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          callback(event.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      document.getElementById('product_avatar').addEventListener('change', function () {
+        readFirstImage(this, function (src) {
+          document.getElementById('avatarPreview').src = src;
+          document.getElementById('avatarPreview').classList.remove('d-none');
+          document.getElementById('avatarPlaceholder').classList.add('d-none');
+        });
+      });
+
+      document.getElementById('product_slider').addEventListener('change', function () {
+        const preview = document.getElementById('sliderPreview');
+        preview.innerHTML = '';
+        Array.from(this.files || []).forEach(function (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const img = document.createElement('img');
+            img.src = event.target.result;
+            img.alt = 'Ảnh slider';
+            img.className = 'slider-thumb';
+            preview.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+
+      productName.addEventListener('input', function () {
+        if (!metaTitleEdited) metaTitle.value = productName.value;
+        if (!socialTitle.value) socialTitle.value = productName.value;
+      });
+
+      metaTitle.addEventListener('input', function () {
+        metaTitleEdited = true;
+        socialTitle.value = metaTitle.value;
+      });
+
+      metaDescription.addEventListener('input', function () {
+        metaDescriptionEdited = true;
+        socialDescription.value = metaDescription.value;
+      });
+
+      shortDescription.addEventListener('input', function () {
+        if (!metaDescriptionEdited) metaDescription.value = shortDescription.value;
+        if (!socialDescription.value) socialDescription.value = shortDescription.value;
+      });
+
+      socialImage.addEventListener('change', function () {
+        readFirstImage(this, function (src) {
+          socialImagePreview.innerHTML = '<img src="' + src + '" alt="Social preview">';
+        });
+      });
+
+      seoUrl.addEventListener('input', function () {
+        try {
+          const url = new URL(seoUrl.value);
+          seoPreviewUrl.textContent = url.hostname;
+        } catch (err) {
+          seoPreviewUrl.textContent = seoUrl.value || 'we1.io.vn';
+        }
+      });
+
+      [productPrice, salePrice, vatPercent].forEach(function (input) {
+        input.addEventListener('input', calculateVatPrice);
+      });
+
+      menuPickerList.addEventListener('click', function (event) {
+        const addBtn = event.target.closest('.btn-add-menu');
+        const removeBtn = event.target.closest('.btn-remove-menu');
+
+        if (addBtn) {
+          const row = document.createElement('div');
+          row.className = 'menu-picker-row';
+          row.innerHTML = '<select class="form-select" name="post_menu[]"><option value="">Chọn menu</option></select><button type="button" class="btn btn-outline-danger btn-remove-menu" title="Xóa menu"><i class="bi bi-x-lg"></i></button>';
+          menuPickerList.appendChild(row);
+        }
+
+        if (removeBtn) {
+          removeBtn.closest('.menu-picker-row').remove();
+        }
+      });
+
+      if (window.tinymce) {
+        tinymce.init({
+          selector: '#short_description',
+          height: 180,
+          menubar: false,
+          plugins: 'link lists code',
+          toolbar: 'undo redo | bold italic underline | bullist numlist | link | code',
+          branding: true,
+          setup: function (editor) {
+            editor.on('keyup change', function () {
+              shortDescription.value = editor.getContent({ format: 'text' });
+              shortDescription.dispatchEvent(new Event('input'));
+            });
+          }
+        });
+
+        tinymce.init({
+          selector: '#product_content',
+          height: 360,
+          menubar: 'edit insert format table tools',
+          plugins: 'link lists table image media code fullscreen preview wordcount',
+          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
+          toolbar_mode: 'sliding',
+          branding: true,
+          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+        });
+      }
+
+      document.getElementById('formProduct').addEventListener('submit', function (event) {
+        event.preventDefault();
+      });
+    })();
+  </script>
+</body>
+
+</html>

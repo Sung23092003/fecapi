@@ -78,15 +78,6 @@
       padding: 0;
     }
 
-    .product-page .filter-panel {
-      display: none;
-      border-top: 1px solid #ebeef4;
-      margin-top: 16px;
-      padding-top: 16px;
-    }
-
-    .product-page .filter-panel.show { display: block; }
-
     .product-page .empty-state {
       display: none;
       border: 1px dashed #dce3f0;
@@ -471,35 +462,6 @@
             </div>
           </div>
 
-          <div id="filter-panel" class="filter-panel">
-            <div class="row g-3">
-              <div class="col-md-4">
-                <label class="form-label">Danh mục</label>
-                <select id="filter-category" class="form-select">
-                  <option value="">Tất cả danh mục</option>
-                  <option value="Thiết bị mạng">Thiết bị mạng</option>
-                  <option value="Máy tính">Máy tính</option>
-                  <option value="Phụ kiện">Phụ kiện</option>
-                </select>
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Trạng thái</label>
-                <select id="filter-status" class="form-select">
-                  <option value="">Tất cả trạng thái</option>
-                  <option value="1">Hiện</option>
-                  <option value="0">Ẩn</option>
-                </select>
-              </div>
-              <div class="col-md-4 d-flex align-items-end gap-2">
-                <button id="btn-apply-filter" type="button" class="btn btn-primary">
-                  <i class="bi bi-check2"></i> Áp dụng
-                </button>
-                <button id="btn-reset-filter" type="button" class="btn btn-outline-secondary">
-                  <i class="bi bi-arrow-counterclockwise"></i> Đặt lại
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -549,6 +511,40 @@
           </div>
         </div>
       </div>
+
+      <div id="filter-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Bộ lọc</span>
+            <button type="button" id="filter-modal-close">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+          <div class="column-modal-body">
+            <div class="mb-3">
+              <label class="form-label">Danh mục</label>
+              <select id="filter-category" class="form-select">
+                <option value="">Tất cả danh mục</option>
+                <option value="Thiết bị mạng">Thiết bị mạng</option>
+                <option value="Máy tính">Máy tính</option>
+                <option value="Phụ kiện">Phụ kiện</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Trạng thái</label>
+              <select id="filter-status" class="form-select">
+                <option value="">Tất cả trạng thái</option>
+                <option value="1">Hiện</option>
+                <option value="0">Ẩn</option>
+              </select>
+            </div>
+          </div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-filter">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-filter">Áp dụng</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main><!-- End #main -->
 
@@ -595,7 +591,7 @@
       const tableBody = document.getElementById('product-table-body');
       const emptyState = document.getElementById('empty-state');
       const searchInput = document.getElementById('search-input');
-      const filterPanel = document.getElementById('filter-panel');
+      const filterModal = document.getElementById('filter-modal');
       const filterCategory = document.getElementById('filter-category');
       const filterStatus = document.getElementById('filter-status');
       const columnModal = document.getElementById('column-modal');
@@ -667,9 +663,16 @@
       }
 
       document.getElementById('btn-add').addEventListener('click', function () { window.location.href = 'web-product-edit.html?id=0'; });
-      document.getElementById('btn-toggle-filter').addEventListener('click', function () { filterPanel.classList.toggle('show'); });
-      document.getElementById('btn-apply-filter').addEventListener('click', renderProducts);
+      document.getElementById('btn-toggle-filter').addEventListener('click', function () {
+        filterModal.classList.add('show');
+      });
+      document.getElementById('filter-modal-close').addEventListener('click', function () { filterModal.classList.remove('show'); });
+      document.getElementById('btn-apply-filter').addEventListener('click', function () {
+        filterModal.classList.remove('show');
+        renderProducts();
+      });
       document.getElementById('btn-reset-filter').addEventListener('click', function () {
+        searchInput.value = '';
         filterCategory.value = '';
         filterStatus.value = '';
         renderProducts();
@@ -699,6 +702,9 @@
       });
       columnModal.addEventListener('click', function (event) {
         if (event.target === columnModal) columnModal.classList.remove('show');
+      });
+      filterModal.addEventListener('click', function (event) {
+        if (event.target === filterModal) filterModal.classList.remove('show');
       });
       searchInput.addEventListener('input', renderProducts);
       tableBody.addEventListener('click', function (event) {

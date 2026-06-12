@@ -525,15 +525,15 @@
               <label class="form-label">Danh mục</label>
               <select id="filter-category" class="form-select">
                 <option value="">Tất cả danh mục</option>
-                <option value="Thiết bị mạng">Thiết bị mạng</option>
-                <option value="Máy tính">Máy tính</option>
-                <option value="Phụ kiện">Phụ kiện</option>
+                <option value="1">Thiết bị mạng</option>
+                <option value="2">Máy tính</option>
+                <option value="3">Phụ kiện</option>
               </select>
             </div>
             <div class="mb-3">
               <label class="form-label">Trạng thái</label>
               <select id="filter-status" class="form-select">
-                <option value="">Tất cả trạng thái</option>
+                <option value="-1">Tất cả trạng thái</option>
                 <option value="1">Hiện</option>
                 <option value="0">Ẩn</option>
               </select>
@@ -551,6 +551,25 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
+  <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title">Xác nhận xóa</h6>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-3">
+          <i class="bi bi-exclamation-triangle text-danger" style="font-size:28px;"></i>
+          <p class="mb-0 mt-2" id="deleteProductMessage">Bạn có chắc muốn xóa sản phẩm này?</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger btn-sm" id="btnConfirmDeleteProduct">Xóa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
@@ -567,13 +586,16 @@
 
   <script>
     (function () {
-      const products = [
-        { id: 1, image: 'assets/img/product-1.jpg', name: 'Router WiFi AX3000 Pro', code: 'PRD-AX3000', price: 2450000, salePrice: 2190000, category: 'Thiết bị mạng', creator: 'Admin', createdAt: '12/06/2026', status: 1 },
-        { id: 2, image: 'assets/img/product-2.jpg', name: 'Laptop văn phòng S14', code: 'PRD-S14', price: 14500000, salePrice: 13290000, category: 'Máy tính', creator: 'Nguyễn Minh', createdAt: '10/06/2026', status: 1 },
-        { id: 3, image: 'assets/img/product-3.jpg', name: 'Chuột không dây Silent M2', code: 'PRD-M2', price: 390000, salePrice: 329000, category: 'Phụ kiện', creator: 'Admin', createdAt: '08/06/2026', status: 0 },
-        { id: 4, image: 'assets/img/product-4.jpg', name: 'Switch Gigabit 8 cổng', code: 'PRD-SW8G', price: 890000, salePrice: 790000, category: 'Thiết bị mạng', creator: 'Trần Anh', createdAt: '05/06/2026', status: 1 },
-        { id: 5, image: 'assets/img/product-5.jpg', name: 'Bàn phím cơ Compact K68', code: 'PRD-K68', price: 1290000, salePrice: 1090000, category: 'Phụ kiện', creator: 'Admin', createdAt: '01/06/2026', status: 1 }
+      const PRODUCT_ENDPOINTS = [
+        `${ENV.BASE_URL}/admin/product`,
+        `${ENV.BASE_URL}/api/admin/product`
       ];
+      const fallbackProducts = [
+        { product_id: 1, product_image: 'assets/img/product-1.jpg', product_name: 'Router WiFi AX3000 Pro', product_code: 'PRD-AX3000', product_price: 2450000, product_price_sale: 2190000, category_name: 'Thiết bị mạng', created_by_name: 'Admin', product_created: '12/06/2026', product_status: 1 },
+        { product_id: 2, product_image: 'assets/img/product-2.jpg', product_name: 'Laptop văn phòng S14', product_code: 'PRD-S14', product_price: 14500000, product_price_sale: 13290000, category_name: 'Máy tính', created_by_name: 'Nguyễn Minh', product_created: '10/06/2026', product_status: 1 },
+        { product_id: 3, product_image: 'assets/img/product-3.jpg', product_name: 'Chuột không dây Silent M2', product_code: 'PRD-M2', product_price: 390000, product_price_sale: 329000, category_name: 'Phụ kiện', created_by_name: 'Admin', product_created: '08/06/2026', product_status: 0 }
+      ];
+      let products = [];
 
       const columns = [
         { key: 'stt', label: 'STT', visible: true },
@@ -596,6 +618,26 @@
       const filterStatus = document.getElementById('filter-status');
       const columnModal = document.getElementById('column-modal');
       const columnList = document.getElementById('column-list');
+      const deleteProductModalEl = document.getElementById('deleteProductModal');
+      const deleteProductMessage = document.getElementById('deleteProductMessage');
+      const deleteProductModal = deleteProductModalEl && window.bootstrap ? new bootstrap.Modal(deleteProductModalEl) : null;
+      let deleteTargetId = null;
+
+      function showToast(message, type) {
+        type = type || 'success';
+        let div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:350px;';
+          div.className = 'd-none';
+          document.body.appendChild(div);
+        }
+        div.textContent = message;
+        div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.classList.remove('d-none');
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
 
       function formatCurrency(value) { return Number(value || 0).toLocaleString('vi-VN') + ' đ'; }
       function escapeHtml(value) {
@@ -624,38 +666,141 @@
         }).join('');
       }
 
-      function getFilteredProducts() {
+      function normalizeItems(json) {
+        if (Array.isArray(json?.data?.data)) return json.data.data;
+        if (Array.isArray(json?.data?.items)) return json.data.items;
+        if (Array.isArray(json?.data)) return json.data;
+        if (Array.isArray(json?.items)) return json.items;
+        return [];
+      }
+
+      function itemId(item) { return item.product_id || item.id || item.productId || 0; }
+      function itemImage(item) { return item.product_image || item.image || item.avatar || 'assets/img/not-found.svg'; }
+      function itemName(item) { return item.product_name || item.name || ''; }
+      function itemCode(item) { return item.product_code || item.code || ''; }
+      function itemPrice(item) { return item.product_price ?? item.price ?? 0; }
+      function itemSalePrice(item) { return item.product_price_sale ?? item.sale_price ?? item.salePrice ?? 0; }
+      function itemCategory(item) { return item.category_name || item.category_title || item.category || item.menu_title || item.category_id || ''; }
+      function itemCreator(item) { return item.created_by_name || item.creator || item.user_full_name || item.created_by || 'Admin'; }
+      function itemCreatedAt(item) { return item.product_created || item.created_at || item.createdAt || item.created || ''; }
+      function itemStatus(item) { return Number(item.product_status ?? item.status ?? 0); }
+
+      async function fetchProductList(params) {
+        let lastError = null;
+        for (const endpoint of PRODUCT_ENDPOINTS) {
+          try {
+            const query = params.toString();
+            const url = query ? `${endpoint}?${query}` : endpoint;
+            const res = await fetch(url, {
+              method: 'GET',
+              headers: Auth.getAuthHeader()
+            });
+            if (!res.ok) {
+              lastError = new Error(`API error: ${res.status}`);
+              continue;
+            }
+            const json = await res.json();
+            if (json.success === false) {
+              lastError = new Error(json.message || 'Không lấy được danh sách sản phẩm');
+              continue;
+            }
+            return normalizeItems(json);
+          } catch (err) {
+            lastError = err;
+          }
+        }
+        throw lastError || new Error('Không lấy được danh sách sản phẩm');
+      }
+
+      async function deleteProduct(id) {
+        let lastError = null;
+        for (const endpoint of PRODUCT_ENDPOINTS) {
+          const attempts = [
+            {
+              url: `${endpoint}/delete/${encodeURIComponent(id)}`,
+              options: { method: 'POST', headers: Auth.getAuthHeader() }
+            },
+            {
+              url: `${endpoint}/delete`,
+              options: {
+                method: 'POST',
+                headers: Auth.getAuthHeader(),
+                body: JSON.stringify({ id: id })
+              }
+            }
+          ];
+
+          for (const attempt of attempts) {
+            try {
+              const res = await fetch(attempt.url, attempt.options);
+              const json = await res.json().catch(function () { return null; });
+              if (!res.ok || !json || json.success === false) {
+                lastError = new Error(json?.message || `API error: ${res.status}`);
+                continue;
+              }
+              return json;
+            } catch (err) {
+              lastError = err;
+            }
+          }
+        }
+        throw lastError || new Error('Không xóa được sản phẩm');
+      }
+
+      async function loadProducts() {
+        const params = new URLSearchParams();
+        const keyword = searchInput.value.trim();
+        const category = filterCategory.value;
+        const status = filterStatus.value || '-1';
+        if (keyword) {
+          if (/^[a-z0-9_-]+$/i.test(keyword)) params.set('product_code', keyword);
+          else params.set('product_name', keyword);
+        }
+        if (category) params.set('category_id', category);
+        if (status !== '-1') params.set('product_status', status);
+
+        try {
+          products = await fetchProductList(params);
+        } catch (err) {
+          console.warn(err);
+          products = fallbackProducts;
+        }
+        renderProducts(products);
+      }
+
+      function getFilteredProducts(items) {
         const keyword = searchInput.value.trim().toLowerCase();
         const category = filterCategory.value;
         const status = filterStatus.value;
-        return products.filter(function (item) {
-          const matchKeyword = !keyword || item.name.toLowerCase().includes(keyword) || item.code.toLowerCase().includes(keyword);
-          const matchCategory = !category || item.category === category;
-          const matchStatus = status === '' || String(item.status) === status;
+        return items.filter(function (item) {
+          const matchKeyword = !keyword || itemName(item).toLowerCase().includes(keyword) || itemCode(item).toLowerCase().includes(keyword);
+          const matchCategory = !category || String(item.category_id || '') === category || String(itemCategory(item)) === category;
+          const matchStatus = !status || status === '-1' || String(itemStatus(item)) === status;
           return matchKeyword && matchCategory && matchStatus;
         });
       }
 
-      function renderProducts() {
-        const items = getFilteredProducts();
+      function renderProducts(sourceItems) {
+        const items = getFilteredProducts(sourceItems || products);
         tableBody.innerHTML = '';
         emptyState.classList.toggle('show', items.length === 0);
         items.forEach(function (item, index) {
-          const statusClass = item.status === 1 ? 'bg-success' : 'bg-secondary';
-          const statusText = item.status === 1 ? 'Hiện' : 'Ẩn';
+          const statusClass = itemStatus(item) === 1 ? 'bg-success' : 'bg-secondary';
+          const statusText = itemStatus(item) === 1 ? 'Hiện' : 'Ẩn';
+          const id = itemId(item);
           const row = document.createElement('tr');
           row.innerHTML = [
             cell('stt', index + 1),
-            cell('image', `<img class="product-thumb" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`),
-            cell('name', `<div class="product-name">${escapeHtml(item.name)}</div><div class="product-code">${escapeHtml(item.code)}</div>`),
-            cell('code', escapeHtml(item.code)),
-            cell('price', `<span class="price-regular">${formatCurrency(item.price)}</span>`),
-            cell('salePrice', `<span class="price-sale">${formatCurrency(item.salePrice)}</span>`),
-            cell('category', escapeHtml(item.category)),
-            cell('creator', escapeHtml(item.creator)),
-            cell('createdAt', escapeHtml(item.createdAt)),
+            cell('image', `<img class="product-thumb" src="${escapeHtml(itemImage(item))}" alt="${escapeHtml(itemName(item))}">`),
+            cell('name', `<div class="product-name">${escapeHtml(itemName(item))}</div><div class="product-code">${escapeHtml(itemCode(item))}</div>`),
+            cell('code', escapeHtml(itemCode(item))),
+            cell('price', `<span class="price-regular">${formatCurrency(itemPrice(item))}</span>`),
+            cell('salePrice', `<span class="price-sale">${formatCurrency(itemSalePrice(item))}</span>`),
+            cell('category', escapeHtml(itemCategory(item))),
+            cell('creator', escapeHtml(itemCreator(item))),
+            cell('createdAt', escapeHtml(itemCreatedAt(item))),
             cell('status', `<span class="badge ${statusClass}">${statusText}</span>`),
-            cell('actions', `<div class="btn-group" role="group" aria-label="Hành động"><button type="button" class="btn btn-outline-primary action-btn" data-action="view" data-id="${item.id}" title="View"><i class="bi bi-eye"></i></button><button type="button" class="btn btn-outline-secondary action-btn" data-action="edit" data-id="${item.id}" title="Edit"><i class="bi bi-pencil"></i></button></div>`, 'text-end')
+            cell('actions', `<div class="btn-group" role="group" aria-label="Hành động"><button type="button" class="btn btn-outline-primary action-btn" data-action="view" data-id="${id}" title="View"><i class="bi bi-eye"></i></button><button type="button" class="btn btn-outline-secondary action-btn" data-action="edit" data-id="${id}" title="Edit"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-outline-danger action-btn" data-action="delete" data-id="${id}" data-name="${escapeHtml(itemName(item))}" title="Xóa"><i class="bi bi-trash"></i></button></div>`, 'text-end')
           ].join('');
           tableBody.appendChild(row);
         });
@@ -669,19 +814,18 @@
       document.getElementById('filter-modal-close').addEventListener('click', function () { filterModal.classList.remove('show'); });
       document.getElementById('btn-apply-filter').addEventListener('click', function () {
         filterModal.classList.remove('show');
-        renderProducts();
+        loadProducts();
       });
       document.getElementById('btn-reset-filter').addEventListener('click', function () {
-        searchInput.value = '';
         filterCategory.value = '';
         filterStatus.value = '';
-        renderProducts();
+        loadProducts();
       });
       document.getElementById('btn-clear-filter').addEventListener('click', function () {
         searchInput.value = '';
         filterCategory.value = '';
         filterStatus.value = '';
-        renderProducts();
+        loadProducts();
       });
       document.getElementById('btn-column-visibility').addEventListener('click', function () {
         renderColumnList();
@@ -706,14 +850,45 @@
       filterModal.addEventListener('click', function (event) {
         if (event.target === filterModal) filterModal.classList.remove('show');
       });
-      searchInput.addEventListener('input', renderProducts);
+      document.getElementById('btnConfirmDeleteProduct').addEventListener('click', async function () {
+        if (!deleteTargetId) return;
+        const button = this;
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.textContent = 'Đang xóa';
+        try {
+          await deleteProduct(deleteTargetId);
+          if (deleteProductModal) deleteProductModal.hide();
+          deleteTargetId = null;
+          showToast('Xóa sản phẩm thành công.');
+          await loadProducts();
+        } catch (err) {
+          console.warn(err);
+          showToast(err.message || 'Không xóa được sản phẩm.', 'danger');
+        } finally {
+          button.disabled = false;
+          button.textContent = originalText;
+        }
+      });
+      searchInput.addEventListener('input', loadProducts);
       tableBody.addEventListener('click', function (event) {
         const button = event.target.closest('[data-action]');
         if (!button) return;
+        if (button.dataset.action === 'delete') {
+          deleteTargetId = button.dataset.id;
+          const name = button.dataset.name || '';
+          if (deleteProductMessage) {
+            deleteProductMessage.textContent = name
+              ? 'Bạn có chắc muốn xóa sản phẩm "' + name + '"?'
+              : 'Bạn có chắc muốn xóa sản phẩm này?';
+          }
+          if (deleteProductModal) deleteProductModal.show();
+          return;
+        }
         window.location.href = 'web-product-edit.html?id=' + encodeURIComponent(button.dataset.id);
       });
 
-      renderProducts();
+      loadProducts();
     })();
   </script>
 </body>

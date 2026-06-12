@@ -959,6 +959,28 @@
         return textarea ? textarea.value : '';
       }
 
+      function normalizeUploadedUrl(raw) {
+        raw = raw || '';
+        const match = String(raw).match(/https?:\/\/[^\s"']+/);
+        return (match ? match[0] : raw).replace(/(?:\\?&[a-zA-Z#]+\d*;)+$/g, '');
+      }
+
+      async function uploadMediaFile(file) {
+        if (!file) return '';
+        const formData = new FormData();
+        formData.append('file', file);
+        const headers = Auth.getAuthHeader();
+        delete headers['Content-Type'];
+        const res = await fetch(`${ENV.BASE_URL}/admin/media/upload`, {
+          method: 'POST',
+          headers,
+          body: formData
+        });
+        const json = await res.json().catch(function () { return null; });
+        if (!json || !json.success) throw new Error(json?.message || 'Upload ảnh thất bại');
+        return normalizeUploadedUrl(json.data?.url || json.url || '');
+      }
+
       function createRealItem(data) {
         data = data || {};
         itemIndex += 1;
@@ -1035,15 +1057,23 @@
           urlInput.value = slugify(titleInput.value);
         }
 
-        file.addEventListener('change', function () {
+        file.addEventListener('change', async function () {
           const selected = file.files && file.files[0];
           if (!selected) return;
-          const reader = new FileReader();
-          reader.onload = function (event) {
-            imageData.value = event.target.result;
-            preview.innerHTML = '<img src="' + event.target.result + '" alt="preview">';
-          };
-          reader.readAsDataURL(selected);
+          file.disabled = true;
+          preview.textContent = 'Đang tải ảnh...';
+          try {
+            const uploadedUrl = await uploadMediaFile(selected);
+            imageData.value = uploadedUrl;
+            preview.innerHTML = '<img src="' + escapeHtml(uploadedUrl) + '" alt="preview">';
+          } catch (err) {
+            imageData.value = '';
+            file.value = '';
+            preview.textContent = 'Chưa chọn ảnh';
+            showPopup('Lỗi', err.message || 'Không thể tải ảnh lên.');
+          } finally {
+            file.disabled = false;
+          }
         });
 
         item.querySelector('.btn-delete-real').addEventListener('click', function () {

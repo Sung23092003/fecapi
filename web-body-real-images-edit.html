@@ -695,6 +695,10 @@
                 <label for="manager_name" class="form-label fw-semibold">Tên quản lý</label>
                 <input type="text" class="form-control" id="manager_name" name="manager_name" placeholder="Ví dụ: Hình ảnh thực tế dự án" required>
               </div>
+              <div class="col-md-6">
+                <label for="section_url" class="form-label fw-semibold">URL</label>
+                <input type="text" class="form-control" id="section_url" name="section_url" placeholder="hinh-anh-thuc-te-du-an">
+              </div>
               <div class="col-md-3">
                 <label for="sort_order" class="form-label fw-semibold">Thứ tự</label>
                 <input type="text" class="form-control" id="sort_order" name="sort_order" value="1">
@@ -820,6 +824,7 @@
       const descriptionColorHex = document.getElementById('description_color_hex');
       const sectionIdInput = document.getElementById('section_id');
       const managerNameInput = document.getElementById('manager_name');
+      const sectionUrlInput = document.getElementById('section_url');
       const submitButton = document.getElementById('buttonSubmit');
       const saveResultModalEl = document.getElementById('saveResultModal');
       const saveResultTitle = document.getElementById('saveResultTitle');
@@ -828,9 +833,10 @@
       const editId = new URLSearchParams(window.location.search).get('id') || '';
       let itemIndex = 0;
       let modalCloseCallback = null;
+      let sectionUrlTouched = false;
 
       function apiUrl(path) {
-        return ENV.BASE_URL + '/admin/page-section' + path;
+        return ENV.BASE_URL.replace(/\/$/, '') + '/api/admin/page-section' + path;
       }
 
       function escapeHtml(str) {
@@ -1114,6 +1120,8 @@
         return {
           display_name: getEditorContent('display_name'),
           description: getEditorContent('description'),
+          url: sectionUrlInput ? sectionUrlInput.value.trim() : '',
+          section_url: sectionUrlInput ? sectionUrlInput.value.trim() : '',
           bg_color: bgColor.value,
           title_color: titleColor.value,
           description_color: descriptionColor.value,
@@ -1129,6 +1137,10 @@
         const managerName = section.section_name || section.name || data.manager_name || '';
         sectionIdInput.value = getSectionId(section);
         managerNameInput.value = managerName;
+        if (sectionUrlInput) {
+          sectionUrlInput.value = data.url || data.section_url || slugify(managerName);
+          sectionUrlTouched = !!(data.url || data.section_url);
+        }
         document.getElementById('sort_order').value = section.section_order_no ?? data.sort_order ?? 1;
         document.getElementById('status').value = statusFromApi(section.section_status ?? data.status);
         bgColor.value = data.bg_color || '#ffffff';
@@ -1187,6 +1199,26 @@
       descriptionColor.addEventListener('input', function () {
         descriptionColorHex.textContent = descriptionColor.value;
       });
+
+      if (managerNameInput && sectionUrlInput) {
+        managerNameInput.addEventListener('input', function () {
+          if (!sectionUrlTouched) {
+            sectionUrlInput.value = slugify(managerNameInput.value);
+          }
+        });
+
+        sectionUrlInput.addEventListener('input', function () {
+          sectionUrlTouched = true;
+        });
+
+        sectionUrlInput.addEventListener('blur', function () {
+          sectionUrlInput.value = slugify(sectionUrlInput.value);
+          if (!sectionUrlInput.value) {
+            sectionUrlTouched = false;
+            sectionUrlInput.value = slugify(managerNameInput.value);
+          }
+        });
+      }
 
       initTinyEditor('display_name', 240);
       initTinyEditor('description', 260);

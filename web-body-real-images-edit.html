@@ -1215,7 +1215,7 @@
 
           const sectionData = buildSectionData(items);
           const payload = {
-            id: sectionIdInput.value || editId || 0,
+            id: Number(sectionIdInput.value || editId || 0),
             section_name: managerNameInput.value.trim(),
             section_type: 'real_image',
             section_data: JSON.stringify(sectionData),

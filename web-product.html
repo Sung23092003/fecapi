@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html lang="vi">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Web - Thêm/Sửa người dùng - NiceAdmin</title>
+  <title>Web - Quản lý sản phẩm - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -30,7 +30,80 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
+  <link href="assets/css/web-statics.css" rel="stylesheet">
+    <style>
+    @media (max-width: 767.98px) {
+      .card-info.flex-1.min-width-0 { max-height: 120px; overflow: hidden; }
+    }
+
+    .product-page .product-thumb {
+      width: 64px;
+      height: 48px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid #ebeef4;
+      background: #f6f9ff;
+    }
+
+    .product-page .product-name {
+      color: #012970;
+      font-weight: 700;
+      min-width: 180px;
+    }
+
+    .product-page .product-code {
+      color: #667085;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .product-page .price-regular {
+      color: #667085;
+      text-decoration: line-through;
+      white-space: nowrap;
+    }
+
+    .product-page .price-sale {
+      color: #dc3545;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .product-page .action-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .product-page .filter-panel {
+      display: none;
+      border-top: 1px solid #ebeef4;
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+
+    .product-page .filter-panel.show { display: block; }
+
+    .product-page .empty-state {
+      display: none;
+      border: 1px dashed #dce3f0;
+      border-radius: 8px;
+      padding: 36px 16px;
+      text-align: center;
+      color: #667085;
+      background: #f8faff;
+    }
+
+    .product-page .empty-state.show { display: block; }
+
+    .product-page .table th {
+      white-space: nowrap;
+      color: #012970;
+    }
+  </style>
 </head>
 
 <body>
@@ -263,7 +336,7 @@
       </ul>
     </nav><!-- End Icons Navigation -->
 
-  </header>
+  </header><!-- End Header -->
 
       <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
@@ -289,11 +362,11 @@
       <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-chat-left-text"></i><span>Quản lý Comment</span></a></li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
+        <a class="nav-link" data-bs-target="#products-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-box-seam"></i><span>Quản lý Sản phẩm</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="products-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li><a href="web-product.html"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
+        <ul id="products-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+          <li><a href="web-product.html" class="active"><i class="bi bi-circle"></i><span>QL Bài Sản phẩm</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>QL Sản phẩm bán chạy</span></a></li>
           <li><a href="#"><i class="bi bi-circle"></i><span>QL thông tin thanh toán</span></a></li>
         </ul>
@@ -314,7 +387,7 @@
       </li>
 
       <li class="nav-item"><a class="nav-link collapsed" href="#"><i class="bi bi-link-45deg"></i><span>QL Mã và Link Chat</span></a></li>
-      <li class="nav-item"><a class="nav-link active" href="web-users-edit.html"><i class="bi bi-file-earmark-text"></i><span>QL User Admin</span></a></li>
+      <li class="nav-item"><a class="nav-link collapsed" href="web-users.html"><i class="bi bi-person-badge"></i><span>QL User Admin</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#regulations-nav" data-bs-toggle="collapse" href="#">
@@ -357,123 +430,131 @@
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+  <main id="main" class="main product-page">
 
     <div class="pagetitle">
-      <h1 id="pageTitle">Thêm người dùng</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item"><a href="web-users.html">Quản lý người dùng</a></li>
-          <li class="breadcrumb-item active" id="pageCrumb">Sửa</li>
-        </ol>
-      </nav>
-    </div>
+      <div class="d-flex flex-wrap md:flex-no-wrap align-items-center justify-content-between gap-3">
+        <div>
+          <h1 class="mb-0">Quản lý sản phẩm</h1>
+          <nav>
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active">Quản lý sản phẩm</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="input-group search-bar" style="max-width:300px;">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input id="search-input" type="text" class="form-control" placeholder="Tìm theo tên hoặc mã" />
+        </div>
+      </div>
+    </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="card card-box">
-
-        <div class="card-inner">
-          <div id="alertPlaceholder"></div>
-          <form id="formUser" class="row g-3">
-            <input type="hidden" name="id_hiden" id="id_hiden" value="0" />
-
-            <div class="col-xs-12 col-md-6">
-              <div class="form-group">
-                <label class="form-label">Họ và tên<span class="label-req">*</span></label>
-                <div class="controls">
-                  <input type="text" class="form-control" id="user_full_name" name="user_full_name" required />
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Email (Tên đăng nhập)<span class="label-req">*</span></label>
-                <div class="controls">
-                  <input type="email" class="form-control" id="user_name" name="user_name" required />
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Mật khẩu<span class="label-req">*</span></label>
-                <div class="controls">
-                  <div class="input-group">
-                    <input type="password" required class="form-control" id="user_pass" name="user_pass"
-                      autocomplete="new-password" />
-                    <button type="button" class="btn btn-outline-secondary" id="toggle-pass" tabindex="-1"
-                      title="Hiện/Ẩn mật khẩu">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                  </div>
-                  <small class="text-muted">Để trống nếu không muốn đổi mật khẩu (khi cập nhật)</small>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Nhập lại mật khẩu<span class="label-req">*</span></label>
-                <div class="controls">
-                  <div class="input-group">
-                    <input type="password" required class="form-control" id="re_user_pass" name="re_user_pass"
-                      autocomplete="new-password" />
-                    <button type="button" class="btn btn-outline-secondary" id="toggle-re-pass" tabindex="-1"
-                      title="Hiện/Ẩn mật khẩu">
-                      <i class="bi bi-eye"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-group mt-3">
-                <label class="form-label">Số điện thoại</label>
-                <div class="controls">
-                  <input type="number" class="form-control" id="user_phone" name="user_phone" />
-                  <div id="phone-error" class="invalid-feedback d-none"></div>
-                </div>
-              </div>
+      <div class="card mb-20">
+        <div class="card-body pt-20">
+          <div class="d-flex flex-row gap-2 align-items-md-center justify-content-between mb-0 flex-no-wrap">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button id="btn-add" type="button" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> <span class="d-none d-md-inline">Thêm sản phẩm</span>
+              </button>
             </div>
 
-            <div class="col-xs-12 col-md-6">
-              <div class="form-group">
-                <label class="form-label">Email liên hệ</label>
-                <div class="controls">
-                  <input type="email" class="form-control" id="user_mail" name="user_mail" />
-                </div>
-              </div>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+              <button id="btn-clear-filter" class="btn btn-outline-primary" type="button" title="Xóa lọc">
+                <i class="bi bi-funnel"></i><i class="bi bi-x-circle-fill ms-1 text-danger"></i>
+              </button>
+              <button id="btn-toggle-filter" class="btn btn-outline-primary" type="button">
+                <i class="bi bi-funnel"></i> <span class="d-none d-md-inline">Lọc</span>
+              </button>
+            </div>
+          </div>
 
-              <div class="form-group mt-3">
-                <label class="form-label">Nhóm quyền<span class="label-req">*</span></label>
-                <div class="controls">
-                  <select class="form-select" id="user_rid" name="user_rid">
-                    <option value="">Đang tải...</option>
-                  </select>
-                </div>
+          <div id="filter-panel" class="filter-panel">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label">Danh mục</label>
+                <select id="filter-category" class="form-select">
+                  <option value="">Tất cả danh mục</option>
+                  <option value="Thiết bị mạng">Thiết bị mạng</option>
+                  <option value="Máy tính">Máy tính</option>
+                  <option value="Phụ kiện">Phụ kiện</option>
+                </select>
               </div>
-
-              <div class="form-group mt-3">
+              <div class="col-md-4">
                 <label class="form-label">Trạng thái</label>
-                <div class="controls">
-                  <select class="form-select" id="user_status" name="user_status">
-                    <option value="1">Hiện</option>
-                    <option value="0">Ẩn</option>
-                  </select>
-                </div>
+                <select id="filter-status" class="form-select">
+                  <option value="">Tất cả trạng thái</option>
+                  <option value="1">Hiện</option>
+                  <option value="0">Ẩn</option>
+                </select>
               </div>
-
-              <div class="form-group mt-4 pt-2">
-                <button type="submit" class="btn btn-primary px-4">Lưu</button>
-                <a href="web-users.html" class="btn btn-outline-secondary ms-2">Hủy</a>
+              <div class="col-md-4 d-flex align-items-end gap-2">
+                <button id="btn-apply-filter" type="button" class="btn btn-primary">
+                  <i class="bi bi-check2"></i> Áp dụng
+                </button>
+                <button id="btn-reset-filter" type="button" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-counterclockwise"></i> Đặt lại
+                </button>
               </div>
             </div>
-          </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-list" class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead>
+            <tr>
+              <th data-col="stt">STT</th>
+              <th data-col="image">Ảnh</th>
+              <th data-col="name">Tên</th>
+              <th data-col="code">Mã</th>
+              <th data-col="price">Giá thường</th>
+              <th data-col="salePrice">Giá khuyến mãi</th>
+              <th data-col="category">Danh mục</th>
+              <th data-col="creator">Người tạo</th>
+              <th data-col="createdAt">Ngày tạo</th>
+              <th data-col="status">Trạng thái</th>
+              <th data-col="actions" class="text-end">
+                Hành động
+                <button type="button" id="btn-column-visibility" class="btn btn-sm btn-link text-dark p-0 ms-1"
+                  title="Hiển thị cột">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body"></tbody>
+        </table>
+      </div>
+
+      <div id="empty-state" class="empty-state">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        <h5 class="mb-1">Không có dữ liệu</h5>
+        <div>Hãy thử thay đổi bộ lọc hoặc thêm sản phẩm mới.</div>
+      </div>
+
+      <div id="column-modal" class="column-modal">
+        <div class="column-modal-content">
+          <div class="column-modal-header">
+            <span>Hiển thị/Ẩn cột</span>
+            <button type="button" id="column-modal-close"><i class="bi bi-x-lg"></i></button>
+          </div>
+          <div class="column-modal-body" id="column-list"></div>
+          <div class="column-modal-footer">
+            <button type="button" class="btn btn-outline-secondary" id="btn-reset-columns">Đặt lại</button>
+            <button type="button" class="btn btn-primary" id="btn-done-columns">Xong</button>
+          </div>
         </div>
       </div>
     </section>
-
-  </main>
+  </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.umd.js"></script>
@@ -482,292 +563,151 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-
+  <script src="assets/js/token-guard.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/menu-visibility.js"></script>
-
-  <!-- Auth + ENV -->
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/config.js"></script>
 
   <script>
-    (async function () {
-      "use strict";
+    (function () {
+      const products = [
+        { id: 1, image: 'assets/img/product-1.jpg', name: 'Router WiFi AX3000 Pro', code: 'PRD-AX3000', price: 2450000, salePrice: 2190000, category: 'Thiết bị mạng', creator: 'Admin', createdAt: '12/06/2026', status: 1 },
+        { id: 2, image: 'assets/img/product-2.jpg', name: 'Laptop văn phòng S14', code: 'PRD-S14', price: 14500000, salePrice: 13290000, category: 'Máy tính', creator: 'Nguyễn Minh', createdAt: '10/06/2026', status: 1 },
+        { id: 3, image: 'assets/img/product-3.jpg', name: 'Chuột không dây Silent M2', code: 'PRD-M2', price: 390000, salePrice: 329000, category: 'Phụ kiện', creator: 'Admin', createdAt: '08/06/2026', status: 0 },
+        { id: 4, image: 'assets/img/product-4.jpg', name: 'Switch Gigabit 8 cổng', code: 'PRD-SW8G', price: 890000, salePrice: 790000, category: 'Thiết bị mạng', creator: 'Trần Anh', createdAt: '05/06/2026', status: 1 },
+        { id: 5, image: 'assets/img/product-5.jpg', name: 'Bàn phím cơ Compact K68', code: 'PRD-K68', price: 1290000, salePrice: 1090000, category: 'Phụ kiện', creator: 'Admin', createdAt: '01/06/2026', status: 1 }
+      ];
 
-      const id_hidenEl = document.getElementById('id_hiden');
-      const pageTitle = document.getElementById('pageTitle');
-      const pageCrumb = document.getElementById('pageCrumb');
-      const form = document.getElementById('formUser');
+      const columns = [
+        { key: 'stt', label: 'STT', visible: true },
+        { key: 'image', label: 'Ảnh', visible: true },
+        { key: 'name', label: 'Tên', visible: true },
+        { key: 'code', label: 'Mã', visible: true },
+        { key: 'price', label: 'Giá thường', visible: true },
+        { key: 'salePrice', label: 'Giá khuyến mãi', visible: true },
+        { key: 'category', label: 'Danh mục', visible: true },
+        { key: 'creator', label: 'Người tạo', visible: true },
+        { key: 'createdAt', label: 'Ngày tạo', visible: true },
+        { key: 'status', label: 'Trạng thái', visible: true }
+      ];
 
-      const user_full_name = document.getElementById('user_full_name');
-      const user_name = document.getElementById('user_name');
-      const user_pass = document.getElementById('user_pass');
-      const re_user_pass = document.getElementById('re_user_pass');
-      const user_phone = document.getElementById('user_phone');
-      const user_mail = document.getElementById('user_mail');
-      const user_status = document.getElementById('user_status');
-      const user_rid = document.getElementById('user_rid');
+      const tableBody = document.getElementById('product-table-body');
+      const emptyState = document.getElementById('empty-state');
+      const searchInput = document.getElementById('search-input');
+      const filterPanel = document.getElementById('filter-panel');
+      const filterCategory = document.getElementById('filter-category');
+      const filterStatus = document.getElementById('filter-status');
+      const columnModal = document.getElementById('column-modal');
+      const columnList = document.getElementById('column-list');
 
-      // Password toggle
-      function setupPasswordToggle(btnId, inputId) {
-        const btn = document.getElementById(btnId);
-        const input = document.getElementById(inputId);
-        if (!btn || !input) return;
-        btn.addEventListener('click', () => {
-          const isPassword = input.type === 'password';
-          input.type = isPassword ? 'text' : 'password';
-          btn.innerHTML = isPassword ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+      function formatCurrency(value) { return Number(value || 0).toLocaleString('vi-VN') + ' đ'; }
+      function escapeHtml(value) {
+        return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+      }
+      function isVisible(key) { return columns.find(col => col.key === key)?.visible !== false; }
+      function cell(key, html, className) {
+        return isVisible(key) ? `<td class="${className || ''}" data-col="${key}">${html}</td>` : '';
+      }
+
+      function applyColumnVisibility() {
+        columns.forEach(function (column) {
+          document.querySelectorAll('[data-col="' + column.key + '"]').forEach(function (element) {
+            element.classList.toggle('d-none', !column.visible);
+          });
         });
       }
-      setupPasswordToggle('toggle-pass', 'user_pass');
-      setupPasswordToggle('toggle-re-pass', 're_user_pass');
 
-      // Phone validation
-      const phoneError = document.getElementById('phone-error');
-      function validatePhone() {
-        const val = user_phone.value.trim();
-        if (!val) { phoneError.classList.add('d-none'); user_phone.classList.remove('is-invalid'); return true; }
-        const phoneRegex = /^(0[1-9][0-9]{8,9})$/;
-        if (!phoneRegex.test(val.replace(/[\s.-]/g, ''))) {
-          phoneError.textContent = 'Số điện thoại không hợp lệ (VD: 0912345678)';
-          phoneError.classList.remove('d-none');
-          user_phone.classList.add('is-invalid');
-          return false;
-        }
-        phoneError.classList.add('d-none');
-        user_phone.classList.remove('is-invalid');
-        return true;
+      function renderColumnList() {
+        columnList.innerHTML = columns.map(function (column) {
+          return `
+            <div class="form-check mb-2">
+              <input class="form-check-input column-check" type="checkbox" value="${column.key}" id="col-${column.key}" ${column.visible ? 'checked' : ''}>
+              <label class="form-check-label" for="col-${column.key}">${column.label}</label>
+            </div>`;
+        }).join('');
       }
-      user_phone.addEventListener('blur', validatePhone);
-      user_phone.addEventListener('input', () => {
-        phoneError.classList.add('d-none');
-        user_phone.classList.remove('is-invalid');
+
+      function getFilteredProducts() {
+        const keyword = searchInput.value.trim().toLowerCase();
+        const category = filterCategory.value;
+        const status = filterStatus.value;
+        return products.filter(function (item) {
+          const matchKeyword = !keyword || item.name.toLowerCase().includes(keyword) || item.code.toLowerCase().includes(keyword);
+          const matchCategory = !category || item.category === category;
+          const matchStatus = status === '' || String(item.status) === status;
+          return matchKeyword && matchCategory && matchStatus;
+        });
+      }
+
+      function renderProducts() {
+        const items = getFilteredProducts();
+        tableBody.innerHTML = '';
+        emptyState.classList.toggle('show', items.length === 0);
+        items.forEach(function (item, index) {
+          const statusClass = item.status === 1 ? 'bg-success' : 'bg-secondary';
+          const statusText = item.status === 1 ? 'Hiện' : 'Ẩn';
+          const row = document.createElement('tr');
+          row.innerHTML = [
+            cell('stt', index + 1),
+            cell('image', `<img class="product-thumb" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}">`),
+            cell('name', `<div class="product-name">${escapeHtml(item.name)}</div><div class="product-code">${escapeHtml(item.code)}</div>`),
+            cell('code', escapeHtml(item.code)),
+            cell('price', `<span class="price-regular">${formatCurrency(item.price)}</span>`),
+            cell('salePrice', `<span class="price-sale">${formatCurrency(item.salePrice)}</span>`),
+            cell('category', escapeHtml(item.category)),
+            cell('creator', escapeHtml(item.creator)),
+            cell('createdAt', escapeHtml(item.createdAt)),
+            cell('status', `<span class="badge ${statusClass}">${statusText}</span>`),
+            cell('actions', `<div class="btn-group" role="group" aria-label="Hành động"><button type="button" class="btn btn-outline-primary action-btn" data-action="view" data-id="${item.id}" title="View"><i class="bi bi-eye"></i></button><button type="button" class="btn btn-outline-secondary action-btn" data-action="edit" data-id="${item.id}" title="Edit"><i class="bi bi-pencil"></i></button></div>`, 'text-end')
+          ].join('');
+          tableBody.appendChild(row);
+        });
+        applyColumnVisibility();
+      }
+
+      document.getElementById('btn-add').addEventListener('click', function () { window.location.href = 'web-product-edit.html?id=0'; });
+      document.getElementById('btn-toggle-filter').addEventListener('click', function () { filterPanel.classList.toggle('show'); });
+      document.getElementById('btn-apply-filter').addEventListener('click', renderProducts);
+      document.getElementById('btn-reset-filter').addEventListener('click', function () {
+        filterCategory.value = '';
+        filterStatus.value = '';
+        renderProducts();
+      });
+      document.getElementById('btn-clear-filter').addEventListener('click', function () {
+        searchInput.value = '';
+        filterCategory.value = '';
+        filterStatus.value = '';
+        renderProducts();
+      });
+      document.getElementById('btn-column-visibility').addEventListener('click', function () {
+        renderColumnList();
+        columnModal.classList.add('show');
+      });
+      document.getElementById('column-modal-close').addEventListener('click', function () { columnModal.classList.remove('show'); });
+      document.getElementById('btn-done-columns').addEventListener('click', function () { columnModal.classList.remove('show'); });
+      document.getElementById('btn-reset-columns').addEventListener('click', function () {
+        columns.forEach(column => column.visible = true);
+        renderColumnList();
+        renderProducts();
+      });
+      columnList.addEventListener('change', function (event) {
+        if (!event.target.classList.contains('column-check')) return;
+        const column = columns.find(item => item.key === event.target.value);
+        if (column) column.visible = event.target.checked;
+        renderProducts();
+      });
+      columnModal.addEventListener('click', function (event) {
+        if (event.target === columnModal) columnModal.classList.remove('show');
+      });
+      searchInput.addEventListener('input', renderProducts);
+      tableBody.addEventListener('click', function (event) {
+        const button = event.target.closest('[data-action]');
+        if (!button) return;
+        window.location.href = 'web-product-edit.html?id=' + encodeURIComponent(button.dataset.id);
       });
 
-      // Password validation
-      const passError = document.createElement('div');
-      passError.id = 'pass-error';
-      passError.className = 'invalid-feedback d-none';
-      user_pass.parentNode.appendChild(passError);
-
-      function validatePass() {
-        const val = user_pass.value;
-        if (!val) { passError.classList.add('d-none'); user_pass.classList.remove('is-invalid'); return true; }
-        if (val.length < 6) {
-          passError.textContent = 'Mật khẩu phải có ít nhất 6 ký tự';
-          passError.classList.remove('d-none');
-          user_pass.classList.add('is-invalid');
-          return false;
-        }
-        if (val.length > 50) {
-          passError.textContent = 'Mật khẩu không được quá 50 ký tự';
-          passError.classList.remove('d-none');
-          user_pass.classList.add('is-invalid');
-          return false;
-        }
-        passError.classList.add('d-none');
-        user_pass.classList.remove('is-invalid');
-        return true;
-      }
-      user_pass.addEventListener('blur', validatePass);
-      user_pass.addEventListener('input', () => {
-        passError.classList.add('d-none');
-        user_pass.classList.remove('is-invalid');
-      });
-
-      // Re-password validation
-      const rePassError = document.createElement('div');
-      rePassError.id = 're-pass-error';
-      rePassError.className = 'invalid-feedback d-none';
-      re_user_pass.parentNode.appendChild(rePassError);
-
-      function validateRePass() {
-        const val = re_user_pass.value;
-        if (!val) { rePassError.classList.add('d-none'); re_user_pass.classList.remove('is-invalid'); return true; }
-        if (val !== user_pass.value) {
-          rePassError.textContent = 'Mật khẩu nhập lại không khớp';
-          rePassError.classList.remove('d-none');
-          re_user_pass.classList.add('is-invalid');
-          return false;
-        }
-        rePassError.classList.add('d-none');
-        re_user_pass.classList.remove('is-invalid');
-        return true;
-      }
-      re_user_pass.addEventListener('blur', validateRePass);
-      re_user_pass.addEventListener('input', () => {
-        rePassError.classList.add('d-none');
-        re_user_pass.classList.remove('is-invalid');
-      });
-
-      function getQueryInt(name, defValue = 0) {
-        const params = new URLSearchParams(window.location.search);
-        const v = params.get(name);
-        if (v === null) return defValue;
-        const n = parseInt(v, 10);
-        return Number.isNaN(n) ? defValue : n;
-      }
-
-      const id = getQueryInt('id', 0);
-      id_hidenEl.value = String(id);
-
-      if (id && id !== 0) {
-        if (pageTitle) pageTitle.textContent = 'Sửa người dùng';
-        if (pageCrumb) pageCrumb.textContent = 'Sửa';
-      } else {
-        if (pageTitle) pageTitle.textContent = 'Thêm người dùng';
-        if (pageCrumb) pageCrumb.textContent = 'Thêm';
-        user_status.value = '1';
-      }
-
-      // Create alert div
-      const alertDiv = document.createElement('div');
-      alertDiv.id = 'formAlert';
-      alertDiv.className = 'd-none alert mb-3';
-      form.prepend(alertDiv);
-
-      function showAlert(message, type = 'success') {
-        alertDiv.innerHTML = message;
-        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
-        alertDiv.style.zIndex = '9999';
-        alertDiv.style.minWidth = '250px';
-        alertDiv.style.maxWidth = '350px';
-        alertDiv.classList.remove('d-none');
-        setTimeout(() => {
-          alertDiv.classList.add('d-none');
-        }, 5000);
-      }
-
-      async function loadRoleGroups() {
-        try {
-          const url = `${ENV.BASE_URL}/admin/roleGroup?limit=999`;
-          const headers = Auth.getAuthHeader();
-          const res = await fetch(url, { method: 'GET', headers });
-          if (!res.ok) throw new Error(`API error: ${res.status}`);
-          const json = await res.json();
-          if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
-
-          let items;
-          if (Array.isArray(json.data?.data)) items = json.data.data;
-          else if (Array.isArray(json.data)) items = json.data;
-          else items = [];
-
-          user_rid.innerHTML = '<option value="">-- Chọn nhóm quyền --</option>';
-          items.forEach(g => {
-            const opt = document.createElement('option');
-            opt.value = g.group_role_id;
-            opt.textContent = g.group_role_title;
-            user_rid.appendChild(opt);
-          });
-        } catch (err) {
-          console.error('loadRoleGroups error:', err);
-          user_rid.innerHTML = '<option value="">Lỗi tải danh sách</option>';
-        }
-      }
-
-      async function loadDetail() {
-        if (!id) return;
-
-        const url = `${ENV.BASE_URL}/admin/users/edit/${id}`;
-        const headers = Auth.getAuthHeader();
-
-        const res = await fetch(url, { method: 'GET', headers });
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
-
-        const json = await res.json();
-        if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
-
-        const d = json.data?.data || json.data || {};
-
-        user_full_name.value = d.user_full_name ?? '';
-        user_name.value = d.user_name ?? '';
-        user_phone.value = d.user_phone ?? '';
-        user_mail.value = d.user_mail ?? '';
-        user_status.value = String(d.user_status ?? 1);
-        user_rid.value = String(d.user_rid ?? 2);
-      }
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // validate
-        const isPhoneValid = validatePhone();
-        const isPassValid = validatePass();
-        const isRePassValid = validateRePass();
-
-        // required group role
-        if (!user_rid.value) {
-          showAlert('Vui lòng chọn nhóm quyền!', 'danger');
-          user_rid.focus();
-          return;
-        }
-
-        // nếu có lỗi thì chặn submit
-        if (!isPhoneValid) {
-          showAlert('Số điện thoại không hợp lệ!', 'danger');
-          user_phone.focus();
-          return;
-        }
-
-        if (!isPassValid) {
-          showAlert('Mật khẩu không hợp lệ!', 'danger');
-          user_pass.focus();
-          return;
-        }
-
-        if (!isRePassValid) {
-          showAlert('Mật khẩu nhập lại không khớp!', 'danger');
-          re_user_pass.focus();
-          return;
-        }
-
-        try {
-          const payload = {
-            id_hiden: id ? id : 0,
-            user_name: user_name.value.trim(),
-            user_pass: user_pass.value,
-            re_user_pass: re_user_pass.value,
-            user_full_name: user_full_name.value.trim(),
-            user_phone: user_phone.value.trim(),
-            user_mail: user_mail.value.trim(),
-            user_status: parseInt(user_status.value, 10),
-            user_rid: parseInt(user_rid.value, 10)
-          };
-
-          const url = `${ENV.BASE_URL}/admin/users/edit/${id ? id : 0}`;
-          const headers = {
-            ...Auth.getAuthHeader(),
-            'Content-Type': 'application/json'
-          };
-
-          const res = await fetch(url, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(payload)
-          });
-
-          const json = await res.json().catch(() => null);
-
-          if (!res.ok || !json || !json.success) {
-            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
-            return;
-          }
-
-          showAlert('Lưu người dùng thành công!', 'success');
-          setTimeout(() => {
-            window.location.href = 'web-users.html';
-          }, 1500);
-        } catch (error) {
-          console.error(error);
-          showAlert('Có lỗi xảy ra khi lưu người dùng!', 'danger');
-        }
-      });
-
-      await loadRoleGroups();
-
-      await loadDetail().catch(err => {
-        showAlert(err?.message || 'Có lỗi xảy ra', 'danger');
-      });
+      renderProducts();
     })();
   </script>
 </body>

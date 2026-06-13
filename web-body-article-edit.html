@@ -685,13 +685,13 @@
               var dc = document.getElementById('display_columns');
               if (dc) dc.value = data.bootstrap_class || '';
               var bt = document.getElementById('button_text');
-              if (bt) bt.value = (data.button && data.button.text) || '';
+              if (bt) bt.value = (data.button && data.button.text) || data.button_text || data.buttonText || '';
               var bu = document.getElementById('button_url');
-              if (bu) bu.value = (data.button && data.button.url) || '';
+              if (bu) bu.value = (data.button && data.button.url) || data.button_url || data.buttonUrl || '';
               var bbg = document.getElementById('button_bg_color');
-              if (bbg) bbg.value = (data.button && data.button.bg_color) || '#4154f1';
+              if (bbg) bbg.value = (data.button && data.button.bg_color) || data.button_bg_color || data.buttonBgColor || '#4154f1';
               var tclr = document.getElementById('button_text_color');
-              if (tclr) tclr.value = (data.button && data.button.text_color) || '#ffffff';
+              if (tclr) tclr.value = (data.button && data.button.text_color) || data.button_text_color || data.buttonTextColor || '#ffffff';
               if (setupColorPicker) {
                 var bbgText = document.getElementById('button_bg_color_hex');
                 if (bbgText) bbgText.textContent = bbg ? bbg.value : '#4154f1';
@@ -725,21 +725,31 @@
           form.classList.add('was-validated');
           if (!form.checkValidity()) return;
 
+          var buttonPayload = {
+            text: document.getElementById('button_text').value.trim(),
+            bg_color: document.getElementById('button_bg_color').value,
+            text_color: document.getElementById('button_text_color').value,
+            url: document.getElementById('button_url').value.trim()
+          };
+          var hasButtonPayload = buttonPayload.text || buttonPayload.url;
+
           var sectionData = {
             display_name: getEditorContent('display_name'),
             description: getEditorContent('description'),
             content: getEditorContent('content'),
             bootstrap_class: document.getElementById('display_columns').value,
-            button: {
-              text: document.getElementById('button_text').value,
-              bg_color: document.getElementById('button_bg_color').value,
-              text_color: document.getElementById('button_text_color').value,
-              url: document.getElementById('button_url').value
-            },
             bg_color: document.getElementById('section_bg_color').value,
             title_color: document.getElementById('title_color').value,
             description_color: document.getElementById('description_color').value
           };
+
+          if (hasButtonPayload) {
+            sectionData.button = buttonPayload;
+            sectionData.button_text = buttonPayload.text;
+            sectionData.button_url = buttonPayload.url;
+            sectionData.button_bg_color = buttonPayload.bg_color;
+            sectionData.button_text_color = buttonPayload.text_color;
+          }
 
           var payload = {
             id: Number(editId || 0),

@@ -613,11 +613,28 @@
       }
 
       function apiUrl(path) {
-        return ENV.BASE_URL.replace(/\/$/, '') + '/api/admin/page-section' + path;
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section' + path;
+      }
+
+      function apiDetailUrl(id) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(id);
       }
 
       function apiHeaders() {
         return Auth.getAuthHeader();
+      }
+
+      function getSectionDetail(json) {
+        var raw = json && (json.data || json.result || json.item || json.section);
+        var nested;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+
+        nested = raw.data || raw.item || raw.detail || raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        if (nested && typeof nested === 'object') return nested;
+        return raw;
       }
 
       function showToast(msg, type) {
@@ -639,14 +656,14 @@
       /* ===== Load existing data ===== */
       function loadSection() {
         if (!isEdit) return;
-        fetch(apiUrl('/' + editId), { headers: apiHeaders() })
+        fetch(apiDetailUrl(editId), { headers: apiHeaders() })
           .then(function (res) { return res.json().catch(function () { return null; }); })
           .then(function (json) {
-            if (!json || !json.success || !json.data) {
+            var item = getSectionDetail(json);
+            if (!json || !json.success || !item) {
               showToast('Không tìm thấy khối bài viết!', 'danger');
               return;
             }
-            var item = json.data;
             if (item.section_type !== 'article') {
               showToast('Khối này không phải loại Bài Viết!', 'warning');
             }

@@ -836,7 +836,11 @@
       let sectionUrlTouched = false;
 
       function apiUrl(path) {
-        return ENV.BASE_URL.replace(/\/$/, '') + '/api/admin/page-section' + path;
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section' + path;
+      }
+
+      function apiDetailUrl(id) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(id);
       }
 
       function escapeHtml(str) {
@@ -1161,7 +1165,7 @@
       async function loadEditDetail() {
         if (!editId) return;
         try {
-          const res = await fetch(apiUrl('/' + encodeURIComponent(editId)), { headers: Auth.getAuthHeader() });
+          const res = await fetch(apiDetailUrl(editId), { headers: Auth.getAuthHeader() });
           const json = await res.json().catch(function () { return null; });
           if (!json || !json.success) {
             showPopup('Lỗi', json?.message || 'Không tải được dữ liệu khối.');

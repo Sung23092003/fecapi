@@ -505,6 +505,20 @@
                     </div>
                   </div>
                   <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Màu tên hiển thị</label>
+                    <div class="color-input-group">
+                      <input type="text" data-coloris class="form-control form-control-color" id="title_color" name="title_color" value="#101828">
+                      <span class="color-hex" id="title_color_hex">#101828</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <label class="form-label fw-semibold">Màu mô tả</label>
+                    <div class="color-input-group">
+                      <input type="text" data-coloris class="form-control form-control-color" id="description_color" name="description_color" value="#344054">
+                      <span class="color-hex" id="description_color_hex">#344054</span>
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
                     <label for="article_status" class="form-label fw-semibold">Trạng thái <span class="label-req">*</span></label>
                     <select class="form-select" id="article_status" name="article_status" required>
                       <option value="show" selected>Hiển thị</option>
@@ -599,7 +613,7 @@
       }
 
       function apiUrl(path) {
-        return ENV.BASE_URL + '/admin/page-section' + path;
+        return ENV.BASE_URL.replace(/\/$/, '') + '/api/admin/page-section' + path;
       }
 
       function apiHeaders() {
@@ -671,6 +685,14 @@
               if (bg) bg.value = data.bg_color || '#ffffff';
               var bgText = document.getElementById('section_bg_color_hex');
               if (bgText) bgText.textContent = bg ? bg.value : '#ffffff';
+              var titleColor = document.getElementById('title_color');
+              if (titleColor) titleColor.value = data.title_color || data.titleColor || '#101828';
+              var titleColorText = document.getElementById('title_color_hex');
+              if (titleColorText) titleColorText.textContent = titleColor ? titleColor.value : '#101828';
+              var descColor = document.getElementById('description_color');
+              if (descColor) descColor.value = data.description_color || data.descriptionColor || data.desc_color || data.descColor || '#344054';
+              var descColorText = document.getElementById('description_color_hex');
+              if (descColorText) descColorText.textContent = descColor ? descColor.value : '#344054';
             }
           })
           .catch(function () {
@@ -697,11 +719,13 @@
               text_color: document.getElementById('button_text_color').value,
               url: document.getElementById('button_url').value
             },
-            bg_color: document.getElementById('section_bg_color').value
+            bg_color: document.getElementById('section_bg_color').value,
+            title_color: document.getElementById('title_color').value,
+            description_color: document.getElementById('description_color').value
           };
 
           var payload = {
-            id: editId,
+            id: Number(editId || 0),
             section_name: document.getElementById('manager_name').value,
             section_type: 'article',
             section_data: JSON.stringify(sectionData),
@@ -749,6 +773,8 @@
       setupColorPicker('button_bg_color', 'button_bg_color_hex');
       setupColorPicker('button_text_color', 'button_text_color_hex');
       setupColorPicker('section_bg_color', 'section_bg_color_hex');
+      setupColorPicker('title_color', 'title_color_hex');
+      setupColorPicker('description_color', 'description_color_hex');
 
       // Fallback if TinyMCE doesn't fire init
       if (isEdit) setTimeout(function () { if (editorsReady < totalEditors) loadSection(); }, 2000);

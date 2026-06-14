@@ -991,14 +991,14 @@
         return normalizeUploadedUrl(json.data?.url || json.url || '');
       }
 
-      function createRealItem(data) {
+      function createRealItem(data, prepend) {
         data = data || {};
         itemIndex += 1;
         const item = document.createElement('div');
         item.className = 'real-image-item';
         item.innerHTML = `
           <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <div class="fw-semibold text-primary">Tin #${itemIndex}</div>
+            <div class="fw-semibold text-primary real-image-number">Tin #${itemIndex}</div>
             <button type="button" class="btn btn-sm btn-outline-danger btn-delete-real" title="Xóa tin">
               <i class="bi bi-trash"></i>
             </button>
@@ -1116,7 +1116,11 @@
           itemDescriptionColorHex.textContent = itemDescriptionColor.value;
         });
 
-        list.appendChild(item);
+        if (prepend && list.firstChild) {
+          list.insertBefore(item, list.firstChild);
+        } else {
+          list.appendChild(item);
+        }
         return item;
       }
 
@@ -1183,7 +1187,7 @@
       }
 
       btnAdd.addEventListener('click', function () {
-        const item = createRealItem();
+        const item = createRealItem({}, true);
         if (!item) return;
         item.scrollIntoView({ behavior: 'smooth', block: 'start' });
         setTimeout(function () {

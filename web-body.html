@@ -820,6 +820,7 @@
         var params = new URLSearchParams();
         params.set('page', currentPage);
         params.set('limit', pageSize);
+        params.set('sort_order', 'asc');
         if (name) params.set('section_name', name);
         if (type) params.set('section_type', type);
         if (!isNaN(st) && st !== -1) params.set('section_status', st);
@@ -833,6 +834,11 @@
           }
           var raw = json.data;
           items = (raw && (raw.data || raw)) || [];
+          items.sort(function (a, b) {
+            var orderA = Number(a.section_order_no || 0);
+            var orderB = Number(b.section_order_no || 0);
+            return orderA - orderB;
+          });
           var total = (raw && raw.total) || items.length;
           totalPages = Math.max(1, Math.ceil(total / pageSize));
           if (currentPage > totalPages) { currentPage = totalPages; loadData(); return; }

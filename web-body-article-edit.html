@@ -587,6 +587,12 @@
         if (textarea) textarea.value = content || '';
       }
 
+      function htmlToPlainText(html) {
+        var div = document.createElement('div');
+        div.innerHTML = html || '';
+        return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+      }
+
       function initTinyEditor(id, height, callback) {
         if (!window.tinymce || !document.getElementById(id)) return;
         tinymce.init({
@@ -725,6 +731,14 @@
           form.classList.add('was-validated');
           if (!form.checkValidity()) return;
 
+          var managerName = document.getElementById('manager_name').value.trim();
+          var displayName = getEditorContent('display_name');
+          var displayNameText = htmlToPlainText(displayName);
+          if (!managerName && !displayNameText) {
+            showToast('Vui lòng nhập tên hiển thị hoặc tên quản lý.', 'danger');
+            return;
+          }
+
           var buttonPayload = {
             text: document.getElementById('button_text').value.trim(),
             bg_color: document.getElementById('button_bg_color').value,
@@ -734,7 +748,7 @@
           var hasButtonPayload = buttonPayload.text || buttonPayload.url;
 
           var sectionData = {
-            display_name: getEditorContent('display_name'),
+            display_name: displayName,
             description: getEditorContent('description'),
             content: getEditorContent('content'),
             bootstrap_class: document.getElementById('display_columns').value,
@@ -753,7 +767,7 @@
 
           var payload = {
             id: Number(editId || 0),
-            section_name: document.getElementById('manager_name').value,
+            section_name: managerName || displayNameText,
             section_type: 'article',
             section_data: JSON.stringify(sectionData),
             section_order_no: Number(document.getElementById('article_order').value),
@@ -769,14 +783,9 @@
             .then(function (json) {
               if (json && json.success) {
                 showToast(isEdit ? 'Cập nhật bài viết thành công.' : 'Thêm bài viết thành công.');
-                if (!isEdit) {
-                  // Reset form for new entry
-                  form.reset();
-                  form.classList.remove('was-validated');
-                  ['display_name', 'description', 'content'].forEach(function (id) {
-                    setEditorContent(id, '');
-                  });
-                }
+                setTimeout(function () {
+                  window.location.href = 'web-body.html';
+                }, 500);
               } else {
                 showToast(json?.message || 'Lỗi lưu dữ liệu!', 'danger');
               }

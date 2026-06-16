@@ -609,10 +609,10 @@
                     <input type="text" class="form-control" id="right_button_text" name="right_button_text"
                       placeholder="Đặt lịch tư vấn">
                   </div>
-                  <!-- <div class="col-md-6">
+                  <div class="col-md-6">
                     <label for="right_button_url" class="form-label fw-semibold">URL nút</label>
                     <input type="url" class="form-control" id="right_button_url" name="right_button_url" placeholder="Mặc định popup khung đặt lịch">
-                  </div> -->
+                  </div>
                   <div class="col-md-6">
                     <label class="form-label fw-semibold">Màu nút</label>
                     <div class="color-input-group">
@@ -983,6 +983,7 @@
         setInputValue('left_button_bg', data.left_button?.bg_color || data.left_button_bg || '#4154f1');
         setInputValue('left_button_color', data.left_button?.text_color || data.left_button_color || '#ffffff');
         setInputValue('right_button_text', data.right_button?.text || data.right_button_text || '');
+        setInputValue('right_button_url', data.right_button?.url || data.right_button_url || '');
         setInputValue('right_button_bg', data.right_button?.bg_color || data.right_button_bg || '#20c997');
         setInputValue('right_button_color', data.right_button?.text_color || data.right_button_color || '#ffffff');
         setInputValue('right_button_visible', data.right_button?.visible === false ? 'hide' : 'show');

@@ -607,12 +607,12 @@
             body: formData
           });
           const json = await res.json();
-          if (!json.success) throw new Error(json.message || 'Upload that bai');
+          if (!json.success) throw new Error(json.message || 'Upload thất bại');
           const raw = json.data.url || '';
           const m = raw.match(/https?:\/\/[^\s"']+/);
           setCategoryImage(m ? m[0] : raw);
         } catch (err) {
-          showAlert(err?.message || 'Khong the tai anh len', 'danger');
+          showAlert(err?.message || 'Không thể tải ảnh lên', 'danger');
           category_image_upload.value = '';
         } finally {
           category_image_upload_spinner.classList.add('d-none');

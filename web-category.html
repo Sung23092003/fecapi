@@ -1450,7 +1450,7 @@
         const ids = getSelectedIds();
         if (ids.length === 0) return;
         const deleteModalBody = document.querySelector('#deleteConfirmModal .modal-body');
-        if (deleteModalBody) deleteModalBody.textContent = `Xóa ${ids.length} danh muc da chon?`;
+        if (deleteModalBody) deleteModalBody.textContent = `Xóa ${ids.length} danh mục đã chọn?`;
         deleteTargetId = ids;
         getDeleteModal().show();
       }

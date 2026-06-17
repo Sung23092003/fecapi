@@ -765,7 +765,7 @@
           body: formData
         });
         const json = await res.json().catch(function () { return null; });
-        if (!json || !json.success) throw new Error(json?.message || 'Upload anh that bai');
+        if (!json || !json.success) throw new Error(json?.message || 'Upload ảnh thất bại');
         return normalizeUploadedUrl(json.data?.url || json.url || '');
       }
 
@@ -871,7 +871,7 @@
           const file = imageUpload.files && imageUpload.files[0];
           if (!file) return;
           imageUpload.disabled = true;
-          if (imagePreviewBox) imagePreviewBox.textContent = 'Dang tai anh...';
+          if (imagePreviewBox) imagePreviewBox.textContent = 'Đang tải ảnh...';
           try {
             const uploadedUrl = await uploadMediaFile(file);
             imageData.value = uploadedUrl;
@@ -880,8 +880,8 @@
           } catch (err) {
             imageData.value = '';
             imageUpload.value = '';
-            if (imagePreviewBox) imagePreviewBox.innerHTML = '<span class="text-muted">Chua chon anh</span>';
-            showToast(err.message || 'Khong the tai anh len.', 'danger');
+            if (imagePreviewBox) imagePreviewBox.innerHTML = '<span class="text-muted">Chưa chọn ảnh</span>';
+            showToast(err.message || 'Không thể tải ảnh lên.', 'danger');
           } finally {
             imageUpload.disabled = false;
           }
@@ -934,7 +934,7 @@
           if (imagePreviewBox) imagePreviewBox.innerHTML = '<img src="' + url + '" alt="preview">';
           if (previewImage) previewImage.innerHTML = '<img src="' + url + '" alt="preview">';
         } else {
-          if (imagePreviewBox) imagePreviewBox.innerHTML = '<span class="text-muted">Chua chon anh</span>';
+          if (imagePreviewBox) imagePreviewBox.innerHTML = '<span class="text-muted">Chưa chọn ảnh</span>';
           if (previewImage) previewImage.innerHTML = '';
         }
       }
@@ -1008,17 +1008,17 @@
           const res = await fetch(apiDetailUrl(editId), { headers: Auth.getAuthHeader() });
           const json = await res.json().catch(function () { return null; });
           if (!json || !json.success) {
-            showToast(json?.message || 'Khong tai duoc du lieu khoi.', 'danger');
+            showToast(json?.message || 'Không tải được dữ liệu khởi.', 'danger');
             return;
           }
           const section = getSectionDetail(json);
           if (!section) {
-            showToast('Khong tim thay du lieu khoi.', 'danger');
+            showToast('Không tìm thấy dữ liệu khởi.', 'danger');
             return;
           }
           fillForm(section);
         } catch (e) {
-          showToast('Khong the ket noi den may chu.', 'danger');
+          showToast('Không thể kết nối đến máy chủ.', 'danger');
         }
       }
 
@@ -1033,7 +1033,7 @@
           const sectionData = buildSectionData();
           const payload = {
             id: Number(editId || 0),
-            section_name: managerName || plainTextFromHtml(sectionData.content) || 'Tin anh',
+            section_name: managerName || plainTextFromHtml(sectionData.content) || 'Tin ảnh',
             section_type: 'image_news',
             section_data: JSON.stringify(sectionData),
             section_order_no: Number(document.getElementById('sort_order').value || 0),
@@ -1049,15 +1049,15 @@
             });
             const json = await res.json().catch(function () { return null; });
             if (!json || !json.success) {
-              showToast(json?.message || 'Luu khoi tin anh that bai.', 'danger');
+              showToast(json?.message || 'Lưu khởi tin ảnh thất bại.', 'danger');
               return;
             }
-            showToast(isEdit ? 'Cap nhat tin anh thanh cong.' : 'Them tin anh thanh cong.');
+            showToast(isEdit ? 'Cập nhật tin ảnh thành công.' : 'Thêm tin ảnh thành công.');
             setTimeout(function () {
               window.location.href = 'web-body.html';
             }, 500);
           } catch (e) {
-            showToast('Khong the ket noi den may chu.', 'danger');
+            showToast('Không thể kết nối đến máy chủ.', 'danger');
           } finally {
             setSaving(false);
           }

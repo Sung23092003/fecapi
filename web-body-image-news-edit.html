@@ -53,10 +53,11 @@
     }
 
     .image-preview-box img {
-      width: 100%;
-      height: 100%;
+      width: auto;
+      max-width: 100%;
+      height: auto;
       max-height: 260px;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     .content-preview {
@@ -523,6 +524,11 @@
                     <input type="text" class="form-control" id="display_columns" name="display_columns"
                       placeholder="Ví dụ: col-12 col-lg-6">
                   </div>
+                  <div class="col-12">
+                    <label for="image_radius" class="form-label fw-semibold">Độ bo góc ảnh</label>
+                    <input type="text" class="form-control" id="image_radius" name="image_radius"
+                      placeholder="Ví dụ: 12px hoặc 1rem">
+                  </div>
                   <div class="col-md-6">
                     <label for="image_position" class="form-label fw-semibold">Chọn ảnh</label>
                     <select class="form-select" id="image_position" name="image_position">
@@ -843,9 +849,60 @@
         if (colorEl) button.style.color = colorEl.value;
       }
 
+      function normalizeRadius(value) {
+        const raw = String(value || '').trim();
+        if (!raw) return '';
+        if (/^\d+(\.\d+)?$/.test(raw)) return raw + 'px';
+        return raw;
+      }
+
+      function applyImageRadius(radius) {
+        const targets = [
+          imagePreviewBox,
+          previewImage,
+          imagePreviewBox && imagePreviewBox.querySelector('img'),
+          previewImage && previewImage.querySelector('img')
+        ];
+        targets.forEach(function (target) {
+          if (target) target.style.borderRadius = radius || '';
+        });
+      }
+
+      function complementBootstrapColumns(classes) {
+        const result = classes.map(function (className) {
+          const match = className.match(/^col(?:-((?:xs|sm|md|lg|xl|xxl)))?-(auto|[1-9]|1[0-2])$/);
+          let prefix;
+          let value;
+
+          if (className === 'col') return 'col';
+          if (/^col-(xs|sm|md|lg|xl|xxl)$/.test(className)) return className;
+          if (!match) return '';
+
+          prefix = match[1] ? 'col-' + match[1] + '-' : 'col-';
+          value = match[2];
+          if (value === 'auto') return match[1] ? 'col-' + match[1] : 'col';
+
+          value = 12 - Number(value);
+          return value > 0 ? prefix + value : (match[1] ? 'col-' + match[1] + '-12' : 'col-12');
+        }).filter(Boolean);
+
+        return result.length ? result.join(' ') : 'col';
+      }
+
+      function applyBootstrapColumns() {
+        if (!previewImageCol || !previewContentCol) return;
+        const value = (document.getElementById('display_columns').value || '').trim();
+        const classes = value.split(/\s+/).filter(function (className) {
+          return /^col(-((xs|sm|md|lg|xl|xxl)(-(auto|[1-9]|1[0-2]))?|auto|[1-9]|1[0-2]))?$/.test(className);
+        });
+        previewImageCol.className = classes.length ? classes.join(' ') : 'col-12 col-lg-6';
+        previewContentCol.className = classes.length ? complementBootstrapColumns(classes) : 'col-12 col-lg-6';
+      }
+
       function updatePreview() {
         const imagePosition = document.getElementById('image_position').value;
         const effect = document.getElementById('image_effect').value;
+        const imageRadius = normalizeRadius(document.getElementById('image_radius').value);
         const rightVisible = document.getElementById('right_button_visible').value !== 'hide';
 
         if (contentPreview) contentPreview.style.backgroundColor = document.getElementById('bg_color').value;
@@ -855,6 +912,12 @@
           previewImage.classList.remove('effect-shake', 'effect-zoom');
           if (effect !== 'none') previewImage.classList.add('effect-' + effect);
         }
+        if (imagePreviewBox) {
+          imagePreviewBox.classList.remove('effect-shake', 'effect-zoom');
+          if (effect !== 'none') imagePreviewBox.classList.add('effect-' + effect);
+        }
+        applyImageRadius(imageRadius);
+        applyBootstrapColumns();
 
         if (previewRow && previewImageCol && previewContentCol) {
           previewRow.prepend(imagePosition === 'left' ? previewImageCol : previewContentCol);
@@ -875,8 +938,9 @@
           try {
             const uploadedUrl = await uploadMediaFile(file);
             imageData.value = uploadedUrl;
-            if (imagePreviewBox) imagePreviewBox.innerHTML = '<img src="' + uploadedUrl + '" alt="preview">';
-            if (previewImage) previewImage.innerHTML = '<img src="' + uploadedUrl + '" alt="preview">';
+            if (imagePreviewBox) imagePreviewBox.innerHTML = '<img class="img-fluid" src="' + uploadedUrl + '" alt="preview">';
+            if (previewImage) previewImage.innerHTML = '<img class="img-fluid" src="' + uploadedUrl + '" alt="preview">';
+            updatePreview();
           } catch (err) {
             imageData.value = '';
             imageUpload.value = '';
@@ -899,7 +963,7 @@
       }
 
       [
-        'manager_name', 'display_columns', 'sort_order', 'image_position', 'image_effect', 'status',
+        'manager_name', 'display_columns', 'image_radius', 'sort_order', 'image_position', 'image_effect', 'status',
         'video_url', 'left_button_text', 'left_button_url', 'right_button_text', 'right_button_url',
         'right_button_visible', 'right_button_popup'
       ].forEach(function (id) {
@@ -931,12 +995,13 @@
       function setImagePreview(url) {
         imageData.value = url || '';
         if (url) {
-          if (imagePreviewBox) imagePreviewBox.innerHTML = '<img src="' + url + '" alt="preview">';
-          if (previewImage) previewImage.innerHTML = '<img src="' + url + '" alt="preview">';
+          if (imagePreviewBox) imagePreviewBox.innerHTML = '<img class="img-fluid" src="' + url + '" alt="preview">';
+          if (previewImage) previewImage.innerHTML = '<img class="img-fluid" src="' + url + '" alt="preview">';
         } else {
           if (imagePreviewBox) imagePreviewBox.innerHTML = '<span class="text-muted">Chưa chọn ảnh</span>';
           if (previewImage) previewImage.innerHTML = '';
         }
+        updatePreview();
       }
 
       function buildSectionData() {
@@ -946,6 +1011,7 @@
           image: imageData.value,
           image_position: document.getElementById('image_position').value,
           bootstrap_class: document.getElementById('display_columns').value,
+          image_radius: document.getElementById('image_radius').value,
           image_effect: document.getElementById('image_effect').value,
           left_button: {
             text: document.getElementById('left_button_text').value,
@@ -974,6 +1040,7 @@
         setEditorContent('content', data.content || '');
         setImagePreview(data.image || data.image_url || '');
         setInputValue('display_columns', data.bootstrap_class || '');
+        setInputValue('image_radius', data.image_radius || '');
         setInputValue('image_position', data.image_position || 'left');
         setInputValue('image_effect', data.image_effect || 'none');
         setInputValue('bg_color', data.bg_color || '#ffffff');

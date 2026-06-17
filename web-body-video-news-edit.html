@@ -835,7 +835,75 @@
       const btnAdd = document.getElementById('btnAddVideoItem');
       const bgColor = document.getElementById('bg_color');
       const bgColorHex = document.getElementById('bg_color_hex');
+      const submitButton = document.getElementById('buttonSubmit');
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = !!editId;
       let itemIndex = 0;
+
+      function apiUrl(path) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section' + path;
+      }
+
+      function apiDetailUrl(id) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(id);
+      }
+
+      function statusToApi(value) {
+        return value === 'hide' || value === 0 || value === '0' ? 0 : 1;
+      }
+
+      function statusFromApi(value) {
+        return value === 0 || value === '0' || value === 'hide' ? 'hide' : 'show';
+      }
+
+      function parseSectionData(value) {
+        if (!value) return {};
+        if (typeof value === 'object') return value;
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function getSectionDetail(json) {
+        const raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+        const nested = raw.data ?? raw.item ?? raw.detail ?? raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        return nested && typeof nested === 'object' ? nested : raw;
+      }
+
+      function showToast(message, type) {
+        let div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:360px;';
+          document.body.appendChild(div);
+        }
+        div.textContent = message;
+        div.className = 'alert alert-' + (type || 'success') + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
+
+      function setSaving(isSaving) {
+        if (!submitButton) return;
+        submitButton.disabled = isSaving;
+        submitButton.innerHTML = isSaving
+          ? '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span><span>Dang luu</span>'
+          : '<i class="bi bi-floppy"></i><span>Luu</span>';
+      }
+
+      function escapeAttr(value) {
+        return String(value == null ? '' : value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('"', '&quot;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;');
+      }
 
       function initTinyEditor(id, height) {
         if (!window.tinymce || !document.getElementById(id)) return;
@@ -862,6 +930,30 @@
         return textarea ? textarea.value : '';
       }
 
+      function plainTextFromHtml(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html || '';
+        return (tmp.textContent || tmp.innerText || '').trim();
+      }
+
+      function setEditorContent(id, value) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.value = value || '';
+        let attempts = 0;
+        function applyEditorContent() {
+          attempts += 1;
+          try {
+            const editor = window.tinymce && tinymce.get(id);
+            if (editor && editor.initialized) {
+              editor.setContent(value || '');
+              return;
+            }
+          } catch (e) { }
+          if (attempts < 20) setTimeout(applyEditorContent, 100);
+        }
+        applyEditorContent();
+      }
+
       function createVideoItem(data) {
         itemIndex += 1;
         const item = document.createElement('div');
@@ -876,15 +968,15 @@
           <div class="row g-3">
             <div class="col-md-4">
               <label class="form-label fw-semibold">Tiêu đề</label>
-              <input type="text" class="form-control video-item-title" placeholder="Nhập tiêu đề video" value="${data?.title || ''}">
+              <input type="text" class="form-control video-item-title" placeholder="Nhập tiêu đề video" value="${escapeAttr(data?.title || '')}">
             </div>
             <div class="col-md-4">
               <label class="form-label fw-semibold">Mô tả</label>
-              <input type="text" class="form-control video-item-description" placeholder="Nhập mô tả" value="${data?.description || ''}">
+              <input type="text" class="form-control video-item-description" placeholder="Nhập mô tả" value="${escapeAttr(data?.description || '')}">
             </div>
             <div class="col-md-4">
               <label class="form-label fw-semibold">Link video</label>
-              <input type="text" class="form-control video-item-url" placeholder="https://youtu.be/..." value="${data?.url || ''}">
+              <input type="text" class="form-control video-item-url" placeholder="https://youtu.be/..." value="${escapeAttr(data?.url || '')}">
             </div>
           </div>
         `;
@@ -906,40 +998,125 @@
 
       initTinyEditor('video_title', 240);
       initTinyEditor('video_description', 260);
-      createVideoItem();
+
+      function setInputValue(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.value = value ?? '';
+      }
+
+      function collectVideos() {
+        return Array.from(list.querySelectorAll('.video-news-item')).map(function (item) {
+          return {
+            title: item.querySelector('.video-item-title').value,
+            description: item.querySelector('.video-item-description').value,
+            url: item.querySelector('.video-item-url').value
+          };
+        }).filter(function (item) {
+          return item.title || item.description || item.url;
+        });
+      }
+
+      function buildSectionData() {
+        return {
+          title: getEditorContent('video_title'),
+          description: getEditorContent('video_description'),
+          layout_type: document.getElementById('layout_type').value,
+          items_per_row: Number(document.getElementById('items_per_row').value),
+          row_count: Number(document.getElementById('row_count').value),
+          bg_color: bgColor.value,
+          videos: collectVideos()
+        };
+      }
+
+      function fillForm(section) {
+        const data = parseSectionData(section.section_data);
+        setEditorContent('video_title', data.title || data.video_title || '');
+        setEditorContent('video_description', data.description || data.video_description || '');
+        setInputValue('layout_type', data.layout_type || 'equal');
+        setInputValue('items_per_row', data.items_per_row || 3);
+        setInputValue('row_count', data.row_count || 1);
+        setInputValue('sort_order', section.section_order_no ?? data.sort_order ?? 1);
+        setInputValue('status', statusFromApi(section.section_status ?? data.status));
+        setInputValue('bg_color', data.bg_color || '#ffffff');
+        if (bgColorHex) bgColorHex.textContent = bgColor.value;
+        list.innerHTML = '';
+        itemIndex = 0;
+        const videos = Array.isArray(data.videos) ? data.videos : [];
+        if (videos.length) {
+          videos.forEach(createVideoItem);
+        } else {
+          createVideoItem();
+        }
+      }
+
+      async function loadSection() {
+        if (!isEdit) {
+          createVideoItem();
+          return;
+        }
+        try {
+          const res = await fetch(apiDetailUrl(editId), { headers: Auth.getAuthHeader() });
+          const json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            showToast(json?.message || 'Khong tai duoc du lieu tin video.', 'danger');
+            createVideoItem();
+            return;
+          }
+          const section = getSectionDetail(json);
+          if (!section) {
+            showToast('Khong tim thay du lieu tin video.', 'danger');
+            createVideoItem();
+            return;
+          }
+          fillForm(section);
+        } catch (e) {
+          showToast('Khong the ket noi den may chu.', 'danger');
+          createVideoItem();
+        }
+      }
 
       if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
           event.preventDefault();
           event.stopPropagation();
           form.classList.add('was-validated');
           if (!form.checkValidity()) return;
 
-          const videos = Array.from(list.querySelectorAll('.video-news-item')).map(function (item) {
-            return {
-              title: item.querySelector('.video-item-title').value,
-              description: item.querySelector('.video-item-description').value,
-              url: item.querySelector('.video-item-url').value
-            };
-          });
-
+          const sectionData = buildSectionData();
           const payload = {
-            type: 'video_news',
-            title: getEditorContent('video_title'),
-            description: getEditorContent('video_description'),
-            layout_type: document.getElementById('layout_type').value,
-            items_per_row: Number(document.getElementById('items_per_row').value),
-            row_count: Number(document.getElementById('row_count').value),
-            sort_order: document.getElementById('sort_order').value,
-            status: document.getElementById('status').value,
-            bg_color: bgColor.value,
-            videos: videos
+            id: Number(editId || 0),
+            section_name: plainTextFromHtml(sectionData.title) || 'Tin video',
+            section_type: 'video_news',
+            section_data: JSON.stringify(sectionData),
+            section_order_no: Number(document.getElementById('sort_order').value || 0),
+            section_status: statusToApi(document.getElementById('status').value)
           };
 
-          console.log('Body video news payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          setSaving(true);
+          try {
+            const res = await fetch(apiUrl(''), {
+              method: 'POST',
+              headers: Auth.getAuthHeader(),
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json().catch(function () { return null; });
+            if (!json || !json.success) {
+              showToast(json?.message || 'Luu tin video that bai.', 'danger');
+              return;
+            }
+            showToast(isEdit ? 'Cap nhat tin video thanh cong.' : 'Them tin video thanh cong.');
+            setTimeout(function () {
+              window.location.href = 'web-body.html';
+            }, 500);
+          } catch (e) {
+            showToast('Khong the ket noi den may chu.', 'danger');
+          } finally {
+            setSaving(false);
+          }
         });
       }
+
+      loadSection();
     })();
   </script>
 </body>

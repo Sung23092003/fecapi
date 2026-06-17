@@ -834,8 +834,49 @@
       initTinyEditor('description', 260);
       renderPreview();
 
+      function statusToApi(value) {
+        return value === 'hide' || value === 0 || value === '0' ? 0 : 1;
+      }
+
+      function plainTextFromHtml(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html || '';
+        return (tmp.textContent || tmp.innerText || '').trim();
+      }
+
+      function showToast(message, type) {
+        let div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:360px;';
+          document.body.appendChild(div);
+        }
+        div.textContent = message;
+        div.className = 'alert alert-' + (type || 'success') + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
+
+      async function saveSection(data) {
+        const apiPayload = {
+          id: 0,
+          section_name: plainTextFromHtml(data.display_name) || 'Gallery',
+          section_type: data.type,
+          section_data: JSON.stringify(data),
+          section_order_no: Number(data.sort_order || 0),
+          section_status: statusToApi(data.status || 'show')
+        };
+        const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section', {
+          method: 'POST',
+          headers: Auth.getAuthHeader(),
+          body: JSON.stringify(apiPayload)
+        });
+        const json = await res.json().catch(function () { return null; });
+        if (!json || !json.success) throw new Error(json?.message || 'Luu du lieu that bai.');
+      }
+
       if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
           event.preventDefault();
           event.stopPropagation();
           form.classList.add('was-validated');
@@ -853,8 +894,13 @@
             bg_color: bgColor.value
           };
 
-          console.log('Body gallery payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          try {
+            await saveSection(payload);
+            showToast('Luu gallery thanh cong.');
+            setTimeout(function () { window.location.href = 'web-body.html'; }, 500);
+          } catch (e) {
+            showToast(e.message || 'Khong the ket noi den may chu.', 'danger');
+          }
         });
       }
     })();

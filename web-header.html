@@ -1007,6 +1007,19 @@
                           <input type="text" class="form-control" id="header_main_search_placeholder"
                             name="header_main_search_placeholder" placeholder="Search...">
                         </div>
+                        <div class="form-group mt-3">
+                          <label class="form-label fw-semibold">Tài khoản</label>
+                          <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="header_main_login_show" checked>
+                              <label class="form-check-label" for="header_main_login_show">Đăng nhập</label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" id="header_main_register_show" checked>
+                              <label class="form-check-label" for="header_main_register_show">Đăng ký</label>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -1749,6 +1762,8 @@
             search_show: parseInt(document.getElementById('header_main_search').value, 10),
             search_col: document.getElementById('header_main_search_col').value,
             search_placeholder: document.getElementById('header_main_search_placeholder').value,
+            login_show: document.getElementById('header_main_login_show').checked ? 1 : 0,
+            register_show: document.getElementById('header_main_register_show').checked ? 1 : 0,
             item_list: JSON.parse(document.getElementById('header_main_items').value || '[]')
           }
         };
@@ -1851,6 +1866,8 @@
             if (d.header_main.logo_col) document.getElementById('header_main_logo_col').value = d.header_main.logo_col;
             if (d.header_main.search_col) document.getElementById('header_main_search_col').value = d.header_main.search_col;
             if (d.header_main.search_placeholder != null) document.getElementById('header_main_search_placeholder').value = d.header_main.search_placeholder;
+            if (d.header_main.login_show != null) document.getElementById('header_main_login_show').checked = d.header_main.login_show !== 0 && d.header_main.login_show !== '0' && d.header_main.login_show !== false;
+            if (d.header_main.register_show != null) document.getElementById('header_main_register_show').checked = d.header_main.register_show !== 0 && d.header_main.register_show !== '0' && d.header_main.register_show !== false;
 
             // Main items table
             if (d.header_main.item_list && Array.isArray(d.header_main.item_list)) {

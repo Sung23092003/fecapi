@@ -293,6 +293,7 @@
       object-fit: cover;
       display: block;
     }
+
     .floating-actions {
       position: fixed;
       right: 8px;
@@ -573,7 +574,8 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i
+            class="bi bi-briefcase"></i><span>Quản lý Dịch
             Vụ</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
             class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
@@ -641,12 +643,12 @@
   <main id="main" class="main body-gallery-page">
     <div class="pagetitle d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
       <div>
-        <h1>Thêm Thư Viện Ảnh</h1>
+        <h1 id="pageHeading">Thêm Thư Viện Ảnh</h1>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
             <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
-            <li class="breadcrumb-item active">Thêm Thư Viện Ảnh</li>
+            <li class="breadcrumb-item active" id="breadcrumbLast">Thêm Thư Viện Ảnh</li>
           </ol>
         </nav>
       </div>
@@ -659,11 +661,13 @@
             <div class="row g-3">
               <div class="col-12">
                 <label for="display_name" class="form-label fw-semibold">Tên hiển thị</label>
-                <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name" rows="5"></textarea>
+                <textarea class="form-control body-tinymce-editor" id="display_name" name="display_name"
+                  rows="5"></textarea>
               </div>
               <div class="col-12">
                 <label for="description" class="form-label fw-semibold">Mô tả</label>
-                <textarea class="form-control body-tinymce-editor" id="description" name="description" rows="5"></textarea>
+                <textarea class="form-control body-tinymce-editor" id="description" name="description"
+                  rows="5"></textarea>
               </div>
               <div class="col-12">
                 <label class="form-label fw-semibold">Chọn số ảnh / hàng</label>
@@ -674,16 +678,19 @@
                   <button type="button" class="btn btn-primary gallery-count-btn active" data-value="4">4 ảnh</button>
                   <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="6">6 ảnh</button>
                   <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="8">8 ảnh</button>
-                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="10">10 ảnh</button>
+                  <button type="button" class="btn btn-outline-primary gallery-count-btn" data-value="10">10
+                    ảnh</button>
                 </div>
               </div>
               <div class="col-md-6">
                 <label for="gallery_files" class="form-label fw-semibold">Chọn tệp</label>
-                <input type="file" class="form-control" id="gallery_files" name="gallery_files" accept="image/*" multiple>
+                <input type="file" class="form-control" id="gallery_files" name="gallery_files" accept="image/*"
+                  multiple>
               </div>
               <div class="col-md-6">
                 <label for="border_style" class="form-label fw-semibold">Border</label>
-                <input type="text" class="form-control" id="border_style" name="border_style" value="border: 1px solid #ccc; border-radius: 4px;">
+                <input type="text" class="form-control" id="border_style" name="border_style"
+                  value="border: 1px solid #ccc; border-radius: 4px;">
               </div>
               <div class="col-md-4">
                 <label for="sort_order" class="form-label fw-semibold">Thứ tự</label>
@@ -699,7 +706,8 @@
               <div class="col-md-4">
                 <label class="form-label fw-semibold">Chọn màu nền</label>
                 <div class="color-input-group">
-                  <input type="text" data-coloris class="form-control form-control-color" id="bg_color" name="bg_color" value="#ffffff">
+                  <input type="text" data-coloris class="form-control form-control-color" id="bg_color" name="bg_color"
+                    value="#ffffff">
                   <span class="color-hex" id="bg_color_hex">#ffffff</span>
                 </div>
               </div>
@@ -749,6 +757,12 @@
       const borderStyle = document.getElementById('border_style');
       const imagesPerRow = document.getElementById('images_per_row');
       const galleryImages = [];
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = !!editId;
+
+      function apiDetailUrl(id) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(id);
+      }
 
       function initTinyEditor(id, height) {
         if (!window.tinymce || !document.getElementById(id)) return;
@@ -787,28 +801,53 @@
           return;
         }
         previewGrid.innerHTML = galleryImages.map(function (src, index) {
-          return `<div class="gallery-preview-item" style="${borderStyle.value}"><img src="${src}" alt="Ảnh ${index + 1}"></div>`;
+          return `<div class="gallery-preview-item position-relative" style="${borderStyle.value}">
+            <img src="${src}" alt="Ảnh ${index + 1}">
+            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 p-1 remove-img-btn" data-index="${index}" style="line-height: 1;">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>`;
         }).join('');
+
+        previewGrid.querySelectorAll('.remove-img-btn').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const idx = Number(this.dataset.index);
+            if (!isNaN(idx)) {
+              galleryImages.splice(idx, 1);
+              renderPreview();
+            }
+          });
+        });
       }
 
       if (galleryFiles) {
-        galleryFiles.addEventListener('change', function () {
-          galleryImages.length = 0;
+        galleryFiles.addEventListener('change', async function () {
           const files = Array.from(galleryFiles.files || []);
-          if (!files.length) {
-            renderPreview();
-            return;
+          if (!files.length) return;
+
+          try {
+            previewGrid.innerHTML = '<div class="text-muted small">Đang tải ảnh lên...</div>';
+            for (let i = 0; i < files.length; i++) {
+              if (window.uploadMediaFile) {
+                const url = await window.uploadMediaFile(files[i]);
+                if (url && !galleryImages.includes(url)) galleryImages.push(url);
+              } else {
+                const reader = new FileReader();
+                await new Promise(resolve => {
+                  reader.onload = e => {
+                    galleryImages.push(e.target.result);
+                    resolve();
+                  };
+                  reader.readAsDataURL(files[i]);
+                });
+              }
+            }
+          } catch (err) {
+            showToast('Lỗi tải ảnh: ' + err.message, 'danger');
           }
-          let loaded = 0;
-          files.forEach(function (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-              galleryImages.push(event.target.result);
-              loaded += 1;
-              if (loaded === files.length) renderPreview();
-            };
-            reader.readAsDataURL(file);
-          });
+
+          galleryFiles.value = ''; // Reset input to allow re-upload 
+          renderPreview();
         });
       }
 
@@ -859,7 +898,7 @@
 
       async function saveSection(data) {
         const apiPayload = {
-          id: 0,
+          id: Number(editId || 0),
           section_name: plainTextFromHtml(data.display_name) || 'Gallery',
           section_type: data.type,
           section_data: JSON.stringify(data),
@@ -896,13 +935,101 @@
 
           try {
             await saveSection(payload);
-            showToast('Luu gallery thanh cong.');
+            showToast(isEdit ? 'Cập nhật thư viện ảnh thành công.' : 'Thêm thư viện ảnh thành công.');
             setTimeout(function () { window.location.href = 'web-body.html'; }, 500);
           } catch (e) {
-            showToast(e.message || 'Khong the ket noi den may chu.', 'danger');
+            showToast(e.message || 'Không thể kết nối đến máy chủ.', 'danger');
           }
         });
       }
+
+      function getSectionDetail(json) {
+        const raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+        const nested = raw.data ?? raw.item ?? raw.detail ?? raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        return nested && typeof nested === 'object' ? nested : raw;
+      }
+
+      function parseSectionData(value) {
+        if (!value) return {};
+        if (typeof value === 'object') return value;
+        try { return JSON.parse(value); } catch (e) { return {}; }
+      }
+
+      function fillForm(section) {
+        const data = parseSectionData(section.section_data);
+        if (data.display_name) setEditorContent('display_name', data.display_name);
+        if (data.description) setEditorContent('description', data.description);
+
+        if (data.images_per_row) {
+          imagesPerRow.value = data.images_per_row;
+          document.querySelectorAll('.gallery-count-btn').forEach(btn => {
+            const match = btn.dataset.value == data.images_per_row;
+            btn.classList.toggle('btn-primary', match);
+            btn.classList.toggle('btn-outline-primary', !match);
+            btn.classList.toggle('active', match);
+          });
+        }
+
+        if (data.border) borderStyle.value = data.border;
+        if (data.bg_color) {
+          bgColor.value = data.bg_color;
+          if (bgColorHex) bgColorHex.textContent = data.bg_color;
+        }
+        if (section.section_order_no) document.getElementById('sort_order').value = section.section_order_no;
+        if (section.section_status !== undefined) document.getElementById('status').value = section.section_status == 1 ? 'show' : 'hide';
+
+        if (data.images && Array.isArray(data.images)) {
+          galleryImages.length = 0;
+          data.images.forEach(img => galleryImages.push(img));
+        }
+        renderPreview();
+      }
+
+      function setEditorContent(id, value) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.value = value || '';
+        let attempts = 0;
+        function apply() {
+          attempts++;
+          try {
+            const editor = window.tinymce && tinymce.get(id);
+            if (editor && editor.initialized) return editor.setContent(value || '');
+          } catch (e) { }
+          if (attempts < 20) setTimeout(apply, 100);
+        }
+        apply();
+      }
+
+      async function loadSection() {
+        if (!isEdit) return;
+
+        const hd = document.getElementById('pageHeading');
+        if (hd) hd.textContent = 'Chỉnh sửa Thư Viện Ảnh';
+        const bc = document.getElementById('breadcrumbLast');
+        if (bc) bc.textContent = 'Chỉnh sửa Thư Viện Ảnh';
+        const title = document.querySelector('title');
+        if (title) title.textContent = 'Chỉnh sửa thư viện ảnh - NiceAdmin';
+
+        try {
+          const res = await fetch(apiDetailUrl(editId), { headers: Auth.getAuthHeader() });
+          const json = await res.json().catch(() => null);
+          if (!json || !json.success) {
+            showToast('Lỗi: ' + (json?.message || 'Không tải được dữ liệu.'), 'danger');
+            return;
+          }
+          const section = getSectionDetail(json);
+          if (!section) return;
+          fillForm(section);
+        } catch (e) {
+          showToast('Lỗi kết nối máy chủ.', 'danger');
+        }
+      }
+
+      loadSection();
     })();
   </script>
 </body>

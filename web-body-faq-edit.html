@@ -1008,11 +1008,20 @@
           : 'Chưa chọn ảnh';
       }
 
-      function renumberQuestions() {
-        questionList.querySelectorAll('.faq-question-item').forEach(function (item, index) {
+      function getNextQuestionNumber() {
+        let max = 0;
+        questionList.querySelectorAll('.faq-question-item').forEach(function (item) {
           const label = item.querySelector('.faq-question-number');
-          if (label) label.textContent = 'Câu hỏi #' + (index + 1);
+          if (!label) return;
+          const match = String(label.textContent).match(/#(\d+)/);
+          if (match) max = Math.max(max, Number(match[1]));
         });
+        return max + 1;
+      }
+
+      function setQuestionNumber(item, number) {
+        const label = item.querySelector('.faq-question-number');
+        if (label) label.textContent = 'Câu hỏi #' + number;
       }
 
       function createQuestionItem(data, prepend) {
@@ -1040,7 +1049,6 @@
         item.querySelector('.btn-delete-question').addEventListener('click', function () {
           showConfirm('Xác nhận xóa', 'Bạn có chắc muốn xóa câu hỏi này?', function () {
             item.remove();
-            renumberQuestions();
           });
         });
         if (prepend && questionList.firstChild) {
@@ -1048,7 +1056,7 @@
         } else {
           questionList.appendChild(item);
         }
-        renumberQuestions();
+        setQuestionNumber(item, getNextQuestionNumber());
         return item;
       }
 

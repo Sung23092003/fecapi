@@ -1017,11 +1017,20 @@
         return normalizeUploadedUrl(json.data?.url || json.url || '');
       }
 
-      function renumberVideos() {
-        list.querySelectorAll('.video-news-item').forEach(function (item, index) {
+      function getNextVideoNumber() {
+        let max = 0;
+        list.querySelectorAll('.video-news-item').forEach(function (item) {
           const label = item.querySelector('.video-item-number');
-          if (label) label.textContent = 'Video #' + (index + 1);
+          if (!label) return;
+          const match = String(label.textContent).match(/#(\d+)/);
+          if (match) max = Math.max(max, Number(match[1]));
         });
+        return max + 1;
+      }
+
+      function setVideoNumber(item, number) {
+        const label = item.querySelector('.video-item-number');
+        if (label) label.textContent = 'Video #' + number;
       }
 
       function createVideoItem(data, prepend) {
@@ -1087,7 +1096,6 @@
         item.querySelector('.btn-delete-video').addEventListener('click', function () {
           showConfirm('Xác nhận xóa', 'Bạn có chắc muốn xóa video này?', function () {
             item.remove();
-            renumberVideos();
           });
         });
 
@@ -1096,7 +1104,7 @@
         } else {
           list.appendChild(item);
         }
-        renumberVideos();
+        setVideoNumber(item, getNextVideoNumber());
         return item;
       }
 

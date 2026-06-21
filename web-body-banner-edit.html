@@ -358,6 +358,40 @@
       object-fit: cover;
       display: block;
     }
+
+    .body-banner-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .body-banner-item {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+    }
+
+    .body-banner-item-preview {
+      min-height: 120px;
+      border: 1px dashed #ced4da;
+      border-radius: 8px;
+      background: #f8f9fa;
+      color: #6c757d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .body-banner-item-preview img {
+      width: 100%;
+      height: 100%;
+      min-height: 120px;
+      object-fit: cover;
+      display: block;
+    }
+
     .floating-actions {
       position: fixed;
       right: 8px;
@@ -638,7 +672,8 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i
+            class="bi bi-briefcase"></i><span>Quản lý Dịch
             Vụ</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
             class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
@@ -706,12 +741,12 @@
   <main id="main" class="main body-banner-page">
     <div class="pagetitle d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
       <div>
-        <h1>Thêm Banner</h1>
+        <h1 id="pageHeading">Thêm Banner</h1>
         <nav>
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
             <li class="breadcrumb-item"><a href="web-body.html">Quản lý Thân Trang</a></li>
-            <li class="breadcrumb-item active">Thêm Banner</li>
+            <li class="breadcrumb-item active" id="breadcrumbLast">Thêm Banner</li>
           </ol>
         </nav>
       </div>
@@ -724,13 +759,23 @@
             <div class="row g-3">
               <div class="col-12">
                 <label for="banner_title" class="form-label fw-semibold">Tiêu đề</label>
-                <textarea class="form-control body-tinymce-editor" id="banner_title" name="banner_title" rows="5"></textarea>
+                <textarea class="form-control body-tinymce-editor" id="banner_title" name="banner_title"
+                  rows="5"></textarea>
               </div>
               <div class="col-12">
                 <label for="banner_description" class="form-label fw-semibold">Mô tả</label>
-                <textarea class="form-control body-tinymce-editor" id="banner_description" name="banner_description" rows="5"></textarea>
+                <textarea class="form-control body-tinymce-editor" id="banner_description" name="banner_description"
+                  rows="5"></textarea>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <label class="form-label fw-semibold">Màu nền chung</label>
+                <div class="color-input-group">
+                  <input type="text" data-coloris class="form-control form-control-color" id="bg_color" name="bg_color"
+                    value="#ffffff">
+                  <span class="color-hex" id="bg_color_hex">#ffffff</span>
+                </div>
+              </div>
+              <div class="col-md-3">
                 <label for="banners_per_row" class="form-label fw-semibold">Chọn số banner trên hàng</label>
                 <select class="form-select" id="banners_per_row" name="banners_per_row">
                   <option value="1" selected>1</option>
@@ -738,9 +783,16 @@
                   <option value="3">3</option>
                 </select>
               </div>
-              <div class="col-md-8">
-                <label for="banner_files" class="form-label fw-semibold">Chọn banner</label>
-                <input type="file" class="form-control" id="banner_files" name="banner_files" accept="image/*" multiple>
+              <div class="col-md-3">
+                <label for="sort_order" class="form-label fw-semibold">Thứ tự</label>
+                <input type="text" class="form-control" id="sort_order" name="sort_order" value="1">
+              </div>
+              <div class="col-md-3">
+                <label for="status" class="form-label fw-semibold">Trạng thái</label>
+                <select class="form-select" id="status" name="status">
+                  <option value="show" selected>Hiện</option>
+                  <option value="hide">Ẩn</option>
+                </select>
               </div>
               <div class="col-md-6">
                 <label for="button_text" class="form-label fw-semibold">Tên nút</label>
@@ -748,7 +800,8 @@
               </div>
               <div class="col-md-6">
                 <label for="button_url" class="form-label fw-semibold">Link nút</label>
-                <input type="text" class="form-control" id="button_url" name="button_url" placeholder="https://example.com">
+                <input type="text" class="form-control" id="button_url" name="button_url"
+                  placeholder="https://example.com">
               </div>
             </div>
           </div>
@@ -757,10 +810,25 @@
         <div class="card card-box mb-3">
           <div class="card-inner">
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-              <h5 class="card-title mb-0 py-0">Banner đã chọn</h5>
+              <div>
+                <h5 class="card-title mb-0 py-0">Quản lý banner</h5>
+              </div>
+              <button type="button" class="btn btn-primary" id="btnAddBanner">
+                <i class="bi bi-plus-lg"></i> Thêm banner
+              </button>
+            </div>
+            <div class="body-banner-list" id="bodyBannerList"></div>
+          </div>
+        </div>
+
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <h5 class="card-title mb-0 py-0">Xem trước</h5>
               <span class="badge bg-secondary" id="bannerModeBadge">Chưa chọn banner</span>
             </div>
-            <div class="banner-rule mb-3" id="bannerRuleText">Nếu upload nhiều hơn số banner trên hàng thì sẽ hiển thị dạng slide chạy.</div>
+            <div class="banner-rule mb-3" id="bannerRuleText">Nếu upload nhiều hơn số banner trên hàng thì sẽ hiển thị
+              dạng slide chạy.</div>
             <div class="body-banner-preview-grid" id="bodyBannerPreviewGrid">
               <div class="text-muted small">Chưa chọn banner.</div>
             </div>
@@ -781,6 +849,37 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
 
+  <div class="modal fade" id="saveResultModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveResultTitle">Thông báo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="saveResultMessage"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đồng ý</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmTitle">Xác nhận</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="confirmMessage"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger" id="confirmOkBtn">Xóa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/js/main.js"></script>
@@ -793,12 +892,140 @@
       "use strict";
 
       const form = document.getElementById('formBodyBanner');
-      const bannerFiles = document.getElementById('banner_files');
+      const bannerList = document.getElementById('bodyBannerList');
+      const btnAddBanner = document.getElementById('btnAddBanner');
       const bannersPerRow = document.getElementById('banners_per_row');
       const previewGrid = document.getElementById('bodyBannerPreviewGrid');
       const ruleText = document.getElementById('bannerRuleText');
       const modeBadge = document.getElementById('bannerModeBadge');
-      const bannerImages = [];
+      const submitButton = document.getElementById('buttonSubmit');
+      const saveResultModalEl = document.getElementById('saveResultModal');
+      const saveResultTitle = document.getElementById('saveResultTitle');
+      const saveResultMessage = document.getElementById('saveResultMessage');
+      const confirmModalEl = document.getElementById('confirmModal');
+      const confirmTitle = document.getElementById('confirmTitle');
+      const confirmMessage = document.getElementById('confirmMessage');
+      const confirmOkBtn = document.getElementById('confirmOkBtn');
+      const saveResultModal = saveResultModalEl && window.bootstrap ? new bootstrap.Modal(saveResultModalEl) : null;
+      const confirmModal = confirmModalEl && window.bootstrap ? new bootstrap.Modal(confirmModalEl) : null;
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = !!editId;
+      let modalCloseCallback = null;
+      let confirmCallback = null;
+
+      function apiUrl(path) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section' + path;
+      }
+
+      function apiDetailUrl(id) {
+        return ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(id);
+      }
+
+      function statusToApi(value) {
+        return value === 'hide' || value === 0 || value === '0' ? 0 : 1;
+      }
+
+      function statusFromApi(value) {
+        return value === 0 || value === '0' || value === 'hide' ? 'hide' : 'show';
+      }
+
+      function parseSectionData(value) {
+        if (!value) return {};
+        if (typeof value === 'object') return value;
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function getSectionDetail(json) {
+        const raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+        const nested = raw.data ?? raw.item ?? raw.detail ?? raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        return nested && typeof nested === 'object' ? nested : raw;
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? '')
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      function showPopup(title, message, onClose) {
+        if (!saveResultModal || !saveResultTitle || !saveResultMessage) return;
+        modalCloseCallback = typeof onClose === 'function' ? onClose : null;
+        saveResultTitle.textContent = title;
+        saveResultMessage.textContent = message;
+        saveResultModal.show();
+      }
+
+      function showConfirm(title, message, onConfirm) {
+        if (!confirmModal || !confirmTitle || !confirmMessage) return;
+        confirmCallback = typeof onConfirm === 'function' ? onConfirm : null;
+        confirmTitle.textContent = title;
+        confirmMessage.textContent = message;
+        confirmModal.show();
+      }
+
+      if (saveResultModalEl) {
+        saveResultModalEl.addEventListener('hidden.bs.modal', function () {
+          const callback = modalCloseCallback;
+          modalCloseCallback = null;
+          if (callback) callback();
+        });
+      }
+
+      if (confirmOkBtn) {
+        confirmOkBtn.addEventListener('click', function () {
+          const callback = confirmCallback;
+          confirmCallback = null;
+          if (confirmModal) confirmModal.hide();
+          if (callback) callback();
+        });
+      }
+
+      if (confirmModalEl) {
+        confirmModalEl.addEventListener('hidden.bs.modal', function () {
+          confirmCallback = null;
+        });
+      }
+
+      function setSaving(isSaving) {
+        if (!submitButton) return;
+        submitButton.disabled = isSaving;
+        submitButton.innerHTML = isSaving
+          ? '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span><span>Đang lưu</span>'
+          : '<i class="bi bi-floppy"></i><span>Lưu</span>';
+      }
+
+      function normalizeUploadedUrl(raw) {
+        raw = raw || '';
+        const match = String(raw).match(/https?:\/\/[^\s"']+/);
+        return (match ? match[0] : raw).replace(/(?:\\?&[a-zA-Z#]+\d*;)+$/g, '');
+      }
+
+      async function uploadMediaFile(file) {
+        if (!file) return '';
+        const formData = new FormData();
+        formData.append('file', file);
+        const headers = Auth.getAuthHeader();
+        delete headers['Content-Type'];
+        const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/media/upload', {
+          method: 'POST',
+          headers: headers,
+          body: formData
+        });
+        const json = await res.json().catch(function () { return null; });
+        if (!json || !json.success) throw new Error(json?.message || 'Upload file thất bại');
+        return normalizeUploadedUrl(json.data?.url || json.url || '');
+      }
 
       function initTinyEditor(id, height) {
         if (!window.tinymce || !document.getElementById(id)) return;
@@ -825,81 +1052,307 @@
         return textarea ? textarea.value : '';
       }
 
+      function setEditorContent(id, value) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.value = value || '';
+        let attempts = 0;
+        function applyEditorContent() {
+          attempts += 1;
+          try {
+            const editor = window.tinymce && tinymce.get(id);
+            if (editor && editor.initialized) {
+              editor.setContent(value || '');
+              return;
+            }
+          } catch (e) { }
+          if (attempts < 20) setTimeout(applyEditorContent, 100);
+        }
+        applyEditorContent();
+      }
+
+      function plainTextFromHtml(html) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html || '';
+        return (tmp.textContent || tmp.innerText || '').trim();
+      }
+
+      function setInputValue(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.value = value ?? '';
+      }
+
       function getBannersPerRow() {
         return Number(bannersPerRow.value) || 1;
       }
 
+      function getNextBannerNumber() {
+        let max = 0;
+        bannerList.querySelectorAll('.body-banner-item').forEach(function (item) {
+          const label = item.querySelector('.banner-item-number');
+          if (!label) return;
+          const match = String(label.textContent).match(/#(\d+)/);
+          if (match) max = Math.max(max, Number(match[1]));
+        });
+        return max + 1;
+      }
+
+      function setBannerNumber(item, number) {
+        const label = item.querySelector('.banner-item-number');
+        if (label) label.textContent = 'Banner #' + number;
+      }
+
+      function collectBanners() {
+        return Array.from(bannerList.querySelectorAll('.body-banner-item')).map(function (item) {
+          return {
+            image: item.querySelector('.banner-image-data').value.trim(),
+            url: item.querySelector('.banner-item-url').value.trim()
+          };
+        }).filter(function (item) {
+          return item.image || item.url;
+        });
+      }
+
       function renderPreview() {
+        const banners = collectBanners();
         const perRow = getBannersPerRow();
-        const isSlider = bannerImages.length > perRow;
-        previewGrid.style.gridTemplateColumns = `repeat(${perRow}, minmax(0, 1fr))`;
+        const isSlider = banners.length > perRow;
+        previewGrid.style.gridTemplateColumns = 'repeat(' + perRow + ', minmax(0, 1fr))';
         ruleText.textContent = isSlider
-          ? `Đang có ${bannerImages.length}/${perRow} banner, nhiều hơn số hiển thị nên sẽ chạy dạng slide.`
-          : `Đang có ${bannerImages.length}/${perRow} banner, chưa vượt số hiển thị nên không chạy slide.`;
+          ? 'Đang có ' + banners.length + '/' + perRow + ' banner, nhiều hơn số hiển thị nên sẽ chạy dạng slide.'
+          : 'Đang có ' + banners.length + '/' + perRow + ' banner, chưa vượt số hiển thị nên không chạy slide.';
         ruleText.classList.toggle('text-success', isSlider);
         ruleText.classList.toggle('text-muted', !isSlider);
         modeBadge.className = isSlider ? 'badge bg-success' : 'badge bg-secondary';
-        modeBadge.textContent = isSlider ? 'Slide chạy' : (bannerImages.length ? 'Hiển thị tĩnh' : 'Chưa chọn banner');
+        modeBadge.textContent = isSlider ? 'Slide chạy' : (banners.length ? 'Hiển thị tĩnh' : 'Chưa chọn banner');
 
-        if (!bannerImages.length) {
+        if (!banners.length) {
           previewGrid.innerHTML = '<div class="text-muted small">Chưa chọn banner.</div>';
           return;
         }
 
-        previewGrid.innerHTML = bannerImages.map(function (src, index) {
-          return `<div class="body-banner-preview-item"><img src="${src}" alt="Banner ${index + 1}"></div>`;
+        previewGrid.innerHTML = banners.map(function (banner, index) {
+          return '<div class="body-banner-preview-item"><img src="' + escapeHtml(banner.image) + '" alt="Banner ' + (index + 1) + '"></div>';
         }).join('');
       }
 
-      if (bannerFiles) {
-        bannerFiles.addEventListener('change', function () {
-          bannerImages.length = 0;
-          const files = Array.from(bannerFiles.files || []);
-          if (!files.length) {
+      function createBannerItem(data) {
+        data = data || {};
+        const item = document.createElement('div');
+        item.className = 'body-banner-item';
+        item.innerHTML = `
+          <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+            <div class="fw-semibold text-primary banner-item-number">Banner</div>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-banner" title="Xóa banner">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-semibold">Ảnh banner</label>
+              <input type="file" class="form-control banner-image-file" accept="image/*">
+              <input type="hidden" class="banner-image-data" value="${escapeHtml(data.image || '')}">
+              <div class="body-banner-item-preview mt-2">Chưa chọn ảnh</div>
+            </div>
+            <div class="col-md-8">
+              <label class="form-label fw-semibold">Link banner</label>
+              <input type="text" class="form-control banner-item-url" placeholder="https://example.com" value="${escapeHtml(data.url || '')}">
+            </div>
+          </div>
+        `;
+
+        const imageFile = item.querySelector('.banner-image-file');
+        const imageData = item.querySelector('.banner-image-data');
+        const imagePreview = item.querySelector('.body-banner-item-preview');
+
+        if (data.image) {
+          imagePreview.innerHTML = '<img src="' + escapeHtml(data.image) + '" alt="preview">';
+        }
+
+        imageFile.addEventListener('change', async function () {
+          const file = imageFile.files && imageFile.files[0];
+          if (!file) return;
+          imageFile.disabled = true;
+          imagePreview.textContent = 'Đang tải ảnh...';
+          try {
+            const uploadedUrl = await uploadMediaFile(file);
+            imageData.value = uploadedUrl;
+            imagePreview.innerHTML = '<img src="' + escapeHtml(uploadedUrl) + '" alt="preview">';
             renderPreview();
-            return;
+          } catch (err) {
+            imageFile.value = '';
+            imageData.value = '';
+            imagePreview.textContent = 'Chưa chọn ảnh';
+            showPopup('Lỗi', err.message || 'Không thể tải ảnh lên.');
+          } finally {
+            imageFile.disabled = false;
           }
-          let loaded = 0;
-          files.forEach(function (file) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-              bannerImages.push(event.target.result);
-              loaded += 1;
-              if (loaded === files.length) renderPreview();
-            };
-            reader.readAsDataURL(file);
+        });
+
+        item.querySelector('.banner-item-url').addEventListener('input', renderPreview);
+        item.querySelector('.btn-delete-banner').addEventListener('click', function () {
+          showConfirm('Xác nhận xóa', 'Bạn có chắc muốn xóa banner này?', function () {
+            item.remove();
+            renderPreview();
           });
         });
+
+        bannerList.appendChild(item);
+        setBannerNumber(item, getNextBannerNumber());
+        renderPreview();
+        return item;
       }
+
+      function buildSectionData() {
+        const banners = collectBanners();
+        const perRow = getBannersPerRow();
+        const bgColor = document.getElementById('bg_color');
+        return {
+          type: 'body_banner',
+          title: getEditorContent('banner_title'),
+          description: getEditorContent('banner_description'),
+          bg_color: bgColor ? bgColor.value : '#ffffff',
+          banners_per_row: perRow,
+          is_slider: banners.length > perRow,
+          banners: banners,
+          button: {
+            text: document.getElementById('button_text').value.trim(),
+            url: document.getElementById('button_url').value.trim()
+          }
+        };
+      }
+
+      function fillForm(section) {
+        const data = parseSectionData(section.section_data);
+        const button = data.button || {};
+        setEditorContent('banner_title', data.title || section.section_name || '');
+        setEditorContent('banner_description', data.description || '');
+        setInputValue('bg_color', data.bg_color || '#ffffff');
+        const bgColorHex = document.getElementById('bg_color_hex');
+        if (bgColorHex) bgColorHex.textContent = data.bg_color || '#ffffff';
+        setInputValue('banners_per_row', data.banners_per_row || 1);
+        setInputValue('sort_order', section.section_order_no ?? data.sort_order ?? 1);
+        setInputValue('status', statusFromApi(section.section_status ?? data.status));
+        setInputValue('button_text', button.text || data.button_text || '');
+        setInputValue('button_url', button.url || data.button_url || '');
+        bannerList.innerHTML = '';
+        const banners = Array.isArray(data.banners) ? data.banners : [];
+        if (banners.length) {
+          banners.forEach(function (banner) {
+            const image = typeof banner === 'string' ? banner : (banner.image || '');
+            const url = typeof banner === 'object' ? (banner.url || banner.link || banner.href || '') : '';
+            createBannerItem({ image: image, url: url });
+          });
+        } else {
+          createBannerItem();
+        }
+        renderPreview();
+      }
+
+      async function loadSection() {
+        if (!isEdit) {
+          createBannerItem();
+          return;
+        }
+        try {
+          const res = await fetch(apiDetailUrl(editId), { headers: Auth.getAuthHeader() });
+          const json = await res.json().catch(function () { return null; });
+          if (!json || !json.success) {
+            showPopup('Lỗi', json?.message || 'Không tải được dữ liệu banner.');
+            createBannerItem();
+            return;
+          }
+          const section = getSectionDetail(json);
+          if (!section) {
+            showPopup('Lỗi', 'Không tìm thấy dữ liệu banner.');
+            createBannerItem();
+            return;
+          }
+          fillForm(section);
+        } catch (e) {
+          showPopup('Lỗi', 'Không thể kết nối đến máy chủ.');
+          createBannerItem();
+        }
+      }
+
+      btnAddBanner.addEventListener('click', function () {
+        const item = createBannerItem();
+        if (!item) return;
+        item.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        setTimeout(function () {
+          const fileInput = item.querySelector('.banner-image-file');
+          if (fileInput) fileInput.focus();
+        }, 280);
+      });
 
       bannersPerRow.addEventListener('change', renderPreview);
       initTinyEditor('banner_title', 240);
       initTinyEditor('banner_description', 260);
-      renderPreview();
+      const bgColorInput = document.getElementById('bg_color');
+      const bgColorHexEl = document.getElementById('bg_color_hex');
+      if (bgColorInput && bgColorHexEl) {
+        bgColorInput.addEventListener('input', function () {
+          bgColorHexEl.textContent = bgColorInput.value;
+        });
+      }
 
       if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
           event.preventDefault();
           event.stopPropagation();
-          form.classList.add('was-validated');
-          if (!form.checkValidity()) return;
+          if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+          }
+          form.classList.remove('was-validated');
+
+          const sectionData = buildSectionData();
+          if (!sectionData.banners.length) {
+            showPopup('Lỗi', 'Vui lòng thêm ít nhất một banner.');
+            return;
+          }
 
           const payload = {
-            type: 'body_banner',
-            title: getEditorContent('banner_title'),
-            description: getEditorContent('banner_description'),
-            banners_per_row: getBannersPerRow(),
-            is_slider: bannerImages.length > getBannersPerRow(),
-            banners: bannerImages,
-            button: {
-              text: document.getElementById('button_text').value,
-              url: document.getElementById('button_url').value
-            }
+            id: Number(editId || 0),
+            section_name: plainTextFromHtml(sectionData.title) || 'Banner',
+            section_type: 'body_banner',
+            section_data: JSON.stringify(sectionData),
+            section_order_no: Number(document.getElementById('sort_order').value || 0),
+            section_status: statusToApi(document.getElementById('status').value)
           };
 
-          console.log('Body banner payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          setSaving(true);
+          try {
+            const res = await fetch(apiUrl(''), {
+              method: 'POST',
+              headers: Auth.getAuthHeader(),
+              body: JSON.stringify(payload)
+            });
+            const json = await res.json().catch(function () { return null; });
+            if (!json || !json.success) {
+              showPopup('Lỗi', json?.message || 'Lưu banner thất bại.');
+              return;
+            }
+            showPopup('Thành công', isEdit ? 'Cập nhật banner thành công.' : 'Thêm banner thành công.', function () {
+              window.location.href = 'web-body.html';
+            });
+          } catch (e) {
+            showPopup('Lỗi', 'Không thể kết nối đến máy chủ.');
+          } finally {
+            setSaving(false);
+          }
         });
+      }
+
+      loadSection();
+
+      // Update page title and breadcrumb for edit mode
+      if (isEdit) {
+        var heading = document.getElementById('pageHeading');
+        var breadcrumbLast = document.getElementById('breadcrumbLast');
+        var pageTitle = document.querySelector('title');
+        if (heading) heading.textContent = 'Chỉnh sửa Banner';
+        if (breadcrumbLast) breadcrumbLast.textContent = 'Chỉnh sửa Banner';
+        if (pageTitle) pageTitle.textContent = 'Chỉnh sửa banner thân trang - NiceAdmin';
       }
     })();
   </script>

@@ -646,6 +646,8 @@
       const form = document.getElementById('formBodyRunningNews');
       const list = document.getElementById('runningNewsList');
       const btnAdd = document.getElementById('btnAddNewsItem');
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = !!editId;
       const itemsPerRow = document.getElementById('items_per_row');
       const rowCount = document.getElementById('row_count');
       const ruleText = document.getElementById('runningNewsRuleText');
@@ -678,6 +680,15 @@
         return textarea ? textarea.value : '';
       }
 
+      function refreshItemNumbers() {
+        const items = Array.from(list.querySelectorAll('.running-news-item'));
+        const total = items.length;
+        items.forEach(function (el, idx) {
+          const titleDiv = el.querySelector('.fw-semibold');
+          if (titleDiv) titleDiv.textContent = 'Tin #' + (total - idx);
+        });
+      }
+
       function createNewsItem(data) {
         itemIndex += 1;
         const item = document.createElement('div');
@@ -697,11 +708,11 @@
             </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Màu chữ</label>
-              <input type="text" data-coloris class="form-control form-control-color news-text-color" value="${data?.textColor || '#012970'}">
+              <input type="text" data-coloris class="form-control form-control-color news-text-color" value="${data?.text_color || '#012970'}">
             </div>
             <div class="col-md-3">
               <label class="form-label fw-semibold">Màu nền</label>
-              <input type="text" data-coloris class="form-control form-control-color news-bg-color" value="${data?.bgColor || '#f6f9ff'}">
+              <input type="text" data-coloris class="form-control form-control-color news-bg-color" value="${data?.bg_color || '#f6f9ff'}">
             </div>
             <div class="col-md-6">
               <label class="form-label fw-semibold">Hình đại diện</label>
@@ -735,6 +746,11 @@
           chip.style.backgroundColor = bgColor.value;
         }
 
+        // Display existing image if data has one
+        if (imageData.value) {
+          thumb.innerHTML = '<img src="' + imageData.value + '" alt="preview" style="width:100%;height:100%;object-fit:cover;">';
+        }
+
         [title, textColor, bgColor].forEach(function (input) {
           input.addEventListener('input', updateItemPreview);
         });
@@ -745,7 +761,7 @@
           const reader = new FileReader();
           reader.onload = function (event) {
             imageData.value = event.target.result;
-            thumb.innerHTML = '<img src="' + event.target.result + '" alt="preview">';
+            thumb.innerHTML = '<img src="' + event.target.result + '" alt="preview" style="width:100%;height:100%;object-fit:cover;">';
           };
           reader.readAsDataURL(selected);
         });
@@ -753,11 +769,15 @@
         item.querySelector('.btn-delete-news').addEventListener('click', function () {
           item.remove();
           updateRunRule();
+          refreshItemNumbers();
         });
 
         updateItemPreview();
-        list.appendChild(item);
+        // Insert new items at the top so newest appear first
+        if (list.firstChild) list.insertBefore(item, list.firstChild);
+        else list.appendChild(item);
         updateRunRule();
+        refreshItemNumbers();
       }
 
       btnAdd.addEventListener('click', function () {
@@ -807,21 +827,24 @@
       }
 
       function showToast(message, type) {
-        let div = document.getElementById('pageAlert');
+        type = type || 'success';
+        var div = document.getElementById('pageAlert');
         if (!div) {
           div = document.createElement('div');
           div.id = 'pageAlert';
-          div.style.cssText = 'z-index:9999;min-width:250px;max-width:360px;';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:350px;';
+          div.className = 'd-none';
           document.body.appendChild(div);
         }
-        div.textContent = message;
-        div.className = 'alert alert-' + (type || 'success') + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.innerHTML = message;
+        div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.classList.remove('d-none');
         setTimeout(function () { div.classList.add('d-none'); }, 4000);
       }
 
       async function saveSection(data) {
         const apiPayload = {
-          id: 0,
+          id: Number(editId || 0),
           section_name: data.manager_name || plainTextFromHtml(data.display_name) || 'Tin chay',
           section_type: data.type,
           section_data: JSON.stringify(data),
@@ -854,13 +877,14 @@
             };
           });
 
+          const titlePositionEl = document.getElementById('title_position');
           const payload = {
             type: 'running_news',
             direction: 'left_to_right',
             manager_name: document.getElementById('manager_name').value,
             bg_color: bgColor.value,
             display_name: getEditorContent('display_name'),
-            title_position: document.getElementById('title_position').value,
+            title_position: titlePositionEl ? titlePositionEl.value : 'top',
             description: getEditorContent('description'),
             sort_order: Number(document.getElementById('sort_order').value),
             status: document.getElementById('status').value,
@@ -873,15 +897,67 @@
 
           try {
             await saveSection(payload);
-            showToast('Luu tin chay thanh cong.');
-            setTimeout(function () { window.location.href = 'web-body.html'; }, 500);
+            showToast('Lưu tin chạy thành công.');
+            setTimeout(function () { window.location.href = 'web-body.html'; }, 1000);
           } catch (e) {
-            showToast(e.message || 'Khong the ket noi den may chu.', 'danger');
+            showToast(e.message || 'Không thể kết nối đến máy chủ.', 'danger');
           }
         });
       }
 
       updateRunRule();
+      // Init: if editing load data
+      async function loadSection() {
+        if (!isEdit) return;
+        try {
+          const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(editId), {
+            headers: Auth.getAuthHeader()
+          });
+          const json = await res.json().catch(() => null);
+          let raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+          let section = null;
+
+          if (Array.isArray(raw)) section = raw[0];
+          else if (raw?.data) section = Array.isArray(raw.data) ? raw.data[0] : raw.data;
+          else section = raw;
+
+          if (!section) throw new Error('Không tìm thấy dữ liệu.');
+          let data = section.section_data;
+          try { data = typeof data === 'string' ? JSON.parse(data) : data; } catch (e) { }
+
+          if (data.manager_name) document.getElementById('manager_name').value = data.manager_name;
+          if (data.bg_color) {
+            document.getElementById('bg_color').value = data.bg_color;
+            document.getElementById('bg_color_hex').textContent = data.bg_color;
+          }
+          if (data.display_name) {
+            if (window.tinymce && tinymce.get('display_name')) tinymce.get('display_name').setContent(data.display_name || '');
+            else document.getElementById('display_name').value = data.display_name || '';
+          }
+          if (data.description) {
+            if (window.tinymce && tinymce.get('description')) tinymce.get('description').setContent(data.description || '');
+            else document.getElementById('description').value = data.description || '';
+          }
+          if (data.items_per_row) document.getElementById('items_per_row').value = data.items_per_row;
+          if (data.row_count) document.getElementById('row_count').value = data.row_count;
+          if (data.sort_order) document.getElementById('sort_order').value = data.sort_order;
+          if (typeof section.section_status !== 'undefined') document.getElementById('status').value = section.section_status == 1 ? 'show' : 'hide';
+
+          list.innerHTML = '';
+          const items = Array.isArray(data.news) ? data.news : [];
+          if (items.length) {
+            // create items so newest appears first (we prepend inside createNewsItem)
+            items.forEach(createNewsItem);
+          } else {
+            createNewsItem();
+          }
+        } catch (e) {
+          showToast('Lỗi tải dữ liệu: ' + (e.message || ''), 'danger');
+          createNewsItem();
+        }
+      }
+
+      loadSection();
     })();
   </script>
 </body>

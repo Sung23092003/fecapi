@@ -708,14 +708,25 @@
         });
       }
 
-      function createServiceItem(data) {
+      function refreshServiceNumbers() {
+        const items = Array.from(list.querySelectorAll('.service-item'));
+        const total = items.length;
+        items.forEach(function (it, idx) {
+          const numEl = it.querySelector('.service-number');
+          if (numEl) numEl.textContent = 'Tin #' + (total - idx);
+        });
+      }
+
+      function createServiceItem(data, opts) {
+        opts = opts || {};
+        const prepend = !!opts.prepend;
         itemIndex += 1;
         const item = document.createElement('div');
         item.className = 'service-item';
         item.dataset.index = String(itemIndex);
         item.innerHTML = `
           <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-            <div class="fw-semibold text-primary">Tin #${itemIndex}</div>
+            <div class="fw-semibold text-primary service-number">Tin #${itemIndex}</div>
             <button type="button" class="btn btn-sm btn-outline-danger btn-delete-service" title="Xóa tin">
               <i class="bi bi-trash"></i>
             </button>
@@ -806,9 +817,14 @@
 
         item.querySelector('.btn-delete-service').addEventListener('click', function () {
           item.remove();
+          refreshServiceNumbers();
         });
 
-        list.appendChild(item);
+        if (prepend && list.firstChild) {
+          list.insertBefore(item, list.firstChild);
+        } else {
+          list.appendChild(item);
+        }
         initTinyEditor(description.id, 180);
         if (window.tinymce) {
           tinymce.on('AddEditor', function (event) {
@@ -818,10 +834,11 @@
           });
         }
         updateItemPreview();
+        refreshServiceNumbers();
       }
 
       btnAdd.addEventListener('click', function () {
-        createServiceItem();
+        createServiceItem(null, { prepend: true });
       });
 
       document.querySelectorAll('input[name="display_type"], input[name="image_shape"], input[name="layout_type"], #center_content').forEach(function (input) {

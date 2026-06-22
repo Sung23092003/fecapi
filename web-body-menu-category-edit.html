@@ -459,10 +459,9 @@
 
               <div class="col-md-4">
                 <label for="menu_id" class="form-label fw-semibold">Chọn loại menu</label>
-                <select class="form-select" id="menu_id" name="menu_id">
-                  <option value="">-- Chưa có dữ liệu --</option>
+                <select class="form-select" id="menu_id" name="menu_id" multiple size="6">
                 </select>
-                <div class="form-text">API danh mục chưa có, tạm thời để trống.</div>
+                <div class="form-text">Giữ `Ctrl` hoặc `Shift` để chọn nhiều menu.</div>
               </div>
 
               <div class="col-md-3">
@@ -515,17 +514,21 @@
                 </select>
                 <div class="invalid-feedback">Vui lòng chọn trạng thái.</div>
               </div>
-              <div class="card card-box mb-3">
-                <div class="card-inner">
-                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-                    <h5 class="card-title mb-0 py-0">Quản lý tin (Sản phẩm/Bài viết)</h5>
-                    <button type="button" class="btn btn-primary" id="btnAddCategoryItem">
-                      <i class="bi bi-plus-lg"></i> Thêm
-                    </button>
-                  </div>
-                  <div class="category-item-list" id="categoryItemList"></div>
-                </div>
-              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-box mb-3">
+          <div class="card-inner">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <h5 class="card-title mb-0 py-0">Quản lý tin (Sản phẩm/Bài viết)</h5>
+              <button type="button" class="btn btn-primary" id="btnAddCategoryItem">
+                <i class="bi bi-plus-lg"></i> Thêm
+              </button>
+            </div>
+            <div class="category-item-list" id="categoryItemList"></div>
+          </div>
+        </div>
       </form>
     </section>
   </main>
@@ -558,6 +561,7 @@
       const editId = new URLSearchParams(window.location.search).get('id') || '';
       const isEdit = !!editId;
       let itemIndex = 0;
+      const apiBase = ENV.BASE_URL.replace(/\/$/, '');
 
       function setupColorPicker(inputId, textId) {
         const input = document.getElementById(inputId);
@@ -583,27 +587,139 @@
         setTimeout(function () { div.classList.add('d-none'); }, 4000);
       }
 
+      function statusFromApi(value) {
+        return value === 0 || value === '0' || value === 'hide' ? 'hide' : 'show';
+      }
+
+      function parseSectionData(value) {
+        if (!value) return {};
+        if (typeof value === 'object') return value;
+        try {
+          return JSON.parse(value);
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function getSectionDetail(json) {
+        const raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+        if (Array.isArray(raw)) return raw[0] || null;
+        if (!raw || typeof raw !== 'object') return null;
+        if (raw.section_data || raw.section_name || raw.id || raw.section_id || raw._id) return raw;
+        const nested = raw.data ?? raw.item ?? raw.detail ?? raw.section;
+        if (Array.isArray(nested)) return nested[0] || null;
+        return nested && typeof nested === 'object' ? nested : raw;
+      }
+
+      function getCategoryId(cat) {
+        return cat?.category_id ?? cat?.id ?? cat?._id ?? '';
+      }
+
+      function getCategoryTitle(cat) {
+        return cat?.category_title ?? cat?.title ?? cat?.name ?? '';
+      }
+
+      function normalizeCategoryOptions(raw) {
+        if (Array.isArray(raw)) {
+          return raw;
+        }
+
+        if (!raw || typeof raw !== 'object') {
+          return [];
+        }
+
+        const items = [];
+        Object.values(raw).forEach(entry => {
+          if (!entry || typeof entry !== 'object') return;
+
+          const parent = entry.parent || entry;
+          if (getCategoryId(parent) !== '') {
+            items.push(parent);
+          }
+
+          const subItems = Array.isArray(entry.sub)
+            ? entry.sub
+            : Array.isArray(entry.children)
+              ? entry.children
+              : [];
+
+          subItems.forEach(sub => {
+            if (getCategoryId(sub) !== '') {
+              items.push(sub);
+            }
+          });
+        });
+
+        return items;
+      }
+
+      function renderCategoryOptions(categories) {
+        const select = document.getElementById('menu_id');
+        if (!select) return;
+
+        select.innerHTML = '';
+        const seen = new Set();
+
+        categories.forEach(cat => {
+          const value = String(getCategoryId(cat) ?? '').trim();
+          const label = String(getCategoryTitle(cat) ?? '').trim();
+          if (!value || !label || seen.has(value)) return;
+
+          seen.add(value);
+          const option = document.createElement('option');
+          option.value = value;
+          option.textContent = label;
+          select.appendChild(option);
+        });
+      }
+
+      function getSelectedMenuValues() {
+        const select = document.getElementById('menu_id');
+        if (!select) return [];
+        return Array.from(select.selectedOptions)
+          .map(option => String(option.value || '').trim())
+          .filter(Boolean);
+      }
+
+      function getSelectedMenuNames() {
+        const select = document.getElementById('menu_id');
+        if (!select) return [];
+        return Array.from(select.selectedOptions)
+          .map(option => String(option.textContent || '').trim())
+          .filter(Boolean);
+      }
+
+      function setSelectedMenuValues(values) {
+        const select = document.getElementById('menu_id');
+        if (!select) return;
+
+        const selectedSet = new Set(
+          (Array.isArray(values) ? values : [values])
+            .map(value => String(value ?? '').trim())
+            .filter(Boolean)
+        );
+
+        Array.from(select.options).forEach(option => {
+          option.selected = selectedSet.has(String(option.value || '').trim());
+        });
+      }
+
       async function fetchCategories() {
         try {
-          const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/category?limit=999', {
+          const res = await fetch(apiBase + '/admin/category?limit=999', {
             headers: Auth.getAuthHeader()
           });
-          const json = await res.json();
-          if (json.success && json.data && Array.isArray(json.data.data || json.data)) {
-            const categories = json.data.data || json.data;
-            const select = document.getElementById('menu_id');
-            select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
-            categories.forEach(cat => {
-              const option = document.createElement('option');
-              option.value = cat.id || cat.category_id || cat._id;
-              option.textContent = cat.title || cat.category_title || cat.name;
-              select.appendChild(option);
-            });
-            const ft = select.nextElementSibling;
-            if (ft && ft.classList.contains('form-text')) ft.remove();
+          const json = await res.json().catch(() => null);
+          if (!res.ok || !json || !json.success) {
+            throw new Error(json?.message || ('API error: ' + res.status));
           }
+
+          const rawCategories = json?.data?.data ?? json?.data ?? [];
+          const categories = normalizeCategoryOptions(rawCategories);
+          renderCategoryOptions(categories);
         } catch (e) {
           console.error('Failed to load categories', e);
+          showToast('Không tải được danh mục.', 'danger');
         }
       }
 
@@ -692,7 +808,7 @@
           section_order_no: Number(data.sort_order || 0),
           section_status: data.status === 'show' ? 1 : 0
         };
-        const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section', {
+        const res = await fetch(apiBase + '/admin/page-section', {
           method: 'POST',
           headers: Auth.getAuthHeader(),
           body: JSON.stringify(apiPayload)
@@ -707,25 +823,19 @@
           return;
         }
         try {
-          const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(editId), {
+          const res = await fetch(apiBase + '/admin/page-section/' + encodeURIComponent(editId), {
             headers: Auth.getAuthHeader()
           });
           const json = await res.json().catch(() => null);
-          let raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
-          let section = null;
-
-          if (Array.isArray(raw)) {
-            section = raw[0];
-          } else if (raw?.data) {
-            section = Array.isArray(raw.data) ? raw.data[0] : raw.data;
-          } else {
-            section = raw;
+          if (!res.ok || !json || !json.success) {
+            throw new Error(json?.message || 'Không tải được dữ liệu.');
           }
+
+          const section = getSectionDetail(json);
 
           if (!section) throw new Error('Không tìm thấy dữ liệu.');
 
-          let data = section.section_data;
-          try { data = typeof data === 'string' ? JSON.parse(data) : data; } catch (e) { }
+          const data = parseSectionData(section.section_data);
 
           if (data.category_type) {
             const r = document.querySelector('input[name="category_type"][value="' + data.category_type + '"]');
@@ -735,7 +845,12 @@
             const r = document.querySelector('input[name="display_style"][value="' + data.display_style + '"]');
             if (r) r.checked = true;
           }
-          if (data.menu_id) document.getElementById('menu_id').value = data.menu_id;
+          const selectedMenuIds = Array.isArray(data.menu_ids)
+            ? data.menu_ids
+            : (data.menu_id !== undefined && data.menu_id !== null && data.menu_id !== '')
+              ? [data.menu_id]
+              : [];
+          setSelectedMenuValues(selectedMenuIds);
           if (data.text_color) {
             document.getElementById('text_color').value = data.text_color;
             document.getElementById('text_color_hex').textContent = data.text_color;
@@ -747,7 +862,7 @@
           if (data.items_per_row) document.getElementById('items_per_row').value = data.items_per_row;
           if (data.num_rows) document.getElementById('num_rows').value = data.num_rows;
           document.getElementById('sort_order').value = section.section_order_no ?? data.sort_order ?? 1;
-          document.getElementById('status').value = section.section_status == 1 ? 'show' : 'hide';
+          document.getElementById('status').value = statusFromApi(section.section_status ?? data.status);
 
           list.innerHTML = '';
           const items = Array.isArray(data.items) ? data.items : [];
@@ -779,15 +894,17 @@
             link: item.querySelector('.item-link').value
           }));
 
-          const sel = document.getElementById('menu_id');
-          const menuName = sel.options[sel.selectedIndex]?.text || '';
+          const selectedMenuIds = getSelectedMenuValues();
+          const selectedMenuNames = getSelectedMenuNames();
 
           const payload = {
             type: 'menu_category',
-            menu_name: menuName || 'Menu Danh mục',
+            menu_name: selectedMenuNames.join(', ') || 'Menu Danh mục',
+            menu_names: selectedMenuNames,
             category_type: document.querySelector('input[name="category_type"]:checked')?.value || '',
             display_style: document.querySelector('input[name="display_style"]:checked')?.value || '',
-            menu_id: sel.value,
+            menu_id: selectedMenuIds[0] || '',
+            menu_ids: selectedMenuIds,
             text_color: document.getElementById('text_color').value,
             bg_color: document.getElementById('bg_color').value,
             items_per_row: Number(document.getElementById('items_per_row').value),

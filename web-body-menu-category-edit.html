@@ -322,7 +322,8 @@
         </ul>
       </li>
 
-      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch
+      <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i
+            class="bi bi-briefcase"></i><span>Quản lý Dịch
             Vụ</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i
             class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
@@ -467,8 +468,8 @@
               <div class="col-md-3">
                 <label class="form-label fw-semibold">Màu chữ</label>
                 <div class="color-input-group">
-                  <input type="text" data-coloris class="form-control form-control-color" id="text_color" name="text_color"
-                    value="#333333">
+                  <input type="text" data-coloris class="form-control form-control-color" id="text_color"
+                    name="text_color" value="#333333">
                   <span class="color-hex" id="text_color_hex">#333333</span>
                 </div>
               </div>
@@ -514,9 +515,17 @@
                 </select>
                 <div class="invalid-feedback">Vui lòng chọn trạng thái.</div>
               </div>
-            </div>
-          </div>
-        </div>
+              <div class="card card-box mb-3">
+                <div class="card-inner">
+                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                    <h5 class="card-title mb-0 py-0">Quản lý tin (Sản phẩm/Bài viết)</h5>
+                    <button type="button" class="btn btn-primary" id="btnAddCategoryItem">
+                      <i class="bi bi-plus-lg"></i> Thêm
+                    </button>
+                  </div>
+                  <div class="category-item-list" id="categoryItemList"></div>
+                </div>
+              </div>
       </form>
     </section>
   </main>
@@ -544,6 +553,11 @@
       "use strict";
 
       const form = document.getElementById('formMenuCategory');
+      const list = document.getElementById('categoryItemList');
+      const btnAdd = document.getElementById('btnAddCategoryItem');
+      const editId = new URLSearchParams(window.location.search).get('id') || '';
+      const isEdit = !!editId;
+      let itemIndex = 0;
 
       function setupColorPicker(inputId, textId) {
         const input = document.getElementById(inputId);
@@ -554,40 +568,247 @@
 
       setupColorPicker('text_color', 'text_color_hex');
       setupColorPicker('bg_color', 'bg_color_hex');
-      setupColorPicker('right_button_bg', 'right_button_bg_hex');
-      setupColorPicker('right_button_color', 'right_button_color_hex');
+
+      function showToast(message, type = 'success') {
+        let div = document.getElementById('pageAlert');
+        if (!div) {
+          div = document.createElement('div');
+          div.id = 'pageAlert';
+          div.style.cssText = 'z-index:9999;min-width:250px;max-width:360px;';
+          document.body.appendChild(div);
+        }
+        div.textContent = message;
+        div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
+        div.classList.remove('d-none');
+        setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
+
+      async function fetchCategories() {
+        try {
+          const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/category?limit=999', {
+            headers: Auth.getAuthHeader()
+          });
+          const json = await res.json();
+          if (json.success && json.data && Array.isArray(json.data.data || json.data)) {
+            const categories = json.data.data || json.data;
+            const select = document.getElementById('menu_id');
+            select.innerHTML = '<option value="">-- Chọn danh mục --</option>';
+            categories.forEach(cat => {
+              const option = document.createElement('option');
+              option.value = cat.id || cat.category_id || cat._id;
+              option.textContent = cat.title || cat.category_title || cat.name;
+              select.appendChild(option);
+            });
+            const ft = select.nextElementSibling;
+            if (ft && ft.classList.contains('form-text')) ft.remove();
+          }
+        } catch (e) {
+          console.error('Failed to load categories', e);
+        }
+      }
+
+      function createCategoryItem(data = {}) {
+        itemIndex += 1;
+        const item = document.createElement('div');
+        item.className = 'category-item';
+        item.dataset.index = String(itemIndex);
+        item.innerHTML = `
+          <div class="d-flex align-items-center justify-content-between gap-2 mb-3 mt-4 border-top pt-3">
+            <div class="fw-semibold text-primary">Item #${itemIndex}</div>
+            <button type="button" class="btn btn-sm btn-outline-danger btn-delete-item" title="Xóa item"><i class="bi bi-trash"></i></button>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Tên Item</label>
+              <input type="text" class="form-control item-title" placeholder="Nhập tên..." value="${data.title || ''}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Hình đại diện</label>
+              <input type="file" class="form-control item-image-file" accept="image/*">
+              <input type="hidden" class="item-image-data" value="${data.image || ''}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Giá niêm yết (Cũ)</label>
+              <input type="text" class="form-control item-price-old" placeholder="Vd: 350.000đ" value="${data.price_old || ''}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Giá bán (Mới)</label>
+              <input type="text" class="form-control item-price-new" placeholder="Vd: 120.000đ" value="${data.price_new || ''}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Số sao đánh giá</label>
+              <input type="number" class="form-control item-rating" min="0" max="5" value="${data.rating || '5'}">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Số điện thoại</label>
+              <input type="text" class="form-control item-phone" placeholder="Vd: 0847 865 568" value="${data.phone || ''}">
+            </div>
+            <div class="col-md-12">
+              <label class="form-label fw-semibold">Link (Đường dẫn)</label>
+              <input type="url" class="form-control item-link" placeholder="https://example.com" value="${data.link || ''}">
+            </div>
+            <div class="col-md-12">
+              <div class="item-preview-thumb mt-2 text-center" style="max-width: 150px;"></div>
+            </div>
+          </div>
+        `;
+
+        const file = item.querySelector('.item-image-file');
+        const imageData = item.querySelector('.item-image-data');
+        const thumb = item.querySelector('.item-preview-thumb');
+
+        if (imageData.value) {
+          thumb.innerHTML = '<img src="' + imageData.value + '" alt="preview" class="img-fluid border rounded">';
+        }
+
+        file.addEventListener('change', function () {
+          const selected = file.files && file.files[0];
+          if (!selected) return;
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            imageData.value = event.target.result;
+            thumb.innerHTML = '<img src="' + event.target.result + '" alt="preview" class="img-fluid border rounded">';
+          };
+          reader.readAsDataURL(selected);
+        });
+
+        item.querySelector('.btn-delete-item').addEventListener('click', function () {
+          item.remove();
+        });
+
+        list.appendChild(item);
+      }
+
+      btnAdd.addEventListener('click', function () {
+        createCategoryItem();
+      });
+
+      async function saveSection(data) {
+        const apiPayload = {
+          id: Number(editId || 0),
+          section_name: data.menu_name || 'Menu Category',
+          section_type: data.type,
+          section_data: JSON.stringify(data),
+          section_order_no: Number(data.sort_order || 0),
+          section_status: data.status === 'show' ? 1 : 0
+        };
+        const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section', {
+          method: 'POST',
+          headers: Auth.getAuthHeader(),
+          body: JSON.stringify(apiPayload)
+        });
+        const json = await res.json().catch(() => null);
+        if (!json || !json.success) throw new Error(json?.message || 'Lưu thất bại.');
+      }
+
+      async function loadSection() {
+        if (!isEdit) {
+          createCategoryItem();
+          return;
+        }
+        try {
+          const res = await fetch(ENV.BASE_URL.replace(/\/$/, '') + '/admin/page-section/' + encodeURIComponent(editId), {
+            headers: Auth.getAuthHeader()
+          });
+          const json = await res.json().catch(() => null);
+          let raw = json?.data ?? json?.result ?? json?.item ?? json?.section;
+          let section = null;
+
+          if (Array.isArray(raw)) {
+            section = raw[0];
+          } else if (raw?.data) {
+            section = Array.isArray(raw.data) ? raw.data[0] : raw.data;
+          } else {
+            section = raw;
+          }
+
+          if (!section) throw new Error('Không tìm thấy dữ liệu.');
+
+          let data = section.section_data;
+          try { data = typeof data === 'string' ? JSON.parse(data) : data; } catch (e) { }
+
+          if (data.category_type) {
+            const r = document.querySelector('input[name="category_type"][value="' + data.category_type + '"]');
+            if (r) r.checked = true;
+          }
+          if (data.display_style) {
+            const r = document.querySelector('input[name="display_style"][value="' + data.display_style + '"]');
+            if (r) r.checked = true;
+          }
+          if (data.menu_id) document.getElementById('menu_id').value = data.menu_id;
+          if (data.text_color) {
+            document.getElementById('text_color').value = data.text_color;
+            document.getElementById('text_color_hex').textContent = data.text_color;
+          }
+          if (data.bg_color) {
+            document.getElementById('bg_color').value = data.bg_color;
+            document.getElementById('bg_color_hex').textContent = data.bg_color;
+          }
+          if (data.items_per_row) document.getElementById('items_per_row').value = data.items_per_row;
+          if (data.num_rows) document.getElementById('num_rows').value = data.num_rows;
+          document.getElementById('sort_order').value = section.section_order_no ?? data.sort_order ?? 1;
+          document.getElementById('status').value = section.section_status == 1 ? 'show' : 'hide';
+
+          list.innerHTML = '';
+          const items = Array.isArray(data.items) ? data.items : [];
+          if (items.length) {
+            items.forEach(createCategoryItem);
+          } else {
+            createCategoryItem();
+          }
+        } catch (e) {
+          showToast('Lỗi tải dữ liệu.', 'danger');
+          createCategoryItem();
+        }
+      }
 
       if (form) {
-        form.addEventListener('submit', function (event) {
+        form.addEventListener('submit', async function (event) {
           event.preventDefault();
           event.stopPropagation();
           form.classList.add('was-validated');
           if (!form.checkValidity()) return;
 
+          const items = Array.from(list.querySelectorAll('.category-item')).map(item => ({
+            title: item.querySelector('.item-title').value,
+            image: item.querySelector('.item-image-data').value,
+            price_old: item.querySelector('.item-price-old').value,
+            price_new: item.querySelector('.item-price-new').value,
+            rating: item.querySelector('.item-rating').value,
+            phone: item.querySelector('.item-phone').value,
+            link: item.querySelector('.item-link').value
+          }));
+
+          const sel = document.getElementById('menu_id');
+          const menuName = sel.options[sel.selectedIndex]?.text || '';
+
           const payload = {
             type: 'menu_category',
+            menu_name: menuName || 'Menu Danh mục',
             category_type: document.querySelector('input[name="category_type"]:checked')?.value || '',
             display_style: document.querySelector('input[name="display_style"]:checked')?.value || '',
-            menu_id: document.getElementById('menu_id').value,
+            menu_id: sel.value,
             text_color: document.getElementById('text_color').value,
             bg_color: document.getElementById('bg_color').value,
             items_per_row: Number(document.getElementById('items_per_row').value),
             num_rows: Number(document.getElementById('num_rows').value),
             sort_order: Number(document.getElementById('sort_order').value),
             status: document.getElementById('status').value,
-            right_button: {
-              text: document.getElementById('right_button_text').value,
-              url: document.getElementById('right_button_url').value,
-              bg_color: document.getElementById('right_button_bg').value,
-              text_color: document.getElementById('right_button_color').value,
-              visible: document.getElementById('right_button_visible').value
-            }
+            items: items
           };
 
-          console.log('Menu category payload:', payload);
-          alert('Đã kiểm tra form hợp lệ. Payload xem trong Console.');
+          try {
+            await saveSection(payload);
+            showToast('Lưu danh mục thành công.');
+            setTimeout(() => { window.location.href = 'web-body.html'; }, 500);
+          } catch (e) {
+            showToast(e.message, 'danger');
+          }
         });
       }
+
+      // Khởi tạo
+      fetchCategories().then(loadSection);
     })();
   </script>
 </body>

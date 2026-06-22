@@ -789,6 +789,17 @@
         }
       }
 
+      function refreshCategoryItemOrder() {
+        const items = Array.from(list.querySelectorAll('.category-item'));
+        const total = items.length;
+        items.forEach(function (item, index) {
+          const orderLabel = item.querySelector('.category-item-order');
+          if (orderLabel) {
+            orderLabel.textContent = 'Item #' + (total - index);
+          }
+        });
+      }
+
       function createCategoryItem(data = {}) {
         itemIndex += 1;
         const item = document.createElement('div');
@@ -796,7 +807,7 @@
         item.dataset.index = String(itemIndex);
         item.innerHTML = `
           <div class="d-flex align-items-center justify-content-between gap-2 mb-3 mt-4 border-top pt-3">
-            <div class="fw-semibold text-primary">Item #${itemIndex}</div>
+            <div class="fw-semibold text-primary category-item-order">Item #${itemIndex}</div>
             <button type="button" class="btn btn-sm btn-outline-danger btn-delete-item" title="Xóa item"><i class="bi bi-trash"></i></button>
           </div>
           <div class="row g-3">
@@ -856,9 +867,11 @@
 
         item.querySelector('.btn-delete-item').addEventListener('click', function () {
           item.remove();
+          refreshCategoryItemOrder();
         });
 
-        list.appendChild(item);
+        list.prepend(item);
+        refreshCategoryItemOrder();
       }
 
       btnAdd.addEventListener('click', function () {

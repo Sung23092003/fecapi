@@ -41,6 +41,10 @@
       margin-bottom: 6px;
     }
 
+    .body-menu-cat-page textarea.body-tinymce-editor {
+      min-height: 160px;
+    }
+
     .floating-actions {
       position: fixed;
       right: 8px;
@@ -410,6 +414,18 @@
           <div class="card-inner">
 
             <div class="row g-3">
+              <div class="col-12">
+                <label for="manager_title" class="form-label fw-semibold">Tên quản lý</label>
+                <textarea class="form-control body-tinymce-editor" id="manager_title" name="manager_title"
+                  rows="4"></textarea>
+              </div>
+
+              <div class="col-12">
+                <label for="article_title" class="form-label fw-semibold">Tên bài</label>
+                <textarea class="form-control body-tinymce-editor" id="article_title" name="article_title"
+                  rows="4"></textarea>
+              </div>
+
               <div class="col-md-4">
                 <label class="form-label fw-semibold">Chọn loại menu danh mục <span class="label-req">*</span></label>
                 <div class="d-flex flex-wrap gap-3 pt-1">
@@ -546,6 +562,7 @@
       class="bi bi-arrow-up-short"></i></a>
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/config.js"></script>
@@ -585,6 +602,55 @@
         div.className = 'alert alert-' + type + ' mb-3 shadow position-fixed end-0 top-0 mt-3 me-3';
         div.classList.remove('d-none');
         setTimeout(function () { div.classList.add('d-none'); }, 4000);
+      }
+
+      function initTinyEditor(id, height) {
+        if (!window.tinymce || !document.getElementById(id)) return;
+        tinymce.init({
+          selector: '#' + id,
+          height: height,
+          menubar: 'edit insert format table tools',
+          plugins: 'link lists table image media code fullscreen preview wordcount',
+          toolbar: 'undo redo | bold italic underline | blocks fontfamily fontsize | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor | link image media table | code fullscreen preview',
+          toolbar_mode: 'sliding',
+          branding: true,
+          content_style: 'body { font-family: Helvetica, Arial, sans-serif; font-size: 15px; }'
+        });
+      }
+
+      function getEditorContent(id) {
+        try {
+          if (window.tinymce) {
+            const editor = tinymce.get(id);
+            if (editor) return editor.getContent();
+          }
+        } catch (e) { }
+        const textarea = document.getElementById(id);
+        return textarea ? textarea.value : '';
+      }
+
+      function setEditorContent(id, value) {
+        const textarea = document.getElementById(id);
+        if (textarea) textarea.value = value || '';
+        let attempts = 0;
+        function applyEditorContent() {
+          attempts += 1;
+          try {
+            const editor = window.tinymce && tinymce.get(id);
+            if (editor && editor.initialized) {
+              editor.setContent(value || '');
+              return;
+            }
+          } catch (e) { }
+          if (attempts < 20) setTimeout(applyEditorContent, 100);
+        }
+        applyEditorContent();
+      }
+
+      function plainTextFromHtml(html) {
+        const temp = document.createElement('div');
+        temp.innerHTML = html || '';
+        return (temp.textContent || temp.innerText || '').trim();
       }
 
       function statusFromApi(value) {
@@ -802,7 +868,7 @@
       async function saveSection(data) {
         const apiPayload = {
           id: Number(editId || 0),
-          section_name: data.menu_name || 'Menu Category',
+          section_name: plainTextFromHtml(data.manager_title) || data.menu_name || 'Menu Category',
           section_type: data.type,
           section_data: JSON.stringify(data),
           section_order_no: Number(data.sort_order || 0),
@@ -836,6 +902,9 @@
           if (!section) throw new Error('Không tìm thấy dữ liệu.');
 
           const data = parseSectionData(section.section_data);
+
+          setEditorContent('manager_title', data.manager_title || section.section_name || '');
+          setEditorContent('article_title', data.article_title || data.title || data.menu_name || '');
 
           if (data.category_type) {
             const r = document.querySelector('input[name="category_type"][value="' + data.category_type + '"]');
@@ -899,6 +968,8 @@
 
           const payload = {
             type: 'menu_category',
+            manager_title: getEditorContent('manager_title'),
+            article_title: getEditorContent('article_title'),
             menu_name: selectedMenuNames.join(', ') || 'Menu Danh mục',
             menu_names: selectedMenuNames,
             category_type: document.querySelector('input[name="category_type"]:checked')?.value || '',
@@ -925,6 +996,8 @@
       }
 
       // Khởi tạo
+      initTinyEditor('manager_title', 220);
+      initTinyEditor('article_title', 220);
       fetchCategories().then(loadSection);
     })();
   </script>

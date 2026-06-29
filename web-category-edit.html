@@ -662,40 +662,85 @@
         }, 5000);
       }
 
-      function buildCategoryTreeOptions(json) {
-        const rawTree = json.data?.category_tree || json.category_tree || [];
-        // unwrap { parent: { ... } } format
-        const tree = rawTree.map(item => item.parent || item);
-        const select = category_parent_id;
+      function extractFlatItems(data) {
+        if (Array.isArray(data)) return data;
+        if (data && typeof data === 'object') {
+          if (Array.isArray(data.data)) return data.data;
+          if (Array.isArray(data.items)) return data.items;
+          if (Array.isArray(data.records)) return data.records;
+          var vals = Object.values(data);
+          if (vals.length && typeof vals[0] === 'object' && vals[0] !== null) {
+            var flat = [];
+            vals.forEach(function (entry) {
+              if (entry.parent && entry.parent.category_id != null) {
+                flat.push(entry.parent);
+              }
+              if (Array.isArray(entry.sub)) {
+                entry.sub.forEach(function (sub) { flat.push(sub); });
+              }
+            });
+            return flat.length ? flat : null;
+          }
+        }
+        return null;
+      }
+
+      function buildCategoryTreeFromList(json) {
+        var source = json.data?.data || json.data || json;
+        var flat = extractFlatItems(source);
+        if (!flat || !flat.length) {
+          console.warn('No category items found in API response:', json);
+          return;
+        }
+
+        var roots = [];
+        var itemMap = {};
+        flat.forEach(function (item) {
+          var id = item.category_id || item.id;
+          if (id == null) return;
+          itemMap[id] = { category_id: id, category_title: item.category_title || item.title || item.name, category_parent_id: item.category_parent_id || item.parent_id || 0, children: [] };
+        });
+
+        flat.forEach(function (item) {
+          var id = item.category_id || item.id;
+          var pid = item.category_parent_id || item.parent_id || 0;
+          if (pid && itemMap[pid]) {
+            itemMap[pid].children.push(itemMap[id]);
+          } else {
+            roots.push(itemMap[id]);
+          }
+        });
+
+        var select = category_parent_id;
         select.innerHTML = '<option value="0">--- Chọn danh mục cha ---</option>';
 
-        function addOptions(items, level) {
-          if (!items || !items.length) return;
-          for (let i = 0; i < items.length; i++) {
-            const item = items[i];
-            const opt = document.createElement('option');
-            opt.value = item.category_id;
-            const prefix = '— '.repeat(level);
-            const label = item.category_title || item.title || item.name || `Danh mục #${item.category_id}`;
+        function addOptions(arr, level) {
+          if (!arr || !arr.length) return;
+          for (var i = 0; i < arr.length; i++) {
+            var node = arr[i];
+            var opt = document.createElement('option');
+            opt.value = node.category_id;
+            var prefix = '— '.repeat(level);
+            var label = node.category_title || 'Danh mục #' + node.category_id;
             opt.textContent = prefix + label;
             select.appendChild(opt);
-            if (item.children && item.children.length > 0) {
-              addOptions(item.children, level + 1);
+            if (node.children && node.children.length > 0) {
+              addOptions(node.children, level + 1);
             }
           }
         }
 
-        addOptions(tree, 0);
+        addOptions(roots, 0);
       }
 
       async function loadCategoryTree() {
-        const url = `${ENV.BASE_URL}/admin/category/edit/${id ? id : 0}`;
-        const headers = Auth.getAuthHeader();
-        const res = await fetch(url, { method: 'GET', headers });
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
-        const json = await res.json();
+        var url = (ENV.BASE_URL || '').replace(/\/+$/, '') + '/admin/category?limit=999';
+        var headers = Auth.getAuthHeader();
+        var res = await fetch(url, { method: 'GET', headers: headers });
+        if (!res.ok) throw new Error('API error: ' + res.status);
+        var json = await res.json();
         if (json.success) {
-          buildCategoryTreeOptions(json);
+          buildCategoryTreeFromList(json);
         }
         return json;
       }
@@ -703,9 +748,16 @@
       async function loadDetail() {
         if (!id) return;
 
-        const json = await loadCategoryTree();
+        await loadCategoryTree();
 
-        const d = json.data?.data || {};
+        var url = (ENV.BASE_URL || '').replace(/\/+$/, '') + '/admin/category/edit/' + (id ? id : 0);
+        var headers = Auth.getAuthHeader();
+        var editRes = await fetch(url, { method: 'GET', headers: headers });
+        if (!editRes.ok) throw new Error('API error: ' + editRes.status);
+        var editJson = await editRes.json();
+        if (!editJson.success) throw new Error(editJson.message || 'Không lấy được dữ liệu');
+
+        var d = editJson.data?.data || {};
 
         category_title.value = d.category_title ?? '';
         category_alias.value = d.category_alias ?? '';

@@ -1082,32 +1082,21 @@
         }
 
         if (data && typeof data === 'object') {
-          const listItems = [];
-          const gridItems = [];
-
-          Object.values(data).forEach(entry => {
-            const parent = entry.parent || entry;
-            if (!parent || parent.category_id == null) return;
-
-            const children = Array.isArray(entry.sub)
-              ? entry.sub.map(sub => ({
-                ...sub,
-                _children: [],
-                _parentTitle: parent.category_title
-              }))
-              : [];
-
-            const parentItem = {
-              ...parent,
-              _children: children,
-              _parentTitle: ''
-            };
-
-            listItems.push(parentItem);
-            gridItems.push(parentItem, ...children);
+          var all = [];
+          Object.values(data).forEach(function (entry) {
+            if (entry.parent && entry.parent.category_id != null) {
+              all.push(entry.parent);
+            }
+            if (Array.isArray(entry.sub)) {
+              entry.sub.forEach(function (sub) { all.push(sub); });
+            }
           });
 
-          return { listItems, gridItems };
+          if (all.length) {
+            return normalizeCategoryItems(all);
+          }
+
+          return { listItems: [], gridItems: [] };
         }
 
         return { listItems: [], gridItems: [] };
@@ -1207,76 +1196,73 @@
         tbody.innerHTML = '';
         selectedIds.clear();
         updateDeleteButton();
-        const frag = document.createDocumentFragment();
+        var frag = document.createDocumentFragment();
 
-        function appendCategoryRow(it, idx, childIdx = null) {
-          const isChild = childIdx !== null;
-          const children = Array.isArray(it._children) ? it._children : [];
-          const hasChildren = children.length > 0;
-          const isExpanded = expandedCategoryIds.has(String(it.category_id));
-          const tr = document.createElement('tr');
+        function appendCategoryRow(it, displayNum, depth, parentNum, forceShow) {
+          var isChild = depth > 0;
+          var children = Array.isArray(it._children) ? it._children : [];
+          var hasChildren = children.length > 0;
+          var isExpanded = forceShow || expandedCategoryIds.has(String(it.category_id));
+          var tr = document.createElement('tr');
           if (isChild) tr.classList.add('table-light');
-          const st = formatCategoryStatus(it.category_status);
-          const statusHtml = `<span class="badge ${st.cls} status-pill">${st.text}</span>`;
+          var st = formatCategoryStatus(it.category_status);
+          var statusHtml = '<span class="badge ' + st.cls + ' status-pill">' + st.text + '</span>';
 
-          const ckTd = document.createElement('td');
-          ckTd.innerHTML = `<input type=\"checkbox\" class=\"row-checkbox\" value=\"${it.category_id}\" />`;
+          var ckTd = document.createElement('td');
+          ckTd.innerHTML = '<input type="checkbox" class="row-checkbox" value="' + it.category_id + '" />';
           tr.appendChild(ckTd);
 
-          columns.forEach(col => {
+          columns.forEach(function (col) {
             if (!visibleColumns[col.key]) return;
             if (col.key === 'index') {
-              const th = document.createElement('th');
+              var th = document.createElement('th');
               th.scope = 'row';
-              th.textContent = isChild
-                ? `${(currentPage - 1) * 20 + idx + 1}.${childIdx + 1}`
-                : (currentPage - 1) * 20 + idx + 1;
+              th.textContent = displayNum;
               tr.appendChild(th);
             } else if (col.key === 'title') {
-              const td = document.createElement('td');
-              const indent = isChild ? 'ps-4' : '';
-              const toggleHtml = hasChildren
-                ? `<button type="button" class="btn btn-sm btn-link text-dark p-0 me-1" data-category-toggle="${it.category_id}" title="Mở danh mục con"><i class="bi bi-chevron-${isExpanded ? 'down' : 'right'}"></i></button>`
+              var td = document.createElement('td');
+              var indent = 'ps-' + (depth * 4);
+              var toggleHtml = hasChildren && !forceShow
+                ? '<button type="button" class="btn btn-sm btn-link text-dark p-0 me-1" data-category-toggle="' + it.category_id + '" title="Mở danh mục con"><i class="bi bi-chevron-' + (isExpanded ? 'down' : 'right') + '"></i></button>'
                 : '<span class="d-inline-block me-1" style="width:18px;"></span>';
-              td.innerHTML = `<div class="fw-bold d-flex align-items-center ${indent}">${toggleHtml}<span>${escapeHtml(it.category_title)}</span></div>`;
+              td.innerHTML = '<div class="fw-bold d-flex align-items-center ' + indent + '">' + toggleHtml + '<span>' + escapeHtml(it.category_title) + '</span></div>';
               tr.appendChild(td);
             } else if (col.key === 'alias') {
-              const td = document.createElement('td');
+              var td = document.createElement('td');
               td.textContent = it.category_alias || '';
               tr.appendChild(td);
             } else if (col.key === 'parent') {
-              const td = document.createElement('td');
+              var td = document.createElement('td');
               td.textContent = getCategoryParentTitle(it);
               tr.appendChild(td);
             } else if (col.key === 'status') {
-              const td = document.createElement('td');
+              var td = document.createElement('td');
               td.innerHTML = statusHtml;
               tr.appendChild(td);
             } else if (col.key === 'order') {
-              const td = document.createElement('td');
+              var td = document.createElement('td');
               td.textContent = it.category_order_no ?? '';
               tr.appendChild(td);
             } else if (col.key === 'actions') {
-              const td = document.createElement('td');
-              td.innerHTML = `
-                  <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="${it.category_id}" title="Sửa"><i class="bi bi-pencil"></i></button>
-                    <button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="${it.category_id}" title="Xóa"><i class="bi bi-trash"></i></button>
-                  </div>
-                `;
+              var td = document.createElement('td');
+              td.innerHTML = '<div class="d-flex gap-2"><button type="button" class="btn btn-sm btn-outline-primary" data-action="edit" data-id="' + it.category_id + '" title="Sửa"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" data-action="delete" data-id="' + it.category_id + '" title="Xóa"><i class="bi bi-trash"></i></button></div>';
               tr.appendChild(td);
             }
           });
-          const tdDot = document.createElement('td');
+          var tdDot = document.createElement('td');
           tr.appendChild(tdDot);
           frag.appendChild(tr);
+
+          if (isExpanded && hasChildren) {
+            children.forEach(function (child, ci) {
+              var childNum = displayNum + '.' + (ci + 1);
+              appendCategoryRow(child, childNum, depth + 1, displayNum, true);
+            });
+          }
         }
 
-        items.forEach((it, idx) => {
-          appendCategoryRow(it, idx);
-          if (expandedCategoryIds.has(String(it.category_id)) && Array.isArray(it._children)) {
-            it._children.forEach((child, childIdx) => appendCategoryRow(child, idx, childIdx));
-          }
+        items.forEach(function (it, idx) {
+          appendCategoryRow(it, (currentPage - 1) * 20 + idx + 1, 0, '', false);
         });
 
         tbody.appendChild(frag);

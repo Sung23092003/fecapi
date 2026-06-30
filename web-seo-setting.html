@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Cài đặt SEO chung - NiceAdmin</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/web-header.css" rel="stylesheet">
+    <style>
+        .seo-setting-page .nav-tabs-custom {
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        .seo-setting-page .nav-tabs-custom .nav-link {
+            color: #012970;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            padding: 10px 15px;
+            margin-bottom: -2px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .seo-setting-page .nav-tabs-custom .nav-link:hover {
+            color: #4154f1;
+        }
+
+        .seo-setting-page .nav-tabs-custom .nav-link.active {
+            color: #4154f1;
+            border-bottom: 2px solid #4154f1;
+        }
+
+        .seo-setting-page .nav-tabs-custom .nav-link i {
+            margin-right: 5px;
+            font-size: 1.1em;
+        }
+
+        .seo-setting-page .form-label {
+            font-weight: 600;
+            color: #012970;
+            margin-bottom: 8px;
+        }
+
+        .seo-setting-page .form-control {
+            margin-bottom: 20px;
+        }
+
+        .seo-setting-page textarea {
+            resize: vertical;
+        }
+
+        .btn-luu-lai {
+            background-color: #5c60f5;
+            color: white;
+            font-weight: 500;
+            padding: 8px 24px;
+        }
+
+        .btn-luu-lai:hover {
+            background-color: #484bda;
+            color: white;
+        }
+
+        .btn-them-moi {
+            background-color: #5c60f5;
+            color: white;
+            font-weight: 500;
+        }
+
+        .btn-them-moi:hover {
+            background-color: #484bda;
+            color: white;
+        }
+
+        .sitemap-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .sitemap-label {
+            width: 250px;
+            font-weight: 500;
+            color: #012970;
+        }
+
+        .sitemap-input-group {
+            flex: 1;
+            max-width: 300px;
+        }
+
+        .sitemap-input-group label {
+            margin-bottom: 4px;
+            display: block;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+
+        <div class="d-flex align-items-center justify-content-between">
+            <a href="index.html" class="logo d-flex align-items-center">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+            </a>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
+        </div><!-- End Logo -->
+
+        <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+        </div><!-- End Search Bar -->
+
+        <nav class="header-nav ms-auto">
+            <ul class="d-flex align-items-center">
+
+                <li class="nav-item d-block d-lg-none">
+                    <a class="nav-link nav-icon search-bar-toggle " href="#">
+                        <i class="bi bi-search"></i>
+                    </a>
+                </li><!-- End Search Icon-->
+
+                <!-- Notification Nav omitted for brevity -->
+                <li class="nav-item dropdown pe-3">
+
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2" data-user-name>Admin</span>
+                    </a><!-- End Profile Iamge Icon -->
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6 data-user-name>Admin</h6>
+                            <span>Web Designer</span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="#" data-logout="true">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </li>
+
+                    </ul><!-- End Profile Dropdown Items -->
+                </li><!-- End Profile Nav -->
+
+            </ul>
+        </nav><!-- End Icons Navigation -->
+
+    </header>
+    <aside id="sidebar" class="sidebar">
+
+        <ul class="sidebar-nav" id="sidebar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#header-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-columns-gap"></i><span>Quản lý Đầu Trang</span><i
+                        class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="header-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a href="web-header.html" class=""><i class="bi bi-circle"></i><span>Quản lý TOP -
+                                MAIN</span></a></li>
+                    <li><a href="web-category.html"><i class="bi bi-circle"></i><span>Quản lý Menu (Danh mục)</span></a>
+                    </li>
+                    <li><a href="web-banner.html"><i class="bi bi-circle"></i><span>Quản lý Banner</span></a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item"><a class="nav-link collapsed" href="web-body.html"><i
+                        class="bi bi-layout-text-window-reverse"></i><span>Quản lý Thân Trang</span></a></li>
+            <li class="nav-item"><a class="nav-link collapsed" href="web-footer.html"><i
+                        class="bi bi-layout-text-sidebar-reverse"></i><span>Quản lý Chân Trang</span></a></li>
+
+            <!-- Other nav items omitted for brevity -->
+
+            <li class="nav-item"><a class="nav-link active" href="web-seo-setting.html"><i
+                        class="bi bi-search"></i><span>Quản lý
+                        SEO</span></a></li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#settings-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-gear"></i><span>Cài Đặt Chung</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="settings-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <li><a href="web-role.html" class=""><i class="bi bi-circle"></i><span>Phân quyền</span></a></li>
+                    <li><a href="web-role-group.html" class=""><i class="bi bi-circle"></i><span>Nhóm quyền</span></a>
+                    </li>
+                    <li><a href="web-menu-visibility.html" class=""><i class="bi bi-circle"></i><span>Cài đặt Ẩn/hiện
+                                menu</span></a></li>
+                </ul>
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <main id="main" class="main seo-setting-page">
+        <div class="pagetitle">
+            <h1>Cài đặt SEO chung</h1>
+        </div>
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card p-3">
+                        <div class="card-body p-0">
+
+                            <!-- Tabs Navigation -->
+                            <ul class="nav nav-tabs nav-tabs-custom" id="seoTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="general-tab" data-bs-toggle="tab"
+                                        data-bs-target="#general" type="button" role="tab" aria-controls="general"
+                                        aria-selected="true">
+                                        <i class="bi bi-gear"></i> Cài đặt chung
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="script-tab" data-bs-toggle="tab"
+                                        data-bs-target="#script" type="button" role="tab" aria-controls="script"
+                                        aria-selected="false">
+                                        <i class="bi bi-code-slash"></i> Insert Script
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="redirect-tab" data-bs-toggle="tab"
+                                        data-bs-target="#redirect" type="button" role="tab" aria-controls="redirect"
+                                        aria-selected="false">
+                                        <i class="bi bi-arrow-left-right"></i> Redirect (301)
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="sitemap-tab" data-bs-toggle="tab"
+                                        data-bs-target="#sitemap" type="button" role="tab" aria-controls="sitemap"
+                                        aria-selected="false">
+                                        <i class="bi bi-diagram-3"></i> Sitemap
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="robots-tab" data-bs-toggle="tab"
+                                        data-bs-target="#robots" type="button" role="tab" aria-controls="robots"
+                                        aria-selected="false">
+                                        <i class="bi bi-robot"></i> Robots
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="gmail-tab" data-bs-toggle="tab" data-bs-target="#gmail"
+                                        type="button" role="tab" aria-controls="gmail" aria-selected="false">
+                                        <i class="bi bi-envelope"></i> Nhập key ĐK Gmail
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content pt-2" id="seoTabContent">
+
+                                <!-- Tab 1: Cài đặt chung -->
+                                <div class="tab-pane fade show active" id="general" role="tabpanel"
+                                    aria-labelledby="general-tab">
+                                    <form>
+                                        <label class="form-label">Tên website (Thẻ H1 của Web)</label>
+                                        <input type="text" class="form-control" name="website_name"
+                                            value="Thiết kế web 365 VN">
+
+                                        <label class="form-label">Khẩu hiệu</label>
+                                        <input type="text" class="form-control" name="slogan"
+                                            value="Chuyển đổi số toàn diện, thiết kế web chất lượng cao giá rẻ">
+
+                                        <label class="form-label">Địa chỉ trang web (URL)</label>
+                                        <input type="text" class="form-control" name="url"
+                                            value="https://thietkeweb365.vn/">
+
+                                        <label class="form-label">Địa chỉ email quản trị</label>
+                                        <input type="email" class="form-control" name="admin_email"
+                                            value="mrquan.thietkeweb365.vn@gmail.com">
+
+                                        <label class="form-label">Title</label>
+                                        <input type="text" class="form-control" name="title"
+                                            value="Thiết kế web 365 VN">
+
+                                        <label class="form-label">Meta title</label>
+                                        <input type="text" class="form-control" name="meta_title"
+                                            value="Thiết kế web 365 VN">
+
+                                        <label class="form-label">Meta keywords</label>
+                                        <input type="text" class="form-control" name="meta_keywords"
+                                            value="Thiết kế web, Quảng cáo SEO">
+
+                                        <label class="form-label">Meta description</label>
+                                        <textarea class="form-control" rows="3" name="meta_description"></textarea>
+
+                                        <div class="text-end mt-3">
+                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Tab 2: Insert Script -->
+                                <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-tab">
+                                    <form>
+                                        <h5 class="mb-3" style="color: #444;">Scripts in header:</h5>
+                                        <p class="text-muted">The following script, if any, will be inserted into the
+                                            head section.</p>
+                                        <textarea class="form-control mb-4" rows="8" name="header_scripts"></textarea>
+
+                                        <h5 class="mb-3" style="color: #444;">Scripts in footer:</h5>
+                                        <p class="text-muted">The following script, if any, will be inserted before body
+                                            tag.</p>
+                                        <textarea class="form-control" rows="8" name="footer_scripts"></textarea>
+
+                                        <div class="text-end mt-4">
+                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Tab 3: Redirect (301) -->
+                                <div class="tab-pane fade" id="redirect" role="tabpanel" aria-labelledby="redirect-tab">
+                                    <h4 class="mb-4">Thêm mới url:</h4>
+                                    <form class="row g-3 align-items-end mb-5">
+                                        <div class="col-md-5">
+                                            <label class="form-label mb-1">Link cũ:</label>
+                                            <input type="text" class="form-control mb-0" placeholder="Link cũ">
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label class="form-label mb-1">Link mới:</label>
+                                            <input type="text" class="form-control mb-0" placeholder="Link mới">
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <button type="button" class="btn btn-them-moi w-100">THÊM MỚI</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-6 d-flex align-items-center">
+                                            <label class="me-3 fw-bold">Tìm kiếm:</label>
+                                            <input type="text" class="form-control w-50 me-2" placeholder="">
+                                            <button type="button" class="btn btn-them-moi">TÌM KIẾM</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">STT</th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">Link cũ</th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">Link mới</th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">Type</th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">Ngày tạo</th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;">Người tạo
+                                                    </th>
+                                                    <th scope="col" style="border-bottom: 2px solid #555;"
+                                                        class="text-center">Hoạt động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Empty list initially as per screenshot -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Tab 4: Sitemap -->
+                                <div class="tab-pane fade" id="sitemap" role="tabpanel" aria-labelledby="sitemap-tab">
+                                    <form>
+                                        <div class="sitemap-row">
+                                            <div class="sitemap-label">Trang chủ</div>
+                                            <div class="sitemap-input-group">
+                                                <label>Priority:</label>
+                                                <input type="text" class="form-control" name="sitemap_home" value="0.5">
+                                            </div>
+                                        </div>
+
+                                        <div class="sitemap-row">
+                                            <div class="sitemap-label">Trang (danh mục, menu) sản phẩm</div>
+                                            <div class="sitemap-input-group">
+                                                <label>Priority:</label>
+                                                <input type="text" class="form-control" name="sitemap_product_category"
+                                                    value="0.7">
+                                            </div>
+                                        </div>
+
+                                        <div class="sitemap-row">
+                                            <div class="sitemap-label">Trang (danh mục, menu) tin tức</div>
+                                            <div class="sitemap-input-group">
+                                                <label>Priority:</label>
+                                                <input type="text" class="form-control" name="sitemap_news_category"
+                                                    value="0.8">
+                                            </div>
+                                        </div>
+
+                                        <div class="sitemap-row">
+                                            <div class="sitemap-label">Bài sản phẩm</div>
+                                            <div class="sitemap-input-group">
+                                                <label>Priority:</label>
+                                                <input type="text" class="form-control" name="sitemap_product_article"
+                                                    value="0.9">
+                                            </div>
+                                        </div>
+
+                                        <div class="sitemap-row">
+                                            <div class="sitemap-label">Bài tin tức</div>
+                                            <div class="sitemap-input-group">
+                                                <label>Priority:</label>
+                                                <input type="text" class="form-control" name="sitemap_news_article"
+                                                    value="1">
+                                            </div>
+                                        </div>
+
+                                        <div class="sitemap-row mt-4">
+                                            <div class="sitemap-label">Sitemap</div>
+                                            <div class="sitemap-input-group">
+                                                <button type="button" class="btn btn-them-moi px-4">CẬP NHẬT
+                                                    SITEMAP</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="text-end mt-4">
+                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Tab 5: Robots -->
+                                <div class="tab-pane fade" id="robots" role="tabpanel" aria-labelledby="robots-tab">
+                                    <form>
+                                        <h5 class="mb-3 mt-2" style="color: #444;">Robots.txt</h5>
+                                        <textarea class="form-control" rows="10" name="robots_txt">User-agent: *
+Allow: /
+
+Sitemap: https://www.we1.io.vn/sitemap.xml</textarea>
+
+                                        <div class="text-end mt-4">
+                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- Tab 6: Nhập key ĐK Gmail -->
+                                <div class="tab-pane fade" id="gmail" role="tabpanel" aria-labelledby="gmail-tab">
+                                    <form>
+                                        <label class="form-label">Client ID</label>
+                                        <input type="text" class="form-control" name="client_id"
+                                            placeholder="Nhập Client ID">
+
+                                        <label class="form-label">Client Secret</label>
+                                        <input type="text" class="form-control" name="client_secret"
+                                            placeholder="Nhập Client Secret">
+
+                                        <div class="text-end mt-4">
+                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

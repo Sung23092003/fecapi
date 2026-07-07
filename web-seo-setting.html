@@ -628,63 +628,175 @@
 
                                 <!-- Tab 4: Sitemap -->
                                 <div class="tab-pane fade" id="sitemap" role="tabpanel" aria-labelledby="sitemap-tab">
-                                    <form>
-                                        <div class="sitemap-row">
-                                            <div class="sitemap-label">Trang chủ</div>
-                                            <div class="sitemap-input-group">
-                                                <label>Priority:</label>
-                                                <input type="text" class="form-control" name="sitemap_home" value="0.5">
-                                            </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h5 class="mb-3" style="color: #444;">Priority Settings</h5>
+                                            <form>
+                                                <div class="sitemap-row">
+                                                    <div class="sitemap-label">Trang chủ</div>
+                                                    <div class="sitemap-input-group">
+                                                        <label>Priority:</label>
+                                                        <input type="text" class="form-control" name="sitemap_home"
+                                                            value="0.5">
+                                                    </div>
+                                                </div>
+
+                                                <div class="sitemap-row">
+                                                    <div class="sitemap-label">Trang (danh mục, menu) sản phẩm</div>
+                                                    <div class="sitemap-input-group">
+                                                        <label>Priority:</label>
+                                                        <input type="text" class="form-control"
+                                                            name="sitemap_product_category" value="0.7">
+                                                    </div>
+                                                </div>
+
+                                                <div class="sitemap-row">
+                                                    <div class="sitemap-label">Trang (danh mục, menu) tin tức</div>
+                                                    <div class="sitemap-input-group">
+                                                        <label>Priority:</label>
+                                                        <input type="text" class="form-control"
+                                                            name="sitemap_news_category" value="0.8">
+                                                    </div>
+                                                </div>
+
+                                                <div class="sitemap-row">
+                                                    <div class="sitemap-label">Bài sản phẩm</div>
+                                                    <div class="sitemap-input-group">
+                                                        <label>Priority:</label>
+                                                        <input type="text" class="form-control"
+                                                            name="sitemap_product_article" value="0.9">
+                                                    </div>
+                                                </div>
+
+                                                <div class="sitemap-row">
+                                                    <div class="sitemap-label">Bài tin tức</div>
+                                                    <div class="sitemap-input-group">
+                                                        <label>Priority:</label>
+                                                        <input type="text" class="form-control"
+                                                            name="sitemap_news_article" value="1">
+                                                    </div>
+                                                </div>
+
+                                                <div class="sitemap-row mt-4">
+                                                    <div class="sitemap-label">Sitemap</div>
+                                                    <div class="sitemap-input-group">
+                                                        <button type="button"
+                                                            class="btn btn-them-moi px-4">CẬP NHẬT SITEMAP</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="text-end mt-4">
+                                                    <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
+                                                </div>
+                                            </form>
                                         </div>
 
-                                        <div class="sitemap-row">
-                                            <div class="sitemap-label">Trang (danh mục, menu) sản phẩm</div>
-                                            <div class="sitemap-input-group">
-                                                <label>Priority:</label>
-                                                <input type="text" class="form-control" name="sitemap_product_category"
-                                                    value="0.7">
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                                <div class="card-header d-flex justify-content-between align-items-center"
+                                                    style="background:#f8f9fa;">
+                                                    <h5 class="mb-0" style="color: #012970;">Tạo mục lục Sitemap</h5>
+                                                    <button type="button" class="btn btn-them-moi btn-sm"
+                                                        onclick="toggleAddForm()">
+                                                        <i class="bi bi-plus-lg"></i> Thêm mới
+                                                    </button>
+                                                </div>
+                                                <div class="card-body p-0">
+                                                    <table class="table table-hover mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="border-bottom:2px solid #555;">Tên sitemap</th>
+                                                                <th style="border-bottom:2px solid #555;">Mô tả</th>
+                                                                <th style="border-bottom:2px solid #555;width:130px;"
+                                                                    class="text-center">Thao tác</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><code>sitemap-service.xml</code></td>
+                                                                <td>tất cả bài loại dịch vụ</td>
+                                                                <td class="text-center">
+                                                                    <span class="badge bg-secondary">Cố định</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code>sitemap-product.xml</code></td>
+                                                                <td>tất cả bài loại sản phẩm</td>
+                                                                <td class="text-center">
+                                                                    <span class="badge bg-secondary">Cố định</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code>sitemap-blog.xml</code></td>
+                                                                <td>tất cả tin tức</td>
+                                                                <td class="text-center">
+                                                                    <span class="badge bg-secondary">Cố định</span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><code>sitemap-page.xml</code></td>
+                                                                <td>Trang tĩnh</td>
+                                                                <td class="text-center">
+                                                                    <button type="button"
+                                                                        class="btn btn-sm btn-outline-primary"
+                                                                        onclick="editPageSitemap()">
+                                                                        <i class="bi bi-pencil"></i> Sửa
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="sitemap-list-rows">
+                                                                <!-- Dynamic rows inserted here -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <!-- Inline add form -->
+                                                    <div id="inlineAddForm" class="p-3 border-top" style="display:none;background:#f8f9fa;">
+                                                        <div class="row g-2 align-items-end">
+                                                            <div class="col-md-4">
+                                                                <label class="form-label mb-1">Tên quản lý</label>
+                                                                <input type="text" class="form-control form-control-sm" id="newSitemapName" placeholder="Tên quản lý">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label mb-1">Nhập Url</label>
+                                                                <input type="text" class="form-control form-control-sm" id="newSitemapUrl" placeholder="Nhập Url">
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="form-label mb-1">Chọn menu</label>
+                                                                <select class="form-select form-select-sm" id="newSitemapMenu" onchange="onMenuChange()">
+                                                                    <option value="">-- Chọn menu --</option>
+                                                                    <option value="service">Dịch vụ - giải pháp và báo giá</option>
+                                                                    <option value="product">Sản phẩm</option>
+                                                                    <option value="blog">Tin tức</option>
+                                                                    <option value="page">Trang tĩnh</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row g-2 align-items-end mt-2" id="smSelectRow" style="display:none;">
+                                                            <div class="col-md-8">
+                                                                <label class="form-label mb-1">Chọn SM</label>
+                                                                <select class="form-select form-select-sm" id="newSitemapSM">
+                                                                    <option value="sitemap-service.xml">sitemap-service.xml</option>
+                                                                    <option value="sitemap-product.xml">sitemap-product.xml</option>
+                                                                    <option value="sitemap-blog.xml">sitemap-blog.xml</option>
+                                                                    <option value="sitemap-page.xml">sitemap-page.xml</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4 d-flex gap-2">
+                                                                <button type="button" class="btn btn-them-moi btn-sm flex-fill" onclick="addSitemap()">Thêm</button>
+                                                                <button type="button" class="btn btn-secondary btn-sm flex-fill" onclick="toggleAddForm()">Hủy</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2" id="addBtnRow">
+                                                            <div class="col-12 d-flex gap-2 justify-content-end">
+                                                                <button type="button" class="btn btn-them-moi btn-sm" onclick="addSitemap()">Thêm</button>
+                                                                <button type="button" class="btn btn-secondary btn-sm" onclick="toggleAddForm()">Hủy</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <div class="sitemap-row">
-                                            <div class="sitemap-label">Trang (danh mục, menu) tin tức</div>
-                                            <div class="sitemap-input-group">
-                                                <label>Priority:</label>
-                                                <input type="text" class="form-control" name="sitemap_news_category"
-                                                    value="0.8">
-                                            </div>
-                                        </div>
-
-                                        <div class="sitemap-row">
-                                            <div class="sitemap-label">Bài sản phẩm</div>
-                                            <div class="sitemap-input-group">
-                                                <label>Priority:</label>
-                                                <input type="text" class="form-control" name="sitemap_product_article"
-                                                    value="0.9">
-                                            </div>
-                                        </div>
-
-                                        <div class="sitemap-row">
-                                            <div class="sitemap-label">Bài tin tức</div>
-                                            <div class="sitemap-input-group">
-                                                <label>Priority:</label>
-                                                <input type="text" class="form-control" name="sitemap_news_article"
-                                                    value="1">
-                                            </div>
-                                        </div>
-
-                                        <div class="sitemap-row mt-4">
-                                            <div class="sitemap-label">Sitemap</div>
-                                            <div class="sitemap-input-group">
-                                                <button type="button" class="btn btn-them-moi px-4">CẬP NHẬT
-                                                    SITEMAP</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="text-end mt-4">
-                                            <button type="submit" class="btn btn-luu-lai">LƯU LẠI</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
 
                                 <!-- Tab 5: Robots -->
@@ -731,6 +843,149 @@ Sitemap: https://www.we1.io.vn/sitemap.xml</textarea>
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
+
+    <script>
+        var customSMList = [];
+
+        function toggleAddForm() {
+            var f = document.getElementById('inlineAddForm');
+            f.style.display = f.style.display === 'none' ? 'block' : 'none';
+            if (f.style.display === 'block') {
+                document.getElementById('smSelectRow').style.display = 'none';
+                document.getElementById('addBtnRow').style.display = 'flex';
+            }
+        }
+
+        function onMenuChange() {
+            var menu = document.getElementById('newSitemapMenu').value;
+            var row = document.getElementById('smSelectRow');
+            var btnRow = document.getElementById('addBtnRow');
+            if (menu === 'service') {
+                row.style.display = 'flex';
+                btnRow.style.display = 'none';
+                var sel = document.getElementById('newSitemapSM');
+                sel.innerHTML = '<option value="sitemap-service.xml">sitemap-service.xml</option>';
+                customSMList.forEach(function(sm) {
+                    var opt = document.createElement('option');
+                    opt.value = sm.url;
+                    opt.textContent = sm.name + ' (' + sm.url + ')';
+                    sel.appendChild(opt);
+                });
+                sel.value = 'sitemap-service.xml';
+            } else {
+                row.style.display = 'none';
+                btnRow.style.display = 'flex';
+            }
+        }
+
+        function addSitemap() {
+            var name = document.getElementById('newSitemapName').value;
+            var url = document.getElementById('newSitemapUrl').value;
+            var menu = document.getElementById('newSitemapMenu').value;
+            if (!name || !url) { alert('Vui lòng nhập Tên quản lý và Url'); return; }
+            var sm = '';
+            if (menu === 'service') {
+                sm = document.getElementById('newSitemapSM').value;
+            } else if (menu === 'product') { sm = 'sitemap-product.xml'; }
+            else if (menu === 'blog') { sm = 'sitemap-blog.xml'; }
+            else if (menu === 'page') { sm = 'sitemap-page.xml'; }
+            customSMList.push({ name: name, url: url, sm: sm });
+            renderSitemapList();
+            toggleAddForm();
+            document.getElementById('newSitemapName').value = '';
+            document.getElementById('newSitemapUrl').value = '';
+            document.getElementById('newSitemapMenu').value = '';
+        }
+
+        function renderSitemapList() {
+            var tbody = document.getElementById('sitemap-list-rows');
+            tbody.innerHTML = '';
+            customSMList.forEach(function(item, idx) {
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td><code>' + item.url + '</code></td><td>' + item.name + '</td>' +
+                    '<td class="text-center">' +
+                    '<button class="btn btn-sm btn-outline-primary me-1" onclick="editSitemap(' + idx + ')"><i class="bi bi-pencil"></i></button>' +
+                    '<button class="btn btn-sm btn-outline-danger" onclick="deleteSitemap(' + idx + ')"><i class="bi bi-trash"></i></button>' +
+                    '</td>';
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteSitemap(idx) {
+            if (confirm('Xóa sitemap này?')) {
+                customSMList.splice(idx, 1);
+                renderSitemapList();
+            }
+        }
+
+        function editSitemap(idx) {
+            var name = prompt('Tên quản lý:', customSMList[idx].name);
+            if (name) { customSMList[idx].name = name; renderSitemapList(); }
+        }
+
+        var pageUrls = [];
+
+        function editPageSitemap() {
+            var container = document.getElementById('inlineAddForm');
+            var existing = document.getElementById('pageSitemapEditor');
+            if (existing) {
+                existing.style.display = existing.style.display === 'none' ? 'block' : 'none';
+                return;
+            }
+            var div = document.createElement('div');
+            div.id = 'pageSitemapEditor';
+            div.className = 'p-3 border-top';
+            div.style.background = '#f8f9fa';
+            div.innerHTML =
+                '<h6 class="mb-2" style="color:#012970;">Sửa sitemap-page.xml</h6>' +
+                '<table class="table table-sm table-hover" id="pageSitemapUrlTable">' +
+                '<thead><tr><th>Tên quản lý</th><th>Url</th><th style="width:80px;" class="text-center">Xóa</th></tr></thead>' +
+                '<tbody>' +
+                '<tr><td>Giới thiệu</td><td><code>tenmien/gioi-thieu</code></td><td class="text-center"><span class="badge bg-secondary">Cố định</span></td></tr>' +
+                '<tr><td>Liên hệ</td><td><code>tenmien/lien-he</code></td><td class="text-center"><span class="badge bg-secondary">Cố định</span></td></tr>' +
+                '<tr id="pageSitemapUrlRows"></tr>' +
+                '</tbody></table>' +
+                '<hr>' +
+                '<div class="row g-2 align-items-end">' +
+                '<div class="col-md-6"><label class="form-label mb-1">Tên quản lý</label><input type="text" class="form-control form-control-sm" id="newPageUrlName" placeholder="Tên quản lý"></div>' +
+                '<div class="col-md-6"><label class="form-label mb-1">Nhập Url</label><input type="text" class="form-control form-control-sm" id="newPageUrl" placeholder="Nhập url"></div>' +
+                '<div class="col-md-4"><button type="button" class="btn btn-them-moi btn-sm w-100" onclick="addPageUrl()">Thêm</button></div>' +
+                '</div>' +
+                '<div class="text-end mt-3"><button type="button" class="btn btn-secondary btn-sm" onclick="closePageSitemapEditor()">Đóng</button></div>';
+            container.parentNode.insertBefore(div, container.nextSibling);
+            pageUrls.forEach(function(u) { appendPageUrlRow(u.name, u.url); });
+        }
+
+        function closePageSitemapEditor() {
+            var el = document.getElementById('pageSitemapEditor');
+            if (el) el.style.display = 'none';
+        }
+
+        function addPageUrl() {
+            var name = document.getElementById('newPageUrlName').value;
+            var url = document.getElementById('newPageUrl').value;
+            if (!name || !url) { alert('Vui lòng nhập Tên quản lý và Url'); return; }
+            pageUrls.push({ name: name, url: url });
+            appendPageUrlRow(name, url);
+            document.getElementById('newPageUrlName').value = '';
+            document.getElementById('newPageUrl').value = '';
+        }
+
+        function appendPageUrlRow(name, url) {
+            var tbody = document.getElementById('pageSitemapUrlRows');
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + name + '</td><td><code>' + url + '</code></td>' +
+                '<td class="text-center"><button class="btn btn-sm btn-outline-danger" onclick="removePageUrl(this)"><i class="bi bi-x-lg"></i></button></td>';
+            tbody.appendChild(tr);
+        }
+
+        function removePageUrl(btn) {
+            var tr = btn.closest('tr');
+            var idx = Array.from(tr.parentNode.children).indexOf(tr);
+            pageUrls.splice(idx, 1);
+            tr.remove();
+        }
+    </script>
 
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/main.js"></script>

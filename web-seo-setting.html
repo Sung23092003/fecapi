@@ -551,14 +551,26 @@
                                 <!-- Tab 2: Insert Script -->
                                 <div class="tab-pane fade" id="script" role="tabpanel" aria-labelledby="script-tab">
                                     <form>
-                                        <h5 class="mb-3" style="color: #444;">Scripts in header:</h5>
-                                        <p class="text-muted">The following script, if any, will be inserted into the
-                                            head section.</p>
+                                        <label class="form-label">Mã xác minh Google Search Console</label>
+                                        <input type="text" class="form-control" name="google_site_verification"
+                                            placeholder="VD: google-site-verification=xxx...">
+
+                                        <label class="form-label">Google Analytics Tracking ID</label>
+                                        <input type="text" class="form-control" name="google_analytics_id"
+                                            placeholder="VD: G-XXXXXXXXXX">
+
+                                        <label class="form-label">Google Tag Manager Container ID</label>
+                                        <input type="text" class="form-control" name="google_tag_manager_id"
+                                            placeholder="VD: GTM-XXXXXXX">
+
+                                        <label class="form-label">Schema LocalBusiness JSON-LD</label>
+                                        <textarea class="form-control mb-4" rows="6" name="schema_jsonld"
+                                            placeholder='VD: {"@context":"https://schema.org","@type":"LocalBusiness",...}'></textarea>
+
+                                        <label class="form-label">Scripts trong head</label>
                                         <textarea class="form-control mb-4" rows="8" name="header_scripts"></textarea>
 
-                                        <h5 class="mb-3" style="color: #444;">Scripts in footer:</h5>
-                                        <p class="text-muted">The following script, if any, will be inserted before body
-                                            tag.</p>
+                                        <label class="form-label">Scripts trước thẻ body</label>
                                         <textarea class="form-control" rows="8" name="footer_scripts"></textarea>
 
                                         <div class="text-end mt-4">

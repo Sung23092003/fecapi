@@ -1057,6 +1057,25 @@
         return it.category_parent_title || it._parentTitle || ('Danh mục #' + it.category_parent_id);
       }
 
+      function sortByOrderNo(a, b) {
+        const oa = Number(a && a.category_order_no) || 0;
+        const ob = Number(b && b.category_order_no) || 0;
+        return oa - ob;
+      }
+
+      function flattenTree(roots) {
+        const out = [];
+        (function walk(list) {
+          list.forEach(item => {
+            out.push(item);
+            if (Array.isArray(item._children) && item._children.length) {
+              walk(item._children);
+            }
+          });
+        })(roots);
+        return out;
+      }
+
       function normalizeCategoryItems(data) {
         if (Array.isArray(data)) {
           const itemById = new Map();
@@ -1077,8 +1096,17 @@
             }
           });
 
-          const listItems = items.filter(item => item.category_parent_id == 0 || !itemById.has(item.category_parent_id));
-          return { listItems, gridItems: items };
+          items.forEach(item => {
+            if (item._children.length > 1) {
+              item._children.sort(sortByOrderNo);
+            }
+          });
+
+          const listItems = items
+            .filter(item => item.category_parent_id == 0 || !itemById.has(item.category_parent_id))
+            .sort(sortByOrderNo);
+
+          return { listItems, gridItems: flattenTree(listItems) };
         }
 
         if (data && typeof data === 'object') {

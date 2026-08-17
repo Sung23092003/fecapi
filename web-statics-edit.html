@@ -468,6 +468,29 @@
 
             <div class="col-12">
               <div class="form-group mt-3">
+                <label class="form-label fw-semibold">Menu đăng bài</label>
+                <div id="menuPublishRows">
+                  <div class="menu-publish-row d-flex align-items-center gap-2 mb-2">
+                    <select class="form-select menu-publish-select" aria-label="Chọn menu đăng">
+                      <option value="">-- Chọn menu --</option>
+                      <option value="1">Tin tức</option>
+                      <option value="2">Sản phẩm</option>
+                      <option value="3">Dịch vụ</option>
+                      <option value="4">Giới thiệu</option>
+                    </select>
+                    <button type="button" class="btn btn-sm btn-outline-danger menu-publish-remove d-none" title="Xóa menu này">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  </div>
+                </div>
+                <button type="button" id="btnAddMenuPublish" class="btn btn-sm btn-outline-primary mt-1">
+                  <i class="bi bi-plus-lg"></i> Thêm menu
+                </button>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group mt-3">
                 <label class="form-label">Nội dung</label>
                 <div class="controls">
                   <textarea name="content_editor" id="content_editor" class="form-control tinymce-editor"
@@ -843,6 +866,44 @@
       await loadDetail().catch(err => {
         showAlert(err?.message || 'Có lỗi xảy ra', 'danger');
       });
+
+      /* ---- Menu publish: add / remove select rows ---- */
+      const menuPublishRows = document.getElementById('menuPublishRows');
+      const btnAddMenuPublish = document.getElementById('btnAddMenuPublish');
+      const MENU_OPTIONS_HTML = `<option value="">-- Chọn menu --</option>
+        <option value="1">Tin tức</option>
+        <option value="2">Sản phẩm</option>
+        <option value="3">Dịch vụ</option>
+        <option value="4">Giới thiệu</option>`;
+
+      function syncRemoveBtnVisibility() {
+        const rows = menuPublishRows.querySelectorAll('.menu-publish-row');
+        rows.forEach(r => {
+          const btn = r.querySelector('.menu-publish-remove');
+          if (btn) btn.classList.toggle('d-none', rows.length <= 1);
+        });
+      }
+
+      btnAddMenuPublish.addEventListener('click', () => {
+        const row = document.createElement('div');
+        row.className = 'menu-publish-row d-flex align-items-center gap-2 mb-2';
+        row.innerHTML = `<select class="form-select menu-publish-select" aria-label="Chọn menu đăng">${MENU_OPTIONS_HTML}</select>
+          <button type="button" class="btn btn-sm btn-outline-danger menu-publish-remove" title="Xóa menu này"><i class="bi bi-x-lg"></i></button>`;
+        menuPublishRows.appendChild(row);
+        syncRemoveBtnVisibility();
+      });
+
+      menuPublishRows.addEventListener('click', (e) => {
+        const btn = e.target.closest('.menu-publish-remove');
+        if (!btn) return;
+        const row = btn.closest('.menu-publish-row');
+        if (row) {
+          row.remove();
+          syncRemoveBtnVisibility();
+        }
+      });
+
+      syncRemoveBtnVisibility();
 
       imgPreview.addEventListener('click', function () {
         if (this.src && !this.classList.contains('d-none')) {

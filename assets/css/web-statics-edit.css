@@ -123,3 +123,17 @@ textarea { resize: vertical; }
     font-size: 12px;
   }
 }
+
+/* Menu publish rows */
+.menu-publish-row .menu-publish-select {
+  flex: 1 1 auto;
+}
+.menu-publish-row .menu-publish-remove {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}

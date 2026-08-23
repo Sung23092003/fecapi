@@ -572,7 +572,7 @@
 
       { url: 'web-service.html', label: 'Quản lý Dịch Vụ', keys: ['dịch vụ', 'service'] },
       { url: 'web-statics.html', label: 'Quản lý Bài viết', keys: ['bài viết', 'tin tức', 'statics', 'news'] },
-      { url: '#', label: 'Giới thiệu chung', keys: ['giới thiệu', 'about'] },
+      { url: 'web-gioi-thieu-chung.html', label: 'Giới thiệu chung', keys: ['giới thiệu', 'about'] },
 
       { url: '#', label: 'QL User Khách hàng', keys: ['user khách hàng', 'khách hàng', 'customer'] },
       { url: '#', label: '  QL User Khách hàng', keys: ['ql user khách hàng', 'khách hàng', 'customer'] },

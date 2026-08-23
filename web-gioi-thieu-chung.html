@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Components / Badges - NiceAdmin Bootstrap Template</title>
+  <title>Giới thiệu chung - NiceAdmin</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -15,7 +15,9 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,14 +30,7 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Nov 17 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <link href="assets/css/web-statics-edit.css" rel="stylesheet">
 </head>
 
 <body>
@@ -126,7 +121,7 @@
               <i class="bi bi-info-circle text-primary"></i>
               <div>
                 <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>Nesciunt quae dolorem earum veritatis</p>
                 <p>4 hrs. ago</p>
               </div>
             </li>
@@ -196,10 +191,10 @@
                 </div>
               </a>
             </li>
+
             <li>
               <hr class="dropdown-divider">
             </li>
-
             <li class="dropdown-footer">
               <a href="#">Show all messages</a>
             </li>
@@ -268,10 +263,10 @@
       </ul>
     </nav><!-- End Icons Navigation -->
 
-  </header><!-- End Header -->
+  </header>
 
   <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+  <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -306,8 +301,7 @@
 
       <li class="nav-item"><a class="nav-link collapsed" href="web-service.html"><i class="bi bi-briefcase"></i><span>Quản lý Dịch Vụ</span></a></li>
       <li class="nav-item"><a class="nav-link collapsed" href="web-statics.html"><i class="bi bi-file-earmark-text"></i><span>Quản lý Bài viết</span></a></li>
-      <li class="nav-item"><a class="nav-link collapsed" href="web-gioi-thieu-chung.html"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
-
+      <li class="nav-item"><a class="nav-link active" href="web-gioi-thieu-chung.html"><i class="bi bi-info-circle"></i><span>Giới thiệu chung</span></a></li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#customers-nav" data-bs-toggle="collapse" href="#">
@@ -366,148 +360,98 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Badges</h1>
+      <h1>Giới thiệu chung</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Components</li>
-          <li class="breadcrumb-item active">Badges</li>
+          <li class="breadcrumb-item active">Giới thiệu chung</li>
         </ol>
       </nav>
-    </div><!-- End Page Title -->
+    </div>
 
     <section class="section">
-      <div class="row">
+      <div class="card card-box">
 
-        <div class="col-lg-6">
+        <div class="card-inner">
+          <div id="alertPlaceholder"></div>
+          <form id="formGioiThieuChung" class="row g-3">
+            <input type="hidden" name="page" id="page_key" value="gioi_thieu_chung" />
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Default Badges</h5>
-
-              <span class="badge bg-primary">Primary</span>
-              <span class="badge bg-secondary">Secondary</span>
-              <span class="badge bg-success">Success</span>
-              <span class="badge bg-danger">Danger</span>
-              <span class="badge bg-warning text-dark">Warning</span>
-              <span class="badge bg-info text-dark">Info</span>
-              <span class="badge bg-light text-dark">Light</span>
-              <span class="badge bg-dark">Dark</span>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Tiêu đề</label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="gtc_title" name="title"
+                    placeholder="Ví dụ: THIETKEWEB365.VN - Đối Tác Chuyển Đổi Số Toàn Diện" />
+                </div>
+              </div>
             </div>
-          </div><!-- End Default Badges -->
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Pill Badges</h5>
-              <span class="badge rounded-pill bg-primary">Primary</span>
-              <span class="badge rounded-pill bg-secondary">Secondary</span>
-              <span class="badge rounded-pill bg-success">Success</span>
-              <span class="badge rounded-pill bg-danger">Danger</span>
-              <span class="badge rounded-pill bg-warning text-dark">Warning</span>
-              <span class="badge rounded-pill bg-info text-dark">Info</span>
-              <span class="badge rounded-pill bg-light text-dark">Light</span>
-              <span class="badge rounded-pill bg-dark">Dark</span>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Kiểu hiển thị</label>
+                <div class="controls">
+                  <select class="form-select" id="gtc_display_type" name="display_type">
+                    <option value="columns">Số cột</option>
+                    <option value="featured_products">Sản phẩm bán chạy</option>
+                    <option value="news">Bài tin tức</option>
+                    <option value="banner">Banner</option>
+                  </select>
+                </div>
+              </div>
             </div>
-          </div><!-- End Pill Badges -->
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Icon Badges</h5>
-              <span class="badge bg-primary"><i class="bi bi-star me-1"></i> Primary</span>
-              <span class="badge bg-secondary"><i class="bi bi-collection me-1"></i> Secondary</span>
-              <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Success</span>
-              <span class="badge bg-danger"><i class="bi bi-exclamation-octagon me-1"></i> Danger</span>
-              <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Warning</span>
-              <span class="badge bg-info text-dark"><i class="bi bi-info-circle me-1"></i> Info</span>
-              <span class="badge bg-light text-dark"><i class="bi bi-star me-1"></i> Light</span>
-              <span class="badge bg-dark"><i class="bi bi-folder me-1"></i> Dark</span>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Số cột Bootstrap</label>
+                <div class="controls">
+                  <input type="text" class="form-control" id="gtc_bootstrap_column" name="bootstrap_column"
+                    placeholder="Ví dụ: col-12 col-lg-10" />
+                </div>
+              </div>
             </div>
-          </div><!-- End Icon Badges -->
 
+            <div class="col-12">
+              <div class="form-group">
+                <label class="form-label">Mô tả ngắn</label>
+                <div class="controls">
+                  <textarea class="form-control" id="gtc_intro" name="intro" cols="30" rows="3"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group">
+                <label class="form-label">Nội dung</label>
+                <div class="controls">
+                  <textarea name="content_editor" id="content_editor" class="form-control tinymce-editor"
+                    style="height: 300px;" aria-hidden="true"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="card-footer text-end"></div>
+            </div>
+          </form>
         </div>
-
-        <div class="col-lg-6">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Border Badges</h5>
-              <span class="badge border-primary border-1 text-primary">Primary</span>
-              <span class="badge border-secondary border-1 text-secondary">Secondary</span>
-              <span class="badge border-success border-1 text-success">Success</span>
-              <span class="badge border-danger border-1 text-danger">Danger</span>
-              <span class="badge border-warning border-1 text-warning">Warning</span>
-              <span class="badge border-info border-1 text-info">Info</span>
-              <span class="badge border-light border-1 text-black-50">Light</span>
-              <span class="badge border-dark border-1 text-dark">Dark</span>
-            </div>
-          </div><!-- End Border Badges -->
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Button Badges</h5>
-
-              <button type="button" class="btn btn-primary mb-2">
-                Primary <span class="badge bg-white text-primary">4</span>
-              </button>
-              <button type="button" class="btn btn-secondary mb-2">
-                Secondary <span class="badge bg-white text-secondary">4</span>
-              </button>
-              <button type="button" class="btn btn-success mb-2">
-                Success <span class="badge bg-white text-success">4</span>
-              </button>
-              <button type="button" class="btn btn-danger mb-2">
-                Danger <span class="badge bg-white text-danger">4</span>
-              </button>
-              <button type="button" class="btn btn-warning mb-2">
-                Warning <span class="badge bg-white text-warning">4</span>
-              </button>
-              <button type="button" class="btn btn-info mb-2">
-                Info <span class="badge bg-white text-info">4</span>
-              </button>
-              <button type="button" class="btn btn-light mb-2">
-                Light <span class="badge bg-secondary text-light">4</span>
-              </button>
-              <button type="button" class="btn btn-dark mb-2">
-                Dark <span class="badge bg-white text-dark">4</span>
-              </button>
-            </div>
-          </div><!-- End Button Badges -->
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Heading Badges</h5>
-
-              <h1>Example h1 heading <span class="badge bg-primary">Primary</span></h1>
-              <h2>Example h2 heading <span class="badge bg-secondary">Secondary</span></h2>
-              <h3>Example h3 heading <span class="badge bg-success">Success</span></h3>
-              <h4>Example h4 heading <span class="badge bg-danger">Danger</span></h4>
-              <h5>Example h5 heading <span class="badge bg-warning">Warning</span></h5>
-              <h6>Example h6 heading <span class="badge bg-info">Info</span></h6>
-            </div>
-          </div><!-- End Heading Badges -->
-
-        </div>
-
       </div>
     </section>
 
-  </main><!-- End #main -->
+  </main>
 
-  <!-- ======= Footer ======= -->
-  <footer id="footer" class="footer">
-    <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
-    </div>
-    <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-    </div>
-  </footer><!-- End Footer -->
+  <!-- Floating action buttons -->
+  <div class="floating-actions">
+    <button type="submit" id="buttonSubmit" class="btn btn-primary btn-save-floating" form="formGioiThieuChung" data-permission="POST|admin/static-page/gioi-thieu-chung">
+      <i class="bi bi-floppy"></i><span>LƯU</span>
+    </button>
+    <button type="button" id="buttonReset" class="btn btn-outline-secondary btn-cancel-floating" title="Nhập lại dữ liệu đã lưu">
+      <i class="bi bi-x-lg"></i><span>BỎ</span>
+    </button>
+  </div>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -519,10 +463,147 @@
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="assets/js/auth.js"></script>
   <script src="assets/js/main.js"></script>
 
+  <!-- Auth + ENV -->
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+
+  <script>
+    (async function () {
+      "use strict";
+
+      const API_URL = `${ENV.BASE_URL}/admin/static-page/gioi-thieu-chung`;
+      const PAGE_KEY = 'gioi_thieu_chung';
+
+      const form = document.getElementById('formGioiThieuChung');
+      const titleEl = document.getElementById('gtc_title');
+      const displayTypeEl = document.getElementById('gtc_display_type');
+      const bootstrapColumnEl = document.getElementById('gtc_bootstrap_column');
+      const introEl = document.getElementById('gtc_intro');
+      const contentEditorEl = document.getElementById('content_editor');
+
+      /* ---- Alert helper ---- */
+      const alertDiv = document.createElement('div');
+      alertDiv.id = 'formAlert';
+      alertDiv.className = 'd-none alert mb-3';
+      form.prepend(alertDiv);
+
+      function showAlert(message, type = 'success') {
+        alertDiv.innerHTML = message;
+        alertDiv.className = `alert alert-${type} mb-3 shadow position-fixed end-0 top-0 mt-3 me-3`;
+        alertDiv.style.zIndex = '9999';
+        alertDiv.style.minWidth = '250px';
+        alertDiv.style.maxWidth = '350px';
+        alertDiv.classList.remove('d-none');
+        setTimeout(() => {
+          alertDiv.classList.add('d-none');
+        }, 5000);
+      }
+
+      function cleanContent(html) {
+        return String(html || '')
+          .replace(/\\&quot;/g, '"')
+          .replace(/&quot;/g, '"')
+          .replace(/\\"/g, '"')
+          .replace(/\\\\/g, '')
+          .replace(/src=""+/g, 'src="');
+      }
+
+      function getEditorContent() {
+        try {
+          if (window.tinymce) {
+            const inst = tinymce.get('content_editor');
+            if (inst) return inst.getContent();
+          }
+        } catch (e) { }
+        return contentEditorEl.value || '';
+      }
+
+      function setEditorContent(html) {
+        contentEditorEl.value = html;
+        try {
+          if (window.tinymce) {
+            const inst = tinymce.get('content_editor');
+            if (inst) {
+              inst.setContent(html);
+            } else {
+              tinymce.on('AddEditor', (e) => {
+                if (e.editor.id === 'content_editor') {
+                  e.editor.on('init', () => {
+                    e.editor.setContent(html);
+                  });
+                }
+              });
+            }
+          }
+        } catch (e) { }
+      }
+
+      function fillForm(d) {
+        displayTypeEl.value = d.display_type || 'columns';
+        bootstrapColumnEl.value = d.bootstrap_column ?? '';
+        titleEl.value = d.title ?? '';
+        introEl.value = d.intro ?? '';
+        setEditorContent(cleanContent(d.content ?? ''));
+      }
+
+      async function loadDetail() {
+        const res = await fetch(API_URL, { method: 'GET', headers: Auth.getAuthHeader() });
+        if (!res.ok) throw new Error(`API error: ${res.status}`);
+
+        const json = await res.json();
+        if (!json.success) throw new Error(json.message || 'Không lấy được dữ liệu');
+
+        const d = json.data?.data ?? json.data ?? {};
+        fillForm(d);
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        try {
+          const payload = {
+            display_type: displayTypeEl.value,
+            bootstrap_column: bootstrapColumnEl.value.trim(),
+            title: titleEl.value.trim(),
+            intro: introEl.value ?? '',
+            content: cleanContent(getEditorContent())
+          };
+
+          const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: Auth.getAuthHeader(),
+            body: JSON.stringify(payload)
+          });
+
+          const json = await res.json().catch(() => null);
+
+          if (!res.ok || !json || !json.success) {
+            showAlert(json?.message || `Lỗi: ${res.status}`, 'danger');
+            return;
+          }
+
+          showAlert('Lưu giới thiệu chung thành công!', 'success');
+        } catch (error) {
+          console.error(error);
+          showAlert('Có lỗi xảy ra khi lưu dữ liệu!', 'danger');
+        }
+      });
+
+      document.getElementById('buttonReset').addEventListener('click', () => {
+        loadDetail().then(() => {
+          showAlert('Đã khôi phục dữ liệu đã lưu.', 'info');
+        }).catch(err => {
+          showAlert(err?.message || 'Có lỗi xảy ra', 'danger');
+        });
+      });
+
+      await loadDetail().catch(err => {
+        showAlert(err?.message || 'Có lỗi xảy ra khi tải dữ liệu', 'danger');
+      });
+    })();
+  </script>
 </body>
 
 </html>
